@@ -1,0 +1,159 @@
+﻿  main.cpp
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(16): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(16): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(16): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2825: 'Components': must be a class or namespace when followed by '::'
+          c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(16) : see reference to class template instantiation 'ga::detail::sugested_container_class<Composition>' being compiled
+          with
+          [
+              Composition=ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>
+          ]
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2039: 'max_count' : is not a member of '`global namespace''
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2146: syntax error : missing ',' before identifier 'max_count'
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2065: 'max_count' : undeclared identifier
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2977: 'ga::detail::is_compile_time' : too many template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\detail\time_traits.hpp(2) : see declaration of 'ga::detail::is_compile_time'
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2955: 'ga::detail::is_compile_time' : use of class template requires template argument list
+          c:\users\leandro\desktop\gatl\cpp\include\ga\detail\time_traits.hpp(2) : see declaration of 'ga::detail::is_compile_time'
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2065: 'and_' : undeclared identifier
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2039: 'basis_vectors' : is not a member of '`global namespace''
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2146: syntax error : missing ',' before identifier 'basis_vectors'
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2065: 'basis_vectors' : undeclared identifier
+          c:\users\leandro\desktop\gatl\cpp\include\ga\detail\time_traits.hpp(2) : see declaration of 'ga::detail::is_compile_time'
+          c:\users\leandro\desktop\gatl\cpp\include\ga\detail\time_traits.hpp(2) : see declaration of 'ga::detail::is_compile_time'
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2039: 'coefficient' : is not a member of '`global namespace''
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2146: syntax error : missing ',' before identifier 'coefficient'
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2065: 'coefficient' : undeclared identifier
+          c:\users\leandro\desktop\gatl\cpp\include\ga\detail\time_traits.hpp(2) : see declaration of 'ga::detail::is_compile_time'
+          c:\users\leandro\desktop\gatl\cpp\include\ga\detail\time_traits.hpp(2) : see declaration of 'ga::detail::is_compile_time'
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2039: 'value' : is not a member of '`global namespace''
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(9): error C2065: 'value' : undeclared identifier
+c:\users\leandro\desktop\gatl\cpp\include\ga\detail\sugested_container_class.hpp(17): error C2057: expected constant expression
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(16): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(16): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(17): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(17): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(17): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(17): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(17): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(18): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(18): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(18): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(18): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(18): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(19): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(19): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(19): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(19): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(19): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(21): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(21): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(21): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(21): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(21): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(21): error C2027: use of undefined type 'ga::multivector<int8_t,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(21): error C2079: 'ga::make_scalar' uses undefined class 'ga::multivector<int8_t,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(21): error C2561: 'ga::make_scalar' : function must return a value
+          c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(21) : see declaration of 'ga::make_scalar'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(22): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(22): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(22): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(22): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(22): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(22): error C2027: use of undefined type 'ga::multivector<int16_t,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(22): error C2079: 'ga::make_scalar' uses undefined class 'ga::multivector<int16_t,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(22): error C2561: 'ga::make_scalar' : function must return a value
+          c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(22) : see declaration of 'ga::make_scalar'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(23): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(23): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(23): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(23): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(23): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(23): error C2027: use of undefined type 'ga::multivector<int32_t,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(23): error C2079: 'ga::make_scalar' uses undefined class 'ga::multivector<int32_t,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(23): error C2561: 'ga::make_scalar' : function must return a value
+          c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(23) : see declaration of 'ga::make_scalar'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(24): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(24): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(24): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(24): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(24): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(24): error C2027: use of undefined type 'ga::multivector<int64_t,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(24): error C2079: 'ga::make_scalar' uses undefined class 'ga::multivector<int64_t,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(24): error C2561: 'ga::make_scalar' : function must return a value
+          c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(24) : see declaration of 'ga::make_scalar'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(26): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(26): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(26): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(26): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(26): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(26): error C2027: use of undefined type 'ga::multivector<float,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(26): error C2079: 'ga::make_scalar' uses undefined class 'ga::multivector<float,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(26): error C2561: 'ga::make_scalar' : function must return a value
+          c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(26) : see declaration of 'ga::make_scalar'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(27): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(27): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(27): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(27): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(27): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(27): error C2027: use of undefined type 'ga::multivector<double,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(27): error C2079: 'ga::make_scalar' uses undefined class 'ga::multivector<double,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(27): error C2561: 'ga::make_scalar' : function must return a value
+          c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(27) : see declaration of 'ga::make_scalar'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(28): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(28): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(28): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(28): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(28): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(28): error C2027: use of undefined type 'ga::multivector<long double,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(28): error C2079: 'ga::make_scalar' uses undefined class 'ga::multivector<long double,ga::detail::tree<ga::detail::pack<int,ga::detail::identity_operation>,ga::detail::empty_tree,ga::detail::empty_tree>,0>'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(28): error C2561: 'ga::make_scalar' : function must return a value
+          c:\users\leandro\desktop\gatl\cpp\include\ga\make_scalar.hpp(28) : see declaration of 'ga::make_scalar'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_basis_vector.hpp(3): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_basis_vector.hpp(3): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_basis_vector.hpp(3): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_basis_vector.hpp(3): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_basis_vector.hpp(3): error C2440: 'specialization' : cannot convert from 'int' to 'ga::detail::container_class'
+          Conversion to enumeration type requires an explicit cast (static_cast, C-style cast or function-style cast)
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_basis_vector.hpp(9): error C2059: syntax error : ','
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_basis_vector.hpp(9): error C2976: 'ga::detail::single_basis_blade' : too few template arguments
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(126) : see declaration of 'ga::detail::single_basis_blade'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_basis_vector.hpp(9): error C3203: 'single_basis_blade' : unspecialized class template can't be used as a template argument for template parameter 'Components', expected a real type
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_basis_vector.hpp(9): error C2975: 'Container' : invalid template argument for 'ga::multivector', expected compile-time constant expression
+          c:\users\leandro\desktop\gatl\cpp\include\ga\declarations.hpp(145) : see declaration of 'Container'
+c:\users\leandro\desktop\gatl\cpp\include\ga\make_basis_vector.hpp(9): fatal error C1003: error count exceeds 100; stopping compilation

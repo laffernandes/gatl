@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\ga">
+      <UniqueIdentifier>{511dacad-08c6-48d5-85d7-b0f311a6e7a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ga\detail">
+      <UniqueIdentifier>{a26ff045-8bfb-47be-9942-8c41bc1ed2ed}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\ga.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\multivector.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\ga.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\metric.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\clifford_conjugation.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\delta_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\dual.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\grade.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\grade_involution.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\inverse.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\is_blade.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\is_even_versor.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\is_odd_versor.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\is_versor.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\is_zero.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\left_contraction.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\make_basis_vector.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\make_scalar.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\meet_and_join.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\minus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\multivector.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\plus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\reverse.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\reverse_norm.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\right_contraction.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\scalar_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\take_grade.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\unary_minus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\unary_plus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\undual.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\geometric_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\outer_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\sqrt.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\exp.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\macros.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\graded_gp_expression.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\sign_change_expression.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\value.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\binary_expression.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\expression.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\unary_expression.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\binary_metric_expression.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\declarations.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\time_traits.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\tree.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\gp_expression.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\sugested_container_class.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\argument_storage_for_expression.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\identity_operation.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\detail\pack.hpp">
+      <Filter>Header Files\ga\detail</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{59039383-F0B4-4533-B234-206A118D7DFE}</ProjectGuid>
+    <RootNamespace>sandbox</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\bin\</OutDir>
+    <IntDir>$(SolutionDir)\trash\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\bin\</OutDir>
+    <IntDir>$(SolutionDir)\trash\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT);..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\ga.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford_conjugation.hpp" />
+    <ClInclude Include="..\..\include\ga\declarations.hpp" />
+    <ClInclude Include="..\..\include\ga\delta_product.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\argument_storage_for_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\binary_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\binary_metric_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\expression.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\gp_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\graded_gp_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\identity_operation.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\pack.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\sign_change_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\sugested_container_class.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\time_traits.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\tree.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\unary_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\detail\value.hpp" />
+    <ClInclude Include="..\..\include\ga\dual.hpp" />
+    <ClInclude Include="..\..\include\ga\exp.hpp" />
+    <ClInclude Include="..\..\include\ga\ga.hpp" />
+    <ClInclude Include="..\..\include\ga\geometric_product.hpp" />
+    <ClInclude Include="..\..\include\ga\grade.hpp" />
+    <ClInclude Include="..\..\include\ga\grade_involution.hpp" />
+    <ClInclude Include="..\..\include\ga\inverse.hpp" />
+    <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp" />
+    <ClInclude Include="..\..\include\ga\is_blade.hpp" />
+    <ClInclude Include="..\..\include\ga\is_even_versor.hpp" />
+    <ClInclude Include="..\..\include\ga\is_odd_versor.hpp" />
+    <ClInclude Include="..\..\include\ga\is_versor.hpp" />
+    <ClInclude Include="..\..\include\ga\is_zero.hpp" />
+    <ClInclude Include="..\..\include\ga\left_contraction.hpp" />
+    <ClInclude Include="..\..\include\ga\macros.hpp" />
+    <ClInclude Include="..\..\include\ga\make_basis_vector.hpp" />
+    <ClInclude Include="..\..\include\ga\make_scalar.hpp" />
+    <ClInclude Include="..\..\include\ga\meet_and_join.hpp" />
+    <ClInclude Include="..\..\include\ga\metric.hpp" />
+    <ClInclude Include="..\..\include\ga\minus.hpp" />
+    <ClInclude Include="..\..\include\ga\multivector.hpp" />
+    <ClInclude Include="..\..\include\ga\outer_product.hpp" />
+    <ClInclude Include="..\..\include\ga\plus.hpp" />
+    <ClInclude Include="..\..\include\ga\reverse.hpp" />
+    <ClInclude Include="..\..\include\ga\reverse_norm.hpp" />
+    <ClInclude Include="..\..\include\ga\right_contraction.hpp" />
+    <ClInclude Include="..\..\include\ga\scalar_product.hpp" />
+    <ClInclude Include="..\..\include\ga\sqrt.hpp" />
+    <ClInclude Include="..\..\include\ga\take_grade.hpp" />
+    <ClInclude Include="..\..\include\ga\unary_minus.hpp" />
+    <ClInclude Include="..\..\include\ga\unary_plus.hpp" />
+    <ClInclude Include="..\..\include\ga\undual.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\main.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

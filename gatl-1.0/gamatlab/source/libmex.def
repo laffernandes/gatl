@@ -1,0 +1,4 @@
+LIBRARY libmex.dll
+EXPORTS
+mexErrMsgIdAndTxt
+mexErrMsgTxt
