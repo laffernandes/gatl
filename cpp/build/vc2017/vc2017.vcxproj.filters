@@ -99,9 +99,6 @@
     <ClInclude Include="..\..\include\ga\scalar_product.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\lazy_value.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\value_mul.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>

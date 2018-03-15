@@ -45,7 +45,6 @@
     <ClInclude Include="..\..\include\ga\expression_ordered_iterator.hpp" />
     <ClInclude Include="..\..\include\ga\extra.hpp" />
     <ClInclude Include="..\..\include\ga\geometric_product.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy_value.hpp" />
     <ClInclude Include="..\..\include\ga\left_contraction.hpp" />
     <ClInclude Include="..\..\include\ga\outer_product.hpp" />
     <ClInclude Include="..\..\include\ga\right_contraction.hpp" />

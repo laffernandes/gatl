@@ -42,7 +42,6 @@ namespace ga {
 #include "ga/compile_time_ordering.hpp"
 
 #include "ga/compile_time_value.hpp"
-#include "ga/lazy_value.hpp"
 #include "ga/value_neg.hpp"
 #include "ga/value_mul.hpp"
 #include "ga/value_add.hpp"
@@ -100,11 +99,23 @@ namespace ga {
 #include "ga/basis_vector.hpp"
 #include "ga/scalar_wrapper.hpp"
 
+//TODO Implement exp(arg)
+//TODO Implement sqrt(arg)
 //TODO Implement grade(arg, tol)
 //TODO Implement equal(lhs, rhs, tol)
 //TODO Implement is_zero(arg, tol)
 //TODO Implement is_scalar(arg, tol)
 //TODO Implement is_blade(arg, tol)
 //TODO Implement is_versor(arg, tol)
+//TODO Implement is_even_versor(arg, tol)
+//TODO Implement is_odd_versor(arg, tol)
+//TODO Implement meet_and_join(lhs, rhs, tol)
+//TODO Implement inv(arg, tol)
+//TODO Implement unit(arg, tol)
+//TODO Implement rnorm(arg, tol)
+//TODO Implement rnorm_sqr(arg, tol)
+//TODO Implement dual(arg, pseudoscalar, metric, tol)
+//TODO Implement undual(arg, pseudoscalar, metric, tol)
+//TODO Implement native(arg, tol)
 
 #endif // __GA_HPP__

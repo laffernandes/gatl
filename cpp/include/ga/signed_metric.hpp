@@ -60,7 +60,7 @@ namespace ga {
 
 			template<default_integral_t Row, default_integral_t Col>
 			struct centry {
-				static_assert(Row >= 0 && Col >= 0, "Non-negative indices expected.");
+				static_assert(Row > 0 && Col > 0, "Positive indices expected.");
 				constexpr static auto value = cvalue<Row == Col ? cdiagonal_entry<Row>::value : 0>();
 			};
 
@@ -72,7 +72,15 @@ namespace ga {
 
 			template<default_bitset_t BasisBlade>
 			struct cmetric_factor {
-				//TODO Implementar
+			private:
+
+				constexpr static default_bitset_t zero = ~(((default_bitset_t(1) << (P + Q + 1)) - 1) & ~default_bitset_t(1));
+				constexpr static default_bitset_t minus = (((default_bitset_t(1) << (P + 1)) - 1) ^ ((default_bitset_t(1) << (P + Q + 1)) - 1)) & ~default_bitset_t(1);
+
+			public:
+
+				static_assert((BasisBlade & default_bitset_t(1)) == 0, "Positive indices expected.");
+				constexpr static auto value = cvalue<(BasisBlade & zero) != default_bitset_t(0) ? 0 : ((_basis_blade_grade<cbasis_blade<BasisBlade & minus> >::value & 1) == 0 ? 1: -1)>();
 			};
 
 			constexpr static decltype(auto) call_entry(signed_metric<P, Q, EntryType> const *, index_t const row, index_t const col) {
