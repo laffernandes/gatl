@@ -1,40 +1,30 @@
-namespace detail {
+#ifndef __GA_RIGHT_CONTRACTION_HPP__
+#define __GA_RIGHT_CONTRACTION_HPP__
 
-	// Functor for computing grade(A) - grade(B).
-	//   GradeFirstComponent must be a dynamic_value or a static_value<> structure.
-	//   GradeSecondComponent must be a dynamic_value or a static_value<> structure.
-	template<class GradeFirstComponent, class GradeSecondComponent>
-	struct rcont_grade_selection {
+namespace ga {
 
-		typedef dynamic_value result;
+	namespace detail {
 
-		inline static
-		int32_t eval(int32_t&& grade_first, int32_t&& grade_second) {
-			return grade_first - grade_second;
-		}
-	};
+		class rcont_func {
+		public:
 
-	template<int32_t FirstValue, int32_t SecondValue>
-	struct rcont_grade_selection<static_value<FirstValue>, static_value<SecondValue> > {
-		
-		typedef static_value<FirstValue - SecondValue> result;
+			constexpr bool operator()(grade_t const lhs_grade, grade_t const rhs_grade, grade_t const result_grade) const {
+				return (lhs_grade - rhs_grade) == result_grade;
+			}
 
-		inline static
-		int32_t eval(int32_t&&, int32_t&&) = nullptr;
-	};
+			template<grade_t LeftGrade, grade_t RightGrade, grade_t ResultGrade>
+			struct eval {
+				constexpr static bool value = (LeftGrade - RightGrade) == ResultGrade;
+			};
+		};
 
-	// Right contraction expression (A rcont B).
-	//   FirstArgument must be a multivector<> structure.
-	//   SecondArgument must be a multivector<> structure.
-	//   MetricArgument must be a metric<> structure.
-	template<class FirstArgument, class SecondArgument, class MetricArgument>
-	class rcont_expression : public graded_gp_expression<
-			FirstArgument,
-			SecondArgument,
-			MetricArgument,
-			rcont_grade_selection
-		> {};
+	}
+
+	template<class LeftType, class RightType, class MetricType>
+	constexpr decltype(auto) rcont(LeftType const &lhs, RightType const &rhs, metric<MetricType> const &mtr) {
+		return detail::graded_product(detail::begin(lhs), detail::begin(rhs), mtr, detail::rcont_func());
+	}
 
 }
 
-_GA_DEFINE_BINARY_METRIC_OPERATION(rcont)
+#endif // __GA_RIGHT_CONTRACTION_HPP__

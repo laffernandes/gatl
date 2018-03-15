@@ -1,8 +1,69 @@
-_GA_DEFINE_BINARY_METRIC_OPERATION(gp)
+#ifndef __GA_GEOMETRIC_PRODUCT_HPP__
+#define __GA_GEOMETRIC_PRODUCT_HPP__
 
-template<class FirstArgumentType, class SecondArgumentType>
-inline
-auto operator * (FirstArgumentType&& m1, SecondArgumentType&& m2)->decltype(gp_em(m1, m2)) {
-	///TODO Verificar se um dos dois argumentos é um escalar. Caso contrário, levantar ga::illegal_call_exception().
-	return gp_em(m1, m2);
+namespace ga {
+
+	namespace detail {
+
+		class gp_func {
+		public:
+
+			constexpr bool operator()(grade_t const lhs_grade, grade_t const rhs_grade, grade_t const result_grade) const {
+				return true;
+			}
+
+			template<grade_t LeftGrade, grade_t RightGrade, grade_t ResultGrade>
+			struct eval {
+				constexpr static bool value = true;
+			};
+		};
+
+	}
+
+	template<class LeftType, class RightType, class MetricType>
+	constexpr decltype(auto) gp(LeftType const &lhs, RightType const &rhs, metric<MetricType> const &mtr) {
+		return detail::graded_product(detail::begin(lhs), detail::begin(rhs), mtr, detail::gp_func());
+	}
+
 }
+
+template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType>
+constexpr decltype(auto) operator*(ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::detail::empty_expression const &rhs) {
+	return ga::gp(lhs, rhs, ga::euclidean_metric_t());
+}
+
+template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, ga::default_integral_t RightValue>
+constexpr decltype(auto) operator*(ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::detail::cvalue<RightValue> const &rhs) {
+	return ga::gp(lhs, rhs, ga::euclidean_metric_t());
+}
+
+template<class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
+constexpr decltype(auto) operator*(ga::detail::empty_expression const &lhs, ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
+	return ga::gp(lhs, rhs, ga::euclidean_metric_t());
+}
+
+constexpr decltype(auto) operator*(ga::detail::empty_expression const &lhs, ga::detail::empty_expression const &rhs) {
+	return ga::gp(lhs, rhs, ga::euclidean_metric_t());
+}
+
+template<ga::default_integral_t RightValue>
+constexpr decltype(auto) operator*(ga::detail::empty_expression const &lhs, ga::detail::cvalue<RightValue> const &rhs) {
+	return ga::gp(lhs, rhs, ga::euclidean_metric_t());
+}
+
+template<ga::default_integral_t LeftValue, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
+constexpr decltype(auto) operator*(ga::detail::cvalue<LeftValue> const &lhs, ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
+	return ga::gp(lhs, rhs, ga::euclidean_metric_t());
+}
+
+template<ga::default_integral_t LeftValue>
+constexpr decltype(auto) operator*(ga::detail::cvalue<LeftValue> const &lhs, ga::detail::empty_expression const &rhs) {
+	return ga::gp(lhs, rhs, ga::euclidean_metric_t());
+}
+
+template<ga::default_integral_t LeftValue, ga::default_integral_t RightValue>
+constexpr decltype(auto) operator*(ga::detail::cvalue<LeftValue> const &lhs, ga::detail::cvalue<RightValue> const &rhs) {
+	return ga::gp(lhs, rhs, ga::euclidean_metric_t());
+}
+
+#endif // __GA_GEOMETRIC_PRODUCT_HPP__

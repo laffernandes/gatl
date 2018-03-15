@@ -1,10 +1,5 @@
 cpp      Pasta que contém a implementação atual, em andamento,
-         que faz uso das funcionalidades do C11.
-
-cpp-old  Pasta que contém a implementação que foi abandonada
-         para fazer uso das funcionalidades do C11. Essa
-         implementação será abandonada tão logo seu código migre
-         para a pasta cpp.
+         que faz uso das funcionalidades do C11 e C14.
 
 gatl-1.0 Pasta que contém a implementação C++ e o wrapper MATLAB
          da biblioteca onde os blades de base de multivetores são,

@@ -1,45 +1,74 @@
-namespace detail {
+#ifndef __GA_OUTER_PRODUCT_HPP__
+#define __GA_OUTER_PRODUCT_HPP__
 
-	// Functor for computing grade(A) + grade(B).
-	//   GradeFirstComponent must be a dynamic_value or a static_value<> structure.
-	//   GradeSecondComponent must be a dynamic_value or a static_value<> structure.
-	template<class GradeFirstComponent, class GradeSecondComponent>
-	struct op_grade_selection {
+namespace ga {
 
-		typedef dynamic_value result;
+	namespace detail {
 
-		inline static
-		int32_t eval(int32_t&& grade_first, int32_t&& grade_second) {
-			return grade_first + grade_second;
-		}
-	};
+		class op_func {
+		public:
 
-	template<int32_t FirstValue, int32_t SecondValue>
-	struct op_grade_selection<static_value<FirstValue>, static_value<SecondValue> > {
-		
-		typedef static_value<FirstValue + SecondValue> result;
+			constexpr bool operator()(grade_t const lhs_grade, grade_t const rhs_grade, grade_t const result_grade) const {
+				return (lhs_grade + rhs_grade) == result_grade;
+			}
 
-		inline static
-		int32_t eval(int32_t&&, int32_t&&) = nullptr;
-	};
+			template<grade_t LeftGrade, grade_t RightGrade, grade_t ResultGrade>
+			struct eval {
+				constexpr static bool value = (LeftGrade + RightGrade) == ResultGrade;
+			};
+		};
 
-	// Outer product expression (A op B).
-	//   FirstArgument must be a multivector<> structure.
-	//   SecondArgument must be a multivector<> structure.
-	template<class FirstArgument, class SecondArgument>
-	class op_expression : public graded_gp_expression<
-			FirstArgument,
-			SecondArgument,
-			euclidean_metric,
-			op_grade_selection
-		> {};
+	}
+
+	template<class LeftType, class RightType>
+	constexpr decltype(auto) op(LeftType const &lhs, RightType const &rhs) {
+		return detail::graded_product(detail::begin(lhs), detail::begin(rhs), euclidean_metric_t(), detail::op_func());
+	}
 
 }
 
-_GA_DEFINE_BINARY_NON_METRIC_OPERATION(op)
-
-template<class FirstArgumentType, class SecondArgumentType>
-inline
-auto operator ^ (FirstArgumentType&& m1, SecondArgumentType&& m2)->decltype(op(m1, m2)) {
-	return op(m1, m2);
+template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
+constexpr decltype(auto) operator^(ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
+	return ga::op(lhs, rhs);
 }
+
+template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType>
+constexpr decltype(auto) operator^(ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::detail::empty_expression const &rhs) {
+	return ga::op(lhs, rhs);
+}
+
+template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, ga::default_integral_t RightValue>
+constexpr decltype(auto) operator^(ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::detail::cvalue<RightValue> const &rhs) {
+	return ga::op(lhs, rhs);
+}
+
+template<class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
+constexpr decltype(auto) operator^(ga::detail::empty_expression const &lhs, ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
+	return ga::op(lhs, rhs);
+}
+
+constexpr decltype(auto) operator^(ga::detail::empty_expression const &lhs, ga::detail::empty_expression const &rhs) {
+	return ga::op(lhs, rhs);
+}
+
+template<ga::default_integral_t RightValue>
+constexpr decltype(auto) operator^(ga::detail::empty_expression const &lhs, ga::detail::cvalue<RightValue> const &rhs) {
+	return ga::op(lhs, rhs);
+}
+
+template<ga::default_integral_t LeftValue, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
+constexpr decltype(auto) operator^(ga::detail::cvalue<LeftValue> const &lhs, ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
+	return ga::op(lhs, rhs);
+}
+
+template<ga::default_integral_t LeftValue>
+constexpr decltype(auto) operator^(ga::detail::cvalue<LeftValue> const &lhs, ga::detail::empty_expression const &rhs) {
+	return ga::op(lhs, rhs);
+}
+
+template<ga::default_integral_t LeftValue, ga::default_integral_t RightValue>
+constexpr decltype(auto) operator^(ga::detail::cvalue<LeftValue> const &lhs, ga::detail::cvalue<RightValue> const &rhs) {
+	return ga::op(lhs, rhs);
+}
+
+#endif // __GA_OUTER_PRODUCT_HPP__

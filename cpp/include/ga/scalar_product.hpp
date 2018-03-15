@@ -1,29 +1,30 @@
-namespace detail {
+#ifndef __GA_SCALAR_PRODUCT_HPP__
+#define __GA_SCALAR_PRODUCT_HPP__
 
-	// Functor for retrieving 0.
-	//   GradeFirstComponent must be a dynamic_value or a static_value<> structure.
-	//   GradeSecondComponent must be a dynamic_value or a static_value<> structure.
-	template<class GradeFirstComponent, class GradeSecondComponent>
-	struct scp_grade_selection {
+namespace ga {
 
-		typedef static_value<0> result;
+	namespace detail {
 
-		inline static
-		int32_t eval(int32_t&&, int32_t&&) = nullptr;
-	};
+		class scp_func {
+		public:
 
-	// Scalar product expression (A scp B).
-	//   FirstArgument must be a multivector<> structure.
-	//   SecondArgument must be a multivector<> structure.
-	//   MetricArgument must be a metric<> structure.
-	template<class FirstArgument, class SecondArgument, class MetricArgument>
-	class scp_expression : public graded_gp_expression<
-			FirstArgument,
-			SecondArgument,
-			MetricArgument,
-			scp_grade_selection
-		> {};
+			constexpr bool operator()(grade_t const lhs_grade, grade_t const rhs_grade, grade_t const result_grade) const {
+				return result_grade == 0;
+			}
+
+			template<grade_t LeftGrade, grade_t RightGrade, grade_t ResultGrade>
+			struct eval {
+				constexpr static bool value = ResultGrade == 0;
+			};
+		};
+
+	}
+
+	template<class LeftType, class RightType, class MetricType>
+	constexpr decltype(auto) scp(LeftType const &lhs, RightType const &rhs, metric<MetricType> const &mtr) {
+		return detail::graded_product(detail::begin(lhs), detail::begin(rhs), mtr, detail::scp_func());
+	}
 
 }
 
-_GA_DEFINE_BINARY_METRIC_OPERATION(scp)
+#endif // __GA_SCALAR_PRODUCT_HPP__

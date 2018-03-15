@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\ga">
+      <UniqueIdentifier>{d2f60b52-9855-4005-b36b-ecba9bc54fb6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\ga.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\basis_vector.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\compile_time_value.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\component.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\default_tolerance.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\expression.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\expression_coefficient_type.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\expression_insert.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\expression_iterator.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\expression_ordered_iterator.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\metric.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\write.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\compile_time_ordering.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\scalar_wrapper.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\unary_minus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\unary_plus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\conjugation.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\involution.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\reversion.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\take_grade.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\graded_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\geometric_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\left_contraction.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\outer_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\right_contraction.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\scalar_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\lazy_value.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\value_mul.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\value_add.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\value_neg.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\euclidean_metric.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\basis_blade_grade.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\signed_metric.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\compile_time_basis_blade.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\graded_unary_minus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\dynamic_basis_blade.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\basis_blade_ordering.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\components.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\element_binary_minus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\element_unary_minus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\element_binary_plus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\element_ordering.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\element_keep_if_grade.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\element_graded_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\element_graded_unary_minus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\binary_plus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\binary_minus.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\value_sub.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\test\sandbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
