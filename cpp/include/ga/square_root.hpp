@@ -3,8 +3,6 @@
 
 namespace ga {
 
-	//TODO Try it!
-
 	using std::sqrt;
 	using detail::sqrt;
 

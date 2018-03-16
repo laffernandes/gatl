@@ -3,15 +3,12 @@
 
 namespace ga {
 
-	//TODO Try it!
-
 	using std::exp;
 	using detail::exp;
 
 	template<class ElementType, class LeftSubtreeType, class RightSubtreeType, class MetricType>
 	decltype(auto) exp(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg, metric<MetricType> const &mtr) {
-		//TODO Lazy
-		//TODO Could be improved to use cvalue<>?
+		//TODO lazy
 		auto signed_alpha_sqr = native(gp(arg, arg, mtr));
 		if (abs(signed_alpha_sqr) <= tol) {
 			return static_cast<decltype(signed_alpha_sqr)>(1) + arg;

@@ -15,9 +15,15 @@ namespace ga {
 			typedef CoefficientType coefficient_type;
 			typedef cbasis_blade<BasisBlade> basis_blade_type;
 
+			constexpr component(component const &) = default;
+			constexpr component(component &&) = default;
+
 			constexpr component(coefficient_type const &coefficient, basis_blade_type const &) :
 				coefficient_(coefficient) {
 			}
+
+			constexpr component& operator=(component const &) = default;
+			constexpr component& operator=(component &&) = default;
 
 			constexpr coefficient_type const & coefficient() const {
 				return coefficient_;
@@ -43,10 +49,16 @@ namespace ga {
 			typedef CoefficientType coefficient_type;
 			typedef dbasis_blade<PossibleGrades> basis_blade_type;
 
+			constexpr component(component const &) = default;
+			constexpr component(component &&) = default;
+
 			constexpr component(coefficient_type const &coefficient, basis_blade_type const &basis_blade) :
 				coefficient_(coefficient),
 				basis_blade_(basis_blade) {
 			}
+
+			constexpr component& operator=(component const &) = default;
+			constexpr component& operator=(component &&) = default;
 
 			constexpr coefficient_type const & coefficient() const {
 				return coefficient_;
@@ -77,8 +89,14 @@ namespace ga {
 			typedef cvalue<Coefficient> coefficient_type;
 			typedef cbasis_blade<BasisBlade> basis_blade_type;
 
+			constexpr component(component const &) = default;
+			constexpr component(component &&) = default;
+
 			constexpr component(coefficient_type const &, basis_blade_type const &) {
 			}
+
+			constexpr component& operator=(component const &) = default;
+			constexpr component& operator=(component &&) = default;
 
 			constexpr coefficient_type coefficient() const {
 				return cvalue<Coefficient>();
@@ -96,9 +114,15 @@ namespace ga {
 			typedef cvalue<Coefficient> coefficient_type;
 			typedef dbasis_blade<PossibleGrades> basis_blade_type;
 
+			constexpr component(component const &) = default;
+			constexpr component(component &&) = default;
+
 			constexpr component(coefficient_type const &, basis_blade_type const &basis_blade) :
 				basis_blade_(basis_blade) {
 			}
+
+			constexpr component& operator=(component const &) = default;
+			constexpr component& operator=(component &&) = default;
 
 			constexpr coefficient_type coefficient() const {
 				return cvalue<Coefficient>();

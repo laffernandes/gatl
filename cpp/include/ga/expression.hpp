@@ -8,8 +8,6 @@ namespace ga {
 		class empty_expression {
 		public:
 
-			constexpr empty_expression() = default;
-
 			constexpr static bool compile_time_defined() {
 				return true;
 			}
@@ -24,10 +22,6 @@ namespace ga {
 
 			typedef ElementType element_type;
 
-			constexpr _super_expression_element(element_type const &element) :
-				element_(element) {
-			}
-
 			constexpr element_type & element() {
 				return element_;
 			}
@@ -39,6 +33,18 @@ namespace ga {
 			constexpr static bool compile_time_defined() {
 				return false;
 			}
+
+		protected:
+
+			constexpr _super_expression_element(_super_expression_element const&) = default;
+			constexpr _super_expression_element(_super_expression_element &&) = default;
+
+			constexpr _super_expression_element(element_type const &element) :
+				element_(element) {
+			}
+
+			constexpr _super_expression_element& operator=(_super_expression_element const &) = default;
+			constexpr _super_expression_element& operator=(_super_expression_element &&) = default;
 
 		private:
 
@@ -53,11 +59,6 @@ namespace ga {
 
 			typedef component<cvalue<CoefficientValue>, cbasis_blade<BasisBlade> > element_type;
 
-			constexpr _super_expression_element() = default;
-
-			constexpr _super_expression_element(element_type const &) {
-			}
-
 			constexpr element_type element() const {
 				return make_component(cvalue<CoefficientValue>(), cbasis_blade<BasisBlade>());
 			}
@@ -65,6 +66,18 @@ namespace ga {
 			constexpr static bool compile_time_defined() {
 				return true;
 			}
+
+		protected:
+
+			constexpr _super_expression_element() = default;
+			constexpr _super_expression_element(_super_expression_element const&) = default;
+			constexpr _super_expression_element(_super_expression_element &&) = default;
+
+			constexpr _super_expression_element(element_type const &) {
+			}
+
+			constexpr _super_expression_element& operator=(_super_expression_element const &) = default;
+			constexpr _super_expression_element& operator=(_super_expression_element &&) = default;
 
 			static_assert(CoefficientValue != default_integral_t(0), "Zeros are not alowed here!");
 		};
@@ -78,11 +91,6 @@ namespace ga {
 
 			typedef ExpressionType left_type;
 
-			constexpr _super_expression_left_subtree() = default;
-
-			constexpr _super_expression_left_subtree(left_type const &) {
-			}
-
 			constexpr left_type left() const {
 				return left_type();
 			}
@@ -90,6 +98,19 @@ namespace ga {
 			constexpr static bool compile_time_defined() {
 				return true;
 			}
+
+		protected:
+
+			constexpr _super_expression_left_subtree() = default;
+			constexpr _super_expression_left_subtree(_super_expression_left_subtree const&) = default;
+			constexpr _super_expression_left_subtree(_super_expression_left_subtree &&) = default;
+
+			constexpr _super_expression_left_subtree(left_type const &) {
+			}
+
+			constexpr _super_expression_left_subtree& operator=(_super_expression_left_subtree const &) = default;
+			constexpr _super_expression_left_subtree& operator=(_super_expression_left_subtree &&) = default;
+
 		};
 
 		template<class ExpressionType>
@@ -97,10 +118,6 @@ namespace ga {
 		public:
 
 			typedef ExpressionType left_type;
-
-			constexpr _super_expression_left_subtree(left_type const &left) :
-				left_(left) {
-			}
 
 			constexpr left_type & left() {
 				return left_;
@@ -113,6 +130,18 @@ namespace ga {
 			constexpr static bool compile_time_defined() {
 				return false;
 			}
+
+		protected:
+		
+			constexpr _super_expression_left_subtree(_super_expression_left_subtree const&) = default;
+			constexpr _super_expression_left_subtree(_super_expression_left_subtree &&) = default;
+
+			constexpr _super_expression_left_subtree(left_type const &left) :
+				left_(left) {
+			}
+
+			constexpr _super_expression_left_subtree& operator=(_super_expression_left_subtree const &) = default;
+			constexpr _super_expression_left_subtree& operator=(_super_expression_left_subtree &&) = default;
 
 		private:
 
@@ -128,11 +157,6 @@ namespace ga {
 
 			typedef ExpressionType right_type;
 
-			constexpr _super_expression_right_subtree() = default;
-
-			constexpr _super_expression_right_subtree(right_type const &) {
-			}
-
 			constexpr right_type right() const {
 				return right_type();
 			}
@@ -140,6 +164,18 @@ namespace ga {
 			constexpr static bool compile_time_defined() {
 				return true;
 			}
+
+		protected:
+
+			constexpr _super_expression_right_subtree() = default;
+			constexpr _super_expression_right_subtree(_super_expression_right_subtree const&) = default;
+			constexpr _super_expression_right_subtree(_super_expression_right_subtree &&) = default;
+
+			constexpr _super_expression_right_subtree(right_type const &) {
+			}
+		
+			constexpr _super_expression_right_subtree& operator=(_super_expression_right_subtree const &) = default;
+			constexpr _super_expression_right_subtree& operator=(_super_expression_right_subtree &&) = default;
 		};
 
 		template<class ExpressionType>
@@ -147,10 +183,6 @@ namespace ga {
 		public:
 
 			typedef ExpressionType right_type;
-
-			constexpr _super_expression_right_subtree(right_type const &right) :
-				right_(right) {
-			}
 
 			constexpr right_type & right() {
 				return right_;
@@ -163,6 +195,18 @@ namespace ga {
 			constexpr static bool compile_time_defined() {
 				return false;
 			}
+
+		protected:
+		
+			constexpr _super_expression_right_subtree(_super_expression_right_subtree const&) = default;
+			constexpr _super_expression_right_subtree(_super_expression_right_subtree &&) = default;
+
+			constexpr _super_expression_right_subtree(right_type const &right) :
+				right_(right) {
+			}
+
+			constexpr _super_expression_right_subtree& operator=(_super_expression_right_subtree const &) = default;
+			constexpr _super_expression_right_subtree& operator=(_super_expression_right_subtree &&) = default;
 
 		private:
 
@@ -190,11 +234,17 @@ namespace ga {
 			constexpr expression() {
 			}
 
+			constexpr expression(expression const &) = default;
+			constexpr expression(expression &&) = default;
+
 			constexpr expression(element_type const &element, left_type const &left, right_type const &right) :
 				_super_for_element(element),
 				_super_for_left_subtree(left),
 				_super_for_right_subtree(right) {
 			}
+
+			constexpr expression& operator=(expression const &) = default;
+			constexpr expression& operator=(expression &&) = default;
 
 			using _super_for_element::element;
 			using _super_for_left_subtree::left;
@@ -225,10 +275,16 @@ namespace ga {
 			constexpr expression() {
 			}
 
+			constexpr expression(expression const &) = default;
+			constexpr expression(expression &&) = default;
+
 			constexpr expression(element_type const &element, left_type const &, right_type const &right) :
 				_super_for_element(element),
 				_super_for_right_subtree(right) {
 			}
+
+			constexpr expression& operator=(expression const &) = default;
+			constexpr expression& operator=(expression &&) = default;
 
 			using _super_for_element::element;
 			using _super_for_right_subtree::right;
@@ -262,10 +318,16 @@ namespace ga {
 			constexpr expression() {
 			}
 
+			constexpr expression(expression const &) = default;
+			constexpr expression(expression &&) = default;
+
 			constexpr expression(element_type const &element, left_type const &left, right_type const &) :
 				_super_for_element(element),
 				_super_for_left_subtree(left) {
 			}
+
+			constexpr expression& operator=(expression const &) = default;
+			constexpr expression& operator=(expression &&) = default;
 
 			using _super_for_element::element;
 			using _super_for_left_subtree::left;
@@ -297,9 +359,15 @@ namespace ga {
 			constexpr expression() {
 			}
 
+			constexpr expression(expression const &) = default;
+			constexpr expression(expression &&) = default;
+
 			constexpr expression(element_type const &element, left_type const &, right_type const &) :
 				_super_for_element(element) {
 			}
+
+			constexpr expression& operator=(expression const &) = default;
+			constexpr expression& operator=(expression &&) = default;
 
 			using _super_for_element::element;
 

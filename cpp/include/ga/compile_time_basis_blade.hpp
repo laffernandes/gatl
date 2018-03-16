@@ -16,7 +16,7 @@ namespace ga {
 			}
 
 			constexpr static default_bitset_t possible_grades() {
-				return _basis_blade_grade<cbasis_blade>::value;
+				return default_bitset_t(1) << _basis_blade_grade<cbasis_blade>::value;
 			}
 
 			constexpr static value_type value() {

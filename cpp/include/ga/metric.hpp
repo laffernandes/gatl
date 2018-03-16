@@ -36,8 +36,7 @@ namespace ga {
 			return detail::metric_traits<MetricType>::call_diagonal_entry(static_cast<MetricType const*>(this), index);
 		}
 
-		template<class BasisBladeType>
-		constexpr decltype(auto) metric_factor(BasisBladeType const &arg) const {
+		constexpr decltype(auto) metric_factor(default_bitset_t const arg) const {
 			return detail::metric_traits<MetricType>::call_metric_factor(static_cast<MetricType const*>(this), arg);
 		}
 	};
@@ -68,8 +67,7 @@ namespace ga {
 			return detail::metric_traits<MetricType>::call_diagonal_entry(static_cast<MetricType const*>(this), index);
 		}
 
-		template<class BasisBladeType>
-		constexpr decltype(auto) metric_factor(BasisBladeType const &arg) const {
+		constexpr decltype(auto) metric_factor(default_bitset_t const arg) const {
 			return detail::metric_traits<MetricType>::call_metric_factor(static_cast<MetricType const*>(this), arg);
 		}
 	};
@@ -100,8 +98,7 @@ namespace ga {
 				return metric->diagonal_entry(index);
 			}
 
-			template<class BasisBladeType>
-			constexpr static decltype(auto) call_metric_factor(orthogonal_metric<MetricType> const *metric, BasisBladeType const &arg) {
+			constexpr static decltype(auto) call_metric_factor(orthogonal_metric<MetricType> const *metric, default_bitset_t const arg) {
 				return metric->metric_factor(arg);
 			}
 		};

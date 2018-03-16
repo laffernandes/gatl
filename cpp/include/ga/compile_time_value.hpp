@@ -1,6 +1,8 @@
 #ifndef __GA_COMPILE_TIME_VALUE_HPP__
 #define __GA_COMPILE_TIME_VALUE_HPP__
 
+//TODO Armazenar uma fração
+
 namespace ga {
 
 	namespace detail {

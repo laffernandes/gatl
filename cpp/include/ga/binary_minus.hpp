@@ -5,6 +5,8 @@ namespace ga {
 
 	namespace detail {
 
+		//TODO Adição e subtração não agrupam component<CoefficientType, dbasis_blade<X> > com components<CoefficientType, X>.
+
 		struct _binary_minus_add_no_end;
 		struct _binary_minus_add_left;
 		struct _binary_minus_add_right;

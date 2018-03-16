@@ -5,7 +5,7 @@ namespace ga {
 
 	template<class ElementType, class LeftSubtreeType, class RightSubtreeType, class MetricType>
 	constexpr decltype(auto) inv(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg, metric<MetricType> const &mtr) {
-		return gp(reversion(arg), inv(sqr_rnorm(arg, mtr), euclidean_metric_t()), euclidean_metric_t());
+		return gp(reversion(arg), inv(rnorm_sqr(arg, mtr), euclidean_metric_t()), euclidean_metric_t());
 	}
 
 	template<class CoefficientType, class MetricType>

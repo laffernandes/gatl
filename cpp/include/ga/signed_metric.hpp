@@ -29,13 +29,7 @@ namespace ga {
 			return static_cast<entry_type>(index <= (P + Q) ? (index <= P ? (index > 0 ? +1 : 0) : -1) : 0);
 		}
 
-		template<default_bitset_t BasisBlade>
-		constexpr static decltype(auto) metric_factor(detail::cbasis_blade<BasisBlade> const &) {
-			return cmetric_factor<BasisBlade>::value;
-		}
-
-		template<default_bitset_t PossibleGrades>
-		constexpr static decltype(auto) metric_factor(detail::dbasis_blade<PossibleGrades> const &arg) {
+		constexpr static decltype(auto) metric_factor(default_bitset_t const arg) {
 			index_t index = 0;
 			default_bitset_t mask = arg.value();
 			default_integral_t result = static_cast<default_integral_t>(1);
@@ -91,8 +85,7 @@ namespace ga {
 				return signed_metric<P, Q, EntryType>::diagonal_entry(index);
 			}
 
-			template<class BasisBladeType>
-			constexpr static decltype(auto) call_metric_factor(signed_metric<P, Q, EntryType> const *, BasisBladeType const &arg) {
+			constexpr static decltype(auto) call_metric_factor(signed_metric<P, Q, EntryType> const *, default_bitset_t const arg) {
 				return signed_metric<P, Q, EntryType>::metric_factor(arg);
 			}
 		};

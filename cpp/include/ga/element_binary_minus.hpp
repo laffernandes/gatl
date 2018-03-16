@@ -5,8 +5,6 @@ namespace ga {
 
 	namespace detail {
 
-		//TODO Try it!
-
 		template<class LeftCoefficientType, default_bitset_t BasisBlade, class RightCoefficientType>
 		constexpr decltype(auto) binary_minus_element(component<LeftCoefficientType, cbasis_blade<BasisBlade> > const &lhs, component<RightCoefficientType, cbasis_blade<BasisBlade> > const &rhs) {
 			return make_component(sub(lhs.coefficient(), rhs.coefficient()), cbasis_blade<BasisBlade>());
@@ -17,11 +15,11 @@ namespace ga {
 			//TODO lazy
 			components<typename std::common_type<LeftCoefficientType, RightCoefficientType>::type, PossibleGrades> result;
 			if (lhs.basis_blade().value() == rhs.basis_blade().value()) {
-				result.emplace(sub(lhs.coefficient(), rhs.coefficient()), lhs.basis_blade());
+				result.insert(lhs.basis_blade(), sub(lhs.coefficient(), rhs.coefficient()));
 			}
 			else {
-				result.emplace(lhs.coefficient(), lhs.basis_blade());
-				result.emplace(neg(rhs.coefficient()), rhs.basis_blade());
+				result.insert(lhs.basis_blade(), lhs.coefficient());
+				result.insert(rhs.basis_blade(), neg(rhs.coefficient()));
 			}
 			return result;
 		}
@@ -31,12 +29,12 @@ namespace ga {
 			//TODO lazy
 			components<typename std::common_type<LeftCoefficientType, RightCoefficientType>::type, PossibleGrades> result;
 			for (auto itr = lhs.begin(), end = lhs.end(); itr != end; ++itr) {
-				result.emplace(itr->first, itr->second);
+				result.insert(itr->first, itr->second);
 			}
 			for (auto itr = rhs.begin(), end = rhs.end(); itr != end; ++itr) {
 				auto curr = result.find(itr->first);
 				if (curr == result.end()) {
-					result.emplace(itr->first, neg(itr->second));
+					result.insert(itr->first, neg(itr->second));
 				}
 				else {
 					curr->second = sub(curr->second, itr->second);

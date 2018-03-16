@@ -18,13 +18,13 @@ namespace ga {
 			};
 
 			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
-			struct maybe_eval {
-				constexpr static bool value = true; //TODO Parei aqui!
+			struct possible_grades {
+				constexpr static default_bitset_t value = (LeftPossibleGrades & RightPossibleGrades) != default_bitset_t(0) ? default_bitset_t(1) : default_bitset_t(0);
 			};
 
 			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
-			struct possible_grades {
-				constexpr static default_bitset_t value = ~default_bitset_t(0); //TODO Parei aqui!
+			struct maybe_eval {
+				constexpr static bool value = possible_grades<LeftPossibleGrades, RightPossibleGrades>::value != default_bitset_t(0);
 			};
 		};
 

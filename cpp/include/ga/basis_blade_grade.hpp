@@ -46,9 +46,13 @@ namespace ga {
 
 		template<default_bitset_t PossibleGrades>
 		constexpr grade_t basis_blade_grade(dbasis_blade<PossibleGrades> const &arg) {
-			return ones(arg.value());
+			return static_cast<grade_t>(ones(arg.value()));
 		}
 
+		constexpr grade_t highest_possible_grade(default_bitset_t possible_grades) {
+			return (possible_grades & (default_bitset_t(1) << (std::numeric_limits<default_bitset_t>::digits - 1))) ? (std::numeric_limits<default_bitset_t>::digits - 1) : highest_possible_grade((possible_grades << 1) | default_bitset_t(1)) - 1;
+		}
+		
 	}
 
 }

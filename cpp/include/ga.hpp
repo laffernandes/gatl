@@ -26,12 +26,13 @@
 namespace ga {
 
 	typedef std::uint64_t default_bitset_t;
+
 	typedef std::int32_t default_integral_t;
-	typedef std::float_t default_floating_point_t;
+	typedef std::double_t default_floating_point_t;
 
-	typedef default_integral_t grade_t;
+	typedef std::int32_t grade_t;
 
-	typedef std::make_unsigned<default_integral_t>::type index_t;
+	typedef std::uint32_t index_t;
 	typedef index_t ndims_t;
 
 	template<class BasisBladeType, class CofficientType>

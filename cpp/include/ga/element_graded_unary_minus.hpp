@@ -5,8 +5,6 @@ namespace ga {
 
 	namespace detail {
 
-		//TODO Try it!
-
 		struct _graded_unary_minus_element_no_change {
 			template<class ElementType, class SignChangeIfGradeFunc>
 			constexpr static ElementType bind(ElementType const &arg, SignChangeIfGradeFunc const &) {
@@ -32,7 +30,7 @@ namespace ga {
 
 			template<class CoefficientType, class SignChangeIfGradeFunc>
 			constexpr static decltype(auto) bind(component<CoefficientType, cbasis_blade<BasisBlade> > const &arg, SignChangeIfGradeFunc const &change) {
-				return std::conditional<SignChangeIfGradeFunc::eval<_basis_blade_grade<cbasis_blade<BasisBlade> >::value>::value, _change, _graded_unary_minus_element_no_change>::type::bind(arg, change);
+				return std::conditional<SignChangeIfGradeFunc::template eval<_basis_blade_grade<cbasis_blade<BasisBlade> >::value>::value, _change, _graded_unary_minus_element_no_change>::type::bind(arg, change);
 			}
 		};
 
@@ -44,19 +42,20 @@ namespace ga {
 				template<class CoefficientType, class SignChangeIfGradeFunc>
 				constexpr static decltype(auto) bind(component<CoefficientType, dbasis_blade<PossibleGrades> > const &arg, SignChangeIfGradeFunc const &change) {
 					//TODO lazy
-					if (change(basis_blade_grade(arg.basis_blade()))) {
-						return make_component(neg(arg.coefficient()), arg.basis_blade());
-					}
-					else {
-						return arg;
-					}
+					return change(basis_blade_grade(arg.basis_blade())) ? make_component(neg(arg.coefficient()), arg.basis_blade()) : arg;
+				}
+
+				template<default_integral_t CoefficientValue, class SignChangeIfGradeFunc>
+				constexpr static decltype(auto) bind(component<cvalue<CoefficientValue>, dbasis_blade<PossibleGrades> > const &arg, SignChangeIfGradeFunc const &change) {
+					//TODO lazy
+					return (change(basis_blade_grade(arg.basis_blade()))) ? make_component(neg(CoefficientValue), arg.basis_blade()) : make_component(CoefficientValue, arg.basis_blade());
 				}
 			};
 
 		public:
 			template<class CoefficientType, class SignChangeIfGradeFunc>
 			constexpr static decltype(auto) bind(component<CoefficientType, dbasis_blade<PossibleGrades> > const &arg, SignChangeIfGradeFunc const &change) {
-				return std::conditional<SignChangeIfGradeFunc::maybe_eval<PossibleGrades>::value, _maybe_change, _no_change>::type::bind(arg, change);
+				return std::conditional<SignChangeIfGradeFunc::template maybe_eval<PossibleGrades>::value, _maybe_change, _no_change>::type::bind(arg, change);
 			}
 		};
 
@@ -72,7 +71,7 @@ namespace ga {
 				components<CoefficientType, PossibleGrades> result;
 				for (auto itr = arg.begin(), end = result.end(); itr != end; ++itr) {
 					if (change(basis_blade_grade(itr->first.value()))) {
-						return.emplace(itr->first, neg(itr->second));
+						result.insert(itr->first, neg(itr->second));
 					}
 				}
 				return result;
@@ -81,7 +80,7 @@ namespace ga {
 
 		template<class CoefficientType, default_bitset_t PossibleGrades, class SignChangeIfGradeFunc>
 		constexpr static decltype(auto) graded_unary_minus_element(components<CoefficientType, PossibleGrades> const &arg, SignChangeIfGradeFunc const &change) {
-			return std::conditional<SignChangeIfGradeFunc::maybe_eval<PossibleGrades>::value, _graded_unary_minus_components_maybe_change, _graded_unary_minus_element_no_change>::type::bind(arg, change);
+			return std::conditional<SignChangeIfGradeFunc::template maybe_eval<PossibleGrades>::value, _graded_unary_minus_components_maybe_change, _graded_unary_minus_element_no_change>::type::bind(arg, change);
 		}
 
 	}

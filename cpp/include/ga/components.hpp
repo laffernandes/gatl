@@ -12,7 +12,14 @@ namespace ga {
 			typedef CoefficientType coefficient_type;
 			typedef dbasis_blade<PossibleGrades> basis_blade_type;
 
-			decltype(auto) emplace(basis_blade_type &&basis_blade, coefficient_type &&coefficient) {
+			constexpr components() = default;
+			constexpr components(components const &) = default;
+			constexpr components(components &&) = default;
+
+			constexpr components& operator=(components const &) = default;
+			constexpr components& operator=(components &&) = default;
+
+			decltype(auto) insert(basis_blade_type const &basis_blade, coefficient_type const &coefficient) {
 				return entries_.emplace(basis_blade, coefficient);
 			}
 			

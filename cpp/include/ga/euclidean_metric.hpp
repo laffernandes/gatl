@@ -29,13 +29,7 @@ namespace ga {
 			return detail::cvalue<1>();
 		}
 
-		template<default_bitset_t BasisBlade>
-		constexpr static detail::cvalue<1> metric_factor(detail::cbasis_blade<BasisBlade> const &) {
-			return detail::cvalue<1>();
-		}
-
-		template<default_bitset_t PossibleGrades>
-		constexpr static detail::cvalue<1> metric_factor(detail::dbasis_blade<PossibleGrades> const &) {
+		constexpr static detail::cvalue<1> metric_factor(default_bitset_t const &) {
 			return detail::cvalue<1>();
 		}
 	};
@@ -73,8 +67,7 @@ namespace ga {
 				return euclidean_metric<EntryType>::diagonal_entry(index);
 			}
 
-			template<class BasisBladeType>
-			constexpr static decltype(auto) call_metric_factor(euclidean_metric<EntryType> const *, BasisBladeType const &bitset) {
+			constexpr static decltype(auto) call_metric_factor(euclidean_metric<EntryType> const *, default_bitset_t const &bitset) {
 				return euclidean_metric<EntryType>::metric_factor(bitset);
 			}
 		};

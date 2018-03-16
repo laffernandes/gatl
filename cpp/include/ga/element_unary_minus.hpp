@@ -5,8 +5,6 @@ namespace ga {
 
 	namespace detail {
 
-		//TODO Try it!
-
 		template<class CoefficientType, class BasisBladeType>
 		constexpr decltype(auto) unary_minus_element(component<CoefficientType, BasisBladeType> const &arg) {
 			return make_component(neg(arg.coefficient()), arg.basis_blade());
@@ -17,7 +15,7 @@ namespace ga {
 			//TODO lazy
 			components<CoefficientType, PossibleGrades> result;
 			for (auto itr = arg.begin(), end = arg.end(); itr != end; ++itr) {
-				result.emplace(itr->first, neg(itr->second));
+				result.insert(itr->first, neg(itr->second));
 			}
 			return result;
 		}

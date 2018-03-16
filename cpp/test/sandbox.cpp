@@ -84,24 +84,186 @@ void test_minus() {
 }
 
 void test_op() {
+	auto e1 = e(c<1>);
+	auto e2 = e(c<2>);
+	auto e3 = e(c<3>);
+	auto ei = e(1);
+	auto ej = e(2);
+	auto ek = e(3);
+
 	std::cout << "--- test_op()" << std::endl;
-	std::cout << "e1^e2 = " << (e(c<1>) ^ e(c<2>)) << std::endl;
-	std::cout << "e2^e1 = " << (e(c<2>) ^ e(c<1>)) << std::endl;
-	std::cout << "e3^e3 = " << (e(c<3>) ^ e(c<3>)) << std::endl;
 
-	auto e1 = e(c<1>); auto e2 = e(c<2>); auto e3 = e(c<3>); auto e4 = e(c<4>); auto e5 = e(c<5>); auto e6 = e(c<6>); auto e7 = e(c<7>);
-	std::cout << "1 + e5 ^ (1 + e6 ^ (1 + e7)) = " << (1 + e5 ^ (1 + e6 ^ (1 + e7))) << std::endl;
+	std::cout << "e1^e2 = " << (e1 ^ e2) << std::endl;
+	std::cout << "e2^e1 = " << (e2 ^ e1) << std::endl;
+	std::cout << "e3^(e3 + e1^e2) = " << (e3 ^ (e3 + (e1 ^ e2))) << std::endl;
+	std::cout << std::endl;
 
+	std::cout << "ei^ej = " << (ei ^ ej) << std::endl;
+	std::cout << "ej^ei = " << (ej ^ ei) << std::endl;
+	auto xyz = (ek ^ (ek + (ei ^ ej))); std::cout << "ek^(ek + ei^ej) = " << xyz << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "e1^ej = " << (e1 ^ ej) << std::endl;
+	std::cout << "ej^e1 = " << (ej ^ e1) << std::endl;
+	std::cout << "e3^(e3 + e1^ej) = " << (e3 ^ (e3 + (e1 ^ ej))) << std::endl;
+	std::cout << std::endl;
+}
+
+template<class MetricType>
+void test_scp(metric<MetricType> const &mtr, std::string const &name) {
+	auto e1 =e(c<1>);
+	auto e2 = e(c<2>);
+	auto e3 = e(c<3>);
+	auto ei = e(1);
+	auto ej = e(2);
+	auto ek = e(3);
+
+	std::cout << "--- test_scp(" << name << ")" << std::endl;
+
+	std::cout << "scp(e1, e1^e2) = " << scp(e1, e1^e2, mtr) << std::endl;
+	std::cout << "scp(e1^e2, e1^e2) = " << scp(e1^e2, e1^e2, mtr) << std::endl;
+	std::cout << "scp(e1^e3, e1^e2) = " << scp(e1^e3, e1^e2, mtr) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "scp(ei, ei^ej) = " << scp(ei, ei^ej, mtr) << std::endl;
+	std::cout << "scp(ei^ej, ei^ej) = " << scp(ei^ej, ei^ej, mtr) << std::endl;
+	std::cout << "scp(ei^ek, ei^ej) = " << scp(ei^ek, ei^ej, mtr) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "scp(e1, e1^ej) = " << scp(e1, e1^ej, mtr) << std::endl;
+	std::cout << "scp(e1^ej, e1^ej) = " << scp(e1^ej, e1^ej, mtr) << std::endl;
+	std::cout << "scp(e1^e3, e1^ej) = " << scp(e1^e3, e1^ej, mtr) << std::endl;
+	std::cout << std::endl;
+}
+
+template<class MetricType>
+void test_lcont(metric<MetricType> const &mtr, std::string const &name) {
+	auto e1 = e(c<1>);
+	auto e2 = e(c<2>);
+	auto e3 = e(c<3>);
+	auto ei = e(1);
+	auto ej = e(2);
+	auto ek = e(3);
+
+	std::cout << "--- test_lcont(" << name << ")" << std::endl;
+
+	std::cout << "lcont(e1, e1^e2) = " << lcont(e1, e1^e2, mtr) << std::endl;
+	std::cout << "lcont(e2, e1^e2) = " << lcont(e2, e1^e2, mtr) << std::endl;
+	std::cout << "lcont(e1^e2, e2) = " << lcont(e1^e2, e2, mtr) << std::endl;
+	std::cout << "lcont(e3, e1^e2) = " << lcont(e3, e1^e2, mtr) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "lcont(ei, ei^ej) = " << lcont(ei, ei^ej, mtr) << std::endl;
+	std::cout << "lcont(ej, ei^ej) = " << lcont(ej, ei^ej, mtr) << std::endl;
+	std::cout << "lcont(ei^ej, ej) = " << lcont(ei^ej, ej, mtr) << std::endl;
+	std::cout << "lcont(ek, ei^ej) = " << lcont(ek, ei^ej, mtr) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "lcont(e1, e1^ej) = " << lcont(e1, e1^ej, mtr) << std::endl;
+	std::cout << "lcont(ej, e1^ej) = " << lcont(ej, e1^ej, mtr) << std::endl;
+	std::cout << "lcont(e1^ej, ej) = " << lcont(e1^ej, ej, mtr) << std::endl;
+	std::cout << "lcont(e3, e1^ej) = " << lcont(e3, e1^ej, mtr) << std::endl;
+	std::cout << std::endl;
+}
+
+template<class MetricType>
+void test_rcont(metric<MetricType> const &mtr, std::string const &name) {
+	auto e1 = e(c<1>);
+	auto e2 = e(c<2>);
+	auto e3 = e(c<3>);
+	auto ei = e(1);
+	auto ej = e(2);
+	auto ek = e(3);
+
+	std::cout << "--- test_rcont(" << name << ")" << std::endl;
+
+	std::cout << "rcont(e1^e2, e1) = " << rcont(e1^e2, e1, mtr) << std::endl;
+	std::cout << "rcont(e1^e2, e2) = " << rcont(e1^e2, e2, mtr) << std::endl;
+	std::cout << "rcont(e2, e1^e2) = " << rcont(e2, e1^e2, mtr) << std::endl;
+	std::cout << "rcont(e1^e2, e3) = " << rcont(e1^e2, e3, mtr) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "rcont(ei^ej, ei) = " << rcont(ei^ej, ei, mtr) << std::endl;
+	std::cout << "rcont(ei^ej, ej) = " << rcont(ei^ej, ej, mtr) << std::endl;
+	std::cout << "rcont(ej, ei^ej) = " << rcont(ej, ei^ej, mtr) << std::endl;
+	std::cout << "rcont(ei^ej, ek) = " << rcont(ei^ej, ek, mtr) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "rcont(e1^ej, e1) = " << rcont(e1^ej, e1, mtr) << std::endl;
+	std::cout << "rcont(e1^ej, ej) = " << rcont(e1^ej, ej, mtr) << std::endl;
+	std::cout << "rcont(ej, e1^ej) = " << rcont(ej, e1^ej, mtr) << std::endl;
+	std::cout << "rcont(e1^ej, e3) = " << rcont(e1^ej, e3, mtr) << std::endl;
+	std::cout << std::endl;
+}
+
+template<class MetricType>
+void test_gp(metric<MetricType> const &mtr, std::string const &name) {
+	auto e1 = e(c<1>);
+	auto e2 = e(c<2>);
+	auto e3 = e(c<3>);
+	auto ei = e(1);
+	auto ej = e(2);
+	auto ek = e(3);
+
+	std::cout << "--- test_gp(" << name << ")" << std::endl;
+
+	std::cout << "gp(e1, e1^e2) = " << gp(e1, e1^e2, mtr) << std::endl;
+	std::cout << "gp(e2, e1^e2) = " << gp(e2, e1^e2, mtr) << std::endl;
+	std::cout << "gp(e1^e2, e2) = " << gp(e1^e2, e2, mtr) << std::endl;
+	std::cout << "gp(e3, e1^e2) = " << gp(e3, e1^e2, mtr) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "gp(ei, ei^ej) = " << gp(ei, ei^ej, mtr) << std::endl;
+	std::cout << "gp(ej, ei^ej) = " << gp(ej, ei^ej, mtr) << std::endl;
+	std::cout << "gp(ei^ej, ej) = " << gp(ei^ej, ej, mtr) << std::endl;
+	std::cout << "gp(ek, ei^ej) = " << gp(ek, ei^ej, mtr) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "gp(e1, e1^ej) = " << gp(e1, e1^ej, mtr) << std::endl;
+	std::cout << "gp(ej, e1^ej) = " << gp(ej, e1^ej, mtr) << std::endl;
+	std::cout << "gp(e1^ej, ej) = " << gp(e1^ej, ej, mtr) << std::endl;
+	std::cout << "gp(e3, e1^ej) = " << gp(e3, e1^ej, mtr) << std::endl;
 	std::cout << std::endl;
 }
 
 void test_take_grade() {
-	std::cout << "--- test_take_grade()" << std::endl;
 	auto e1 = e(c<1>);
-	std::cout << "take_grade<0>(" << e1 << ") = " << take_grade(e1, c<0>) << std::endl;
-	std::cout << "take_grade<1>(" << e1 << ") = " << take_grade(e1, c<1>) << std::endl;
-	std::cout << "take_grade<2>(" << e1 << ") = " << take_grade(e1, c<2>) << std::endl;
-	std::cout << "take_grade<1>(5 + 3 * e1 + e2) = " << take_grade(e(c<1>) + 5.0 + e(c<1>) + e(c<2>) + e(c<1>), c<1>) << std::endl;
+	auto e2 = e(c<2>);
+	auto e3 = e(c<3>);
+	auto ei = e(1);
+	auto ej = e(2);
+	auto ek = e(3);
+
+	std::cout << "--- test_take_grade()" << std::endl;
+
+	std::cout << "take_grade(e1, <0>) = " << take_grade(e1, c<0>) << std::endl;
+	std::cout << "take_grade(e1, <1>) = " << take_grade(e1, c<1>) << std::endl;
+	std::cout << "take_grade(e1, <2>) = " << take_grade(e1, c<2>) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "take_grade(e1, 0) = " << take_grade(e1, 0) << std::endl;
+	std::cout << "take_grade(e1, 1) = " << take_grade(e1, 1) << std::endl;
+	std::cout << "take_grade(e1, 2) = " << take_grade(e1, 2) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "take_grade(e1^e2, <0>) = " << take_grade(e1^e2, c<0>) << std::endl;
+	std::cout << "take_grade(e1^e2, <1>) = " << take_grade(e1^e2, c<1>) << std::endl;
+	std::cout << "take_grade(e1^e2, <2>) = " << take_grade(e1^e2, c<2>) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "take_grade(e1^e2, 0) = " << take_grade(e1^e2, 0) << std::endl;
+	std::cout << "take_grade(e1^e2, 1) = " << take_grade(e1^e2, 1) << std::endl;
+	std::cout << "take_grade(e1^e2, 2) = " << take_grade(e1^e2, 2) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "take_grade(ei^ej, <0>) = " << take_grade(ei^ej, c<0>) << std::endl;
+	std::cout << "take_grade(ei^ej, <1>) = " << take_grade(ei^ej, c<1>) << std::endl;
+	std::cout << "take_grade(ei^ej, <2>) = " << take_grade(ei^ej, c<2>) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "take_grade(ei^ej, 0) = " << take_grade(ei^ej, 0) << std::endl;
+	std::cout << "take_grade(ei^ej, 1) = " << take_grade(ei^ej, 1) << std::endl;
+	std::cout << "take_grade(ei^ej, 2) = " << take_grade(ei^ej, 2) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -128,8 +290,10 @@ void test_metric(metric<MetricType> const &mtr, std::string const &name) {
 	std::cout << "M(7, 7) = " << mtr.entry(7, 7) << std::endl;
 	std::cout << "M(8, 8) = " << mtr.entry(8, 8) << std::endl;
 	std::cout << std::endl;
+
 	std::cout << "M(6, 5) = " << mtr.entry(6, 5) << std::endl;
 	std::cout << std::endl;
+
 	//std::cout << "M(<0>, <0>)" << metric<MetricType>::centry<0, 0>::value << std::endl; // Must raise a compiler error for signed_metric.
 	std::cout << "M(<1>, <1>) = " << metric<MetricType>::centry<1, 1>::value << std::endl;
 	std::cout << "M(<2>, <2>) = " << metric<MetricType>::centry<2, 2>::value << std::endl;
@@ -140,6 +304,7 @@ void test_metric(metric<MetricType> const &mtr, std::string const &name) {
 	std::cout << "M(<7>, <7>) = " << metric<MetricType>::centry<7, 7>::value << std::endl;
 	std::cout << "M(<8>, <8>) = " << metric<MetricType>::centry<8, 8>::value << std::endl;
 	std::cout << std::endl;
+
 	std::cout << "M(<6>, <5>) = " << metric<MetricType>::centry<6, 5>::value << std::endl;
 	std::cout << std::endl;
 
@@ -157,12 +322,16 @@ void test_metric(metric<MetricType> const &mtr, std::string const &name) {
 	std::cout << "metric_factor(e5^e6) = " << metric<MetricType>::cmetric_factor<decltype(e5^e6)::element_type::basis_blade_type::value()>::value << std::endl;
 	std::cout << "metric_factor(e5^e6^e7) = " << metric<MetricType>::cmetric_factor<decltype(e5^e6^e7)::element_type::basis_blade_type::value()>::value << std::endl;
 	std::cout << "metric_factor(e5^e6^e7^e8) = " << metric<MetricType>::cmetric_factor<decltype(e5^e6^e7^e8)::element_type::basis_blade_type::value()>::value << std::endl;
+	std::cout << std::endl;
 }
 
 int main() {
 	test_make_cvalue();
 
 	test_make_scalarc();
+
+	test_metric(euclidean_metric_t(), "euclidean");
+	test_metric(signed_metric_t<3, 4>(), "signed<3, 4>");
 
 	test_make_e();
 	test_make_ec();
@@ -174,19 +343,18 @@ int main() {
 	test_minus();
 
 	test_op();
+	test_scp(euclidean_metric_t(), "euclidean");
+	test_lcont(euclidean_metric_t(), "euclidean");
+	test_rcont(euclidean_metric_t(), "euclidean");
+	test_gp(euclidean_metric_t(), "euclidean");
 
 	test_take_grade();
 
 	test_sign_change_operations();
 
-	test_metric(euclidean_metric_t(), "euclidean");
-	test_metric(signed_metric_t<3, 4>(), "signed<3, 4>");
-
-	std::cout << inv(5 * e(c<1>) + 3 * e(c<2>), euclidean_metric_t()) << std::endl;
-
-	auto xxx = 5.0 / scp(5.0 * e(c<2>), e(c<2>), euclidean_metric_t());
-
-	std::cout << sqrt(scp(c<5> * e(c<1>) + c<5> * e(c<2>), e(c<2>), euclidean_metric_t())) << std::endl;
+	auto e1 = e(1);
+	auto e2 = e(2);
+	auto e3 = e(3);
 
 	return EXIT_SUCCESS;
 }
