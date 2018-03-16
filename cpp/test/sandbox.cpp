@@ -182,6 +182,12 @@ int main() {
 	test_metric(euclidean_metric_t(), "euclidean");
 	test_metric(signed_metric_t<3, 4>(), "signed<3, 4>");
 
+	std::cout << inv(5 * e(c<1>) + 3 * e(c<2>), euclidean_metric_t()) << std::endl;
+
+	auto xxx = 5.0 / scp(5.0 * e(c<2>), e(c<2>), euclidean_metric_t());
+
+	std::cout << sqrt(scp(c<5> * e(c<1>) + c<5> * e(c<2>), e(c<2>), euclidean_metric_t())) << std::endl;
+
 	return EXIT_SUCCESS;
 }
 /*/

@@ -14,6 +14,7 @@
 #endif // GA_DEFAULT_DBL_TOLERANCE
 
 #include <cassert>
+#include <cmath>
 #include <cstdint>
 #include <functional>
 #include <iostream>
@@ -26,6 +27,7 @@ namespace ga {
 
 	typedef std::uint64_t default_bitset_t;
 	typedef std::int32_t default_integral_t;
+	typedef std::float_t default_floating_point_t;
 
 	typedef default_integral_t grade_t;
 
@@ -44,8 +46,10 @@ namespace ga {
 #include "ga/compile_time_value.hpp"
 #include "ga/value_neg.hpp"
 #include "ga/value_mul.hpp"
+#include "ga/value_div.hpp"
 #include "ga/value_add.hpp"
 #include "ga/value_sub.hpp"
+#include "ga/value_sqrt.hpp"
 
 #include "ga/compile_time_basis_blade.hpp"
 #include "ga/dynamic_basis_blade.hpp"
@@ -90,17 +94,22 @@ namespace ga {
 #include "ga/right_contraction.hpp"
 #include "ga/scalar_product.hpp"
 
-#include "ga/take_grade.hpp"
+#include "ga/inverse_geometric_product.hpp"
 
-#include "ga/extra.hpp"
+#include "ga/square_root.hpp"
+
+#include "ga/reverse_norm.hpp"
+#include "ga/versor_inverse.hpp"
+#include "ga/dualization.hpp"
+#include "ga/take_grade.hpp"
 
 #include "ga/write.hpp"
 
+#include "ga/native.hpp"
 #include "ga/basis_vector.hpp"
 #include "ga/scalar_wrapper.hpp"
 
 //TODO Implement exp(arg)
-//TODO Implement sqrt(arg)
 //TODO Implement grade(arg, tol)
 //TODO Implement equal(lhs, rhs, tol)
 //TODO Implement is_zero(arg, tol)
@@ -110,12 +119,5 @@ namespace ga {
 //TODO Implement is_even_versor(arg, tol)
 //TODO Implement is_odd_versor(arg, tol)
 //TODO Implement meet_and_join(lhs, rhs, tol)
-//TODO Implement inv(arg, tol)
-//TODO Implement unit(arg, tol)
-//TODO Implement rnorm(arg, tol)
-//TODO Implement rnorm_sqr(arg, tol)
-//TODO Implement dual(arg, pseudoscalar, metric, tol)
-//TODO Implement undual(arg, pseudoscalar, metric, tol)
-//TODO Implement native(arg, tol)
 
 #endif // __GA_HPP__

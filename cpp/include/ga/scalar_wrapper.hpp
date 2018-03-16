@@ -87,6 +87,30 @@
 	} \
 	\
 	template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
+	constexpr decltype(auto) operator/(ga::detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &lhs, TYPE const &rhs) { \
+		return ga::igp(lhs, rhs, ga::euclidean_metric_t()); \
+	} \
+	\
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
+	constexpr decltype(auto) operator/(TYPE const &lhs, ga::detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) { \
+		return ga::igp(lhs, rhs, ga::euclidean_metric_t()); \
+	} \
+	\
+	constexpr decltype(auto) operator/(ga::detail::empty_expression const &lhs, TYPE const &rhs) { \
+		return ga::igp(lhs, rhs, ga::euclidean_metric_t()); \
+	} \
+	\
+	template<ga::default_integral_t Value> \
+	constexpr decltype(auto) operator/(ga::detail::cvalue<Value> const &lhs, TYPE const &rhs) { \
+		return ga::igp(lhs, rhs, ga::euclidean_metric_t()); \
+	} \
+	\
+	template<ga::default_integral_t Value> \
+	constexpr decltype(auto) operator/(TYPE const &lhs, ga::detail::cvalue<Value> const &rhs) { \
+		return ga::igp(lhs, rhs, ga::euclidean_metric_t()); \
+	} \
+	\
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
 	constexpr decltype(auto) operator^(ga::detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &lhs, TYPE const &rhs) { \
 		return ga::op(lhs, rhs); \
 	} \

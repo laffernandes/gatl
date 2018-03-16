@@ -5,30 +5,30 @@ namespace ga {
 
 	namespace detail {
 
-		template<class TopType, class TailType>
-		class oitr : public itr<TopType, TailType> {
+		template<class ExpressionType, class TailType>
+		class oitr : public itr<ExpressionType, TailType> {
 		private:
 
-			typedef itr<TopType, TailType> super;
+			typedef itr<ExpressionType, TailType> super;
 
 		public:
 
-			typedef typename super::top_type top_type;
+			typedef typename super::expression_type expression_type;
 			typedef typename super::tail_type tail_type;
 
 			typedef typename super::element_type element_type;
 
-			constexpr oitr(top_type const *top, tail_type const &tail) :
-				super(top, tail) {
+			constexpr oitr(expression_type const *value, tail_type const &tail) :
+				super(value, tail) {
 			};
 		};
 
-		template<class TopType, class TailType>
-		struct is_end<oitr<TopType, TailType> > {
+		template<class ExpressionType, class TailType>
+		struct is_end<oitr<ExpressionType, TailType> > {
 			static const bool value = false;
 		};
 
-		template<class TopType>
+		template<class ExpressionType>
 		struct _push_up_to_leftmost;
 
 		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
@@ -45,19 +45,19 @@ namespace ga {
 			return itr_value<ValueType>(arg);
 		}
 
-		template<class TopType>
+		template<class ExpressionType>
 		struct _onext;
 
-		template<class TopType, class TailType>
-		constexpr decltype(auto) next(oitr<TopType, TailType> const &curr) {
-			return _onext<TopType>::bind(curr);
+		template<class ExpressionType, class TailType>
+		constexpr decltype(auto) next(oitr<ExpressionType, TailType> const &curr) {
+			return _onext<ExpressionType>::bind(curr);
 		}
 
 		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 		struct _onext<expression<ElementType, LeftSubtreeType, RightSubtreeType> > {
 			template<class TailType>
 			constexpr static decltype(auto) bind(oitr<expression<ElementType, LeftSubtreeType, RightSubtreeType>, TailType> const &curr) {
-				return _push_up_to_leftmost<RightSubtreeType>::bind(oitr<RightSubtreeType, TailType>(&curr.top()->right(), curr.tail()));
+				return _push_up_to_leftmost<RightSubtreeType>::bind(oitr<RightSubtreeType, TailType>(&curr.expression()->right(), curr.tail()));
 			}
 		};
 
@@ -65,7 +65,7 @@ namespace ga {
 		struct _onext<expression<ElementType, empty_expression, RightSubtreeType> > {
 			template<class TailType>
 			constexpr static decltype(auto) bind(oitr<expression<ElementType, empty_expression, RightSubtreeType>, TailType> const &curr) {
-				return _push_up_to_leftmost<RightSubtreeType>::bind(oitr<RightSubtreeType, TailType>(&curr.top()->right(), curr.tail()));
+				return _push_up_to_leftmost<RightSubtreeType>::bind(oitr<RightSubtreeType, TailType>(&curr.expression()->right(), curr.tail()));
 			}
 		};
 
@@ -89,7 +89,7 @@ namespace ga {
 		struct _push_up_to_leftmost<expression<ElementType, LeftSubtreeType, RightSubtreeType> > {
 			template<class TailType>
 			constexpr static decltype(auto) bind(oitr<expression<ElementType, LeftSubtreeType, RightSubtreeType>, TailType> const &curr) {
-				return _push_up_to_leftmost<LeftSubtreeType>::bind(oitr<LeftSubtreeType, oitr<expression<ElementType, LeftSubtreeType, RightSubtreeType>, TailType> >(&curr.top()->left(), curr));
+				return _push_up_to_leftmost<LeftSubtreeType>::bind(oitr<LeftSubtreeType, oitr<expression<ElementType, LeftSubtreeType, RightSubtreeType>, TailType> >(&curr.expression()->left(), curr));
 			}
 		};
 

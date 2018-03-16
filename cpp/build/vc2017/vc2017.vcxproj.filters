@@ -48,9 +48,6 @@
     <ClInclude Include="..\..\include\ga\expression_ordered_iterator.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\extra.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\metric.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
@@ -160,6 +157,33 @@
       <Filter>Header Files\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\value_sub.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\versor_inverse.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\value_div.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\dualization.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\undualization.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\reverse_norm.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\square_root.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\value_sqrt.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\native.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
   </ItemGroup>

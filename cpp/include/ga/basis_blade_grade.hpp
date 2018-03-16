@@ -8,26 +8,6 @@ namespace ga {
 		template<class BitsetType, int digits>
 		struct _ones;
 
-		template<std::uint32_t Bitset>
-		struct _ones32 {
-		private:
-
-			constexpr static auto a = (Bitset & 0x55555555u) + ((Bitset >> 1) & 0x55555555u);
-			constexpr static auto b = (a & 0x33333333u) + ((a >> 2) & 0x33333333u);
-			constexpr static auto c = (b + (b >> 4)) & 0x0F0F0F0Fu;
-
-		public:
-
-			constexpr static auto value = ((c * 0x01010101u) >> 24);
-		};
-
-		inline decltype(auto) ones(std::uint32_t const bitset) {
-			const auto a = (bitset & 0x55555555u) + ((bitset >> 1) & 0x55555555u);
-			const auto b = (a & 0x33333333u) + ((a >> 2) & 0x33333333u);
-			const auto c = (b + (b >> 4)) & 0x0F0F0F0Fu;
-			return ((c * 0x01010101u) >> 24);
-		}
-
 		template<std::uint64_t Bitset>
 		struct _ones64 {
 		private:
@@ -55,14 +35,9 @@ namespace ga {
 		struct _basis_blade_grade;
 		
 		template<default_bitset_t BasisBlade>
-		struct _basis_blade_grade<cbasis_blade<BasisBlade> > : std::conditional<
-			std::numeric_limits<default_bitset_t>::digits == 32,
-			_ones32<BasisBlade>,
-			typename std::conditional<std::numeric_limits<default_bitset_t>::digits == 64,
-				_ones64<BasisBlade>,
-				std::nullptr_t
-			>::type
-		>::type {};
+		struct _basis_blade_grade<cbasis_blade<BasisBlade> > : _ones64<BasisBlade> {
+			static_assert(std::numeric_limits<default_bitset_t>::digits <= 64, "The ga::default_bitset_t type must have 64 digits or less.");
+		};
 
 		template<default_bitset_t BasisBlade>
 		constexpr grade_t basis_blade_grade(cbasis_blade<BasisBlade> const &) {
