@@ -49,6 +49,7 @@ namespace ga {
 #include "ga/value_div.hpp"
 #include "ga/value_add.hpp"
 #include "ga/value_sub.hpp"
+#include "ga/value_exp.hpp"
 #include "ga/value_sqrt.hpp"
 
 #include "ga/compile_time_basis_blade.hpp"
@@ -96,6 +97,9 @@ namespace ga {
 
 #include "ga/inverse_geometric_product.hpp"
 
+#include "ga/native.hpp"
+
+#include "ga/blade_exponential.hpp"
 #include "ga/square_root.hpp"
 
 #include "ga/reverse_norm.hpp"
@@ -105,11 +109,9 @@ namespace ga {
 
 #include "ga/write.hpp"
 
-#include "ga/native.hpp"
 #include "ga/basis_vector.hpp"
 #include "ga/scalar_wrapper.hpp"
 
-//TODO Implement exp(arg)
 //TODO Implement grade(arg, tol)
 //TODO Implement equal(lhs, rhs, tol)
 //TODO Implement is_zero(arg, tol)

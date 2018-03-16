@@ -16,6 +16,16 @@ namespace ga {
 			struct eval {
 				constexpr static bool value = (LeftGrade - RightGrade) == ResultGrade;
 			};
+
+			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
+			struct maybe_eval {
+				constexpr static bool value = true; //TODO Parei aqui!
+			};
+
+			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
+			struct possible_grades {
+				constexpr static default_bitset_t value = ~default_bitset_t(0); //TODO Parei aqui!
+			};
 		};
 
 	}

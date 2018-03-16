@@ -38,9 +38,9 @@ namespace ga {
 			}
 		};
 
-		template<default_integral_t RightValue>
-		constexpr decltype(auto) sqrt(cvalue<RightValue> const &) {
-			return _sqrt_value<RightValue>::bind();
+		template<default_integral_t Value>
+		constexpr decltype(auto) sqrt(cvalue<Value> const &) {
+			return _sqrt_value<Value>::bind();
 		}
 
 	}

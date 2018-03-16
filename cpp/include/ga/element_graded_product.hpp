@@ -3,6 +3,8 @@
 
 namespace ga {
 
+	//TODO Try it!
+
 	namespace detail {
 
 		template<default_bitset_t LeftBasisBlade, default_bitset_t RightBasisBlade>
@@ -20,34 +22,74 @@ namespace ga {
 			constexpr static auto value = cvalue<((_swaps_count<(LeftBasisBlade >> 1), RightBasisBlade>::value & 1) != 0) ? -1 : 1>();
 		};
 
-		template<class LeftBasisBladeType, class RightBasisBladeType>
-		struct _graded_product_component; //TODO lazy about runtime-defined basis_blades
+		default_integral_t reordering_sign(default_bitset_t lhs, default_bitset_t const &rhs) {
+			lhs >>= 1;
+			int changes = 0;
+			while (lhs != default_bitset_t(0)) {
+				changes += static_cast<int>(ones(lhs & rhs));
+				lhs >>= 1;
+			}
+			return static_cast<default_integral_t>((changes & 1) == 0 ? 1 : -1);
+		};
 
-		//TODO Usar informação de PossibleGrades para agilizar o processo.
+		struct _graded_product_element_make_zero {
+			template<class LeftElementType, class RightElementType, class MetricType>
+			constexpr static decltype(auto) bind(LeftElementType const &, RightElementType const &, metric<orthogonal_metric<MetricType> > const &) {
+				return make_component(cvalue<0>(), cbasis_blade<0>());
+			}
+		};
+
+		template<default_bitset_t ResultPossibleGrades>
+		struct _graded_product_component_maybe_eval {
+			template<class LeftComponentType, class RightComponentType, class MetricType>
+			constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric<orthogonal_metric<MetricType> > const &mtr) {
+				return make_component(mul(mul(reordering_sign(lhs.basis_blade().value(), rhs.basis_blade().value()), mtr.metric_factor(lhs.basis_blade().value() & rhs.basis_blade().value())), mul(lhs.coefficient(), rhs.coefficient())), dbasis_blade<ResultPossibleGrades>(lhs.basis_blade().value() ^ rhs.basis_blade().value()));
+			}
+		};
+
+		template<class LeftBasisBladeType, class RightBasisBladeType>
+		struct _graded_product_component;
 
 		template<default_bitset_t LeftBasisBlade, default_bitset_t RightBasisBlade>
 		struct _graded_product_component<cbasis_blade<LeftBasisBlade>, cbasis_blade<RightBasisBlade> > {
 		private:
 
-			struct _multiply_all {
-				template<class LeftCoefficientType, class RightCoefficientType, class MetricType>
-				constexpr static decltype(auto) bind(LeftCoefficientType const &lhs, RightCoefficientType const &rhs, metric<orthogonal_metric<MetricType> > const &) {
-					return make_component(mul(mul(_reordering_sign<LeftBasisBlade, RightBasisBlade>::value, MetricType::cmetric_factor<LeftBasisBlade & RightBasisBlade>::value), mul(lhs, rhs)), cbasis_blade<LeftBasisBlade ^ RightBasisBlade>());
-				}
-			};
-
-			struct _make_zero {
-				template<class LeftCoefficientType, class RightCoefficientType, class MetricType>
-				constexpr static decltype(auto) bind(LeftCoefficientType const &, RightCoefficientType const &, metric<orthogonal_metric<MetricType> > const &) {
-					return make_component(cvalue<0>(), cbasis_blade<0>());
+			struct _eval {
+				template<class LeftComponentType, class RightComponentType, class MetricType>
+				constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric<orthogonal_metric<MetricType> > const &) {
+					return make_component(mul(mul(_reordering_sign<LeftBasisBlade, RightBasisBlade>::value, MetricType::cmetric_factor<LeftBasisBlade & RightBasisBlade>::value), mul(lhs.coefficient(), rhs.coefficient())), cbasis_blade<LeftBasisBlade ^ RightBasisBlade>());
 				}
 			};
 
 		public:
 
-			template<class LeftCoefficientType, class RightCoefficientType, class MetricType, class KeepIfGradesFunc>
-			constexpr static decltype(auto) bind(component<LeftCoefficientType, cbasis_blade<LeftBasisBlade> > const &lhs, component<RightCoefficientType, cbasis_blade<RightBasisBlade> > const &rhs, metric<orthogonal_metric<MetricType> > const &mtr, KeepIfGradesFunc const &) {
-				return std::conditional<KeepIfGradesFunc::eval<LeftBasisBlade, RightBasisBlade, LeftBasisBlade ^ RightBasisBlade>::value, _multiply_all, _make_zero>::type::bind(lhs.coefficient(), rhs.coefficient(), mtr);
+			template<class LeftComponentType, class RightComponentType, class MetricType, class KeepIfGradesFunc>
+			constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric<orthogonal_metric<MetricType> > const &mtr, KeepIfGradesFunc const &) {
+				return std::conditional<KeepIfGradesFunc::template eval<LeftBasisBlade, RightBasisBlade, LeftBasisBlade ^ RightBasisBlade>::value, _eval, _graded_product_element_make_zero>::type::bind(lhs, rhs, mtr);
+			}
+		};
+
+		template<default_bitset_t LeftBasisBlade, default_bitset_t RightPossibleGrades>
+		struct _graded_product_component<cbasis_blade<LeftBasisBlade>, dbasis_blade<RightPossibleGrades> > {
+			template<class LeftComponentType, class RightComponentType, class MetricType, class KeepIfGradesFunc>
+			constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric<orthogonal_metric<MetricType> > const &mtr, KeepIfGradesFunc const &) {
+				return std::conditional<KeepIfGradesFunc::template maybe_eval<cbasis_blade<LeftBasisBlade>::possible_grades(), RightPossibleGrades>::value, _graded_product_component_maybe_eval<KeepIfGradesFunc::template possible_grades<cbasis_blade<LeftBasisBlade>::possible_grades(), RightPossibleGrades>::value>, _graded_product_element_make_zero>::type::bind(lhs, rhs, mtr);
+			}
+		};
+
+		template<default_bitset_t LeftPossibleGrades, default_bitset_t RightBasisBlade>
+		struct _graded_product_component<dbasis_blade<LeftPossibleGrades>, cbasis_blade<RightBasisBlade> > {
+			template<class LeftComponentType, class RightComponentType, class MetricType, class KeepIfGradesFunc>
+			constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric<orthogonal_metric<MetricType> > const &mtr, KeepIfGradesFunc const &) {
+				return std::conditional<KeepIfGradesFunc::template maybe_eval<LeftPossibleGrades, cbasis_blade<RightBasisBlade>::possible_grades()>::value, _graded_product_component_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, cbasis_blade<RightBasisBlade>::possible_grades()>::value>, _graded_product_element_make_zero>::type::bind(lhs, rhs, mtr);
+			}
+		};
+
+		template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
+		struct _graded_product_component<dbasis_blade<LeftPossibleGrades>, dbasis_blade<RightPossibleGrades> > {
+			template<class LeftComponentType, class RightComponentType, class MetricType, class KeepIfGradesFunc>
+			constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric<orthogonal_metric<MetricType> > const &mtr, KeepIfGradesFunc const &) {
+				return std::conditional<KeepIfGradesFunc::template maybe_eval<LeftPossibleGrades, RightPossibleGrades>::value, _graded_product_component_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightPossibleGrades>::value>, _graded_product_element_make_zero>::type::bind(lhs, rhs, mtr);
 			}
 		};
 

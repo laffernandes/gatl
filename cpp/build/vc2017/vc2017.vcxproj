@@ -39,6 +39,7 @@
     <ClInclude Include="..\..\include\ga\dynamic_basis_blade.hpp" />
     <ClInclude Include="..\..\include\ga\element_binary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\euclidean_metric.hpp" />
+    <ClInclude Include="..\..\include\ga\blade_exponential.hpp" />
     <ClInclude Include="..\..\include\ga\expression.hpp" />
     <ClInclude Include="..\..\include\ga\expression_coefficient_type.hpp" />
     <ClInclude Include="..\..\include\ga\expression_insert.hpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="..\..\include\ga\undualization.hpp" />
     <ClInclude Include="..\..\include\ga\value_add.hpp" />
     <ClInclude Include="..\..\include\ga\value_div.hpp" />
+    <ClInclude Include="..\..\include\ga\value_exp.hpp" />
     <ClInclude Include="..\..\include\ga\value_mul.hpp" />
     <ClInclude Include="..\..\include\ga\value_neg.hpp" />
     <ClInclude Include="..\..\include\ga\value_sqrt.hpp" />
