@@ -29,15 +29,14 @@ namespace ga {
 			return static_cast<entry_type>(index <= (P + Q) ? (index <= P ? (index > 0 ? +1 : 0) : -1) : 0);
 		}
 
-		constexpr static decltype(auto) metric_factor(default_bitset_t const arg) {
+		constexpr static decltype(auto) metric_factor(default_bitset_t arg) {
 			index_t index = 0;
-			default_bitset_t mask = arg.value();
 			default_integral_t result = static_cast<default_integral_t>(1);
-			while (mask != default_bitset_t(0)) {
-				if ((mask & default_bitset_t(1)) != default_bitset_t(0)) {
+			while (arg != default_bitset_t(0)) {
+				if ((arg & default_bitset_t(1)) != default_bitset_t(0)) {
 					result *= diagonal_entry(index);
 				}
-				mask >>= 1;
+				arg >>= 1;
 				index++;
 			}
 			return static_cast<entry_type>(result);

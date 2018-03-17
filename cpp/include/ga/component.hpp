@@ -15,6 +15,10 @@ namespace ga {
 			typedef CoefficientType coefficient_type;
 			typedef cbasis_blade<BasisBlade> basis_blade_type;
 
+			constexpr component() :
+				coefficient_(0) {
+			}
+
 			constexpr component(component const &) = default;
 			constexpr component(component &&) = default;
 
@@ -48,6 +52,11 @@ namespace ga {
 
 			typedef CoefficientType coefficient_type;
 			typedef dbasis_blade<PossibleGrades> basis_blade_type;
+
+			constexpr component() :
+				component_(0),
+				basis_blade_(0) {
+			}
 
 			constexpr component(component const &) = default;
 			constexpr component(component &&) = default;
@@ -89,6 +98,7 @@ namespace ga {
 			typedef cvalue<Coefficient> coefficient_type;
 			typedef cbasis_blade<BasisBlade> basis_blade_type;
 
+			constexpr component() = default;
 			constexpr component(component const &) = default;
 			constexpr component(component &&) = default;
 
@@ -113,6 +123,10 @@ namespace ga {
 
 			typedef cvalue<Coefficient> coefficient_type;
 			typedef dbasis_blade<PossibleGrades> basis_blade_type;
+
+			constexpr component() :
+				basis_blade_(0) {
+			}
 
 			constexpr component(component const &) = default;
 			constexpr component(component &&) = default;

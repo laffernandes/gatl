@@ -19,23 +19,36 @@ namespace ga {
 			constexpr components& operator=(components const &) = default;
 			constexpr components& operator=(components &&) = default;
 
-			decltype(auto) insert(basis_blade_type const &basis_blade, coefficient_type const &coefficient) {
-				return entries_.emplace(basis_blade, coefficient);
+			inline void insert(basis_blade_type const &basis_blade, coefficient_type const &coefficient) {
+				entries_.emplace(basis_blade, coefficient);
 			}
 			
-			decltype(auto) begin() {
+			template<class Iterator>
+			inline void erase(Iterator itr) {
+				entries_.erase(itr);
+			}
+
+			inline decltype(auto) find(basis_blade_type const &basis_blade) {
+				return entries_.find(basis_blade);
+			}
+
+			inline decltype(auto) find(basis_blade_type const &basis_blade) const {
+				return entries_.find(basis_blade);
+			}
+
+			inline decltype(auto) begin() {
 				return entries_.begin();
 			}
 
-			decltype(auto) begin() const {
+			inline decltype(auto) begin() const {
 				return entries_.begin();
 			}
 
-			decltype(auto) end() {
+			inline decltype(auto) end() {
 				return entries_.end();
 			}
 
-			decltype(auto) end() const {
+			inline decltype(auto) end() const {
 				return entries_.end();
 			}
 

@@ -5,11 +5,8 @@ namespace ga {
 
 	namespace detail {
 
-		template<class BitsetType, int digits>
-		struct _ones;
-
 		template<std::uint64_t Bitset>
-		struct _ones64 {
+		struct _ones {
 		private:
 
 			constexpr static auto a = (Bitset & 0x5555555555555555ull) + ((Bitset >> 1) & 0x5555555555555555ull);
@@ -28,15 +25,11 @@ namespace ga {
 			return ((c * 0x0101010101010101ull) >> 56);
 		}
 
-		template <class Type>
-		int ones(Type) = delete;
-
 		template<class BitsetType>
 		struct _basis_blade_grade;
 		
 		template<default_bitset_t BasisBlade>
-		struct _basis_blade_grade<cbasis_blade<BasisBlade> > : _ones64<BasisBlade> {
-			static_assert(std::numeric_limits<default_bitset_t>::digits <= 64, "The ga::default_bitset_t type must have 64 digits or less.");
+		struct _basis_blade_grade<cbasis_blade<BasisBlade> > : _ones<BasisBlade> {
 		};
 
 		template<default_bitset_t BasisBlade>

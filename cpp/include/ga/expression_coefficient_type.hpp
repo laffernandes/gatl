@@ -13,19 +13,22 @@ namespace ga {
 			typename ElementType::coefficient_type,
 			typename common_coefficient_type<LeftSubtreeType>::type,
 			typename common_coefficient_type<RightSubtreeType>::type
-		> {};
+		> {
+		};
 
 		template<class ElementType, class RightSubtreeType>
 		struct common_coefficient_type<expression<ElementType, empty_expression, RightSubtreeType> > : std::common_type<
 			typename ElementType::coefficient_type,
 			typename common_coefficient_type<RightSubtreeType>::type
-		> {};
+		> {
+		};
 
 		template<class ElementType, class LeftSubtreeType>
 		struct common_coefficient_type<expression<ElementType, LeftSubtreeType, empty_expression> > : std::common_type<
 			typename ElementType::coefficient_type,
 			typename common_coefficient_type<LeftSubtreeType>::type
-		> {};
+		> {
+		};
 
 		template<class ElementType>
 		struct common_coefficient_type<expression<ElementType, empty_expression, empty_expression> > {

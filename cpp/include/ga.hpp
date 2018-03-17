@@ -1,18 +1,6 @@
 #ifndef __GA_HPP__
 #define __GA_HPP__
 
-#ifndef GA_DEFAULT_FLT_TOLERANCE
-	#define GA_DEFAULT_FLT_TOLERANCE 1.0e-8f
-#else
-	static_assert(GA_DEFAULT_FLT_TOLERANCE >= 0, "GA_DEFAULT_FLT_TOLERANCE must be a non-negative value.")
-#endif // GA_DEFAULT_FLT_TOLERANCE
-
-#ifndef GA_DEFAULT_DBL_TOLERANCE
-	#define GA_DEFAULT_DBL_TOLERANCE 1.0e-8
-#else
-	static_assert(GA_DEFAULT_DBL_TOLERANCE >= 0, "GA_DEFAULT_DBL_TOLERANCE must be a non-negative value.")
-#endif // GA_DEFAULT_DBL_TOLERANCE
-
 #include <cassert>
 #include <cmath>
 #include <cstdint>
@@ -23,9 +11,27 @@
 #include <string>
 #include <type_traits>
 
+#ifndef GA_MAX_BASIS_VECTOR_INDEX
+	#define GA_MAX_BASIS_VECTOR_INDEX 63
+#endif // GA_MAX_BASIS_VECTOR_INDEX
+
 namespace ga {
 
-	typedef std::uint64_t default_bitset_t;
+	static_assert(std::is_integral<decltype((GA_MAX_BASIS_VECTOR_INDEX))>::value && 0 <= (GA_MAX_BASIS_VECTOR_INDEX) && (GA_MAX_BASIS_VECTOR_INDEX) <= 63, "GA_MAX_BASIS_VECTOR_INDEX must be an integer value between 0 and 63, inclusive.");
+
+	typedef std::conditional<
+		(GA_MAX_BASIS_VECTOR_INDEX) < 8,
+		std::uint8_t,
+		std::conditional<
+			(GA_MAX_BASIS_VECTOR_INDEX) < 16,
+			std::uint16_t,
+			std::conditional<
+				(GA_MAX_BASIS_VECTOR_INDEX) < 32,
+				std::uint32_t,
+				std::uint64_t
+			>::type
+		>::type
+	>::type default_bitset_t;
 
 	typedef std::int32_t default_integral_t;
 	typedef std::double_t default_floating_point_t;

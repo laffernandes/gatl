@@ -1,6 +1,18 @@
 #ifndef __GA_DEFAULT_TOLERANCE_HPP__
 #define __GA_DEFAULT_TOLERANCE_HPP__
 
+#ifndef GA_DEFAULT_FLT_TOLERANCE
+	#define GA_DEFAULT_FLT_TOLERANCE 1.0e-8f
+#else
+	static_assert(GA_DEFAULT_FLT_TOLERANCE >= 0, "GA_DEFAULT_FLT_TOLERANCE must be a non-negative value.")
+#endif // GA_DEFAULT_FLT_TOLERANCE
+
+#ifndef GA_DEFAULT_DBL_TOLERANCE
+	#define GA_DEFAULT_DBL_TOLERANCE 1.0e-8
+#else
+	static_assert(GA_DEFAULT_DBL_TOLERANCE >= 0, "GA_DEFAULT_DBL_TOLERANCE must be a non-negative value.")
+#endif // GA_DEFAULT_DBL_TOLERANCE
+
 namespace ga {
 
 	template<class IntegralType>

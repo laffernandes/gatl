@@ -145,6 +145,14 @@ namespace ga {
 			}
 		};
 
+		struct _insert_element_in_components {
+			template<class ExpressionType, class CoefficientType, default_bitset_t PossibleGrades>
+			constexpr static ExpressionType bind(ExpressionType const &root, components<CoefficientType, PossibleGrades> const &element) {
+				std::cerr << "ENTROU ONDE NÃO DEVIA!" << std::endl;
+				return root; //TODO Parei aqui!
+			}
+		};
+
 		template<class ExpressionType, class ElementType>
 		struct _insert;
 
@@ -155,9 +163,10 @@ namespace ga {
 			typename std::conditional<
 				lt<RootElementType, ElementType>::value,
 				_insert_element_right<ElementType>,
-				std::nullptr_t // It should not be possible to reach this value.
+				_insert_element_in_components
 			>::type
-		>::type {};
+		>::type {
+		};
 
 		template<class ElementType>
 		struct _insert<empty_expression, ElementType> {

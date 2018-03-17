@@ -1,4 +1,5 @@
-#include "ga.hpp"
+#define GA_MAX_BASIS_VECTOR_INDEX 10
+#include <ga.hpp>
 
 using namespace ga;
 
@@ -355,6 +356,9 @@ int main() {
 	auto e1 = e(1);
 	auto e2 = e(2);
 	auto e3 = e(3);
+
+	auto m = 1 + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3);
+	std::cout << m << std::endl;
 
 	return EXIT_SUCCESS;
 }

@@ -20,7 +20,7 @@ namespace ga {
 			constexpr static auto value = cvalue<((_swaps_count<(LeftBasisBlade >> 1), RightBasisBlade>::value & 1) != 0) ? -1 : 1>();
 		};
 
-		default_integral_t reordering_sign(default_bitset_t lhs, default_bitset_t const &rhs) {
+		default_integral_t reordering_sign(default_bitset_t lhs, default_bitset_t const rhs) {
 			lhs >>= 1;
 			int changes = 0;
 			while (lhs != default_bitset_t(0)) {
@@ -42,7 +42,7 @@ namespace ga {
 			template<class LeftComponentType, class RightComponentType, class MetricType, class KeepIfGradesFunc>
 			constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric<orthogonal_metric<MetricType> > const &mtr, KeepIfGradesFunc const &keep) {
 				typedef decltype(mul(mul(reordering_sign(lhs.basis_blade().value(), rhs.basis_blade().value()), mtr.metric_factor(lhs.basis_blade().value() & rhs.basis_blade().value())), mul(lhs.coefficient(), rhs.coefficient()))) coefficient_t;
-				auto const result_basis_blade = dbasis_blade<ResultPossibleGrades>(lhs.basis_blade().value() ^ rhs.basis_blade().value());
+				auto result_basis_blade = dbasis_blade<ResultPossibleGrades>(lhs.basis_blade().value() ^ rhs.basis_blade().value());
 				if (keep(basis_blade_grade(lhs.basis_blade()), basis_blade_grade(rhs.basis_blade()), basis_blade_grade(result_basis_blade))) {
 					return make_component(mul(mul(reordering_sign(lhs.basis_blade().value(), rhs.basis_blade().value()), mtr.metric_factor(lhs.basis_blade().value() & rhs.basis_blade().value())), mul(lhs.coefficient(), rhs.coefficient())), result_basis_blade);
 				}
@@ -57,18 +57,27 @@ namespace ga {
 			template<class LeftCoefficientType, default_bitset_t LeftPossibleGrades, class RightCoefficientType, class RightBasisBladeType, class MetricType, class KeepIfGradesFunc>
 			constexpr static decltype(auto) bind(components<LeftCoefficientType, LeftPossibleGrades> const &lhs, component<RightCoefficientType, RightBasisBladeType> const &rhs, metric<orthogonal_metric<MetricType> > const &mtr, KeepIfGradesFunc const &keep) {
 				//TODO lazy
-				grade_t const rhs_grade = basis_blade_grade(rhs.basis_blade());
-				components<typename std::common_type<LeftCoefficientType, RightCoefficientType>::type, ResultPossibleGrades> result;
+				typedef decltype(mul(mul(reordering_sign(default_bitset_t(), default_bitset_t()), mtr.metric_factor(default_bitset_t())), mul(LeftCoefficientType(), RightCoefficientType()))) coeficient_t;
+				grade_t rhs_grade = basis_blade_grade(rhs.basis_blade());
+				components<coeficient_t, ResultPossibleGrades> result;
 				for (auto lhs_itr = lhs.begin(), lhs_end = lhs.end(); lhs_itr != lhs_end; ++lhs_itr) {
-					auto const result_basis_blade = dbasis_blade<ResultPossibleGrades>(lhs_itr->first.value() ^ rhs.basis_blade().value());
+					auto result_basis_blade = dbasis_blade<ResultPossibleGrades>(lhs_itr->first.value() ^ rhs.basis_blade().value());
 					if (keep(basis_blade_grade(lhs_itr->first), rhs_grade, basis_blade_grade(result_basis_blade))) {
-						auto const result_coefficient = mul(mul(reordering_sign(lhs_itr->first.value(), rhs.basis_blade().value()), mtr.metric_factor(lhs_itr->first.value() & rhs.basis_blade().value())), mul(lhs_itr->second, rhs.coefficient()));
-						auto curr = result.find(result_basis_blade);
-						if (curr == result.end()) {
-							result.insert(result_basis_blade, result_coefficient);
+						auto result_coefficient = mul(mul(reordering_sign(lhs_itr->first.value(), rhs.basis_blade().value()), mtr.metric_factor(lhs_itr->first.value() & rhs.basis_blade().value())), mul(lhs_itr->second, rhs.coefficient()));
+						auto result_itr = result.find(result_basis_blade);
+						if (result_itr == result.end()) {
+							if (result_coefficient != 0) {
+								result.insert(result_basis_blade, result_coefficient);
+							}
 						}
 						else {
-							curr->second = add(curr->second, result_coefficient);
+							auto new_coefficient = add(result_itr->second, result_coefficient);
+							if (new_coefficient != 0) {
+								result_itr->second = new_coefficient;
+							}
+							else {
+								result.erase(result_itr);
+							}
 						}
 					}
 				}
@@ -78,18 +87,27 @@ namespace ga {
 			template<class LeftCoefficientType, class LeftBasisBladeType, class RightCoefficientType, default_bitset_t RightPossibleGrades, class MetricType, class KeepIfGradesFunc>
 			constexpr static decltype(auto) bind(component<LeftCoefficientType, LeftBasisBladeType> const &lhs, components<RightCoefficientType, RightPossibleGrades> const &rhs, metric<orthogonal_metric<MetricType> > const &mtr, KeepIfGradesFunc const &keep) {
 				//TODO lazy
-				grade_t const lhs_grade = basis_blade_grade(lhs.basis_blade());
-				components<typename std::common_type<LeftCoefficientType, RightCoefficientType>::type, ResultPossibleGrades> result;
+				typedef decltype(mul(mul(reordering_sign(default_bitset_t(), default_bitset_t()), mtr.metric_factor(default_bitset_t())), mul(LeftCoefficientType(), RightCoefficientType()))) coefficient_t;
+				grade_t lhs_grade = basis_blade_grade(lhs.basis_blade());
+				components<coefficient_t, ResultPossibleGrades> result;
 				for (auto rhs_itr = rhs.begin(), rhs_end = rhs.end(); rhs_itr != rhs_end; ++rhs_itr) {
-					auto const result_basis_blade = dbasis_blade<ResultPossibleGrades>(lhs.basis_blade().value() ^ rhs_itr->first.value());
+					auto result_basis_blade = dbasis_blade<ResultPossibleGrades>(lhs.basis_blade().value() ^ rhs_itr->first.value());
 					if (keep(lhs_grade, basis_blade_grade(rhs_itr->first), basis_blade_grade(result_basis_blade))) {
-						auto const result_coefficient = mul(mul(reordering_sign(lhs.basis_blade().value(), rhs_itr->first.value()), mtr.metric_factor(lhs.basis_blade().value() & rhs_itr->first.value())), mul(lhs.coefficient(), rhs_itr->second));
-						auto curr = result.find(result_basis_blade);
-						if (curr == result.end()) {
-							result.insert(result_basis_blade, result_coefficient);
+						auto result_coefficient = mul(mul(reordering_sign(lhs.basis_blade().value(), rhs_itr->first.value()), mtr.metric_factor(lhs.basis_blade().value() & rhs_itr->first.value())), mul(lhs.coefficient(), rhs_itr->second));
+						auto result_itr = result.find(result_basis_blade);
+						if (result_itr == result.end()) {
+							if (result_coefficient != 0) {
+								result.insert(result_basis_blade, result_coefficient);
+							}
 						}
 						else {
-							curr->second = add(curr->second, result_coefficient);
+							auto new_coefficient = add(result_itr->second, result_coefficient);
+							if (new_coefficient != 0) {
+								result_itr->second = new_coefficient;
+							}
+							else {
+								result.erase(result_itr);
+							}
 						}
 					}
 				}
@@ -99,19 +117,28 @@ namespace ga {
 			template<class LeftCoefficientType, default_bitset_t LeftPossibleGrades, class RightCoefficientType, default_bitset_t RightPossibleGrades, class MetricType, class KeepIfGradesFunc>
 			constexpr static decltype(auto) bind(components<LeftCoefficientType, LeftPossibleGrades> const &lhs, components<RightCoefficientType, RightPossibleGrades> const &rhs, metric<orthogonal_metric<MetricType> > const &mtr, KeepIfGradesFunc const &keep) {
 				//TODO lazy
-				components<typename std::common_type<LeftCoefficientType, RightCoefficientType>::type, ResultPossibleGrades> result;
+				typedef decltype(mul(mul(reordering_sign(default_bitset_t(), default_bitset_t()), mtr.metric_factor(default_bitset_t())), mul(LeftCoefficientType(), RightCoefficientType()))) coefficient_t;
+				components<coefficient_t, ResultPossibleGrades> result;
 				for (auto lhs_itr = lhs.begin(), lhs_end = lhs.end(); lhs_itr != lhs_end; ++lhs_itr) {
-					grade_t const lhs_grade = basis_blade_grade(lhs_itr->first);
+					grade_t lhs_grade = basis_blade_grade(lhs_itr->first);
 					for (auto rhs_itr = rhs.begin(), rhs_end = rhs.end(); rhs_itr != rhs_end; ++rhs_itr) {
-						auto const result_basis_blade = dbasis_blade<ResultPossibleGrades>(lhs_itr->first.value() ^ rhs_itr->first.value());
+						auto result_basis_blade = dbasis_blade<ResultPossibleGrades>(lhs_itr->first.value() ^ rhs_itr->first.value());
 						if (keep(lhs_grade, basis_blade_grade(rhs_itr->first), basis_blade_grade(result_basis_blade))) {
-							auto const result_coefficient = mul(mul(reordering_sign(lhs_itr->first.value(), rhs_itr->first.value()), mtr.metric_factor(lhs_itr->first.value() & rhs_itr->first.value())), mul(lhs_itr->second, rhs_itr->second));
-							auto curr = result.find(result_basis_blade);
-							if (curr == result.end()) {
-								result.insert(result_basis_blade, result_coefficient);
+							auto result_coefficient = mul(mul(reordering_sign(lhs_itr->first.value(), rhs_itr->first.value()), mtr.metric_factor(lhs_itr->first.value() & rhs_itr->first.value())), mul(lhs_itr->second, rhs_itr->second));
+							auto result_itr = result.find(result_basis_blade);
+							if (result_itr == result.end()) {
+								if (result_coefficient != 0) {
+									result.insert(result_basis_blade, result_coefficient);
+								}
 							}
 							else {
-								curr->second = add(curr->second, result_coefficient);
+								auto new_coefficient = add(result_itr->second, result_coefficient);
+								if (new_coefficient != 0) {
+									result_itr->second = new_coefficient;
+								}
+								else {
+									result.erase(result_itr);
+								}
 							}
 						}
 					}

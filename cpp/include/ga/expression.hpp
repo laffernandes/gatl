@@ -36,6 +36,7 @@ namespace ga {
 
 		protected:
 
+			constexpr _super_expression_element() = default;
 			constexpr _super_expression_element(_super_expression_element const&) = default;
 			constexpr _super_expression_element(_super_expression_element &&) = default;
 
@@ -133,6 +134,7 @@ namespace ga {
 
 		protected:
 		
+			constexpr _super_expression_left_subtree() = default;
 			constexpr _super_expression_left_subtree(_super_expression_left_subtree const&) = default;
 			constexpr _super_expression_left_subtree(_super_expression_left_subtree &&) = default;
 
@@ -198,6 +200,7 @@ namespace ga {
 
 		protected:
 		
+			constexpr _super_expression_right_subtree() = default;
 			constexpr _super_expression_right_subtree(_super_expression_right_subtree const&) = default;
 			constexpr _super_expression_right_subtree(_super_expression_right_subtree &&) = default;
 
@@ -230,10 +233,7 @@ namespace ga {
 			using left_type = typename _super_for_left_subtree::left_type;
 			using right_type = typename _super_for_right_subtree::right_type;
 
-			template<bool Enable = compile_time_defined(), typename std::enable_if<Enable, int>::type = 0>
-			constexpr expression() {
-			}
-
+			constexpr expression() = default;
 			constexpr expression(expression const &) = default;
 			constexpr expression(expression &&) = default;
 
@@ -271,10 +271,7 @@ namespace ga {
 
 			typedef empty_expression left_type;
 
-			template<bool Enable = compile_time_defined(), typename std::enable_if<Enable, int>::type = 0>
-			constexpr expression() {
-			}
-
+			constexpr expression() = default;
 			constexpr expression(expression const &) = default;
 			constexpr expression(expression &&) = default;
 
@@ -314,10 +311,7 @@ namespace ga {
 			
 			typedef empty_expression right_type;
 
-			template<bool Enable = compile_time_defined(), typename std::enable_if<Enable, int>::type = 0>
-			constexpr expression() {
-			}
-
+			constexpr expression() = default;
 			constexpr expression(expression const &) = default;
 			constexpr expression(expression &&) = default;
 
@@ -355,10 +349,7 @@ namespace ga {
 			typedef empty_expression left_type;
 			typedef empty_expression right_type;
 
-			template<bool Enable = compile_time_defined(), typename std::enable_if<Enable, int>::type = 0>
-			constexpr expression() {
-			}
-
+			constexpr expression() = default;
 			constexpr expression(expression const &) = default;
 			constexpr expression(expression &&) = default;
 

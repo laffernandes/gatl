@@ -16,8 +16,8 @@ namespace ga {
 			struct _iterate_right {
 			private:
 
-				constexpr static default_bitset_t min_grade = LeftGrade <= RightGrade ? (RightGrade - LeftGrade) : (LeftGrade - RightGrade);
-				constexpr static default_bitset_t max_grade = (LeftGrade + RightGrade) < std::numeric_limits<default_bitset_t>::digits ? (LeftGrade + RightGrade) : std::numeric_limits<default_bitset_t>::digits;
+				constexpr static grade_t min_grade = LeftGrade <= RightGrade ? (RightGrade - LeftGrade) : (LeftGrade - RightGrade);
+				constexpr static grade_t max_grade = (LeftGrade + RightGrade) < std::numeric_limits<default_bitset_t>::digits ? (LeftGrade + RightGrade) : std::numeric_limits<default_bitset_t>::digits;
 
 			public:
 
@@ -25,7 +25,7 @@ namespace ga {
 						LeftGrade,
 						(RightPossibleGrades >> 1),
 						RightGrade + 1
-					>::value | ((RightPossibleGrades & default_bitset_t(1)) != default_bitset_t(0) ? ((((~default_bitset_t(0)) >> (std::numeric_limits<default_bitset_t>::digits - max_grade - 1)) >> min_grade) << min_grade) : default_bitset_t(0));
+					>::value | ((RightPossibleGrades & default_bitset_t(1)) != default_bitset_t(0) ? (((default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - max_grade - 1)) >> min_grade) << min_grade) : default_bitset_t(0));
 			};
 
 			template<grade_t LeftGrade, grade_t RightGrade>

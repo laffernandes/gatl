@@ -5,12 +5,12 @@ namespace ga {
 
 	namespace detail {
 
-		template <class MetricType>
+		template<class MetricType>
 		struct metric_traits;
 
 	}
 
-	template <class MetricType>
+	template<class MetricType>
 	class metric {
 	public:
 
@@ -41,7 +41,7 @@ namespace ga {
 		}
 	};
 	
-	template <class MetricType>
+	template<class MetricType>
 	class orthogonal_metric : public metric<orthogonal_metric<MetricType> > {
 	public:
 

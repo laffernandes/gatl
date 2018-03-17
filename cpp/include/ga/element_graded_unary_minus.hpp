@@ -55,7 +55,7 @@ namespace ga {
 		public:
 			template<class CoefficientType, class SignChangeIfGradeFunc>
 			constexpr static decltype(auto) bind(component<CoefficientType, dbasis_blade<PossibleGrades> > const &arg, SignChangeIfGradeFunc const &change) {
-				return std::conditional<SignChangeIfGradeFunc::template maybe_eval<PossibleGrades>::value, _maybe_change, _no_change>::type::bind(arg, change);
+				return std::conditional<SignChangeIfGradeFunc::template maybe_eval<PossibleGrades>::value, _maybe_change, _graded_unary_minus_element_no_change>::type::bind(arg, change);
 			}
 		};
 

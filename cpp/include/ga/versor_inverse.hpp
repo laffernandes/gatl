@@ -23,7 +23,7 @@ namespace ga {
 		return detail::div(detail::cvalue<1>(), arg);
 	}
 
-	template <class MetricType>
+	template<class MetricType>
 	detail::empty_expression inv(detail::empty_expression const &, metric<MetricType> const &) = delete;
 
 }

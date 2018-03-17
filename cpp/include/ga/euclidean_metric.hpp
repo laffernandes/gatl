@@ -29,7 +29,7 @@ namespace ga {
 			return detail::cvalue<1>();
 		}
 
-		constexpr static detail::cvalue<1> metric_factor(default_bitset_t const &) {
+		constexpr static detail::cvalue<1> metric_factor(default_bitset_t const) {
 			return detail::cvalue<1>();
 		}
 	};
@@ -67,7 +67,7 @@ namespace ga {
 				return euclidean_metric<EntryType>::diagonal_entry(index);
 			}
 
-			constexpr static decltype(auto) call_metric_factor(euclidean_metric<EntryType> const *, default_bitset_t const &bitset) {
+			constexpr static decltype(auto) call_metric_factor(euclidean_metric<EntryType> const *, default_bitset_t const bitset) {
 				return euclidean_metric<EntryType>::metric_factor(bitset);
 			}
 		};

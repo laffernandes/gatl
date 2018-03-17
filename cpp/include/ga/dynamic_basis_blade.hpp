@@ -11,6 +11,10 @@ namespace ga {
 
 			typedef default_bitset_t value_type;
 
+			constexpr dbasis_blade() : 
+				basis_blade_(0) {
+			}
+
 			constexpr dbasis_blade(dbasis_blade const &) = default;
 			constexpr dbasis_blade(dbasis_blade &&) = default;
 

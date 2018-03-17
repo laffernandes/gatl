@@ -8,7 +8,8 @@ namespace ga {
 		template<class ItrType>
 		struct is_end;
 
-		class itr_end {};
+		class itr_end {
+		};
 
 		template<>
 		struct is_end<itr_end> {
@@ -26,7 +27,7 @@ namespace ga {
 
 			constexpr itr_value(value_type const &value) :
 				expression_(make_component(value, cbasis_blade<0>()), empty_expression(), empty_expression()) {
-			};
+			}
 
 			constexpr decltype(auto) element() const {
 				return expression_.element();
