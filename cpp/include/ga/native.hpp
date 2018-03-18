@@ -37,9 +37,6 @@ namespace ga {
 		return arg;
 	}
 
-	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-	detail::empty_expression native(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &) = delete;
-
 	template<class CoefficientType>
 	constexpr decltype(auto) native(detail::expression<detail::component<CoefficientType, detail::cbasis_blade<0> >, detail::empty_expression, detail::empty_expression> const &arg) {
 		return native(arg.element().coefficient());
@@ -58,6 +55,9 @@ namespace ga {
 	constexpr decltype(auto) native(detail::empty_expression const &) {
 		return ga::detail::cvalue<0>();
 	}
+
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+	constexpr decltype(auto) native(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &) = delete;
 
 }
 

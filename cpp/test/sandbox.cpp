@@ -372,6 +372,12 @@ int main() {
 	std::cout << "s2 = " << s2 << std::endl;
 	std::cout << std::endl;
 
+	auto e4 = e(4);
+	auto e5 = e(5);
+	auto e6 = e(6);
+
+	auto r = gp(e1^e2^e3^e4, e4^e6, euclidean_metric_t());
+
 	return EXIT_SUCCESS;
 }
 /*/
