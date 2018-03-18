@@ -16,6 +16,9 @@ namespace ga {
 		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 		class expression;
 
+		template<class InputElementType, class InputLeftSubtreeType, class InputRightSubtreeType, class OutputElementType, class OutputLeftSubtreeType, class OutputRightSubtreeType>
+		void copy(expression<InputElementType, InputLeftSubtreeType, InputRightSubtreeType> const &, expression<OutputElementType, OutputLeftSubtreeType, OutputRightSubtreeType> &);
+
 		template<class ElementType>
 		class _super_expression_element {
 		public:
@@ -237,6 +240,11 @@ namespace ga {
 			constexpr expression(expression const &) = default;
 			constexpr expression(expression &&) = default;
 
+			template<class OtherElementType, class OtherLeftSubtreeType, class OtherRightSubtreeType>
+			constexpr expression(expression<OtherElementType, OtherLeftSubtreeType, OtherRightSubtreeType> const &other) {
+				copy(other, *this);
+			}
+
 			constexpr expression(element_type const &element, left_type const &left, right_type const &right) :
 				_super_for_element(element),
 				_super_for_left_subtree(left),
@@ -245,6 +253,13 @@ namespace ga {
 
 			constexpr expression& operator=(expression const &) = default;
 			constexpr expression& operator=(expression &&) = default;
+
+			template<class OtherElementType, class OtherLeftSubtreeType, class OtherRightSubtreeType>
+			constexpr expression& operator=(expression<OtherElementType, OtherLeftSubtreeType, OtherRightSubtreeType> const &other) {
+				copy(other, *this);
+				return *this;
+			}
+
 
 			using _super_for_element::element;
 			using _super_for_left_subtree::left;

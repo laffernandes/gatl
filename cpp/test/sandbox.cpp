@@ -1,4 +1,3 @@
-#define GA_MAX_BASIS_VECTOR_INDEX 10
 #include <ga.hpp>
 
 using namespace ga;

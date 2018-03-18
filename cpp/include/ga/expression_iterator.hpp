@@ -16,6 +16,10 @@ namespace ga {
 			static const bool value = true;
 		};
 
+		constexpr itr_end begin(empty_expression const &) {
+			return itr_end();
+		}
+
 		template<class ValueType>
 		class itr_value {
 		public:
@@ -66,7 +70,7 @@ namespace ga {
 
 			typedef typename expression_type::element_type element_type;
 
-			constexpr itr(expression_type const *value, tail_type const &tail) :
+			constexpr itr(expression_type *value, tail_type const &tail) :
 				expression_(value),
 				tail_(tail) {
 			};
@@ -75,7 +79,7 @@ namespace ga {
 				return expression_->element();
 			}
 
-			constexpr expression_type const * expression() const {
+			constexpr expression_type * expression() const {
 				return expression_;
 			}
 
@@ -85,7 +89,7 @@ namespace ga {
 
 		protected:
 
-			expression_type const *expression_;
+			expression_type *expression_;
 			tail_type const tail_;
 		};
 
@@ -98,11 +102,11 @@ namespace ga {
 
 			typedef typename expression_type::element_type element_type;
 
-			constexpr itr(expression_type const *value, tail_type const &) :
+			constexpr itr(expression_type *value, tail_type const &) :
 				expression_(value) {
 			};
 
-			constexpr expression_type const * expression() const {
+			constexpr expression_type * expression() const {
 				return expression_;
 			}
 
@@ -116,7 +120,7 @@ namespace ga {
 
 		protected:
 
-			expression_type const *expression_;
+			expression_type *expression_;
 		};
 
 		template<class ExpressionType, class TailType>
@@ -125,12 +129,8 @@ namespace ga {
 		};
 
 		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-		constexpr decltype(auto) begin(expression<ElementType, LeftSubtreeType, RightSubtreeType> const &root) {
+		constexpr decltype(auto) begin(expression<ElementType, LeftSubtreeType, RightSubtreeType> &root) {
 			return itr<expression<ElementType, LeftSubtreeType, RightSubtreeType>, itr_end>(&root, itr_end());
-		}
-
-		constexpr itr_end begin(empty_expression const &) {
-			return itr_end();
 		}
 
 		template<class ExpressionType>
@@ -169,6 +169,118 @@ namespace ga {
 		struct _next<expression<ElementType, empty_expression, empty_expression> > {
 			template<class TailType>
 			constexpr static decltype(auto) bind(itr<expression<ElementType, empty_expression, empty_expression>, TailType> const &curr) {
+				return curr.tail();
+			}
+		};
+
+		template<class ExpressionType, class TailType>
+		class citr {
+		public:
+
+			typedef ExpressionType expression_type;
+			typedef TailType tail_type;
+
+			typedef typename expression_type::element_type element_type;
+
+			constexpr citr(expression_type const *value, tail_type const &tail) :
+				expression_(value),
+				tail_(tail) {
+			};
+
+			constexpr decltype(auto) element() const {
+				return expression_->element();
+			}
+
+			constexpr expression_type const * expression() const {
+				return expression_;
+			}
+
+			constexpr tail_type const & tail() const {
+				return tail_;
+			}
+
+		protected:
+
+			expression_type const *expression_;
+			tail_type const tail_;
+		};
+
+		template<class ExpressionType>
+		class citr<ExpressionType, itr_end> {
+		public:
+
+			typedef ExpressionType expression_type;
+			typedef itr_end tail_type;
+
+			typedef typename expression_type::element_type element_type;
+
+			constexpr citr(expression_type const *value, tail_type const &) :
+				expression_(value) {
+			};
+
+			constexpr expression_type const * expression() const {
+				return expression_;
+			}
+
+			constexpr tail_type tail() const {
+				return itr_end();
+			}
+
+			constexpr decltype(auto) element() const {
+				return expression_->element();
+			}
+
+		protected:
+
+			expression_type const *expression_;
+		};
+
+		template<class ExpressionType, class TailType>
+		struct is_end<citr<ExpressionType, TailType> > {
+			static const bool value = false;
+		};
+
+		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+		constexpr decltype(auto) begin(expression<ElementType, LeftSubtreeType, RightSubtreeType> const &root) {
+			return citr<expression<ElementType, LeftSubtreeType, RightSubtreeType>, itr_end>(&root, itr_end());
+		}
+
+		template<class ExpressionType>
+		struct _cnext;
+
+		template<class ExpressionType, class TailType>
+		constexpr decltype(auto) next(citr<ExpressionType, TailType> const &curr) {
+			return _cnext<ExpressionType>::bind(curr);
+		}
+
+		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+		struct _cnext<expression<ElementType, LeftSubtreeType, RightSubtreeType> > {
+			template<class TailType>
+			constexpr static decltype(auto) bind(citr<expression<ElementType, LeftSubtreeType, RightSubtreeType>, TailType> const &curr) {
+				return citr<LeftSubtreeType, citr<RightSubtreeType, TailType> >(&curr.expression()->left(), citr<RightSubtreeType, TailType>(&curr.expression()->right(), curr.tail()));
+			}
+		};
+
+		template<class ElementType, class RightSubtreeType>
+		struct _cnext<expression<ElementType, empty_expression, RightSubtreeType> > {
+			template<class TailType>
+			constexpr static decltype(auto) bind(citr<expression<ElementType, empty_expression, RightSubtreeType>, TailType> const &curr) {
+				return citr<RightSubtreeType, TailType>(&curr.expression()->right(), curr.tail());
+			}
+		};
+
+		template<class ElementType, class LeftSubtreeType>
+		struct _cnext<expression<ElementType, LeftSubtreeType, empty_expression> > {
+			template<class TailType>
+			constexpr static decltype(auto) bind(citr<expression<ElementType, LeftSubtreeType, empty_expression>, TailType> const &curr) {
+				return citr<LeftSubtreeType, TailType>(&curr.expression()->left(), curr.tail());
+			}
+		};
+
+		template<class ElementType>
+		struct _cnext<expression<ElementType, empty_expression, empty_expression> > {
+			template<class TailType>
+			constexpr static decltype(auto) bind(citr<expression<ElementType, empty_expression, empty_expression>, TailType> const &curr) {
 				return curr.tail();
 			}
 		};

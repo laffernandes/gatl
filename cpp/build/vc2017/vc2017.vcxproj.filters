@@ -183,13 +183,13 @@
     <ClInclude Include="..\..\include\ga\blade_exponential.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\expression_scalar.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\value_math.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\scalar_expression_math.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\expression_copy.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
   </ItemGroup>
