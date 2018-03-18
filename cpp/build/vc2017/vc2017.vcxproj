@@ -43,9 +43,9 @@
     <ClInclude Include="..\..\include\ga\expression.hpp" />
     <ClInclude Include="..\..\include\ga\expression_coefficient_type.hpp" />
     <ClInclude Include="..\..\include\ga\expression_insert.hpp" />
-    <ClInclude Include="..\..\include\ga\expression_is_scalar.hpp" />
     <ClInclude Include="..\..\include\ga\expression_iterator.hpp" />
     <ClInclude Include="..\..\include\ga\expression_ordered_iterator.hpp" />
+    <ClInclude Include="..\..\include\ga\expression_scalar.hpp" />
     <ClInclude Include="..\..\include\ga\geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\left_contraction.hpp" />
@@ -54,8 +54,8 @@
     <ClInclude Include="..\..\include\ga\reverse_norm.hpp" />
     <ClInclude Include="..\..\include\ga\right_contraction.hpp" />
     <ClInclude Include="..\..\include\ga\scalar_product.hpp" />
+    <ClInclude Include="..\..\include\ga\scalar_expression_math.hpp" />
     <ClInclude Include="..\..\include\ga\signed_metric.hpp" />
-    <ClInclude Include="..\..\include\ga\square_root.hpp" />
     <ClInclude Include="..\..\include\ga\take_grade.hpp" />
     <ClInclude Include="..\..\include\ga\involution.hpp" />
     <ClInclude Include="..\..\include\ga\metric.hpp" />
@@ -71,10 +71,9 @@
     <ClInclude Include="..\..\include\ga\undualization.hpp" />
     <ClInclude Include="..\..\include\ga\value_add.hpp" />
     <ClInclude Include="..\..\include\ga\value_div.hpp" />
-    <ClInclude Include="..\..\include\ga\value_exp.hpp" />
+    <ClInclude Include="..\..\include\ga\value_math.hpp" />
     <ClInclude Include="..\..\include\ga\value_mul.hpp" />
     <ClInclude Include="..\..\include\ga\value_neg.hpp" />
-    <ClInclude Include="..\..\include\ga\value_sqrt.hpp" />
     <ClInclude Include="..\..\include\ga\value_sub.hpp" />
     <ClInclude Include="..\..\include\ga\versor_inverse.hpp" />
     <ClInclude Include="..\..\include\ga\write.hpp" />

@@ -3,35 +3,39 @@
 
 namespace ga {
 
-	using std::exp;
-	using detail::exp;
+	template<class Type, class MetricType>
+	constexpr decltype(auto) exp(Type const &arg, metric<MetricType> const &) {
+		return exp(arg);
+	}
+
+	template<default_integral_t Value, class MetricType>
+	constexpr decltype(auto) exp(detail::cvalue<Value> const &, metric<MetricType> const &) {
+		return detail::exp(detail::cvalue<Value>());
+	}
+
+	template<class MetricType>
+	constexpr decltype(auto) exp(detail::empty_expression const &, metric<MetricType> const &) {
+		return exp(detail::empty_expression());
+	}
 
 	template<class ElementType, class LeftSubtreeType, class RightSubtreeType, class MetricType>
 	decltype(auto) exp(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg, metric<MetricType> const &mtr) {
 		//TODO lazy
-		auto signed_alpha_sqr = native(gp(arg, arg, mtr));
-		if (abs(signed_alpha_sqr) <= tol) {
-			return static_cast<decltype(signed_alpha_sqr)>(1) + arg;
+		//TODO Possible return issues.
+		auto signed_alpha_sqr = scp(arg, arg, mtr);
+		auto native_signed_alpha_sqr = native(signed_alpha_sqr);
+		if (native_signed_alpha_sqr == 0) {
+			return cvalue<1>() + arg;
 		}
 		else {
 			auto alpha = sqrt(abs(signed_alpha_sqr));
-			if (signed_alpha_sqr > 0) {
+			if (native_signed_alpha_sqr > 0) {
 				return cosh(alpha) + (arg * (sinh(alpha) / alpha));
 			}
 			else {
 				return cos(alpha) + (arg * (sin(alpha) / alpha));
 			}
 		}
-	}
-
-	template<class MetricType>
-	constexpr decltype(auto) exp(detail::empty_expression const &, metric<MetricType> const &) {
-		return detail::make_expression(detail::cvalue<1>(), detail::empty_expression(), detail::empty_expression());
-	}
-
-	template<default_integral_t Value, class MetricType>
-	constexpr decltype(auto) exp(detail::cvalue<Value> const &, metric<MetricType> const &) {
-		return detail::exp(detail::cvalue<Value>());
 	}
 
 }

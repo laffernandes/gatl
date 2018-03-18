@@ -48,13 +48,12 @@ namespace ga {
 #include "ga/compile_time_ordering.hpp"
 
 #include "ga/compile_time_value.hpp"
+#include "ga/value_math.hpp"
 #include "ga/value_neg.hpp"
 #include "ga/value_mul.hpp"
 #include "ga/value_div.hpp"
 #include "ga/value_add.hpp"
 #include "ga/value_sub.hpp"
-#include "ga/value_exp.hpp"
-#include "ga/value_sqrt.hpp"
 
 #include "ga/compile_time_basis_blade.hpp"
 #include "ga/dynamic_basis_blade.hpp"
@@ -80,7 +79,8 @@ namespace ga {
 #include "ga/expression_insert.hpp"
 #include "ga/expression_iterator.hpp"
 #include "ga/expression_ordered_iterator.hpp"
-#include "ga/expression_is_scalar.hpp"
+
+#include "ga/native.hpp"
 
 #include "ga/unary_minus.hpp"
 #include "ga/unary_plus.hpp"
@@ -102,10 +102,8 @@ namespace ga {
 
 #include "ga/inverse_geometric_product.hpp"
 
-#include "ga/native.hpp"
-
+#include "ga/scalar_expression_math.hpp"
 #include "ga/blade_exponential.hpp"
-#include "ga/square_root.hpp"
 
 #include "ga/reverse_norm.hpp"
 #include "ga/versor_inverse.hpp"

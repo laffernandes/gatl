@@ -73,7 +73,7 @@ namespace ga {
 
 template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
 constexpr decltype(auto) operator*(ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
-	static_assert(ga::detail::is_scalar_expression<ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> >::value || ga::detail::is_scalar_expression<ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> >::value, "At least one of the arguments must be a scalar value.");
+	static_assert(ga::detail::may_cast_to_native<ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> >::value || ga::detail::may_cast_to_native<ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> >::value, "At least one of the arguments must be a scalar value.");
 	return ga::gp(lhs, rhs, ga::euclidean_metric_t());
 }
 

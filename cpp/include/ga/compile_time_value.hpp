@@ -17,6 +17,11 @@ namespace ga {
 				return Value;
 			}
 
+			template<class Type>
+			constexpr operator Type() const {
+				return Value;
+			}
+
 			constexpr static value_type value() {
 				return Value;
 			}

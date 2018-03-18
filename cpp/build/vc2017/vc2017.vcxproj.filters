@@ -174,12 +174,6 @@
     <ClInclude Include="..\..\include\ga\reverse_norm.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\square_root.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\value_sqrt.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
@@ -189,10 +183,13 @@
     <ClInclude Include="..\..\include\ga\blade_exponential.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\value_exp.hpp">
+    <ClInclude Include="..\..\include\ga\expression_scalar.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\expression_is_scalar.hpp">
+    <ClInclude Include="..\..\include\ga\value_math.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\scalar_expression_math.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
   </ItemGroup>

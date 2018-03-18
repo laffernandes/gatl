@@ -160,7 +160,7 @@ namespace ga {
 			return component<CoefficientType, BasisBladeType>(coefficient, basis_blade);
 		}
 
-		//TODO Posso? Simplicaria inv()
+		//TODO Posso? Afeta element_graded_product. Remover usos de dbasis_blade<default_bitset_t(1)>.
 		/*
 		template<class CoefficientType>
 		constexpr decltype(auto) make_component(CoefficientType const &coefficient, dbasis_blade<default_bitset_t(1)> const &basis_blade) {
