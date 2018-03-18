@@ -260,7 +260,6 @@ namespace ga {
 				return *this;
 			}
 
-
 			using _super_for_element::element;
 			using _super_for_left_subtree::left;
 			using _super_for_right_subtree::right;
@@ -290,6 +289,11 @@ namespace ga {
 			constexpr expression(expression const &) = default;
 			constexpr expression(expression &&) = default;
 
+			template<class OtherElementType, class OtherLeftSubtreeType, class OtherRightSubtreeType>
+			constexpr expression(expression<OtherElementType, OtherLeftSubtreeType, OtherRightSubtreeType> const &other) {
+				copy(other, *this);
+			}
+
 			constexpr expression(element_type const &element, left_type const &, right_type const &right) :
 				_super_for_element(element),
 				_super_for_right_subtree(right) {
@@ -297,6 +301,12 @@ namespace ga {
 
 			constexpr expression& operator=(expression const &) = default;
 			constexpr expression& operator=(expression &&) = default;
+
+			template<class OtherElementType, class OtherLeftSubtreeType, class OtherRightSubtreeType>
+			constexpr expression& operator=(expression<OtherElementType, OtherLeftSubtreeType, OtherRightSubtreeType> const &other) {
+				copy(other, *this);
+				return *this;
+			}
 
 			using _super_for_element::element;
 			using _super_for_right_subtree::right;
@@ -330,6 +340,11 @@ namespace ga {
 			constexpr expression(expression const &) = default;
 			constexpr expression(expression &&) = default;
 
+			template<class OtherElementType, class OtherLeftSubtreeType, class OtherRightSubtreeType>
+			constexpr expression(expression<OtherElementType, OtherLeftSubtreeType, OtherRightSubtreeType> const &other) {
+				copy(other, *this);
+			}
+
 			constexpr expression(element_type const &element, left_type const &left, right_type const &) :
 				_super_for_element(element),
 				_super_for_left_subtree(left) {
@@ -337,6 +352,12 @@ namespace ga {
 
 			constexpr expression& operator=(expression const &) = default;
 			constexpr expression& operator=(expression &&) = default;
+
+			template<class OtherElementType, class OtherLeftSubtreeType, class OtherRightSubtreeType>
+			constexpr expression& operator=(expression<OtherElementType, OtherLeftSubtreeType, OtherRightSubtreeType> const &other) {
+				copy(other, *this);
+				return *this;
+			}
 
 			using _super_for_element::element;
 			using _super_for_left_subtree::left;
@@ -368,12 +389,23 @@ namespace ga {
 			constexpr expression(expression const &) = default;
 			constexpr expression(expression &&) = default;
 
+			template<class OtherElementType, class OtherLeftSubtreeType, class OtherRightSubtreeType>
+			constexpr expression(expression<OtherElementType, OtherLeftSubtreeType, OtherRightSubtreeType> const &other) {
+				copy(other, *this);
+			}
+
 			constexpr expression(element_type const &element, left_type const &, right_type const &) :
 				_super_for_element(element) {
 			}
 
 			constexpr expression& operator=(expression const &) = default;
 			constexpr expression& operator=(expression &&) = default;
+
+			template<class OtherElementType, class OtherLeftSubtreeType, class OtherRightSubtreeType>
+			constexpr expression& operator=(expression<OtherElementType, OtherLeftSubtreeType, OtherRightSubtreeType> const &other) {
+				copy(other, *this);
+				return *this;
+			}
 
 			using _super_for_element::element;
 
