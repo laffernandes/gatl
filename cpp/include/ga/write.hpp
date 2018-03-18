@@ -72,12 +72,20 @@ namespace ga {
 
 		template<class CoefficientType, default_bitset_t PossibleGrades>
 		void write_element(std::ostream &os, components<CoefficientType, PossibleGrades> const &rhs, bool &first) {
+			if (first) {
+				os << "[";
+			}
+			else {
+				os << " + [";
+				first = true;
+			}
 			for (auto itr = rhs.begin(), end = rhs.end(); itr != end; ++itr) {
 				write_coefficient(os, itr->second, first);
 				os << " * ";
 				write_basis_blade(os, itr->first);
 				first = false;
 			}
+			os << "]";
 		}
 
 		struct _write_curr;

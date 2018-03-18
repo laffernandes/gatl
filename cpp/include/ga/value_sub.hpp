@@ -17,7 +17,7 @@ namespace ga {
 
 		template<default_integral_t LeftValue, class RightValueType>
 		constexpr decltype(auto) sub(cvalue<LeftValue> const &, RightValueType const &rhs) {
-			return LeftValue - rhs; //TODO lazy
+			return (LeftValue - rhs); //TODO lazy
 		}
 
 		template<default_integral_t RightValue>
@@ -36,7 +36,7 @@ namespace ga {
 
 		template<class LeftValueType, default_integral_t RightValue>
 		constexpr decltype(auto) sub(LeftValueType const &lhs, cvalue<RightValue> const &) {
-			return lhs - RightValue; //TODO lazy
+			return (lhs - RightValue); //TODO lazy
 		}
 
 		template<class LeftValueType>

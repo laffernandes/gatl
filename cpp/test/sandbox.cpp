@@ -360,6 +360,18 @@ int main() {
 	auto m = 1 + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3);
 	std::cout << m << std::endl;
 
+	auto v1 = c<5> * e(1) + c<5> * e(2);
+	auto s1 = scp(v1, v1, euclidean_metric_t());
+	std::cout << "v1 = " << v1 << std::endl;
+	std::cout << "s1 = " << s1 << std::endl;
+	std::cout << std::endl;
+
+	auto v2 = 10.0 * e(1) + 10.0 * e(2);
+	auto s2 = scp(v2, v2, euclidean_metric_t());
+	std::cout << "v2 = " << v2 << std::endl;
+	std::cout << "s2 = " << s2 << std::endl;
+	std::cout << std::endl;
+
 	return EXIT_SUCCESS;
 }
 /*/

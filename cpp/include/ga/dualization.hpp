@@ -5,12 +5,12 @@ namespace ga {
 
 	template<class Type, class PseudoscalarType, class MetricType>
 	constexpr decltype(auto) dual(Type const &arg, PseudoscalarType const &pseudoscalar, metric<MetricType> const &mtr) {
-		return gp(arg, inv(pseudoscalar, mtr), mtr);
+		return lcont(arg, inv(pseudoscalar, mtr), mtr);
 	}
 
 	template<class Type, class PseudoscalarType, class MetricType>
 	constexpr decltype(auto) undual(Type const &arg, PseudoscalarType const &pseudoscalar, metric<MetricType> const &mtr) {
-		return gp(arg, pseudoscalar, mtr);
+		return lcont(arg, pseudoscalar, mtr);
 	}
 
 }

@@ -13,33 +13,18 @@ namespace ga {
 		struct centry : detail::metric_traits<signed_metric>::template centry<Row, Col> {
 		};
 
-		template<default_integral_t Index>
-		struct cdiagonal_entry : detail::metric_traits<signed_metric>::template cdiagonal_entry<Index> {
-		};
-
 		template<default_bitset_t BasisBlade>
 		struct cmetric_factor : detail::metric_traits<signed_metric>::template cmetric_factor<BasisBlade> {
 		};
 
 		constexpr static entry_type entry(index_t const row, index_t const col) {
-			return static_cast<entry_type>(row == col ? diagonal_entry(row) : 0);
-		}
-
-		constexpr static entry_type diagonal_entry(index_t const index) {
-			return static_cast<entry_type>(index <= (P + Q) ? (index <= P ? (index > 0 ? +1 : 0) : -1) : 0);
+			return static_cast<entry_type>(row == col && 0 < row && row <= (P + Q) ? (row <= P ? 1 : -1) : 0);
 		}
 
 		constexpr static decltype(auto) metric_factor(default_bitset_t arg) {
-			index_t index = 0;
-			default_integral_t result = static_cast<default_integral_t>(1);
-			while (arg != default_bitset_t(0)) {
-				if ((arg & default_bitset_t(1)) != default_bitset_t(0)) {
-					result *= diagonal_entry(index);
-				}
-				arg >>= 1;
-				index++;
-			}
-			return static_cast<entry_type>(result);
+			constexpr static default_bitset_t zero = ~(((default_bitset_t(1) << (P + Q + 1)) - 1) & ~default_bitset_t(1));
+			constexpr static default_bitset_t minus = (((default_bitset_t(1) << (P + 1)) - 1) ^ ((default_bitset_t(1) << (P + Q + 1)) - 1)) & ~default_bitset_t(1);
+			return static_cast<entry_type>((arg & zero) != default_bitset_t(0) ? 0 : ((detail::ones(arg & minus) & default_bitset_t(1)) == 0 ? 1 : -1));
 		}
 	};
 
@@ -54,13 +39,7 @@ namespace ga {
 			template<default_integral_t Row, default_integral_t Col>
 			struct centry {
 				static_assert(Row > 0 && Col > 0, "Positive indices expected.");
-				constexpr static auto value = cvalue<Row == Col ? cdiagonal_entry<Row>::value : 0>();
-			};
-
-			template<default_integral_t Index>
-			struct cdiagonal_entry {
-				static_assert(Index > 0, "Positive index expected.");
-				constexpr static auto value = cvalue<Index <= (P + Q) ? (Index <= P ? +1 : -1) : 0>();
+				constexpr static auto value = cvalue<(Row == Col && 0 < Row && Row <= (P + Q) ? (Row <= P ? 1 : -1) : 0)>();
 			};
 
 			template<default_bitset_t BasisBlade>
@@ -73,15 +52,11 @@ namespace ga {
 			public:
 
 				static_assert((BasisBlade & default_bitset_t(1)) == 0, "Positive indices expected.");
-				constexpr static auto value = cvalue<(BasisBlade & zero) != default_bitset_t(0) ? 0 : ((_basis_blade_grade<cbasis_blade<BasisBlade & minus> >::value & 1) == 0 ? 1: -1)>();
+				constexpr static auto value = cvalue<(BasisBlade & zero) != default_bitset_t(0) ? 0 : ((_ones<BasisBlade & minus>::value & default_bitset_t(1)) == 0 ? 1: -1)>();
 			};
 
 			constexpr static decltype(auto) call_entry(signed_metric<P, Q, EntryType> const *, index_t const row, index_t const col) {
 				return signed_metric<P, Q, EntryType>::entry(row, col);
-			}
-
-			constexpr static decltype(auto) call_diagonal_entry(signed_metric<P, Q, EntryType> const *, index_t const index) {
-				return signed_metric<P, Q, EntryType>::diagonal_entry(index);
 			}
 
 			constexpr static decltype(auto) call_metric_factor(signed_metric<P, Q, EntryType> const *, default_bitset_t const arg) {

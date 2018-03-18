@@ -14,6 +14,11 @@ namespace ga {
 	}
 
 	template<class CoefficientType, class MetricType>
+	constexpr decltype(auto) inv(detail::expression<detail::component<CoefficientType, detail::dbasis_blade<default_bitset_t(1)> >, detail::empty_expression, detail::empty_expression> const &arg, metric<MetricType> const &) {
+		return detail::div(detail::cvalue<1>(), arg.element().coefficient());
+	}
+
+	template<class CoefficientType, class MetricType>
 	constexpr decltype(auto) inv(detail::expression<detail::components<CoefficientType, default_bitset_t(1)>, detail::empty_expression, detail::empty_expression> const &arg, metric<MetricType> const &) {
 		return detail::div(detail::cvalue<1>(), arg.element().begin()->second);
 	}
@@ -24,7 +29,7 @@ namespace ga {
 	}
 
 	template<class MetricType>
-	detail::empty_expression inv(detail::empty_expression const &, metric<MetricType> const &) = delete;
+	constexpr decltype(auto) inv(detail::empty_expression const &, metric<MetricType> const &) = delete;
 
 }
 

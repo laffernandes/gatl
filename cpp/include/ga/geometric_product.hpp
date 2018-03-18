@@ -17,7 +17,7 @@ namespace ga {
 			private:
 
 				constexpr static grade_t min_grade = LeftGrade <= RightGrade ? (RightGrade - LeftGrade) : (LeftGrade - RightGrade);
-				constexpr static grade_t max_grade = (LeftGrade + RightGrade) < std::numeric_limits<default_bitset_t>::digits ? (LeftGrade + RightGrade) : std::numeric_limits<default_bitset_t>::digits;
+				constexpr static grade_t max_grade = (LeftGrade + RightGrade) < std::numeric_limits<default_bitset_t>::digits ? (LeftGrade + RightGrade) : (std::numeric_limits<default_bitset_t>::digits - 1);
 
 			public:
 
@@ -69,6 +69,12 @@ namespace ga {
 		return detail::graded_product(detail::begin(lhs), detail::begin(rhs), mtr, detail::gp_func());
 	}
 
+}
+
+template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
+constexpr decltype(auto) operator*(ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
+	static_assert(ga::detail::is_scalar_expression<ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> >::value || ga::detail::is_scalar_expression<ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> >::value, "At least one of the arguments must be a scalar value.");
+	return ga::gp(lhs, rhs, ga::euclidean_metric_t());
 }
 
 template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType>

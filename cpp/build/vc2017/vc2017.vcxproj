@@ -43,6 +43,7 @@
     <ClInclude Include="..\..\include\ga\expression.hpp" />
     <ClInclude Include="..\..\include\ga\expression_coefficient_type.hpp" />
     <ClInclude Include="..\..\include\ga\expression_insert.hpp" />
+    <ClInclude Include="..\..\include\ga\expression_is_scalar.hpp" />
     <ClInclude Include="..\..\include\ga\expression_iterator.hpp" />
     <ClInclude Include="..\..\include\ga\expression_ordered_iterator.hpp" />
     <ClInclude Include="..\..\include\ga\geometric_product.hpp" />

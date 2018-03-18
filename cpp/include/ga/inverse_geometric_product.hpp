@@ -15,6 +15,12 @@ namespace ga {
 
 }
 
+template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
+constexpr decltype(auto) operator/(ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
+	static_assert(ga::detail::is_scalar_expression<ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> >::value, "The right hand side argument must be a scalar value.");
+	return ga::igp(lhs, rhs, ga::euclidean_metric_t());
+}
+
 template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, ga::default_integral_t RightValue>
 constexpr decltype(auto) operator/(ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::detail::cvalue<RightValue> const &rhs) {
 	return ga::igp(lhs, rhs, ga::euclidean_metric_t());

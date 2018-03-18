@@ -41,9 +41,6 @@ namespace ga {
 	typedef std::uint32_t index_t;
 	typedef index_t ndims_t;
 
-	template<class BasisBladeType, class CofficientType>
-	using default_map_type = std::map<BasisBladeType, CofficientType>;
-
 }
 
 #include "ga/default_tolerance.hpp"
@@ -83,6 +80,7 @@ namespace ga {
 #include "ga/expression_insert.hpp"
 #include "ga/expression_iterator.hpp"
 #include "ga/expression_ordered_iterator.hpp"
+#include "ga/expression_is_scalar.hpp"
 
 #include "ga/unary_minus.hpp"
 #include "ga/unary_plus.hpp"

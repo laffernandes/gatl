@@ -54,7 +54,7 @@ namespace ga {
 
 		private:
 
-			default_map_type<basis_blade_type, coefficient_type> entries_;
+			std::map<basis_blade_type, coefficient_type> entries_;
 		};
 
 	}

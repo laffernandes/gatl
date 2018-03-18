@@ -29,7 +29,6 @@ namespace ga {
 
 }
 
-/*TODO Parei aqui!
 namespace std {
 
 	template<ga::default_integral_t LeftValue, class RightType>
@@ -50,6 +49,5 @@ namespace std {
 		typedef ga::detail::cvalue<Value> type;
 	};
 }
-*/
 
 #endif // __GA_COMPILE_TIME_VALUE_HPP__

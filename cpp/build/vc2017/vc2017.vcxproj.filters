@@ -192,6 +192,9 @@
     <ClInclude Include="..\..\include\ga\value_exp.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\ga\expression_is_scalar.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\sandbox.cpp">
