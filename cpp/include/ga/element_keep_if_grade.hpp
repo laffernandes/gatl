@@ -21,8 +21,8 @@ namespace ga {
 			}
 
 			template<default_bitset_t PossibleGrades>
-			struct maybe_eval {
-				constexpr static bool value = true;
+			struct eval_possible_grades {
+				constexpr static default_bitset_t value = PossibleGrades;
 			};
 
 			constexpr static bool compile_time_defined() {
@@ -48,8 +48,8 @@ namespace ga {
 			};
 
 			template<default_bitset_t PossibleGrades>
-			struct maybe_eval {
-				constexpr static bool value = (PossibleGrades & (default_bitset_t(1) << K)) != default_bitset_t(0);
+			struct eval_possible_grades {
+				constexpr static default_bitset_t value = PossibleGrades & (default_bitset_t(1) << K);
 			};
 
 			constexpr static bool compile_time_defined() {
@@ -64,44 +64,98 @@ namespace ga {
 			}
 		};
 
+		template<default_bitset_t ResultPossibleGrades>
 		struct _keep_if_grade_component_maybe_keep {
 			template<class CoefficientType, default_bitset_t BasisBlade, class KeepIfGradeFunc>
 			constexpr static decltype(auto) bind(component<CoefficientType, cbasis_blade<BasisBlade> > const &arg, KeepIfGradeFunc const &keep) {
 				//TODO lazy
-				return keep(basis_blade_grade(arg.basis_blade())) ? arg : make_component(static_cast<CoefficientType>(0), arg.basis_blade());
+				return keep(_basis_blade_grade<cbasis_blade<BasisBlade> >::value) ? arg : make_component(static_cast<CoefficientType>(0), cbasis_blade<BasisBlade>());
 			}
 
 			template<default_integral_t CoefficientValue, default_bitset_t BasisBlade, class KeepIfGradeFunc>
 			constexpr static decltype(auto) bind(component<cvalue<CoefficientValue>, cbasis_blade<BasisBlade> > const &arg, KeepIfGradeFunc const &keep) {
 				//TODO lazy
-				return make_component(keep(basis_blade_grade(arg.basis_blade())) ? CoefficientValue : static_cast<default_integral_t>(0), arg.basis_blade());
+				return make_component(keep(_basis_blade_grade<cbasis_blade<BasisBlade> >::value) ? CoefficientValue : static_cast<default_integral_t>(0), cbasis_blade<BasisBlade>());
 			}
 
 			template<class CoefficientType, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
 			constexpr static decltype(auto) bind(component<CoefficientType, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
 				//TODO lazy
-				return keep(basis_blade_grade(arg.basis_blade())) ? arg : make_component(static_cast<CoefficientType>(0), dbasis_blade<PossibleGrades>(0));
+				return make_component(keep(basis_blade_grade(arg.basis_blade())) ? arg.coefficient() : static_cast<CoefficientType>(0), dbasis_blade<ResultPossibleGrades>(arg.basis_blade().value()));
 			}
 
 			template<default_integral_t CoefficientValue, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
 			constexpr static decltype(auto) bind(component<cvalue<CoefficientValue>, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
 				//TODO lazy
-				return keep(basis_blade_grade(arg.basis_blade())) ? make_component(CoefficientValue, arg.basis_blade()) : make_component(static_cast<CoefficientType>(0), dbasis_blade<PossibleGrades>(0));
+				return make_component(keep(basis_blade_grade(arg.basis_blade())) ? CoefficientValue : static_cast<default_integral_t>(0), dbasis_blade<ResultPossibleGrades>(arg.basis_blade().value()));
 			}
 		};
 
+		//TODO Fazer o mesmo para pseudoscalar
+		template<>
+		struct _keep_if_grade_component_maybe_keep<default_bitset_t(1)> {
+			template<class CoefficientType, class KeepIfGradeFunc>
+			constexpr static decltype(auto) bind(component<CoefficientType, cbasis_blade<0> > const &arg, KeepIfGradeFunc const &keep) {
+				//TODO lazy
+				return keep(0) ? arg : make_component(static_cast<CoefficientType>(0), cbasis_blade<0>());
+			}
+
+			template<default_integral_t CoefficientValue, class KeepIfGradeFunc>
+			constexpr static decltype(auto) bind(component<cvalue<CoefficientValue>, cbasis_blade<0> > const &arg, KeepIfGradeFunc const &keep) {
+				//TODO lazy
+				return make_component(keep(0) ? CoefficientValue : static_cast<default_integral_t>(0), cbasis_blade<0>());
+			}
+
+			template<class CoefficientType, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
+			constexpr static decltype(auto) bind(component<CoefficientType, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
+				//TODO lazy
+				return make_component(keep(basis_blade_grade(arg.basis_blade())) ? arg.coefficient() : static_cast<CoefficientType>(0), cbasis_blade<0>());
+			}
+
+			template<default_integral_t CoefficientValue, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
+			constexpr static decltype(auto) bind(component<cvalue<CoefficientValue>, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
+				//TODO lazy
+				return make_component(keep(basis_blade_grade(arg.basis_blade())) ? CoefficientValue : static_cast<default_integral_t>(0), cbasis_blade<0>());
+			}
+		};
+
+		template<>
+		struct _keep_if_grade_component_maybe_keep<default_bitset_t(0)> : _keep_if_grade_element_make_zero {
+		};
+
+		template<default_bitset_t ResultPossibleGrades>
 		struct _keep_if_grade_components_maybe_keep {
 			template<class CoefficientType, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
 			constexpr static decltype(auto) bind(components<CoefficientType, PossibleGrades> const &arg, KeepIfGradeFunc const &keep) {
 				//TODO lazy
-				components<CoefficientType, PossibleGrades> result;
-				for (auto itr = arg.begin(), end = result.end(); itr != end; ++itr) {
-					if (keep(basis_blade_grade(itr->first.value()))) {
+				components<CoefficientType, ResultPossibleGrades> result;
+				for (auto itr = arg.begin(), end = arg.end(); itr != end; ++itr) {
+					if (keep(basis_blade_grade(itr->first))) {
 						result.insert(itr->first, itr->second);
 					}
 				}
 				return result;
 			}
+		};
+
+		//TODO Fazer o mesmo para pseudoscalar
+		template<>
+		struct _keep_if_grade_components_maybe_keep<default_bitset_t(1)> {
+			template<class CoefficientType, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
+			constexpr static decltype(auto) bind(components<CoefficientType, PossibleGrades> const &arg, KeepIfGradeFunc const &keep) {
+				//TODO lazy
+				auto itr = arg.find(dbasis_blade<PossibleGrades>(0));
+				if (itr != arg.end()) {
+					return make_component(itr->second, cbasis_blade<0>());
+				}
+				else {
+					return make_component(static_cast<CoefficientType>(0), cbasis_blade<0>());
+				}
+			}
+		};
+
+		template<>
+		struct _keep_if_grade_components_maybe_keep<default_bitset_t(0)> : _keep_if_grade_element_make_zero {
 		};
 
 		template<class BasisBladeType>
@@ -129,7 +183,7 @@ namespace ga {
 
 			template<class CoefficientType, class KeepIfGradeFunc>
 			constexpr static decltype(auto) bind(component<CoefficientType, cbasis_blade<BasisBlade> > const &arg, KeepIfGradeFunc const &keep) {
-				return std::conditional<KeepIfGradeFunc::compile_time_defined(), _compile_time_evaluation, _keep_if_grade_component_maybe_keep>::type::bind(arg, keep);
+				return std::conditional<KeepIfGradeFunc::compile_time_defined(), _compile_time_evaluation, _keep_if_grade_component_maybe_keep<KeepIfGradeFunc::template eval_possible_grades<cbasis_blade<BasisBlade>::possible_grades()>::value>>::type::bind(arg, keep);
 			}
 		};
 
@@ -137,7 +191,7 @@ namespace ga {
 		struct _keep_if_grade_component<dbasis_blade<PossibleGrades> > {
 			template<class CoefficientType, class KeepIfGradeFunc>
 			constexpr static decltype(auto) bind(component<CoefficientType, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
-				return std::conditional<KeepIfGradeFunc::template maybe_eval<PossibleGrades>::value, _keep_if_grade_component_maybe_keep, _keep_if_grade_element_make_zero>::type::bind(arg, keep);
+				return _keep_if_grade_component_maybe_keep<KeepIfGradeFunc::template eval_possible_grades<PossibleGrades>::value>::bind(arg, keep);
 			}
 		};
 
@@ -148,7 +202,7 @@ namespace ga {
 
 		template<class CoefficientType, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
 		constexpr static decltype(auto) keep_if_grade_element(components<CoefficientType, PossibleGrades> const &arg, KeepIfGradeFunc const &keep) {
-			return std::conditional<KeepIfGradeFunc::template maybe_eval<PossibleGrades>::value, _keep_if_grade_components_maybe_keep, _keep_if_grade_element_make_zero>::type::bind(arg, keep);
+			return _keep_if_grade_components_maybe_keep<KeepIfGradeFunc::template eval_possible_grades<PossibleGrades>::value>::bind(arg, keep);
 		}
 
 	}

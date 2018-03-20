@@ -42,7 +42,7 @@ namespace ga {
 					if ((rhs & 1) != 0) {
 						if (!first) os << "^";
 						else first = false;
-						os << "e" << ind;
+						os << "e" << (ind + 1);
 					}
 					rhs >>= 1;
 					++ind;

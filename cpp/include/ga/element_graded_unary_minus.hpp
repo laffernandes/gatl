@@ -69,8 +69,8 @@ namespace ga {
 			constexpr static decltype(auto) bind(components<CoefficientType, PossibleGrades> const &arg, SignChangeIfGradeFunc const &change) {
 				//TODO lazy
 				components<CoefficientType, PossibleGrades> result;
-				for (auto itr = arg.begin(), end = result.end(); itr != end; ++itr) {
-					if (change(basis_blade_grade(itr->first.value()))) {
+				for (auto itr = arg.begin(), end = arg.end(); itr != end; ++itr) {
+					if (change(basis_blade_grade(itr->first))) {
 						result.insert(itr->first, neg(itr->second));
 					}
 				}

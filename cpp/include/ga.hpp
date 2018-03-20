@@ -39,7 +39,7 @@ namespace ga {
 	typedef std::int32_t grade_t;
 
 	typedef std::uint32_t index_t;
-	typedef index_t ndims_t;
+	typedef std::uint32_t ndims_t;
 
 }
 
@@ -60,9 +60,11 @@ namespace ga {
 #include "ga/basis_blade_grade.hpp"
 #include "ga/basis_blade_ordering.hpp"
 
-#include "ga/metric.hpp"
-#include "ga/signed_metric.hpp"
-#include "ga/euclidean_metric.hpp"
+#include "ga/space.hpp"
+#include "ga/metric_space.hpp"
+#include "ga/orthogonal_metric_space.hpp"
+#include "ga/signed_metric_space.hpp"
+#include "ga/euclidean_metric_space.hpp"
 
 #include "ga/component.hpp"
 #include "ga/components.hpp"

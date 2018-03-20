@@ -16,7 +16,7 @@ namespace ga {
 
 	using detail::exp;
 
-	template<class MetricType>
+	template<class MetricSpaceType>
 	constexpr decltype(auto) exp(detail::empty_expression const &) {
 		return detail::make_expression(detail::make_component(detail::cvalue<1>(), detail::cbasis_blade<0>()), detail::empty_expression(), detail::empty_expression());
 	}

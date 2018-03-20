@@ -109,8 +109,8 @@ void test_op() {
 	std::cout << std::endl;
 }
 
-template<class MetricType>
-void test_scp(metric<MetricType> const &mtr, std::string const &name) {
+template<class MetricSpaceType>
+void test_scp(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
 	auto e1 =e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -136,8 +136,8 @@ void test_scp(metric<MetricType> const &mtr, std::string const &name) {
 	std::cout << std::endl;
 }
 
-template<class MetricType>
-void test_lcont(metric<MetricType> const &mtr, std::string const &name) {
+template<class MetricSpaceType>
+void test_lcont(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -166,8 +166,8 @@ void test_lcont(metric<MetricType> const &mtr, std::string const &name) {
 	std::cout << std::endl;
 }
 
-template<class MetricType>
-void test_rcont(metric<MetricType> const &mtr, std::string const &name) {
+template<class MetricSpaceType>
+void test_rcont(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -196,8 +196,8 @@ void test_rcont(metric<MetricType> const &mtr, std::string const &name) {
 	std::cout << std::endl;
 }
 
-template<class MetricType>
-void test_gp(metric<MetricType> const &mtr, std::string const &name) {
+template<class MetricSpaceType>
+void test_gp(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -277,52 +277,72 @@ void test_sign_change_operations() {
 	std::cout << std::endl;
 }
 
-template<class MetricType>
-void test_metric(metric<MetricType> const &mtr, std::string const &name) {
+template<class MetricSpaceType>
+void test_metric(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
 	std::cout << "--- test_metric(" << name << ")" << std::endl;
-	std::cout << "M(0, 0) = " << mtr.entry(0, 0) << std::endl;
-	std::cout << "M(1, 1) = " << mtr.entry(1, 1) << std::endl;
-	std::cout << "M(2, 2) = " << mtr.entry(2, 2) << std::endl;
-	std::cout << "M(3, 3) = " << mtr.entry(3, 3) << std::endl;
-	std::cout << "M(4, 4) = " << mtr.entry(4, 4) << std::endl;
-	std::cout << "M(5, 5) = " << mtr.entry(5, 5) << std::endl;
-	std::cout << "M(6, 6) = " << mtr.entry(6, 6) << std::endl;
-	std::cout << "M(7, 7) = " << mtr.entry(7, 7) << std::endl;
-	std::cout << "M(8, 8) = " << mtr.entry(8, 8) << std::endl;
+	//std::cout << "M(0, 0) = " << mtr.metric_entry(0, 0) << std::endl; // Must raise a runtime error for all metric spaces.
+	std::cout << "M(1, 1) = " << mtr.metric_entry(1, 1) << std::endl;
+	std::cout << "M(2, 2) = " << mtr.metric_entry(2, 2) << std::endl;
+	std::cout << "M(3, 3) = " << mtr.metric_entry(3, 3) << std::endl;
+	std::cout << "M(4, 4) = " << mtr.metric_entry(4, 4) << std::endl;
+	std::cout << "M(5, 5) = " << mtr.metric_entry(5, 5) << std::endl;
+	std::cout << "M(6, 6) = " << mtr.metric_entry(6, 6) << std::endl;
+	std::cout << "M(7, 7) = " << mtr.metric_entry(7, 7) << std::endl;
+	//std::cout << "M(8, 8) = " << mtr.metric_entry(8, 8) << std::endl; // Must raise a runtime error for all metric spaces.
 	std::cout << std::endl;
 
-	std::cout << "M(6, 5) = " << mtr.entry(6, 5) << std::endl;
+	std::cout << "M(6, 5) = " << mtr.metric_entry(6, 5) << std::endl;
 	std::cout << std::endl;
 
-	//std::cout << "M(<0>, <0>)" << metric<MetricType>::centry<0, 0>::value << std::endl; // Must raise a compiler error for signed_metric.
-	std::cout << "M(<1>, <1>) = " << metric<MetricType>::centry<1, 1>::value << std::endl;
-	std::cout << "M(<2>, <2>) = " << metric<MetricType>::centry<2, 2>::value << std::endl;
-	std::cout << "M(<3>, <3>) = " << metric<MetricType>::centry<3, 3>::value << std::endl;
-	std::cout << "M(<4>, <4>) = " << metric<MetricType>::centry<4, 4>::value << std::endl;
-	std::cout << "M(<5>, <5>) = " << metric<MetricType>::centry<5, 5>::value << std::endl;
-	std::cout << "M(<6>, <6>) = " << metric<MetricType>::centry<6, 6>::value << std::endl;
-	std::cout << "M(<7>, <7>) = " << metric<MetricType>::centry<7, 7>::value << std::endl;
-	std::cout << "M(<8>, <8>) = " << metric<MetricType>::centry<8, 8>::value << std::endl;
+	//std::cout << "M(<0>, <0>)" << metric_space<MetricSpaceType>::cmetric_entry<0, 0>::value << std::endl; // Must raise a compiler error for signed_metric_space.
+	std::cout << "M(<1>, <1>) = " << metric_space<MetricSpaceType>::cmetric_entry<1, 1>::value << std::endl;
+	std::cout << "M(<2>, <2>) = " << metric_space<MetricSpaceType>::cmetric_entry<2, 2>::value << std::endl;
+	std::cout << "M(<3>, <3>) = " << metric_space<MetricSpaceType>::cmetric_entry<3, 3>::value << std::endl;
+	std::cout << "M(<4>, <4>) = " << metric_space<MetricSpaceType>::cmetric_entry<4, 4>::value << std::endl;
+	std::cout << "M(<5>, <5>) = " << metric_space<MetricSpaceType>::cmetric_entry<5, 5>::value << std::endl;
+	std::cout << "M(<6>, <6>) = " << metric_space<MetricSpaceType>::cmetric_entry<6, 6>::value << std::endl;
+	std::cout << "M(<7>, <7>) = " << metric_space<MetricSpaceType>::cmetric_entry<7, 7>::value << std::endl;
+	//std::cout << "M(<8>, <8>) = " << metric_space<MetricSpaceType>::cmetric_entry<8, 8>::value << std::endl; // Must raise a compiler error for signed_metric_space.
 	std::cout << std::endl;
 
-	std::cout << "M(<6>, <5>) = " << metric<MetricType>::centry<6, 5>::value << std::endl;
+	std::cout << "M(<6>, <5>) = " << metric_space<MetricSpaceType>::cmetric_entry<6, 5>::value << std::endl;
 	std::cout << std::endl;
 
-	auto e1 = e(c<1>);
-	auto e2 = e(c<2>);
-	auto e3 = e(c<3>);
-	auto e4 = e(c<4>);
-	auto e5 = e(c<5>);
-	auto e6 = e(c<6>);
-	auto e7 = e(c<7>);
-	auto e8 = e(c<8>);
+	{
+		auto e1 = e(c<1>);
+		auto e2 = e(c<2>);
+		auto e3 = e(c<3>);
+		auto e4 = e(c<4>);
+		auto e5 = e(c<5>);
+		auto e6 = e(c<6>);
+		auto e7 = e(c<7>);
+		auto e8 = e(c<8>);
 
-	std::cout << "metric_factor(e1^e2) = " << metric<MetricType>::cmetric_factor<decltype(e1^e2)::element_type::basis_blade_type::value()>::value << std::endl;
-	std::cout << "metric_factor(e3^e5) = " << metric<MetricType>::cmetric_factor<decltype(e3^e5)::element_type::basis_blade_type::value()>::value << std::endl;
-	std::cout << "metric_factor(e5^e6) = " << metric<MetricType>::cmetric_factor<decltype(e5^e6)::element_type::basis_blade_type::value()>::value << std::endl;
-	std::cout << "metric_factor(e5^e6^e7) = " << metric<MetricType>::cmetric_factor<decltype(e5^e6^e7)::element_type::basis_blade_type::value()>::value << std::endl;
-	std::cout << "metric_factor(e5^e6^e7^e8) = " << metric<MetricType>::cmetric_factor<decltype(e5^e6^e7^e8)::element_type::basis_blade_type::value()>::value << std::endl;
-	std::cout << std::endl;
+		std::cout << "metric_factor<e1^e2>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e1^e2)::element_type::basis_blade_type::value()>::value << std::endl;
+		std::cout << "metric_factor<e3^e5>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e3^e5)::element_type::basis_blade_type::value()>::value << std::endl;
+		std::cout << "metric_factor<e5^e6>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e5^e6)::element_type::basis_blade_type::value()>::value << std::endl;
+		std::cout << "metric_factor<e5^e6^e7>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e5^e6^e7)::element_type::basis_blade_type::value()>::value << std::endl;
+		//std::cout << "metric_factor<e5^e6^e7^e8>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e5^e6^e7^e8)::element_type::basis_blade_type::value()>::value << std::endl; // Must raise a compiler error for signed_metric_space.
+		std::cout << std::endl;
+	}
+
+	{
+		auto e1 = e(c<1>);
+		auto e2 = e(c<2>);
+		auto e3 = e(c<3>);
+		auto e4 = e(c<4>);
+		auto e5 = e(c<5>);
+		auto e6 = e(c<6>);
+		auto e7 = e(c<7>);
+		auto e8 = e(c<8>);
+
+		std::cout << "metric_factor(e1^e2) = " << mtr.metric_factor((e1^e2).element().basis_blade().value()) << std::endl;
+		std::cout << "metric_factor(e3^e5) = " << mtr.metric_factor((e3^e5).element().basis_blade().value()) << std::endl;
+		std::cout << "metric_factor(e5^e6) = " << mtr.metric_factor((e5^e6).element().basis_blade().value()) << std::endl;
+		std::cout << "metric_factor(e5^e6^e7) = " << mtr.metric_factor((e5^e6^e7).element().basis_blade().value()) << std::endl;
+		//std::cout << "metric_factor(e5^e6^e7^e8) = " << mtr.metric_factor((e5^e6^e7^e8).element().basis_blade().value()) << std::endl; // Must raise a runtime error for signed_metric_space.
+		std::cout << std::endl;
+	}
 }
 
 int main() {
@@ -330,8 +350,8 @@ int main() {
 
 	test_make_scalarc();
 
-	test_metric(euclidean_metric_t(), "euclidean");
-	test_metric(signed_metric_t<3, 4>(), "signed<3, 4>");
+	test_metric(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
+	test_metric(signed_metric_space<3, 4>(), "signed<3, 4>");
 
 	test_make_e();
 	test_make_ec();
@@ -343,10 +363,10 @@ int main() {
 	test_minus();
 
 	test_op();
-	test_scp(euclidean_metric_t(), "euclidean");
-	test_lcont(euclidean_metric_t(), "euclidean");
-	test_rcont(euclidean_metric_t(), "euclidean");
-	test_gp(euclidean_metric_t(), "euclidean");
+	test_scp(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
+	test_lcont(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
+	test_rcont(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
+	test_gp(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
 
 	test_take_grade();
 
@@ -360,13 +380,13 @@ int main() {
 	std::cout << m << std::endl;
 
 	auto v1 = c<5> * e(1) + c<5> * e(2);
-	auto s1 = scp(v1, v1, euclidean_metric_t());
+	auto s1 = scp(v1, v1, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 	std::cout << "v1 = " << v1 << std::endl;
 	std::cout << "s1 = " << s1 << std::endl;
 	std::cout << std::endl;
 
 	auto v2 = 10.0 * e(1) + 10.0 * e(2);
-	auto s2 = scp(v2, v2, euclidean_metric_t());
+	auto s2 = scp(v2, v2, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 	std::cout << "v2 = " << v2 << std::endl;
 	std::cout << "s2 = " << s2 << std::endl;
 	std::cout << std::endl;
@@ -375,7 +395,9 @@ int main() {
 	auto e5 = e(5);
 	auto e6 = e(6);
 
-	auto r = gp(e1^e2^e3^e4, e4^e6, euclidean_metric_t());
+	//auto r = gp(e1^e2^e3^e4, e4^e6, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+	//
+	//lcont(e(c<1>)^e(c<2>), e(c<1>)^e(c<2>)^e(c<3>)^e(c<4>), signed_metric_space<2, 1>());
 
 	return EXIT_SUCCESS;
 }

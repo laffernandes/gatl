@@ -167,7 +167,7 @@ namespace ga {
 			}
 		};
 
-		template<class CoefficientType>
+		template<class CoefficientType, class BasisBladeType>
 		struct _insert_non_zero {
 			template<class ExpressionType, class ElementType>
 			constexpr static decltype(auto) bind(ExpressionType const &root, ElementType const &element) {
@@ -175,8 +175,24 @@ namespace ga {
 			}
 		};
 
+		template<class BasisBladeType>
+		struct _insert_non_zero<cvalue<0>, BasisBladeType> {
+			template<class ExpressionType, class ElementType>
+			constexpr static ExpressionType bind(ExpressionType const &root, ElementType const &) {
+				return root;
+			}
+		};
+
+		template<class CoefficientType>
+		struct _insert_non_zero<CoefficientType, dbasis_blade<default_bitset_t(0)> > {
+			template<class ExpressionType, class ElementType>
+			constexpr static ExpressionType bind(ExpressionType const &root, ElementType const &) {
+				return root;
+			}
+		};
+
 		template<>
-		struct _insert_non_zero<cvalue<0> > {
+		struct _insert_non_zero<cvalue<0>, dbasis_blade<default_bitset_t(0)> > {
 			template<class ExpressionType, class ElementType>
 			constexpr static ExpressionType bind(ExpressionType const &root, ElementType const &) {
 				return root;
@@ -185,7 +201,7 @@ namespace ga {
 
 		template<class ExpressionType, class ElementType>
 		constexpr decltype(auto) insert(ExpressionType const &root, ElementType const &element) {
-			return _insert_non_zero<typename ElementType::coefficient_type>::bind(root, element);
+			return _insert_non_zero<typename ElementType::coefficient_type, typename ElementType::basis_blade_type>::bind(root, element);
 		}
 
 	}

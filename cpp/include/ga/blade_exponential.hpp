@@ -3,23 +3,23 @@
 
 namespace ga {
 
-	template<class Type, class MetricType>
-	constexpr decltype(auto) exp(Type const &arg, metric<MetricType> const &) {
+	template<class Type, class MetricSpaceType>
+	constexpr decltype(auto) exp(Type const &arg, metric_space<MetricSpaceType> const &) {
 		return exp(arg);
 	}
 
-	template<default_integral_t Value, class MetricType>
-	constexpr decltype(auto) exp(detail::cvalue<Value> const &, metric<MetricType> const &) {
+	template<default_integral_t Value, class MetricSpaceType>
+	constexpr decltype(auto) exp(detail::cvalue<Value> const &, metric_space<MetricSpaceType> const &) {
 		return detail::exp(detail::cvalue<Value>());
 	}
 
-	template<class MetricType>
-	constexpr decltype(auto) exp(detail::empty_expression const &, metric<MetricType> const &) {
+	template<class MetricSpaceType>
+	constexpr decltype(auto) exp(detail::empty_expression const &, metric_space<MetricSpaceType> const &) {
 		return exp(detail::empty_expression());
 	}
 
-	template<class ElementType, class LeftSubtreeType, class RightSubtreeType, class MetricType>
-	decltype(auto) exp(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg, metric<MetricType> const &mtr) {
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType, class MetricSpaceType>
+	decltype(auto) exp(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg, metric_space<MetricSpaceType> const &mtr) {
 		//TODO lazy
 		//TODO Possible return issues.
 		auto signed_alpha_sqr = scp(arg, arg, mtr);

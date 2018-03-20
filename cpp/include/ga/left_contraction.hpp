@@ -45,20 +45,15 @@ namespace ga {
 				constexpr static bool value = (RightGrade - LeftGrade) == ResultGrade;
 			};
 
-			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
+			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades, ndims_t VectorSpaceDimension>
 			struct possible_grades : _iterate_left<LeftPossibleGrades, 0, RightPossibleGrades> {
-			};
-
-			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
-			struct maybe_eval {
-				constexpr static bool value = possible_grades<LeftPossibleGrades, RightPossibleGrades>::value != default_bitset_t(0);
 			};
 		};
 
 	}
 
-	template<class LeftType, class RightType, class MetricType>
-	constexpr decltype(auto) lcont(LeftType const &lhs, RightType const &rhs, metric<MetricType> const &mtr) {
+	template<class LeftType, class RightType, class MetricSpaceType>
+	constexpr decltype(auto) lcont(LeftType const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &mtr) {
 		return detail::graded_product(detail::begin(lhs), detail::begin(rhs), mtr, detail::lcont_func());
 	}
 

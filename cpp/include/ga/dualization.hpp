@@ -3,13 +3,13 @@
 
 namespace ga {
 
-	template<class Type, class PseudoscalarType, class MetricType>
-	constexpr decltype(auto) dual(Type const &arg, PseudoscalarType const &pseudoscalar, metric<MetricType> const &mtr) {
+	template<class Type, class PseudoscalarType, class MetricSpaceType>
+	constexpr decltype(auto) dual(Type const &arg, PseudoscalarType const &pseudoscalar, metric_space<MetricSpaceType> const &mtr) {
 		return lcont(arg, inv(pseudoscalar, mtr), mtr);
 	}
 
-	template<class Type, class PseudoscalarType, class MetricType>
-	constexpr decltype(auto) undual(Type const &arg, PseudoscalarType const &pseudoscalar, metric<MetricType> const &mtr) {
+	template<class Type, class PseudoscalarType, class MetricSpaceType>
+	constexpr decltype(auto) undual(Type const &arg, PseudoscalarType const &pseudoscalar, metric_space<MetricSpaceType> const &mtr) {
 		return lcont(arg, pseudoscalar, mtr);
 	}
 

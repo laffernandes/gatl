@@ -48,9 +48,6 @@
     <ClInclude Include="..\..\include\ga\expression_ordered_iterator.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\metric.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\write.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
@@ -105,13 +102,7 @@
     <ClInclude Include="..\..\include\ga\value_neg.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\euclidean_metric.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\basis_blade_grade.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\signed_metric.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\compile_time_basis_blade.hpp">
@@ -190,6 +181,21 @@
       <Filter>Header Files\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\expression_copy.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\metric_space.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\signed_metric_space.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\euclidean_metric_space.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\orthogonal_metric_space.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\space.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
   </ItemGroup>

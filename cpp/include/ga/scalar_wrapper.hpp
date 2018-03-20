@@ -60,82 +60,82 @@
 	\
 	template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
 	SPECIFIER decltype(auto) operator*(ga::detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &lhs, TYPE const &rhs) { \
-		return ga::gp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::gp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
 	SPECIFIER decltype(auto) operator*(TYPE const &lhs, ga::detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) { \
-		return ga::gp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::gp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	SPECIFIER decltype(auto) operator*(ga::detail::empty_expression const &lhs, TYPE const &rhs) { \
-		return ga::gp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::gp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	SPECIFIER decltype(auto) operator*(TYPE const &lhs, ga::detail::empty_expression const &rhs) { \
-		return ga::gp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::gp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<ga::default_integral_t Value> \
 	SPECIFIER decltype(auto) operator*(ga::detail::cvalue<Value> const &lhs, TYPE const &rhs) { \
-		return ga::gp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::gp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<ga::default_integral_t Value> \
 	SPECIFIER decltype(auto) operator*(TYPE const &lhs, ga::detail::cvalue<Value> const &rhs) { \
-		return ga::gp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::gp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
 	SPECIFIER decltype(auto) operator/(ga::detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &lhs, TYPE const &rhs) { \
-		return ga::igp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::igp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
 	SPECIFIER decltype(auto) operator/(TYPE const &lhs, ga::detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) { \
-		return ga::igp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::igp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	SPECIFIER decltype(auto) operator/(ga::detail::empty_expression const &lhs, TYPE const &rhs) { \
-		return ga::igp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::igp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<ga::default_integral_t Value> \
 	SPECIFIER decltype(auto) operator/(ga::detail::cvalue<Value> const &lhs, TYPE const &rhs) { \
-		return ga::igp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::igp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<ga::default_integral_t Value> \
 	SPECIFIER decltype(auto) operator/(TYPE const &lhs, ga::detail::cvalue<Value> const &rhs) { \
-		return ga::igp(lhs, rhs, ga::euclidean_metric_t()); \
+		return ga::igp(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
 	SPECIFIER decltype(auto) operator^(ga::detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &lhs, TYPE const &rhs) { \
-		return ga::op(lhs, rhs); \
+		return ga::op(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
 	SPECIFIER decltype(auto) operator^(TYPE const &lhs, ga::detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) { \
-		return ga::op(lhs, rhs); \
+		return ga::op(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	SPECIFIER decltype(auto) operator^(ga::detail::empty_expression const &lhs, TYPE const &rhs) { \
-		return ga::op(lhs, rhs); \
+		return ga::op(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	SPECIFIER decltype(auto) operator^(TYPE const &lhs, ga::detail::empty_expression const &rhs) { \
-		return ga::op(lhs, rhs); \
+		return ga::op(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<ga::default_integral_t Value> \
 	SPECIFIER decltype(auto) operator^(ga::detail::cvalue<Value> const &lhs, TYPE const &rhs) { \
-		return ga::op(lhs, rhs); \
+		return ga::op(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	} \
 	\
 	template<ga::default_integral_t Value> \
 	SPECIFIER decltype(auto) operator^(TYPE const &lhs, ga::detail::cvalue<Value> const &rhs) { \
-		return ga::op(lhs, rhs); \
+		return ga::op(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 	}
 
 GA_DECLARE_SCALAR_WRAPPER(std::int16_t, constexpr)
