@@ -25,6 +25,10 @@ namespace ga {
 		struct cmetric_factor : detail::metric_space_traits<signed_metric_space>::template cmetric_factor<BasisBlade> {
 		};
 
+		constexpr static decltype(auto) basis_vectors() {
+			return detail::cbasis_blade<detail::space_traits<signed_metric_space>::basis_vectors>();
+		}
+
 		constexpr static ndims_t vector_space_dimension() {
 			return P + Q;
 		}
@@ -68,6 +72,10 @@ namespace ga {
 		struct cmetric_factor : detail::metric_space_traits<signed_metric_space>::template cmetric_factor<BasisBlade> {
 		};
 
+		constexpr static decltype(auto) basis_vectors() {
+			return detail::cbasis_blade<detail::space_traits<signed_metric_space>::basis_vectors>();
+		}
+
 		constexpr static ndims_t vector_space_dimension() {
 			return P;
 		}
@@ -106,12 +114,16 @@ namespace ga {
 				constexpr static bool value = (PossibleGrades & ~(default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - (P + Q + 1)))) == 0;
 			};
 
-			constexpr static ndims_t call_vector_space_dimension(signed_metric_space<P, Q> const *) {
-				return signed_metric_space<P, Q>::vector_space_dimension();
+			constexpr static decltype(auto) call_basis_vectors(signed_metric_space<P, Q> const *space) {
+				return space->basis_vectors();
 			}
 
-			constexpr static bool call_includes_basis_blade(signed_metric_space<P, Q> const *, default_bitset_t const arg) {
-				return signed_metric_space<P, Q>::includes_basis_blade(arg);
+			constexpr static ndims_t call_vector_space_dimension(signed_metric_space<P, Q> const *space) {
+				return space->vector_space_dimension();
+			}
+
+			constexpr static bool call_includes_basis_blade(signed_metric_space<P, Q> const *space, default_bitset_t const arg) {
+				return space->includes_basis_blade(arg);
 			}
 		};
 
@@ -134,12 +146,12 @@ namespace ga {
 				constexpr static auto value = cvalue<(_ones<BasisBlade & negative>::value & 1) == 0 ? 1 : -1>();
 			};
 
-			constexpr static decltype(auto) call_metric_entry(signed_metric_space<P, Q> const *, index_t const row, index_t const col) {
-				return signed_metric_space<P, Q>::metric_entry(row, col);
+			constexpr static decltype(auto) call_metric_entry(signed_metric_space<P, Q> const *metric_space, index_t const row, index_t const col) {
+				return metric_space->metric_entry(row, col);
 			}
 
-			constexpr static decltype(auto) call_metric_factor(signed_metric_space<P, Q> const *, default_bitset_t const arg) {
-				return signed_metric_space<P, Q>::metric_factor(arg);
+			constexpr static decltype(auto) call_metric_factor(signed_metric_space<P, Q> const *metric_space, default_bitset_t const arg) {
+				return metric_space->metric_factor(arg);
 			}
 		};
 

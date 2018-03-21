@@ -9,8 +9,8 @@ namespace ga {
 		return detail::empty_expression();
 	}
 
-	template<class ElementType, class LeftSubtree, class RightSubtree>
-	constexpr decltype(auto) abs(detail::expression<ElementType, LeftSubtree, RightSubtree> const &arg) {
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+	constexpr decltype(auto) abs(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
 		return abs(native(arg));
 	}
 
@@ -21,8 +21,8 @@ namespace ga {
 		return detail::make_expression(detail::make_component(detail::cvalue<1>(), detail::cbasis_blade<0>()), detail::empty_expression(), detail::empty_expression());
 	}
 
-	template<class ElementType, class LeftSubtree, class RightSubtree>
-	constexpr decltype(auto) exp(detail::expression<ElementType, LeftSubtree, RightSubtree> const &arg) {
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType, typename std::enable_if<detail::may_cast_to_native<detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> >::value, int>::type = 0>
+	constexpr decltype(auto) exp(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
 		return exp(native(arg));
 	}
 
@@ -32,8 +32,8 @@ namespace ga {
 		return detail::empty_expression();
 	}
 
-	template<class ElementType, class LeftSubtree, class RightSubtree>
-	constexpr decltype(auto) sqrt(detail::expression<ElementType, LeftSubtree, RightSubtree> const &arg) {
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+	constexpr decltype(auto) sqrt(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
 		return sqrt(native(arg));
 	}
 
@@ -43,8 +43,8 @@ namespace ga {
 		return detail::make_expression(detail::make_component(detail::cvalue<1>(), detail::cbasis_blade<0>()), detail::empty_expression(), detail::empty_expression());
 	}
 
-	template<class ElementType, class LeftSubtree, class RightSubtree>
-	constexpr decltype(auto) cos(detail::expression<ElementType, LeftSubtree, RightSubtree> const &arg) {
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+	constexpr decltype(auto) cos(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
 		return cos(native(arg));
 	}
 
@@ -54,8 +54,8 @@ namespace ga {
 		return detail::empty_expression();
 	}
 
-	template<class ElementType, class LeftSubtree, class RightSubtree>
-	constexpr decltype(auto) sin(detail::expression<ElementType, LeftSubtree, RightSubtree> const &arg) {
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+	constexpr decltype(auto) sin(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
 		return sin(native(arg));
 	}
 
@@ -65,8 +65,8 @@ namespace ga {
 		return detail::empty_expression();
 	}
 
-	template<class ElementType, class LeftSubtree, class RightSubtree>
-	constexpr decltype(auto) tan(detail::expression<ElementType, LeftSubtree, RightSubtree> const &arg) {
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+	constexpr decltype(auto) tan(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
 		return tan(native(arg));
 	}
 
@@ -76,8 +76,8 @@ namespace ga {
 		return detail::make_expression(detail::make_component(detail::cvalue<1>(), detail::cbasis_blade<0>()), detail::empty_expression(), detail::empty_expression());
 	}
 
-	template<class ElementType, class LeftSubtree, class RightSubtree>
-	constexpr decltype(auto) cosh(detail::expression<ElementType, LeftSubtree, RightSubtree> const &arg) {
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+	constexpr decltype(auto) cosh(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
 		return cosh(native(arg));
 	}
 
@@ -87,8 +87,8 @@ namespace ga {
 		return detail::empty_expression();
 	}
 
-	template<class ElementType, class LeftSubtree, class RightSubtree>
-	constexpr decltype(auto) sinh(detail::expression<ElementType, LeftSubtree, RightSubtree> const &arg) {
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+	constexpr decltype(auto) sinh(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
 		return sinh(native(arg));
 	}
 
@@ -98,8 +98,8 @@ namespace ga {
 		return detail::empty_expression();
 	}
 
-	template<class ElementType, class LeftSubtree, class RightSubtree>
-	constexpr decltype(auto) tanh(detail::expression<ElementType, LeftSubtree, RightSubtree> const &arg) {
+	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+	constexpr decltype(auto) tanh(detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
 		return tanh(native(arg));
 	}
 

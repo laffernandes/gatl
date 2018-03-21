@@ -22,6 +22,10 @@ namespace ga {
 		struct cincludes_grades : detail::space_traits<SpaceType>::template cincludes_grades<PossibleGrades> {
 		};
 
+		constexpr decltype(auto) basis_vectors() const {
+			return detail::space_traits<SpaceType>::call_basis_vectors(static_cast<SpaceType const*>(this));
+		}
+
 		constexpr static ndims_t vector_space_dimension() {
 			return detail::space_traits<SpaceType>::call_vector_space_dimension(static_cast<SpaceType const*>(this));
 		}

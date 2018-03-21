@@ -32,6 +32,10 @@ namespace ga {
 		struct cmetric_factor : detail::metric_space_traits<MetricSpaceType>::template cmetric_factor<BasisBlade> {
 		};
 
+		constexpr decltype(auto) basis_vectors() const {
+			return detail::space_traits<MetricSpaceType>::call_basis_vectors(static_cast<MetricSpaceType const*>(this));
+		}
+
 		constexpr static ndims_t vector_space_dimension() {
 			return detail::space_traits<MetricSpaceType>::call_vector_space_dimension(static_cast<MetricSpaceType const*>(this));
 		}
@@ -60,6 +64,10 @@ namespace ga {
 			template<default_bitset_t PossibleGrades>
 			struct cincludes_grades : detail::space_traits<MetricSpaceType>::template cincludes_grades<PossibleGrades> {
 			};
+
+			constexpr static decltype(auto) call_basis_vectors(metric_space<MetricSpaceType> const *space) {
+				return space->basis_vectors();
+			}
 
 			constexpr static ndims_t call_vector_space_dimension(metric_space<MetricSpaceType> const *space) {
 				return space->vector_space_dimension();

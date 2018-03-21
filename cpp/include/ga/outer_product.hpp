@@ -60,9 +60,8 @@ namespace ga {
 
 }
 
-template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
+template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType, typename std::enable_if<ga::detail::may_cast_to_native<ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> >::value || ga::detail::may_cast_to_native<ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> >::value, int>::type = 0>
 constexpr decltype(auto) operator^(ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
-	//TODO static_assert(ga::detail::may_cast_to_native<ga::detail::expression<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> >::value || ga::detail::may_cast_to_native<ga::detail::expression<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> >::value, "At least one of the arguments must be a scalar value.");
 	return ga::op(lhs, rhs, ga::euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 }
 

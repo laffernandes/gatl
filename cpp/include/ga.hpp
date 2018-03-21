@@ -17,16 +17,16 @@
 
 namespace ga {
 
-	static_assert(std::is_integral<decltype((GA_MAX_BASIS_VECTOR_INDEX))>::value && 0 <= (GA_MAX_BASIS_VECTOR_INDEX) && (GA_MAX_BASIS_VECTOR_INDEX) <= 63, "GA_MAX_BASIS_VECTOR_INDEX must be an integer value between 0 and 63, inclusive.");
+	static_assert(std::is_integral<decltype((GA_MAX_BASIS_VECTOR_INDEX))>::value && 0 <= (GA_MAX_BASIS_VECTOR_INDEX) && (GA_MAX_BASIS_VECTOR_INDEX) <= 64, "GA_MAX_BASIS_VECTOR_INDEX must be an integer value between 1 and 64, inclusive.");
 
 	typedef std::conditional<
-		(GA_MAX_BASIS_VECTOR_INDEX) < 8,
+		(GA_MAX_BASIS_VECTOR_INDEX) <= 8,
 		std::uint8_t,
 		std::conditional<
-			(GA_MAX_BASIS_VECTOR_INDEX) < 16,
+			(GA_MAX_BASIS_VECTOR_INDEX) <= 16,
 			std::uint16_t,
 			std::conditional<
-				(GA_MAX_BASIS_VECTOR_INDEX) < 32,
+				(GA_MAX_BASIS_VECTOR_INDEX) <= 32,
 				std::uint32_t,
 				std::uint64_t
 			>::type
@@ -115,8 +115,17 @@ namespace ga {
 
 #include "ga/write.hpp"
 
+#include "ga/pseudoscalar.hpp"
 #include "ga/basis_vector.hpp"
-#include "ga/scalar_wrapper.hpp"
+
+#include "ga/macro_for_operators_overload.hpp"
+
+GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::int16_t, constexpr)
+GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::int32_t, constexpr)
+GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::int64_t, constexpr)
+
+GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::float_t, constexpr)
+GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::double_t, constexpr)
 
 //TODO Implement grade(arg, tol)
 //TODO Implement equal(lhs, rhs, tol)

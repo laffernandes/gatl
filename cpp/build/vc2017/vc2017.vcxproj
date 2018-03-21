@@ -20,6 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\ga.hpp" />
+    <ClInclude Include="..\..\include\ga1c.hpp" />
+    <ClInclude Include="..\..\include\ga1e.hpp" />
+    <ClInclude Include="..\..\include\ga1h.hpp" />
+    <ClInclude Include="..\..\include\ga2c.hpp" />
+    <ClInclude Include="..\..\include\ga2e.hpp" />
+    <ClInclude Include="..\..\include\ga2h.hpp" />
+    <ClInclude Include="..\..\include\ga3c.hpp" />
+    <ClInclude Include="..\..\include\ga3e.hpp" />
+    <ClInclude Include="..\..\include\ga3h.hpp" />
+    <ClInclude Include="..\..\include\ga4e.hpp" />
+    <ClInclude Include="..\..\include\ga4h.hpp" />
+    <ClInclude Include="..\..\include\ga5e.hpp" />
     <ClInclude Include="..\..\include\ga\basis_vector.hpp" />
     <ClInclude Include="..\..\include\ga\basis_blade_grade.hpp" />
     <ClInclude Include="..\..\include\ga\compile_time_basis_blade.hpp" />
@@ -49,9 +61,11 @@
     <ClInclude Include="..\..\include\ga\geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\left_contraction.hpp" />
+    <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp" />
     <ClInclude Include="..\..\include\ga\native.hpp" />
     <ClInclude Include="..\..\include\ga\orthogonal_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\outer_product.hpp" />
+    <ClInclude Include="..\..\include\ga\pseudoscalar.hpp" />
     <ClInclude Include="..\..\include\ga\reverse_norm.hpp" />
     <ClInclude Include="..\..\include\ga\right_contraction.hpp" />
     <ClInclude Include="..\..\include\ga\scalar_product.hpp" />
@@ -66,7 +80,7 @@
     <ClInclude Include="..\..\include\ga\binary_plus.hpp" />
     <ClInclude Include="..\..\include\ga\graded_product.hpp" />
     <ClInclude Include="..\..\include\ga\reversion.hpp" />
-    <ClInclude Include="..\..\include\ga\scalar_wrapper.hpp" />
+    <ClInclude Include="..\..\include\ga\macro_for_operators_overload.hpp" />
     <ClInclude Include="..\..\include\ga\graded_unary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\unary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\unary_plus.hpp" />

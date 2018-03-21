@@ -1,8 +1,8 @@
-#include <ga.hpp>
+/**/
+#include <ga3e.hpp>
 
 using namespace ga;
 
-/**/
 void test_make_cvalue() {
 	std::cout << "--- test_make_cvalue()" << std::endl;
 	constexpr auto x = c<5>;
@@ -84,6 +84,8 @@ void test_minus() {
 }
 
 void test_op() {
+	using namespace ga3e;
+
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -111,28 +113,34 @@ void test_op() {
 
 template<class MetricSpaceType>
 void test_scp(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
-	auto e1 =e(c<1>);
+	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
 	auto ei = e(1);
 	auto ej = e(2);
 	auto ek = e(3);
 
+	auto e1e2 = op(e1, e2, mtr);
+	auto e1e3 = op(e1, e3, mtr);
+	auto eiej = op(ei, ej, mtr);
+	auto eiek = op(ei, ek, mtr);
+	auto e1ej = op(e1, ej, mtr);
+
 	std::cout << "--- test_scp(" << name << ")" << std::endl;
 
-	std::cout << "scp(e1, e1^e2) = " << scp(e1, e1^e2, mtr) << std::endl;
-	std::cout << "scp(e1^e2, e1^e2) = " << scp(e1^e2, e1^e2, mtr) << std::endl;
-	std::cout << "scp(e1^e3, e1^e2) = " << scp(e1^e3, e1^e2, mtr) << std::endl;
+	std::cout << "scp(e1, e1^e2) = " << scp(e1, e1e2, mtr) << std::endl;
+	std::cout << "scp(e1^e2, e1^e2) = " << scp(e1e2, e1e2, mtr) << std::endl;
+	std::cout << "scp(e1^e3, e1^e2) = " << scp(e1e3, e1e2, mtr) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "scp(ei, ei^ej) = " << scp(ei, ei^ej, mtr) << std::endl;
-	std::cout << "scp(ei^ej, ei^ej) = " << scp(ei^ej, ei^ej, mtr) << std::endl;
-	std::cout << "scp(ei^ek, ei^ej) = " << scp(ei^ek, ei^ej, mtr) << std::endl;
+	std::cout << "scp(ei, ei^ej) = " << scp(ei, eiej, mtr) << std::endl;
+	std::cout << "scp(ei^ej, ei^ej) = " << scp(eiej, eiej, mtr) << std::endl;
+	std::cout << "scp(ei^ek, ei^ej) = " << scp(eiek, eiej, mtr) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "scp(e1, e1^ej) = " << scp(e1, e1^ej, mtr) << std::endl;
-	std::cout << "scp(e1^ej, e1^ej) = " << scp(e1^ej, e1^ej, mtr) << std::endl;
-	std::cout << "scp(e1^e3, e1^ej) = " << scp(e1^e3, e1^ej, mtr) << std::endl;
+	std::cout << "scp(e1, e1^ej) = " << scp(e1, e1ej, mtr) << std::endl;
+	std::cout << "scp(e1^ej, e1^ej) = " << scp(e1ej, e1ej, mtr) << std::endl;
+	std::cout << "scp(e1^e3, e1^ej) = " << scp(e1e3, e1ej, mtr) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -145,24 +153,30 @@ void test_lcont(metric_space<MetricSpaceType> const &mtr, std::string const &nam
 	auto ej = e(2);
 	auto ek = e(3);
 
+	auto e1e2 = op(e1, e2, mtr);
+	auto e1e3 = op(e1, e3, mtr);
+	auto eiej = op(ei, ej, mtr);
+	auto eiek = op(ei, ek, mtr);
+	auto e1ej = op(e1, ej, mtr);
+
 	std::cout << "--- test_lcont(" << name << ")" << std::endl;
 
-	std::cout << "lcont(e1, e1^e2) = " << lcont(e1, e1^e2, mtr) << std::endl;
-	std::cout << "lcont(e2, e1^e2) = " << lcont(e2, e1^e2, mtr) << std::endl;
-	std::cout << "lcont(e1^e2, e2) = " << lcont(e1^e2, e2, mtr) << std::endl;
-	std::cout << "lcont(e3, e1^e2) = " << lcont(e3, e1^e2, mtr) << std::endl;
+	std::cout << "lcont(e1, e1^e2) = " << lcont(e1, e1e2, mtr) << std::endl;
+	std::cout << "lcont(e2, e1^e2) = " << lcont(e2, e1e2, mtr) << std::endl;
+	std::cout << "lcont(e1^e2, e2) = " << lcont(e1e2, e2, mtr) << std::endl;
+	std::cout << "lcont(e3, e1^e2) = " << lcont(e3, e1e2, mtr) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "lcont(ei, ei^ej) = " << lcont(ei, ei^ej, mtr) << std::endl;
-	std::cout << "lcont(ej, ei^ej) = " << lcont(ej, ei^ej, mtr) << std::endl;
-	std::cout << "lcont(ei^ej, ej) = " << lcont(ei^ej, ej, mtr) << std::endl;
-	std::cout << "lcont(ek, ei^ej) = " << lcont(ek, ei^ej, mtr) << std::endl;
+	std::cout << "lcont(ei, ei^ej) = " << lcont(ei, eiej, mtr) << std::endl;
+	std::cout << "lcont(ej, ei^ej) = " << lcont(ej, eiej, mtr) << std::endl;
+	std::cout << "lcont(ei^ej, ej) = " << lcont(eiej, ej, mtr) << std::endl;
+	std::cout << "lcont(ek, ei^ej) = " << lcont(ek, eiej, mtr) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "lcont(e1, e1^ej) = " << lcont(e1, e1^ej, mtr) << std::endl;
-	std::cout << "lcont(ej, e1^ej) = " << lcont(ej, e1^ej, mtr) << std::endl;
-	std::cout << "lcont(e1^ej, ej) = " << lcont(e1^ej, ej, mtr) << std::endl;
-	std::cout << "lcont(e3, e1^ej) = " << lcont(e3, e1^ej, mtr) << std::endl;
+	std::cout << "lcont(e1, e1^ej) = " << lcont(e1, e1ej, mtr) << std::endl;
+	std::cout << "lcont(ej, e1^ej) = " << lcont(ej, e1ej, mtr) << std::endl;
+	std::cout << "lcont(e1^ej, ej) = " << lcont(e1ej, ej, mtr) << std::endl;
+	std::cout << "lcont(e3, e1^ej) = " << lcont(e3, e1ej, mtr) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -175,24 +189,30 @@ void test_rcont(metric_space<MetricSpaceType> const &mtr, std::string const &nam
 	auto ej = e(2);
 	auto ek = e(3);
 
+	auto e1e2 = op(e1, e2, mtr);
+	auto e1e3 = op(e1, e3, mtr);
+	auto eiej = op(ei, ej, mtr);
+	auto eiek = op(ei, ek, mtr);
+	auto e1ej = op(e1, ej, mtr);
+
 	std::cout << "--- test_rcont(" << name << ")" << std::endl;
 
-	std::cout << "rcont(e1^e2, e1) = " << rcont(e1^e2, e1, mtr) << std::endl;
-	std::cout << "rcont(e1^e2, e2) = " << rcont(e1^e2, e2, mtr) << std::endl;
-	std::cout << "rcont(e2, e1^e2) = " << rcont(e2, e1^e2, mtr) << std::endl;
-	std::cout << "rcont(e1^e2, e3) = " << rcont(e1^e2, e3, mtr) << std::endl;
+	std::cout << "rcont(e1^e2, e1) = " << rcont(e1e2, e1, mtr) << std::endl;
+	std::cout << "rcont(e1^e2, e2) = " << rcont(e1e2, e2, mtr) << std::endl;
+	std::cout << "rcont(e2, e1^e2) = " << rcont(e2, e1e2, mtr) << std::endl;
+	std::cout << "rcont(e1^e2, e3) = " << rcont(e1e2, e3, mtr) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "rcont(ei^ej, ei) = " << rcont(ei^ej, ei, mtr) << std::endl;
-	std::cout << "rcont(ei^ej, ej) = " << rcont(ei^ej, ej, mtr) << std::endl;
-	std::cout << "rcont(ej, ei^ej) = " << rcont(ej, ei^ej, mtr) << std::endl;
-	std::cout << "rcont(ei^ej, ek) = " << rcont(ei^ej, ek, mtr) << std::endl;
+	std::cout << "rcont(ei^ej, ei) = " << rcont(eiej, ei, mtr) << std::endl;
+	std::cout << "rcont(ei^ej, ej) = " << rcont(eiej, ej, mtr) << std::endl;
+	std::cout << "rcont(ej, ei^ej) = " << rcont(ej, eiej, mtr) << std::endl;
+	std::cout << "rcont(ei^ej, ek) = " << rcont(eiej, ek, mtr) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "rcont(e1^ej, e1) = " << rcont(e1^ej, e1, mtr) << std::endl;
-	std::cout << "rcont(e1^ej, ej) = " << rcont(e1^ej, ej, mtr) << std::endl;
-	std::cout << "rcont(ej, e1^ej) = " << rcont(ej, e1^ej, mtr) << std::endl;
-	std::cout << "rcont(e1^ej, e3) = " << rcont(e1^ej, e3, mtr) << std::endl;
+	std::cout << "rcont(e1^ej, e1) = " << rcont(e1ej, e1, mtr) << std::endl;
+	std::cout << "rcont(e1^ej, ej) = " << rcont(e1ej, ej, mtr) << std::endl;
+	std::cout << "rcont(ej, e1^ej) = " << rcont(ej, e1ej, mtr) << std::endl;
+	std::cout << "rcont(e1^ej, e3) = " << rcont(e1ej, e3, mtr) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -205,31 +225,36 @@ void test_gp(metric_space<MetricSpaceType> const &mtr, std::string const &name) 
 	auto ej = e(2);
 	auto ek = e(3);
 
+	auto e1e2 = op(e1, e2, mtr);
+	auto e1e3 = op(e1, e3, mtr);
+	auto eiej = op(ei, ej, mtr);
+	auto eiek = op(ei, ek, mtr);
+	auto e1ej = op(e1, ej, mtr);
+
 	std::cout << "--- test_gp(" << name << ")" << std::endl;
 
-	std::cout << "gp(e1, e1^e2) = " << gp(e1, e1^e2, mtr) << std::endl;
-	std::cout << "gp(e2, e1^e2) = " << gp(e2, e1^e2, mtr) << std::endl;
-	std::cout << "gp(e1^e2, e2) = " << gp(e1^e2, e2, mtr) << std::endl;
-	std::cout << "gp(e3, e1^e2) = " << gp(e3, e1^e2, mtr) << std::endl;
+	std::cout << "gp(e1, e1^e2) = " << gp(e1, e1e2, mtr) << std::endl;
+	std::cout << "gp(e2, e1^e2) = " << gp(e2, e1e2, mtr) << std::endl;
+	std::cout << "gp(e1^e2, e2) = " << gp(e1e2, e2, mtr) << std::endl;
+	std::cout << "gp(e3, e1^e2) = " << gp(e3, e1e2, mtr) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "gp(ei, ei^ej) = " << gp(ei, ei^ej, mtr) << std::endl;
-	std::cout << "gp(ej, ei^ej) = " << gp(ej, ei^ej, mtr) << std::endl;
-	std::cout << "gp(ei^ej, ej) = " << gp(ei^ej, ej, mtr) << std::endl;
-	std::cout << "gp(ek, ei^ej) = " << gp(ek, ei^ej, mtr) << std::endl;
+	std::cout << "gp(ei, ei^ej) = " << gp(ei, eiej, mtr) << std::endl;
+	std::cout << "gp(ej, ei^ej) = " << gp(ej, eiej, mtr) << std::endl;
+	std::cout << "gp(ei^ej, ej) = " << gp(eiej, ej, mtr) << std::endl;
+	std::cout << "gp(ek, ei^ej) = " << gp(ek, eiej, mtr) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "gp(e1, e1^ej) = " << gp(e1, e1^ej, mtr) << std::endl;
-	std::cout << "gp(ej, e1^ej) = " << gp(ej, e1^ej, mtr) << std::endl;
-	std::cout << "gp(e1^ej, ej) = " << gp(e1^ej, ej, mtr) << std::endl;
-	std::cout << "gp(e3, e1^ej) = " << gp(e3, e1^ej, mtr) << std::endl;
+	std::cout << "gp(e1, e1^ej) = " << gp(e1, e1ej, mtr) << std::endl;
+	std::cout << "gp(ej, e1^ej) = " << gp(ej, e1ej, mtr) << std::endl;
+	std::cout << "gp(e1^ej, ej) = " << gp(e1ej, ej, mtr) << std::endl;
+	std::cout << "gp(e3, e1^ej) = " << gp(e3, e1ej, mtr) << std::endl;
 	std::cout << std::endl;
 }
 
 void test_take_grade() {
-	auto e1 = e(c<1>);
-	auto e2 = e(c<2>);
-	auto e3 = e(c<3>);
+	using namespace ga3e;
+
 	auto ei = e(1);
 	auto ej = e(2);
 	auto ek = e(3);
@@ -268,12 +293,13 @@ void test_take_grade() {
 }
 
 void test_sign_change_operations() {
+	auto mtr = signed_metric_space<6, 1>();
 	auto e1 = e(c<1>); auto e2 = e(c<2>); auto e3 = e(c<3>); auto e4 = e(c<4>); auto e5 = e(c<5>); auto e6 = e(c<6>); auto e7 = e(c<7>);
 
 	std::cout << "--- test_sign_change_operations()" << std::endl;
-	std::cout << "+ - - + + - - + = " << conjugation(1 + (e1 ^ (1 + (e2 ^ (1 + (e3 ^ (1 + (e4 ^ (1 + (e5 ^ (1 + (e6 ^ (1 + e7))))))))))))) << std::endl;
-	std::cout << "+ - + - + - + - = " << involution(1 + (e1 ^ (1 + (e2 ^ (1 + (e3 ^ (1 + (e4 ^ (1 + (e5 ^ (1 + (e6 ^ (1 + e7))))))))))))) << std::endl;
-	std::cout << "+ + - - + + - - = " << reversion(1 + (e1 ^ (1 + (e2 ^ (1 + (e3 ^ (1 + (e4 ^ (1 + (e5 ^ (1 + (e6 ^ (1 + e7))))))))))))) << std::endl;
+	std::cout << "+ - - + + - - + = " << conjugation(1 + op(e1, (1 + op(e2, (1 + op(e3, (1 + op(e4, (1 + op(e5, (1 + op(e6, (1 + e7), mtr)), mtr)), mtr)), mtr)), mtr)), mtr)) << std::endl;
+	std::cout << "+ - + - + - + - = " << involution(1 + op(e1, (1 + op(e2, (1 + op(e3, (1 + op(e4, (1 + op(e5, (1 + op(e6, (1 + e7), mtr)), mtr)), mtr)), mtr)), mtr)), mtr)) << std::endl;
+	std::cout << "+ + - - + + - - = " << reversion(1 + op(e1, (1 + op(e2, (1 + op(e3, (1 + op(e4, (1 + op(e5, (1 + op(e6, (1 + e7), mtr)), mtr)), mtr)), mtr)), mtr)), mtr)) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -318,10 +344,10 @@ void test_metric(metric_space<MetricSpaceType> const &mtr, std::string const &na
 		auto e7 = e(c<7>);
 		auto e8 = e(c<8>);
 
-		std::cout << "metric_factor<e1^e2>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e1^e2)::element_type::basis_blade_type::value()>::value << std::endl;
-		std::cout << "metric_factor<e3^e5>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e3^e5)::element_type::basis_blade_type::value()>::value << std::endl;
-		std::cout << "metric_factor<e5^e6>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e5^e6)::element_type::basis_blade_type::value()>::value << std::endl;
-		std::cout << "metric_factor<e5^e6^e7>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e5^e6^e7)::element_type::basis_blade_type::value()>::value << std::endl;
+		std::cout << "metric_factor<e1^e2>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e1, e2, mtr))::element_type::basis_blade_type::value()>::value << std::endl;
+		std::cout << "metric_factor<e3^e5>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e3, e5, mtr))::element_type::basis_blade_type::value()>::value << std::endl;
+		std::cout << "metric_factor<e5^e6>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e5, e6, mtr))::element_type::basis_blade_type::value()>::value << std::endl;
+		std::cout << "metric_factor<e5^e6^e7>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(op(e5, e6, mtr), e7, mtr))::element_type::basis_blade_type::value()>::value << std::endl;
 		//std::cout << "metric_factor<e5^e6^e7^e8>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e5^e6^e7^e8)::element_type::basis_blade_type::value()>::value << std::endl; // Must raise a compiler error for signed_metric_space.
 		std::cout << std::endl;
 	}
@@ -336,13 +362,20 @@ void test_metric(metric_space<MetricSpaceType> const &mtr, std::string const &na
 		auto e7 = e(c<7>);
 		auto e8 = e(c<8>);
 
-		std::cout << "metric_factor(e1^e2) = " << mtr.metric_factor((e1^e2).element().basis_blade().value()) << std::endl;
-		std::cout << "metric_factor(e3^e5) = " << mtr.metric_factor((e3^e5).element().basis_blade().value()) << std::endl;
-		std::cout << "metric_factor(e5^e6) = " << mtr.metric_factor((e5^e6).element().basis_blade().value()) << std::endl;
-		std::cout << "metric_factor(e5^e6^e7) = " << mtr.metric_factor((e5^e6^e7).element().basis_blade().value()) << std::endl;
+		std::cout << "metric_factor(e1^e2) = " << mtr.metric_factor(op(e1, e2, mtr).element().basis_blade().value()) << std::endl;
+		std::cout << "metric_factor(e3^e5) = " << mtr.metric_factor(op(e3, e5, mtr).element().basis_blade().value()) << std::endl;
+		std::cout << "metric_factor(e5^e6) = " << mtr.metric_factor(op(e5, e6, mtr).element().basis_blade().value()) << std::endl;
+		std::cout << "metric_factor(e5^e6^e7) = " << mtr.metric_factor(op(op(e5, e6, mtr), e7, mtr).element().basis_blade().value()) << std::endl;
 		//std::cout << "metric_factor(e5^e6^e7^e8) = " << mtr.metric_factor((e5^e6^e7^e8).element().basis_blade().value()) << std::endl; // Must raise a runtime error for signed_metric_space.
 		std::cout << std::endl;
 	}
+}
+
+template<class SpaceType>
+void test_pseudoscalar(space<SpaceType> const &spc, std::string const &name) {
+	std::cout << "--- test_pseudoscalar(" << name << ")" << std::endl;
+	std::cout << "I = " << pseudoscalar(spc) << std::endl;
+	std::cout << std::endl;
 }
 
 int main() {
@@ -372,11 +405,15 @@ int main() {
 
 	test_sign_change_operations();
 
+	test_pseudoscalar(euclidean_metric_space<3>(), "euclidean<3>");
+	test_pseudoscalar(euclidean_metric_space<2>(), "euclidean<2>");
+	test_pseudoscalar(signed_metric_space<2, 1>(), "signed<2, 1>");
+
 	auto e1 = e(1);
 	auto e2 = e(2);
 	auto e3 = e(3);
 
-	auto m = 1 + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3);
+	auto m = 1 + e1 + e2 + e3 + op(e1, e2, euclidean_metric_space<3>()) + op(e1, e3, euclidean_metric_space<3>()) + op(e2, e3, euclidean_metric_space<3>()) + op(op(e1, e2, euclidean_metric_space<3>()), e3, euclidean_metric_space<3>());
 	std::cout << m << std::endl;
 
 	auto v1 = c<5> * e(1) + c<5> * e(2);
@@ -402,38 +439,38 @@ int main() {
 	return EXIT_SUCCESS;
 }
 /*/
-int main() {
-	auto e0 = e(c<0>);
-	auto e1 = e(c<1>);
-	auto e2 = e(c<2>);
-	auto e3 = e(c<3>);
-	auto e4 = e(c<4>);
-	auto e5 = e(c<5>);
-	auto e6 = e(c<6>);
-	auto e7 = e(c<7>);
-	auto e8 = e(c<8>);
+#include <ga5e.hpp>
 
-	double x, y, z, w;
+int main() {
+	using namespace ga5e;
+
+	double x, y, z;
 	std::cout << "x = "; std::cin >> x;
 	std::cout << "y = "; std::cin >> y;
 	std::cout << "z = "; std::cin >> z;
-	std::cout << "w = "; std::cin >> w;
 	std::cout << std::endl;
 
-	auto p = e0 + x * e1 + y * e2 + z * e3 + w * e4 + e5 + e6;
+	auto p = (x * e1 + y * e2 + z * e3 + e4) ^ e5;
 	std::cout << "p = " << p << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "sizeof(empty) = " << sizeof(detail::empty_expression) << std::endl;
+	std::cout << "sizeof(empty) = " << sizeof(ga::detail::empty_expression) << std::endl;
 	std::cout << "sizeof(x) = " << sizeof(decltype(x)) << std::endl;
 	std::cout << "sizeof(e1) = " << sizeof(decltype(e1)) << std::endl;
 	std::cout << "sizeof(p) = " << sizeof(decltype(p)) << std::endl;
+	std::cout << std::endl;
 
-	auto itr = detail::begin(p);
-	auto oitr = detail::obegin(p);
+	auto itr = ga::detail::begin(p);
+	auto oitr = ga::detail::obegin(p);
 
 	std::cout << "sizeof(itr) = " << sizeof(decltype(itr)) << std::endl;
 	std::cout << "sizeof(oitr) = " << sizeof(decltype(oitr)) << std::endl;
+	std::cout << std::endl;
+
+	auto r = gp(p, e3);
+	std::cout << "gp(p, e3) = " << r << std::endl;
+	std::cout << "sizeof(gp(p, e3)) = " << sizeof(decltype(r)) << std::endl;
+	std::cout << std::endl;
 
 	return EXIT_SUCCESS;
 }

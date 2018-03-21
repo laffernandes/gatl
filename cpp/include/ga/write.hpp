@@ -112,24 +112,24 @@ namespace ga {
 
 	}
 
-	template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-	std::ostream & operator<<(std::ostream &os, detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) {
-		bool first = true;
-		detail::write(os, detail::obegin(rhs), first);
-		return os;
-	}
+}
 
-	std::ostream & operator<<(std::ostream &os, detail::empty_expression const &) {
-		detail::write_coefficient(os, detail::cvalue<0>(), true);
-		return os;
-	}
+template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+std::ostream & operator<<(std::ostream &os, ga::detail::expression<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) {
+	bool first = true;
+	ga::detail::write(os, ga::detail::obegin(rhs), first);
+	return os;
+}
 
-	template<ga::default_integral_t Value>
-	std::ostream & operator<<(std::ostream &os, detail::cvalue<Value> const &rhs) {
-		detail::write_coefficient(os, rhs, true);
-		return os;
-	}
+std::ostream & operator<<(std::ostream &os, ga::detail::empty_expression const &) {
+	ga::detail::write_coefficient(os, ga::detail::cvalue<0>(), true);
+	return os;
+}
 
+template<ga::default_integral_t Value>
+std::ostream & operator<<(std::ostream &os, ga::detail::cvalue<Value> const &rhs) {
+	ga::detail::write_coefficient(os, rhs, true);
+	return os;
 }
 
 #endif // __GA_WRITE_HPP__
