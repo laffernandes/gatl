@@ -4,7 +4,7 @@
 #define GA_SIGNED_ALGEBRA_OVERLOAD(NAMESPACE_MNEMONIC, P, Q) \
 	namespace NAMESPACE_MNEMONIC { \
 		\
-		constexpr ga::signed_metric_space<P, Q> space; \
+		static ga::signed_metric_space<P, Q> const space; \
 		\
 		using ga::grade_t; \
 		using ga::index_t; \

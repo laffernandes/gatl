@@ -8,10 +8,10 @@ GA_SIGNED_ALGEBRA_OVERLOAD(ga2e, 2, 0)
 
 namespace ga2e {
 
-	constexpr auto e1 = e(c<1>);
-	constexpr auto e2 = e(c<2>);
+	static auto const e1 = e(c<1>);
+	static auto const e2 = e(c<2>);
 
-	constexpr auto I = pseudoscalar();
+	static auto const I = pseudoscalar();
 
 }
 
