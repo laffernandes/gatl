@@ -73,8 +73,9 @@ namespace ga {
 #include "ga/element_graded_unary_minus.hpp"
 #include "ga/element_binary_plus.hpp"
 #include "ga/element_binary_minus.hpp"
-#include "ga/element_graded_product.hpp"
+#include "ga/element_graded_product_orthogonal_metric.hpp"
 #include "ga/element_keep_if_grade.hpp"
+#include "ga/element_deduce_grade.hpp"
 
 #include "ga/expression.hpp"
 #include "ga/expression_coefficient_type.hpp"
@@ -115,6 +116,9 @@ namespace ga {
 
 #include "ga/write.hpp"
 
+#include "ga/eval.hpp"
+#include "ga/grade.hpp"
+
 #include "ga/pseudoscalar.hpp"
 #include "ga/basis_vector.hpp"
 
@@ -127,7 +131,6 @@ GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::int64_t, constexpr)
 GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::float_t, constexpr)
 GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::double_t, constexpr)
 
-//TODO Implement grade(arg, tol)
 //TODO Implement equal(lhs, rhs, tol)
 //TODO Implement is_zero(arg, tol)
 //TODO Implement is_scalar(arg, tol)

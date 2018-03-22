@@ -27,34 +27,9 @@ namespace ga {
 		};
 
 		struct _graded_product_iterate_right {
-		private:
-
-			template<class CoefficientType>
-			struct _make_expression_if_non_zero {
-				template<class ElementType>
-				constexpr static decltype(auto) bind(ElementType const &arg) {
-					return make_expression(arg, empty_expression(), empty_expression());
-				}
-			};
-
-			template<>
-			struct _make_expression_if_non_zero<cvalue<0> > {
-				template<class ElementType>
-				constexpr static empty_expression bind(ElementType const &) {
-					return empty_expression();
-				}
-			};
-
-			template<class ElementType>
-			constexpr static decltype(auto) make_expression_if_non_zero(ElementType const &arg) {
-				return _make_expression_if_non_zero<typename ElementType::coefficient_type>::bind(arg);
-			}
-
-		public:
-
 			template<class LeftItrType, class RightItrType, class MetricSpaceType, class KeepIfGradesFunc>
 			constexpr static decltype(auto) bind(LeftItrType const &lhs, RightItrType const &rhs, metric_space<MetricSpaceType> const &mtr, KeepIfGradesFunc const &keep) {
-				return plus(graded_product_inner_loop(lhs, next(rhs), mtr, keep), make_expression_if_non_zero(graded_product_element(lhs.element(), rhs.element(), mtr, keep)));
+				return plus(graded_product_inner_loop(lhs, next(rhs), mtr, keep), graded_product_element(lhs.element(), rhs.element(), mtr, keep));
 			}
 		};
 

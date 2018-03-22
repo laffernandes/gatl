@@ -132,9 +132,6 @@
     <ClInclude Include="..\..\include\ga\element_keep_if_grade.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\element_graded_product.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\element_graded_unary_minus.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
@@ -154,9 +151,6 @@
       <Filter>Header Files\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\dualization.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\undualization.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\reverse_norm.hpp">
@@ -238,6 +232,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\grade.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\element_deduce_grade.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\eval.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\element_graded_product_orthogonal_metric.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
   </ItemGroup>

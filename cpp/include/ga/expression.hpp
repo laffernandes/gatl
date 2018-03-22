@@ -55,6 +55,7 @@ namespace ga {
 			element_type element_;
 
 			static_assert(!std::is_same<typename element_type::coefficient_type, cvalue<0> >::value, "Zeros are not alowed here!");
+			static_assert(!std::is_same<typename element_type::basis_blade_type, dbasis_blade<default_bitset_t(0)> >::value, "Zeros are not alowed here!");
 		};
 
 		template<default_integral_t CoefficientValue, default_bitset_t BasisBlade>
@@ -425,6 +426,39 @@ namespace ga {
 		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 		constexpr decltype(auto) make_expression(ElementType const &element, LeftSubtreeType const &left, RightSubtreeType const &right) {
 			return expression<ElementType, LeftSubtreeType, RightSubtreeType>(element, left, right);
+		}
+
+		template<class ElementType>
+		constexpr decltype(auto) try_to_make_expression(ElementType const &element) {
+			return make_expression(element, empty_expression(), empty_expression());
+		}
+
+		template<class BasisBladeType>
+		constexpr decltype(auto) try_to_make_expression(component<cvalue<0>, BasisBladeType> const &) {
+			return empty_expression();
+		}
+
+		template<class CoefficientType>
+		constexpr decltype(auto) try_to_make_expression(component<CoefficientType, dbasis_blade<default_bitset_t(0)> > const &) {
+			return empty_expression();
+		}
+
+		constexpr decltype(auto) try_to_make_expression(component<cvalue<0>, dbasis_blade<default_bitset_t(0)> > const &) {
+			return empty_expression();
+		}
+
+		template<default_bitset_t PossibleGrades>
+		constexpr decltype(auto) try_to_make_expression(components<cvalue<0>, PossibleGrades> const &) {
+			return empty_expression();
+		}
+
+		template<class CoefficientType>
+		constexpr decltype(auto) try_to_make_expression(components<CoefficientType, default_bitset_t(0) > const &) {
+			return empty_expression();
+		}
+
+		constexpr decltype(auto) try_to_make_expression(components<cvalue<0>, default_bitset_t(0) > const &) {
+			return empty_expression();
 		}
 
 	}

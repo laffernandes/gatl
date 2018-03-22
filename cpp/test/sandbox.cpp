@@ -1,5 +1,6 @@
 /**/
 #include <ga3e.hpp>
+#include <ga3c.hpp>
 
 using namespace ga;
 
@@ -378,6 +379,22 @@ void test_pseudoscalar(space<SpaceType> const &spc, std::string const &name) {
 	std::cout << std::endl;
 }
 
+void test_eval() {
+	using namespace ga3c;
+
+	auto exp1 = 5.0 * e1 + 6 * e2;
+	auto exp2 = 5.0 * e(1) + 6 * e2;
+	auto exp3 = 5.0 * e(1) + 6 * e2 + (3 * (e1^e2));
+	auto exp4 = 5.0 * e(1) + 6 * e1;
+
+	std::cout << "--- test_eval()" << std::endl;
+	std::cout << "exp1 = " << exp1 << " = " << eval(exp1) << std::endl;
+	std::cout << "exp2 = " << exp2 << " = " << eval(exp2) << std::endl;
+	std::cout << "exp3 = " << exp3 << " = " << eval(exp3) << std::endl;
+	std::cout << "exp4 = " << exp4 << " = " << eval(exp4) << std::endl;
+	std::cout << std::endl;
+}
+
 int main() {
 	test_make_cvalue();
 
@@ -408,6 +425,8 @@ int main() {
 	test_pseudoscalar(euclidean_metric_space<3>(), "euclidean<3>");
 	test_pseudoscalar(euclidean_metric_space<2>(), "euclidean<2>");
 	test_pseudoscalar(signed_metric_space<2, 1>(), "signed<2, 1>");
+
+	test_eval();
 
 	auto e1 = e(1);
 	auto e2 = e(2);

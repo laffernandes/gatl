@@ -37,6 +37,10 @@ namespace ga {
 				return basis_blade_;
 			}
 
+			constexpr static bool compile_time_defined() {
+				return false;
+			}
+
 		private:
 
 			value_type basis_blade_;

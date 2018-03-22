@@ -30,11 +30,14 @@
 		using ga::involution; \
 		using ga::reversion; \
 		\
+		using ga::grade; \
 		using ga::take_grade; \
 		\
 		using ga::c; \
 		using ga::e; \
 		using ga::native; \
+		\
+		using ga::eval; \
 		\
 		constexpr decltype(auto) pseudoscalar() { \
 			return ga::pseudoscalar(space); \

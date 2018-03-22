@@ -37,7 +37,25 @@ namespace ga {
 
 		template<>
 		struct common_coefficient_type<empty_expression> {
-			typedef default_integral_t type;
+			typedef cvalue<0> type;
+		};
+
+		template<class Type>
+		struct native_coefficient_type {
+			typedef Type type;
+		};
+
+		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+		struct native_coefficient_type<expression<ElementType, LeftSubtreeType, RightSubtreeType> > : native_coefficient_type<typename common_coefficient_type<expression<ElementType, LeftSubtreeType, RightSubtreeType> >::type> {
+		};
+
+		template<>
+		struct native_coefficient_type<empty_expression> : native_coefficient_type<typename common_coefficient_type<empty_expression>::type> {
+		};
+
+		template<default_integral_t Value>
+		struct native_coefficient_type<cvalue<Value> > {
+			typedef typename cvalue<Value>::value_type type;
 		};
 
 	}

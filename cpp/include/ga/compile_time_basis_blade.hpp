@@ -22,6 +22,10 @@ namespace ga {
 			constexpr static value_type value() {
 				return BasisBlade;
 			}
+
+			constexpr static bool compile_time_defined() {
+				return true;
+			}
 		};
 
 	}

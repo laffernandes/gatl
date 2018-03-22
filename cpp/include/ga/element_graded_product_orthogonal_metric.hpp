@@ -1,9 +1,12 @@
-#ifndef __GA_ELEMENT_GRADED_PRODUCT__
-#define __GA_ELEMENT_GRADED_PRODUCT__
+#ifndef __GA_ELEMENT_GRADED_PRODUCT_ORTHOGONAL_METRIC__
+#define __GA_ELEMENT_GRADED_PRODUCT_ORTHOGONAL_METRIC__
 
 namespace ga {
 
 	namespace detail {
+
+		template<class ElementType>
+		constexpr decltype(auto) try_to_make_expression(ElementType const &);
 
 		template<default_bitset_t LeftBasisBlade, default_bitset_t RightBasisBlade>
 		struct _swaps_count {
@@ -58,7 +61,7 @@ namespace ga {
 			template<class LeftComponentType, class RightComponentType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 			constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
 				typedef decltype(mul(mul(reordering_sign(lhs.basis_blade().value(), rhs.basis_blade().value()), mtr.metric_factor(lhs.basis_blade().value() & rhs.basis_blade().value())), mul(lhs.coefficient(), rhs.coefficient()))) coefficient_t;
-				if (keep(basis_blade_grade(lhs.basis_blade()), basis_blade_grade(rhs.basis_blade()), default_bitset_t(0))) {
+				if (keep(basis_blade_grade(lhs.basis_blade()), basis_blade_grade(rhs.basis_blade()), basis_blade_grade(dbasis_blade<default_bitset_t(1)>(lhs.basis_blade().value() ^ rhs.basis_blade().value())))) {
 					return make_component(mul(mul(reordering_sign(lhs.basis_blade().value(), rhs.basis_blade().value()), mtr.metric_factor(lhs.basis_blade().value() & rhs.basis_blade().value())), mul(lhs.coefficient(), rhs.coefficient())), cbasis_blade<0>());
 				}
 				else {
@@ -176,7 +179,7 @@ namespace ga {
 				grade_t rhs_grade = basis_blade_grade(rhs.basis_blade());
 				coeficient_t result_coefficient = static_cast<coeficient_t>(0);
 				for (auto lhs_itr = lhs.begin(), lhs_end = lhs.end(); lhs_itr != lhs_end; ++lhs_itr) {
-					if (keep(basis_blade_grade(lhs_itr->first), rhs_grade, 0)) {
+					if (keep(basis_blade_grade(lhs_itr->first), rhs_grade, basis_blade_grade(dbasis_blade<default_bitset_t(1)>(lhs_itr->first.value() ^ rhs.basis_blade().value())))) {
 						result_coefficient add(result_coefficient, mul(mul(reordering_sign(lhs_itr->first.value(), rhs.basis_blade().value()), mtr.metric_factor(lhs_itr->first.value() & rhs.basis_blade().value())), mul(lhs_itr->second, rhs.coefficient())));
 					}
 				}
@@ -190,7 +193,7 @@ namespace ga {
 				grade_t lhs_grade = basis_blade_grade(lhs.basis_blade());
 				coefficient_t result_coefficient = static_cast<coefficient_t>(0);
 				for (auto rhs_itr = rhs.begin(), rhs_end = rhs.end(); rhs_itr != rhs_end; ++rhs_itr) {
-					if (keep(lhs_grade, basis_blade_grade(rhs_itr->first), 0)) {
+					if (keep(lhs_grade, basis_blade_grade(rhs_itr->first), basis_blade_grade(dbasis_blade<default_bitset_t(1)>(lhs.basis_blade().value() ^ rhs_itr->first.value())))) {
 						result_coefficient = add(result_coefficient, mul(mul(reordering_sign(lhs.basis_blade().value(), rhs_itr->first.value()), mtr.metric_factor(lhs.basis_blade().value() & rhs_itr->first.value())), mul(lhs.coefficient(), rhs_itr->second)));
 					}
 				}
@@ -205,7 +208,7 @@ namespace ga {
 				for (auto lhs_itr = lhs.begin(), lhs_end = lhs.end(); lhs_itr != lhs_end; ++lhs_itr) {
 					grade_t lhs_grade = basis_blade_grade(lhs_itr->first);
 					for (auto rhs_itr = rhs.begin(), rhs_end = rhs.end(); rhs_itr != rhs_end; ++rhs_itr) {
-						if (keep(lhs_grade, basis_blade_grade(rhs_itr->first), 0)) {
+						if (keep(lhs_grade, basis_blade_grade(rhs_itr->first), basis_blade_grade(dbasis_blade<default_bitset_t(1)>(lhs_itr->first.value() ^ rhs_itr->first.value())))) {
 							result_coefficient = add(result_coefficient, mul(mul(reordering_sign(lhs_itr->first.value(), rhs_itr->first.value()), mtr.metric_factor(lhs_itr->first.value() & rhs_itr->first.value())), mul(lhs_itr->second, rhs_itr->second)));
 						}
 					}
@@ -266,26 +269,26 @@ namespace ga {
 
 		template<class LeftCoefficientType, class LeftBasisBladeType, class RightCoefficientType, class RightBasisBladeType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 		constexpr decltype(auto) graded_product_element(component<LeftCoefficientType, LeftBasisBladeType> const &lhs, component<RightCoefficientType, RightBasisBladeType> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-			return _graded_product_component<LeftBasisBladeType, RightBasisBladeType>::bind(lhs, rhs, mtr, keep);
+			return try_to_make_expression(_graded_product_component<LeftBasisBladeType, RightBasisBladeType>::bind(lhs, rhs, mtr, keep));
 		}
 
 		template<class LeftCoefficientType, default_bitset_t LeftPossibleGrades, class RightCoefficientType, class RightBasisBladeType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 		constexpr decltype(auto) graded_product_element(components<LeftCoefficientType, LeftPossibleGrades> const &lhs, component<RightCoefficientType, RightBasisBladeType> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-			return _graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightBasisBladeType::possible_grades(), OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep);
+			return try_to_make_expression(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightBasisBladeType::possible_grades(), OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
 		}
 
 		template<class LeftCoefficientType, class LeftBasisBladeType, class RightCoefficientType, default_bitset_t RightPossibleGrades, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 		constexpr decltype(auto) graded_product_element(component<LeftCoefficientType, LeftBasisBladeType> const &lhs, components<RightCoefficientType, RightPossibleGrades> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-			return _graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftBasisBladeType::possible_grades(), RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep);
+			return try_to_make_expression(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftBasisBladeType::possible_grades(), RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
 		}
 
 		template<class LeftCoefficientType, default_bitset_t LeftPossibleGrades, class RightCoefficientType, default_bitset_t RightPossibleGrades, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 		constexpr decltype(auto) graded_product_element(components<LeftCoefficientType, LeftPossibleGrades> const &lhs, components<RightCoefficientType, RightPossibleGrades> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-			return _graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep);
+			return try_to_make_expression(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
 		}
 
 	}
 
 }
 
-#endif // __GA_ELEMENT_GRADED_PRODUCT__
+#endif // __GA_ELEMENT_GRADED_PRODUCT_ORTHOGONAL_METRIC__

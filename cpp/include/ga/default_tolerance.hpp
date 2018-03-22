@@ -15,10 +15,10 @@
 
 namespace ga {
 
-	template<class IntegralType>
-	constexpr IntegralType default_tolerance() {
-		static_assert(std::is_integral<IntegralType>::value, "An integral type is expected.");
-		return static_cast<IntegralType>(0);
+	template<class ValueType>
+	constexpr ValueType default_tolerance() {
+		static_assert(std::is_integral<ValueType>::value, "Invalid integral or floating point type. Maybe you have to specialize 'template<class ValueType> constexpr ValueType ga::default_tolerance()' function to some custom ValueType class.");
+		return static_cast<ValueType>(0);
 	}
 
 	template<>

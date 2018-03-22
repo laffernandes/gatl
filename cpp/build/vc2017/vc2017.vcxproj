@@ -41,8 +41,9 @@
     <ClInclude Include="..\..\include\ga\components.hpp" />
     <ClInclude Include="..\..\include\ga\dualization.hpp" />
     <ClInclude Include="..\..\include\ga\element_binary_plus.hpp" />
+    <ClInclude Include="..\..\include\ga\element_deduce_grade.hpp" />
     <ClInclude Include="..\..\include\ga\element_keep_if_grade.hpp" />
-    <ClInclude Include="..\..\include\ga\element_graded_product.hpp" />
+    <ClInclude Include="..\..\include\ga\element_graded_product_orthogonal_metric.hpp" />
     <ClInclude Include="..\..\include\ga\element_unary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\element_graded_unary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\element_ordering.hpp" />
@@ -52,6 +53,7 @@
     <ClInclude Include="..\..\include\ga\element_binary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\euclidean_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\blade_exponential.hpp" />
+    <ClInclude Include="..\..\include\ga\eval.hpp" />
     <ClInclude Include="..\..\include\ga\expression.hpp" />
     <ClInclude Include="..\..\include\ga\expression_coefficient_type.hpp" />
     <ClInclude Include="..\..\include\ga\expression_copy.hpp" />
@@ -59,6 +61,7 @@
     <ClInclude Include="..\..\include\ga\expression_iterator.hpp" />
     <ClInclude Include="..\..\include\ga\expression_ordered_iterator.hpp" />
     <ClInclude Include="..\..\include\ga\geometric_product.hpp" />
+    <ClInclude Include="..\..\include\ga\grade.hpp" />
     <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\left_contraction.hpp" />
     <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp" />
@@ -84,7 +87,6 @@
     <ClInclude Include="..\..\include\ga\graded_unary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\unary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\unary_plus.hpp" />
-    <ClInclude Include="..\..\include\ga\undualization.hpp" />
     <ClInclude Include="..\..\include\ga\value_add.hpp" />
     <ClInclude Include="..\..\include\ga\value_div.hpp" />
     <ClInclude Include="..\..\include\ga\value_math.hpp" />
