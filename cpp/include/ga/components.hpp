@@ -28,6 +28,10 @@ namespace ga {
 				entries_.erase(itr);
 			}
 
+			inline bool empty() const {
+				return entries_.empty();
+			}
+
 			inline decltype(auto) find(basis_blade_type const &basis_blade) {
 				return entries_.find(basis_blade);
 			}

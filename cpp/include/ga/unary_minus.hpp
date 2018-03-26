@@ -10,22 +10,12 @@ namespace ga {
 
 		template<class ItrType>
 		constexpr decltype(auto) unary_minus(ItrType const &arg) {
-			return std::conditional<!is_end<ItrType>::value, _unary_minus_neg, _unary_minus_end>::type::bind(arg);
+			return insert(unary_minus(next(arg)), unary_minus_element(arg.element()));
 		}
 
-		struct _unary_minus_neg {
-			template<class ItrType>
-			constexpr static decltype(auto) bind(ItrType const &arg) {
-				return insert(unary_minus(next(arg)), unary_minus_element(arg.element()));
-			}
-		};
-
-		struct _unary_minus_end {
-			template<class ItrType>
-			constexpr static empty_expression bind(ItrType const &) {
-				return empty_expression();
-			}
-		};
+		constexpr empty_expression unary_minus(itr_end const &) {
+			return empty_expression();
+		}
 
 	}
 

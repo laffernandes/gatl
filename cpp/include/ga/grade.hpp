@@ -59,71 +59,55 @@ namespace ga {
 
 	namespace detail {
 
-		struct _deduce_grade_itr;
-		struct _deduce_grade_end;
+		template<class LeftValueType, class RightValueType>
+		constexpr static grade_result<grade_t> deduce_grade_look_both(grade_result<LeftValueType> const &lhs, grade_result<RightValueType> const &rhs) {
+			return grade_result<grade_t>(static_cast<grade_t>(lhs.value()) == static_cast<grade_t>(rhs.value()) ? lhs.value() : -1);
+		}
+
+		template<default_integral_t LeftValue, default_integral_t RightValue>
+		constexpr static decltype(auto) deduce_grade_look_both(grade_result<cvalue<LeftValue> > const &, grade_result<cvalue<RightValue> > const &) {
+			return grade_result<cvalue<LeftValue == RightValue ? LeftValue : -1> >();
+		}
+
+		template<class LeftValueType, class RightValueType>
+		constexpr static decltype(auto) deduce_grade_look_right(grade_result<LeftValueType> const &lhs, grade_result<RightValueType> const &rhs) {
+			return deduce_grade_look_both(lhs, rhs);
+		}
+
+		template<class LeftValueType>
+		constexpr static grade_result<LeftValueType> deduce_grade_look_right(grade_result<LeftValueType> const &lhs, grade_result<cvalue<-2> > const &) {
+			return lhs;
+		}
+
+		template<class LeftValueType>
+		constexpr static decltype(auto) deduce_grade_look_right(grade_result<LeftValueType> const &, grade_result<cvalue<-1> > const &) {
+			return grade_result<cvalue<-1> >();
+		}
+
+		template<class LeftValueType, class RightElementType, class ToleranceType>
+		constexpr static decltype(auto) deduce_grade_look_left(grade_result<LeftValueType> const &lhs, RightElementType const &rhs, ToleranceType const &tol) {
+			return deduce_grade_look_right(lhs, deduce_grade_element(rhs, tol));
+		}
+
+		template<class RightElementType, class ToleranceType>
+		constexpr static decltype(auto) deduce_grade_look_left(grade_result<cvalue<-2> > const &, RightElementType const &rhs, ToleranceType const &tol) {
+			return deduce_grade_element(rhs, tol);
+		}
+
+		template<class RightElementType, class ToleranceType>
+		constexpr static decltype(auto) deduce_grade_look_left(grade_result<cvalue<-1> > const &, RightElementType const &, ToleranceType const &) {
+			return grade_result<cvalue<-1> >();
+		}
 
 		template<class ItrType, class ToleranceType>
 		constexpr decltype(auto) deduce_grade(ItrType const &arg, ToleranceType const &tol) {
-			return std::conditional<!is_end<ItrType>::value, _deduce_grade_itr, _deduce_grade_end>::type::bind(arg, tol);
+			return deduce_grade_look_left(deduce_grade(next(arg), tol), arg.element(), tol);
 		}
 
-		struct _deduce_grade_itr {
-		private:
-
-			template<class LeftValueType, class RightValueType>
-			constexpr static grade_result<grade_t> look_both(grade_result<LeftValueType> const &lhs, grade_result<RightValueType> const &rhs) {
-				return grade_result<grade_t>(static_cast<grade_t>(lhs.value()) == static_cast<grade_t>(rhs.value()) ? lhs.value() : -1);
-			}
-
-			template<default_integral_t LeftValue, default_integral_t RightValue>
-			constexpr static decltype(auto) look_both(grade_result<cvalue<LeftValue> > const &, grade_result<cvalue<RightValue> > const &) {
-				return grade_result<cvalue<LeftValue == RightValue ? LeftValue : -1> >();
-			}
-
-			template<class LeftValueType, class RightValueType>
-			constexpr static decltype(auto) look_right(grade_result<LeftValueType> const &lhs, grade_result<RightValueType> const &rhs) {
-				return look_both(lhs, rhs);
-			}
-
-			template<class LeftValueType>
-			constexpr static grade_result<LeftValueType> look_right(grade_result<LeftValueType> const &lhs, grade_result<cvalue<-2> > const &) {
-				return lhs;
-			}
-
-			template<class LeftValueType>
-			constexpr static decltype(auto) look_right(grade_result<LeftValueType> const &, grade_result<cvalue<-1> > const &) {
-				return grade_result<cvalue<-1> >();
-			}
-
-			template<class LeftValueType, class RightElementType, class ToleranceType>
-			constexpr static decltype(auto) look_left(grade_result<LeftValueType> const &lhs, RightElementType const &rhs, ToleranceType const &tol) {
-				return look_right(lhs, deduce_grade_element(rhs, tol));
-			}
-
-			template<class RightElementType, class ToleranceType>
-			constexpr static decltype(auto) look_left(grade_result<cvalue<-2> > const &, RightElementType const &rhs, ToleranceType const &tol) {
-				return deduce_grade_element(rhs, tol);
-			}
-
-			template<class RightElementType, class ToleranceType>
-			constexpr static decltype(auto) look_left(grade_result<cvalue<-1> > const &, RightElementType const &, ToleranceType const &) {
-				return grade_result<cvalue<-1> >();
-			}
-
-		public:
-
-			template<class ItrType, class ToleranceType>
-			constexpr static decltype(auto) bind(ItrType const &arg, ToleranceType const &tol) {
-				return look_left(deduce_grade(next(arg), tol), arg.element(), tol);
-			}
-		};
-
-		struct _deduce_grade_end {
-			template<class ItrType, class ToleranceType>
-			constexpr static decltype(auto) bind(ItrType const &, ToleranceType const &) {
-				return grade_result<cvalue<-2> >();
-			}
-		};
+		template<class ToleranceType>
+		constexpr decltype(auto) deduce_grade(itr_end const &, ToleranceType const &) {
+			return grade_result<cvalue<-2> >();
+		}
 
 	}
 

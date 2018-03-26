@@ -82,6 +82,7 @@ namespace ga {
 #include "ga/expression_insert.hpp"
 #include "ga/expression_iterator.hpp"
 #include "ga/expression_ordered_iterator.hpp"
+#include "ga/expression_reversed_iterator.hpp"
 #include "ga/expression_copy.hpp"
 
 #include "ga/native.hpp"

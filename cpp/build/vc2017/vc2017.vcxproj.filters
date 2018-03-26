@@ -246,6 +246,9 @@
     <ClInclude Include="..\..\include\ga\element_graded_product_orthogonal_metric.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\ga\expression_reversed_iterator.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\sandbox.cpp">

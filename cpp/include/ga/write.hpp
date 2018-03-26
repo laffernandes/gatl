@@ -79,36 +79,29 @@ namespace ga {
 				os << " + [";
 				first = true;
 			}
-			for (auto itr = rhs.begin(), end = rhs.end(); itr != end; ++itr) {
-				write_coefficient(os, itr->second, first);
-				os << " * ";
-				write_basis_blade(os, itr->first);
+			if (!rhs.empty()) {
+				for (auto itr = rhs.begin(), end = rhs.end(); itr != end; ++itr) {
+					write_coefficient(os, itr->second, first);
+					os << " * ";
+					write_basis_blade(os, itr->first);
+					first = false;
+				}
+			}
+			else {
+				write_coefficient(os, cvalue<0>(), first);
 				first = false;
 			}
 			os << "]";
 		}
 
-		struct _write_curr;
-		struct _write_end;
-
 		template<class ItrType>
 		void write(std::ostream &os, ItrType const &rhs, bool &first) {
-			std::conditional<!is_end<ItrType>::value, _write_curr, _write_end>::type::eval(os, rhs, first);
+			write_element(os, rhs.element(), first);
+			write(os, next(rhs), first);
 		}
 
-		struct _write_curr {
-			template<class ItrType>
-			static void eval(std::ostream &os, ItrType const &rhs, bool &first) {
-				write_element(os, rhs.element(), first);
-				write(os, next(rhs), first);
-			}
-		};
-
-		struct _write_end {
-			template<class ItrType>
-			static void eval(std::ostream &, ItrType const &, bool const) {
-			}
-		};
+		void write(std::ostream &, itr_end const &, bool const) {
+		}
 
 	}
 

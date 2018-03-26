@@ -60,6 +60,7 @@
     <ClInclude Include="..\..\include\ga\expression_insert.hpp" />
     <ClInclude Include="..\..\include\ga\expression_iterator.hpp" />
     <ClInclude Include="..\..\include\ga\expression_ordered_iterator.hpp" />
+    <ClInclude Include="..\..\include\ga\expression_reversed_iterator.hpp" />
     <ClInclude Include="..\..\include\ga\geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\grade.hpp" />
     <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp" />

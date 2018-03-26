@@ -5,51 +5,34 @@ namespace ga {
 
 	namespace detail {
 
-		struct _binary_minus_add_no_end;
-		struct _binary_minus_add_left;
-		struct _binary_minus_add_right;
-		struct _binary_minus_add_both;
-		struct _binary_minus_add_end;
-
-		template<class LeftItrType, class RightItrType>
+		template<class LeftItrType, class RightItrType, typename std::enable_if<eq<typename LeftItrType::element_type, typename RightItrType::element_type>::value, int>::type = 0>
 		constexpr decltype(auto) binary_minus(LeftItrType const &lhs, RightItrType const &rhs) {
-			return std::conditional<is_end<LeftItrType>::value && is_end<RightItrType>::value, _binary_minus_add_end, typename std::conditional<is_end<RightItrType>::value, _binary_minus_add_left, typename std::conditional<is_end<LeftItrType>::value, _binary_minus_add_right, _binary_minus_add_no_end>::type>::type>::type::bind(lhs, rhs);
+			return insert(binary_minus(next(lhs), next(rhs)), binary_minus_element(lhs.element(), rhs.element()));
 		}
 
-		struct _binary_minus_add_no_end {
-			template<class LeftItrType, class RightItrType>
-			constexpr static decltype(auto) bind(LeftItrType const &lhs, RightItrType const &rhs) {
-				return std::conditional<lt<typename LeftItrType::element_type, typename RightItrType::element_type>::value, _binary_minus_add_left, typename std::conditional<lt<typename RightItrType::element_type, typename LeftItrType::element_type>::value, _binary_minus_add_right, _binary_minus_add_both>::type>::type::bind(lhs, rhs);
-			}
-		};
+		template<class LeftItrType, class RightItrType, typename std::enable_if<lt<typename LeftItrType::element_type, typename RightItrType::element_type>::value, int>::type = 0>
+		constexpr decltype(auto) binary_minus(LeftItrType const &lhs, RightItrType const &rhs) {
+			return insert(binary_minus(next(lhs), rhs), lhs.element());
+		}
 
-		struct _binary_minus_add_left {
-			template<class LeftItrType, class RightItrType>
-			constexpr static decltype(auto) bind(LeftItrType const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(next(lhs), rhs), lhs.element());
-			}
-		};
+		template<class LeftItrType>
+		constexpr decltype(auto) binary_minus(LeftItrType const &lhs, itr_end const &rhs) {
+			return insert(binary_minus(next(lhs), rhs), lhs.element());
+		}
 
-		struct _binary_minus_add_right {
-			template<class LeftItrType, class RightItrType>
-			constexpr static decltype(auto) bind(LeftItrType const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(lhs, next(rhs)), unary_minus_element(rhs.element()));
-			}
-		};
+		template<class LeftItrType, class RightItrType, typename std::enable_if<lt<typename RightItrType::element_type, typename LeftItrType::element_type>::value, int>::type = 0>
+		constexpr decltype(auto) binary_minus(LeftItrType const &lhs, RightItrType const &rhs) {
+			return insert(binary_minus(lhs, next(rhs)), unary_minus_element(rhs.element()));
+		}
 
-		struct _binary_minus_add_both {
-			template<class LeftItrType, class RightItrType>
-			constexpr static decltype(auto) bind(LeftItrType const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(next(lhs), next(rhs)), binary_minus_element(lhs.element(), rhs.element()));
-			}
-		};
+		template<class RightItrType>
+		constexpr decltype(auto) binary_minus(itr_end const &lhs, RightItrType const &rhs) {
+			return insert(binary_minus(lhs, next(rhs)), unary_minus_element(rhs.element()));
+		}
 
-		struct _binary_minus_add_end {
-			template<class LeftItrType, class RightItrType>
-			constexpr static empty_expression bind(LeftItrType const &, RightItrType const &) {
-				return empty_expression();
-			}
-		};
+		constexpr decltype(auto) binary_minus(itr_end const &, itr_end const &) {
+			return empty_expression();
+		}
 
 	}
 

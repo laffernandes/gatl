@@ -382,16 +382,42 @@ void test_pseudoscalar(space<SpaceType> const &spc, std::string const &name) {
 void test_eval() {
 	using namespace ga3c;
 
-	auto exp1 = 5.0 * e1 + 6 * e2;
-	auto exp2 = 5.0 * e(1) + 6 * e2;
-	auto exp3 = 5.0 * e(1) + 6 * e2 + (3 * (e1^e2));
-	auto exp4 = 5.0 * e(1) + 6 * e1;
-
 	std::cout << "--- test_eval()" << std::endl;
-	std::cout << "exp1 = " << exp1 << " = " << eval(exp1) << std::endl;
-	std::cout << "exp2 = " << exp2 << " = " << eval(exp2) << std::endl;
-	std::cout << "exp3 = " << exp3 << " = " << eval(exp3) << std::endl;
-	std::cout << "exp4 = " << exp4 << " = " << eval(exp4) << std::endl;
+
+	auto exp0 = 5.0;
+	std::cout << "exp0 = " << exp0 << std::endl;
+	std::cout << "     = " << eval(exp0) << std::endl;
+	std::cout << "     = " << eval(eval(exp0)) << std::endl;
+	std::cout << std::endl;
+
+	auto exp1 = 5.0 * e1 + 6 * e2;
+	std::cout << "exp1 = " << exp1 << std::endl;
+	std::cout << "     = " << eval(exp1) << std::endl;
+	std::cout << "     = " << eval(eval(exp1)) << std::endl;
+	std::cout << std::endl;
+
+	auto exp2 = 5.0 * e(1) + 6 * e2;
+	std::cout << "exp2 = " << exp2 << std::endl;
+	std::cout << "     = " << eval(exp2) << std::endl;
+	std::cout << "     = " << eval(eval(exp2)) << std::endl;
+	std::cout << std::endl;
+
+	auto exp3 = 5.0 * e(1) + 6 * e2 + (3 * (e1^e2));
+	std::cout << "exp3 = " << exp3 << std::endl;
+	std::cout << "     = " << eval(exp3) << std::endl;
+	std::cout << "     = " << eval(eval(exp3)) << std::endl;
+	std::cout << std::endl;
+
+	auto exp4 = 5.0 * e(1) + 6 * e1;
+	std::cout << "exp4 = " << exp4 << std::endl;
+	std::cout << "     = " << eval(exp4) << std::endl;
+	std::cout << "     = " << eval(eval(exp4)) << std::endl;
+	std::cout << std::endl;
+
+	auto exp5 = 5.0 * e(1) + 6 * e2 + (3 * (e1^e2)) - (7 * gp(e(1), e(2)));
+	std::cout << "exp5 = " << exp5 << std::endl;
+	std::cout << "     = " << eval(exp5) << std::endl;
+	std::cout << "     = " << eval(eval(exp5)) << std::endl;
 	std::cout << std::endl;
 }
 

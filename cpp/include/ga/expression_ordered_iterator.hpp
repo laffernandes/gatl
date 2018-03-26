@@ -27,14 +27,11 @@ namespace ga {
 
 			typedef typename super::element_type element_type;
 
+			constexpr oitr() = default;
+
 			constexpr oitr(expression_type *value, tail_type const &tail) :
 				super(value, tail) {
-			};
-		};
-
-		template<class ExpressionType, class TailType>
-		struct is_end<oitr<ExpressionType, TailType> > {
-			static const bool value = false;
+			}
 		};
 
 		template<class ExpressionType>
@@ -61,26 +58,10 @@ namespace ga {
 			}
 		};
 
-		template<class ElementType, class RightSubtreeType>
-		struct _onext<expression<ElementType, empty_expression, RightSubtreeType> > {
-			template<class TailType>
-			constexpr static decltype(auto) bind(oitr<expression<ElementType, empty_expression, RightSubtreeType>, TailType> const &curr) {
-				return _push_up_to_leftmost<RightSubtreeType>::bind(oitr<RightSubtreeType, TailType>(&curr.expression()->right(), curr.tail()));
-			}
-		};
-
 		template<class ElementType, class LeftSubtreeType>
 		struct _onext<expression<ElementType, LeftSubtreeType, empty_expression> > {
 			template<class TailType>
 			constexpr static decltype(auto) bind(oitr<expression<ElementType, LeftSubtreeType, empty_expression>, TailType> const &curr) {
-				return curr.tail();
-			}
-		};
-
-		template<class ElementType>
-		struct _onext<expression<ElementType, empty_expression, empty_expression> > {
-			template<class TailType>
-			constexpr static decltype(auto) bind(oitr<expression<ElementType, empty_expression, empty_expression>, TailType> const &curr) {
 				return curr.tail();
 			}
 		};
@@ -101,11 +82,6 @@ namespace ga {
 			}
 		};
 
-
-
-
-
-
 		template<class ExpressionType, class TailType>
 		class coitr : public citr<ExpressionType, TailType> {
 		private:
@@ -119,14 +95,11 @@ namespace ga {
 
 			typedef typename super::element_type element_type;
 
+			constexpr coitr() = default;
+
 			constexpr coitr(expression_type const *value, tail_type const &tail) :
 				super(value, tail) {
-			};
-		};
-
-		template<class ExpressionType, class TailType>
-		struct is_end<coitr<ExpressionType, TailType> > {
-			static const bool value = false;
+			}
 		};
 
 		template<class ExpressionType>
@@ -153,26 +126,10 @@ namespace ga {
 			}
 		};
 
-		template<class ElementType, class RightSubtreeType>
-		struct _conext<expression<ElementType, empty_expression, RightSubtreeType> > {
-			template<class TailType>
-			constexpr static decltype(auto) bind(coitr<expression<ElementType, empty_expression, RightSubtreeType>, TailType> const &curr) {
-				return _cpush_up_to_leftmost<RightSubtreeType>::bind(coitr<RightSubtreeType, TailType>(&curr.expression()->right(), curr.tail()));
-			}
-		};
-
 		template<class ElementType, class LeftSubtreeType>
 		struct _conext<expression<ElementType, LeftSubtreeType, empty_expression> > {
 			template<class TailType>
 			constexpr static decltype(auto) bind(coitr<expression<ElementType, LeftSubtreeType, empty_expression>, TailType> const &curr) {
-				return curr.tail();
-			}
-		};
-
-		template<class ElementType>
-		struct _conext<expression<ElementType, empty_expression, empty_expression> > {
-			template<class TailType>
-			constexpr static decltype(auto) bind(coitr<expression<ElementType, empty_expression, empty_expression>, TailType> const &curr) {
 				return curr.tail();
 			}
 		};
@@ -191,6 +148,11 @@ namespace ga {
 			constexpr static coitr<expression<ElementType, empty_expression, RightSubtreeType>, TailType> bind(coitr<expression<ElementType, empty_expression, RightSubtreeType>, TailType> const &curr) {
 				return curr;
 			}
+		};
+
+		template<class Type>
+		struct obegin_type {
+			typedef typename std::remove_const<typename std::remove_reference<decltype(obegin(Type()))>::type>::type type;
 		};
 
 	}

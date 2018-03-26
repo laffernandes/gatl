@@ -5,15 +5,7 @@ namespace ga {
 
 	namespace detail {
 
-		template<class ItrType>
-		struct is_end;
-
 		class itr_end {
-		};
-
-		template<>
-		struct is_end<itr_end> {
-			static const bool value = true;
 		};
 
 		constexpr itr_end begin(empty_expression const &) {
@@ -29,6 +21,8 @@ namespace ga {
 
 			typedef typename expression_type::element_type element_type;
 
+			constexpr itr_value() = default;
+
 			constexpr itr_value(value_type const &value) :
 				expression_(make_component(value, cbasis_blade<0>()), empty_expression(), empty_expression()) {
 			}
@@ -40,11 +34,6 @@ namespace ga {
 		protected:
 
 			expression_type const expression_;
-		};
-
-		template<class ValueType>
-		struct is_end<itr_value<ValueType> > {
-			static const bool value = false;
 		};
 
 		template<class ValueType>
@@ -70,10 +59,14 @@ namespace ga {
 
 			typedef typename expression_type::element_type element_type;
 
+			constexpr itr() :
+				expression_(nullptr) {
+			}
+
 			constexpr itr(expression_type *value, tail_type const &tail) :
 				expression_(value),
 				tail_(tail) {
-			};
+			}
 
 			constexpr decltype(auto) element() const {
 				return expression_->element();
@@ -102,9 +95,13 @@ namespace ga {
 
 			typedef typename expression_type::element_type element_type;
 
+			constexpr itr() :
+				expression_(nullptr) {
+			}
+
 			constexpr itr(expression_type *value, tail_type const &) :
 				expression_(value) {
-			};
+			}
 
 			constexpr expression_type * expression() const {
 				return expression_;
@@ -121,11 +118,6 @@ namespace ga {
 		protected:
 
 			expression_type *expression_;
-		};
-
-		template<class ExpressionType, class TailType>
-		struct is_end<itr<ExpressionType, TailType> > {
-			static const bool value = false;
 		};
 
 		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
@@ -182,10 +174,14 @@ namespace ga {
 
 			typedef typename expression_type::element_type element_type;
 
+			constexpr citr() :
+				expression_(nullptr) {
+			}
+
 			constexpr citr(expression_type const *value, tail_type const &tail) :
 				expression_(value),
 				tail_(tail) {
-			};
+			}
 
 			constexpr decltype(auto) element() const {
 				return expression_->element();
@@ -214,6 +210,10 @@ namespace ga {
 
 			typedef typename expression_type::element_type element_type;
 
+			constexpr citr() :
+				expression_(nullptr) {
+			};
+
 			constexpr citr(expression_type const *value, tail_type const &) :
 				expression_(value) {
 			};
@@ -233,11 +233,6 @@ namespace ga {
 		protected:
 
 			expression_type const *expression_;
-		};
-
-		template<class ExpressionType, class TailType>
-		struct is_end<citr<ExpressionType, TailType> > {
-			static const bool value = false;
 		};
 
 		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
@@ -283,6 +278,16 @@ namespace ga {
 			constexpr static decltype(auto) bind(citr<expression<ElementType, empty_expression, empty_expression>, TailType> const &curr) {
 				return curr.tail();
 			}
+		};
+
+		template<class Type>
+		struct begin_type {
+			typedef typename std::remove_const<typename std::remove_reference<decltype(begin(Type()))>::type>::type type;
+		};
+
+		template<class ItrType>
+		struct next_type {
+			typedef typename std::remove_const<typename std::remove_reference<decltype(next(ItrType()))>::type>::type type;
 		};
 
 	}
