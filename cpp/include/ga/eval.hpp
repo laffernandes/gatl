@@ -5,61 +5,6 @@ namespace ga {
 
 	namespace detail {
 
-		/**
-		template<class ItrType, default_bitset_t PossibleGrades>
-		struct _eval_dynamic_possible_grades {
-		private:
-
-			constexpr static default_bitset_t aux = _eval_dynamic_possible_grades<
-				typename next_type<ItrType>::type,
-				((!ItrType::element_type::basis_blade_type::compile_time_defined()) && ((PossibleGrades & ItrType::element_type::basis_blade_type::possible_grades()) != default_bitset_t(0))) ? (PossibleGrades | ItrType::element_type::basis_blade_type::possible_grades()) : PossibleGrades
-			>::value;
-
-		public:
-
-			constexpr static default_bitset_t value = (ItrType::element_type::basis_blade_type::possible_grades() & aux) != default_bitset_t(0) ? (ItrType::element_type::basis_blade_type::possible_grades() | aux) : aux;
-		};
-
-		template<default_bitset_t PossibleGrades>
-		struct _eval_dynamic_possible_grades<itr_end, PossibleGrades> {
-			constexpr static default_bitset_t value = PossibleGrades;
-		};
-
-		template<default_bitset_t ExtraPossibleGrades>
-		struct _eval_expression_element {
-			template<class CoefficientType, class BasisBladeType>
-			constexpr static decltype(auto) bind(component<CoefficientType, BasisBladeType> const &arg) {
-				return make_expression(make_component(arg.coefficient(), dbasis_blade<BasisBladeType::possible_grades() | ExtraPossibleGrades>(arg.basis_blade().value())), empty_expression(), empty_expression());
-			}
-
-			template<class CoefficientType, default_bitset_t PossibleGrades>
-			constexpr static decltype(auto) bind(components<CoefficientType, PossibleGrades> const &arg) {
-				components<CoefficientType, PossibleGrades | ExtraPossibleGrades> element;
-				for (auto itr = arg.begin(), end = arg.end(); itr != end; ++itr) {
-					element.insert(dbasis_blade<PossibleGrades | ExtraPossibleGrades>(itr->first.value()), itr->second);
-				}
-				return make_expression(element, empty_expression(), empty_expression());
-			}
-		};
-
-		template<>
-		struct _eval_expression_element<default_bitset_t(0)> {
-			template<class ElementType>
-			constexpr static decltype(auto) bind(ElementType const &arg) {
-				return make_expression(arg, empty_expression(), empty_expression());
-			}
-		};
-
-		template<class Type, class ItrType>
-		constexpr decltype(auto) eval_expression(ItrType const &arg) {
-			return plus(eval_expression<Type>(next(arg)), _eval_expression_element<_eval_dynamic_possible_grades<typename obegin_type<Type>::type, ItrType::element_type::basis_blade_type::possible_grades()>::value ^ ItrType::element_type::basis_blade_type::possible_grades()>::bind(arg.element()));
-		}
-
-		template<class Type>
-		constexpr decltype(auto) eval_expression(itr_end const &) {
-			return empty_expression();
-		}
-		/*/
 		template<class ItrType, default_bitset_t PossibleGrades, default_bitset_t DynamicPossibleGrades>
 		struct _eval_dynamic_possible_grades {
 		private:
@@ -82,20 +27,30 @@ namespace ga {
 			constexpr static default_bitset_t value = DynamicPossibleGrades;
 		};
 
-		template<default_bitset_t ExtraPossibleGrades>
+		template<default_bitset_t DynamicPossibleGrades>
 		struct _eval_expression_element {
 			template<class CoefficientType, class BasisBladeType>
 			constexpr static decltype(auto) bind(component<CoefficientType, BasisBladeType> const &arg) {
-				return make_expression(make_component(arg.coefficient(), dbasis_blade<BasisBladeType::possible_grades() | ExtraPossibleGrades>(arg.basis_blade().value())), empty_expression(), empty_expression());
+				return make_expression(make_component(arg.coefficient(), dbasis_blade<DynamicPossibleGrades>(arg.basis_blade().value())), empty_expression(), empty_expression());
+			}
+
+			template<class CoefficientType>
+			constexpr static decltype(auto) bind(component<CoefficientType, dbasis_blade<DynamicPossibleGrades> > const &arg) {
+				return make_expression(arg, empty_expression(), empty_expression());
 			}
 
 			template<class CoefficientType, default_bitset_t PossibleGrades>
 			constexpr static decltype(auto) bind(components<CoefficientType, PossibleGrades> const &arg) {
-				components<CoefficientType, PossibleGrades | ExtraPossibleGrades> element;
+				components<CoefficientType, DynamicPossibleGrades> element;
 				for (auto itr = arg.begin(), end = arg.end(); itr != end; ++itr) {
-					element.insert(dbasis_blade<PossibleGrades | ExtraPossibleGrades>(itr->first.value()), itr->second);
+					element.insert(dbasis_blade<DynamicPossibleGrades>(itr->first.value()), itr->second);
 				}
 				return make_expression(element, empty_expression(), empty_expression());
+			}
+
+			template<class CoefficientType>
+			constexpr static decltype(auto) bind(components<CoefficientType, DynamicPossibleGrades> const &arg) {
+				return make_expression(arg, empty_expression(), empty_expression());
 			}
 		};
 
@@ -116,7 +71,6 @@ namespace ga {
 		constexpr decltype(auto) eval_expression(itr_end const &) {
 			return empty_expression();
 		}
-		/**/
 
 		struct _eval_expression {
 			template<class Type>
