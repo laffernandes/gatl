@@ -5,7 +5,7 @@ namespace ga {
 
 	namespace detail {
 
-		class lcont_func {
+		class lcont_func final {
 		private:
 
 			struct _iterate_end {

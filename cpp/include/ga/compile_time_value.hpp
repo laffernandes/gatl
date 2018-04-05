@@ -8,7 +8,7 @@ namespace ga {
 	namespace detail {
 
 		template<default_integral_t Value>
-		class cvalue {
+		class cvalue final {
 		public:
 
 			typedef default_integral_t value_type;

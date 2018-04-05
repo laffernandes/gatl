@@ -9,7 +9,7 @@ namespace ga {
 		class component;
 			
 		template<class CoefficientType, default_bitset_t BasisBlade>
-		class component<CoefficientType, cbasis_blade<BasisBlade> > {
+		class component<CoefficientType, cbasis_blade<BasisBlade> > final {
 		public:
 
 			typedef CoefficientType coefficient_type;
@@ -47,7 +47,7 @@ namespace ga {
 		};
 
 		template<class CoefficientType, default_bitset_t PossibleGrades>
-		class component<CoefficientType, dbasis_blade<PossibleGrades> > {
+		class component<CoefficientType, dbasis_blade<PossibleGrades> > final {
 		public:
 
 			typedef CoefficientType coefficient_type;
@@ -92,7 +92,7 @@ namespace ga {
 		};
 
 		template<default_integral_t Coefficient, default_bitset_t BasisBlade>
-		class component<cvalue<Coefficient>, cbasis_blade<BasisBlade> > {
+		class component<cvalue<Coefficient>, cbasis_blade<BasisBlade> > final {
 		public:
 
 			typedef cvalue<Coefficient> coefficient_type;
@@ -118,7 +118,7 @@ namespace ga {
 		};
 
 		template<default_integral_t Coefficient, default_bitset_t PossibleGrades>
-		class component<cvalue<Coefficient>, dbasis_blade<PossibleGrades> > {
+		class component<cvalue<Coefficient>, dbasis_blade<PossibleGrades> > final {
 		public:
 
 			typedef cvalue<Coefficient> coefficient_type;

@@ -5,7 +5,7 @@ namespace ga {
 
 	namespace detail {
 
-		class empty_expression {
+		class empty_expression final {
 		public:
 
 			constexpr static bool compile_time_defined() {
@@ -221,7 +221,7 @@ namespace ga {
 		};
 
 		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-		class expression : private
+		class expression final : private
 			_super_expression_element<ElementType>,
 			_super_expression_left_subtree<LeftSubtreeType>,
 			_super_expression_right_subtree<RightSubtreeType> {
@@ -271,7 +271,7 @@ namespace ga {
 		};
 
 		template<class ElementType, class RightSubtreeType>
-		class expression<ElementType, empty_expression, RightSubtreeType> : private
+		class expression<ElementType, empty_expression, RightSubtreeType> final : private
 			_super_expression_element<ElementType>,
 			_super_expression_right_subtree<RightSubtreeType> {
 		private:
@@ -322,7 +322,7 @@ namespace ga {
 		};
 
 		template<class ElementType, class LeftSubtreeType>
-		class expression<ElementType, LeftSubtreeType, empty_expression> : private
+		class expression<ElementType, LeftSubtreeType, empty_expression> final : private
 			_super_expression_element<ElementType>,
 			_super_expression_left_subtree<LeftSubtreeType> {
 		private:
@@ -373,7 +373,7 @@ namespace ga {
 		};
 
 		template<class ElementType>
-		class expression<ElementType, empty_expression, empty_expression> : private
+		class expression<ElementType, empty_expression, empty_expression> final : private
 			_super_expression_element<ElementType> {
 		private:
 

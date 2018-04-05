@@ -6,7 +6,7 @@ namespace ga {
 	namespace detail {
 
 		template<class CoefficientType, default_bitset_t PossibleGrades>
-		class components {
+		class components final {
 		public:
 
 			typedef CoefficientType coefficient_type;

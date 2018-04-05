@@ -6,7 +6,7 @@ namespace ga {
 	namespace detail {
 
 		template<default_bitset_t BasisBlade>
-		class cbasis_blade {
+		class cbasis_blade final {
 		public:
 
 			typedef default_bitset_t value_type;

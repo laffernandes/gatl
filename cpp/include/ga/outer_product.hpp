@@ -5,7 +5,7 @@ namespace ga {
 
 	namespace detail {
 
-		class op_func {
+		class op_func final {
 		private:
 
 			struct _iterate_end {

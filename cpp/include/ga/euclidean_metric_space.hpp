@@ -4,7 +4,7 @@
 namespace ga {
 
 	template<ndims_t N>
-	class euclidean_metric_space : public signed_metric_space<N, 0> {
+	class euclidean_metric_space final : public signed_metric_space<N, 0> {
 	private:
 
 		typedef signed_metric_space<N, 0> super;

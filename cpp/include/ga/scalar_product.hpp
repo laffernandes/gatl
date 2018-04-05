@@ -5,7 +5,7 @@ namespace ga {
 
 	namespace detail {
 
-		class scp_func {
+		class scp_func final {
 		public:
 
 			constexpr bool operator()(grade_t const lhs_grade, grade_t const rhs_grade, grade_t const result_grade) const {

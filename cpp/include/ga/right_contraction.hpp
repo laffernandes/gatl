@@ -5,7 +5,7 @@ namespace ga {
 
 	namespace detail {
 
-		class rcont_func {
+		class rcont_func final {
 		private:
 
 			struct _iterate_end {

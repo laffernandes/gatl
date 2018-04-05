@@ -6,7 +6,7 @@ namespace ga {
 	namespace detail {
 
 		template<default_bitset_t PossibleGrades>
-		class dbasis_blade {
+		class dbasis_blade final {
 		public:
 
 			typedef default_bitset_t value_type;

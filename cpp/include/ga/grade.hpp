@@ -6,7 +6,7 @@ namespace ga {
 	enum grade_interpretation_t { UNDETERMINED_GRADE = -2, MIXED_GRADE = -1, SINGLE_GRADE = 0 };
 
 	template<>
-	class grade_result<grade_t> {
+	class grade_result<grade_t> final {
 	public:
 
 		typedef grade_t value_type;
@@ -36,7 +36,7 @@ namespace ga {
 	};
 
 	template<default_integral_t Value>
-	class grade_result<detail::cvalue<Value> > {
+	class grade_result<detail::cvalue<Value> > final {
 	public:
 
 		typedef detail::cvalue<Value> value_type;

@@ -5,7 +5,7 @@ namespace ga {
 
 	namespace detail {
 
-		class gp_func {
+		class gp_func final {
 		private:
 
 			struct _iterate_end {

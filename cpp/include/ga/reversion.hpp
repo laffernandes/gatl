@@ -5,7 +5,7 @@ namespace ga {
 
 	namespace detail {
 
-		class reversion_func {
+		class reversion_func final {
 		private:
 
 			constexpr static default_bitset_t pattern = (default_bitset_t)0xCCCCCCCCCCCCCCCCull;

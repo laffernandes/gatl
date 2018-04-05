@@ -5,7 +5,7 @@ namespace ga {
 
 	namespace detail {
 
-		class conjugation_func {
+		class conjugation_func final {
 		private:
 
 			constexpr static default_bitset_t pattern = (default_bitset_t)0x6666666666666666ull;
