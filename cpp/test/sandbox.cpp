@@ -1,11 +1,14 @@
 /**/
 #include <ga3e.hpp>
+#include <ga3h.hpp>
 #include <ga3c.hpp>
 
 using namespace ga;
+using namespace ga::lazy;
+using namespace ga::clifford;
 
-void test_make_cvalue() {
-	std::cout << "--- test_make_cvalue()" << std::endl;
+void test_make_constant() {
+	std::cout << "--- test_make_constant()" << std::endl;
 	constexpr auto x = c<5>;
 	static_assert(x > 3, "x <= 3");
 	static_assert(c<5> > 3, "x <= 3");
@@ -345,11 +348,11 @@ void test_metric(metric_space<MetricSpaceType> const &mtr, std::string const &na
 		auto e7 = e(c<7>);
 		auto e8 = e(c<8>);
 
-		std::cout << "metric_factor<e1^e2>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e1, e2, mtr))::element_type::basis_blade_type::value()>::value << std::endl;
-		std::cout << "metric_factor<e3^e5>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e3, e5, mtr))::element_type::basis_blade_type::value()>::value << std::endl;
-		std::cout << "metric_factor<e5^e6>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e5, e6, mtr))::element_type::basis_blade_type::value()>::value << std::endl;
-		std::cout << "metric_factor<e5^e6^e7>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(op(e5, e6, mtr), e7, mtr))::element_type::basis_blade_type::value()>::value << std::endl;
-		//std::cout << "metric_factor<e5^e6^e7^e8>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e5^e6^e7^e8)::element_type::basis_blade_type::value()>::value << std::endl; // Must raise a compiler error for signed_metric_space.
+		std::cout << "metric_factor<e1^e2>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e1, e2, mtr))::element_type::basis_blade_type::get()>::value << std::endl;
+		std::cout << "metric_factor<e3^e5>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e3, e5, mtr))::element_type::basis_blade_type::get()>::value << std::endl;
+		std::cout << "metric_factor<e5^e6>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e5, e6, mtr))::element_type::basis_blade_type::get()>::value << std::endl;
+		std::cout << "metric_factor<e5^e6^e7>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(op(e5, e6, mtr), e7, mtr))::element_type::basis_blade_type::get()>::value << std::endl;
+		//std::cout << "metric_factor<e5^e6^e7^e8>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e5^e6^e7^e8)::element_type::basis_blade_type::get()>::value << std::endl; // Must raise a compiler error for signed_metric_space.
 		std::cout << std::endl;
 	}
 
@@ -363,11 +366,11 @@ void test_metric(metric_space<MetricSpaceType> const &mtr, std::string const &na
 		auto e7 = e(c<7>);
 		auto e8 = e(c<8>);
 
-		std::cout << "metric_factor(e1^e2) = " << mtr.metric_factor(op(e1, e2, mtr).element().basis_blade().value()) << std::endl;
-		std::cout << "metric_factor(e3^e5) = " << mtr.metric_factor(op(e3, e5, mtr).element().basis_blade().value()) << std::endl;
-		std::cout << "metric_factor(e5^e6) = " << mtr.metric_factor(op(e5, e6, mtr).element().basis_blade().value()) << std::endl;
-		std::cout << "metric_factor(e5^e6^e7) = " << mtr.metric_factor(op(op(e5, e6, mtr), e7, mtr).element().basis_blade().value()) << std::endl;
-		//std::cout << "metric_factor(e5^e6^e7^e8) = " << mtr.metric_factor((e5^e6^e7^e8).element().basis_blade().value()) << std::endl; // Must raise a runtime error for signed_metric_space.
+		std::cout << "metric_factor(e1^e2) = " << mtr.metric_factor(op(e1, e2, mtr).element().basis_blade().get()) << std::endl;
+		std::cout << "metric_factor(e3^e5) = " << mtr.metric_factor(op(e3, e5, mtr).element().basis_blade().get()) << std::endl;
+		std::cout << "metric_factor(e5^e6) = " << mtr.metric_factor(op(e5, e6, mtr).element().basis_blade().get()) << std::endl;
+		std::cout << "metric_factor(e5^e6^e7) = " << mtr.metric_factor(op(op(e5, e6, mtr), e7, mtr).element().basis_blade().get()) << std::endl;
+		//std::cout << "metric_factor(e5^e6^e7^e8) = " << mtr.metric_factor((e5^e6^e7^e8).element().basis_blade().get()) << std::endl; // Must raise a runtime error for signed_metric_space.
 		std::cout << std::endl;
 	}
 }
@@ -380,49 +383,106 @@ void test_pseudoscalar(space<SpaceType> const &spc, std::string const &name) {
 }
 
 void test_eval() {
-	using namespace ga3c;
+	//TODO Parei aqui!
+	//using namespace ga3c;
 
-	std::cout << "--- test_eval()" << std::endl;
+	//std::cout << "--- test_eval()" << std::endl;
 
-	auto exp0 = 5.0;
-	std::cout << "exp0 = " << exp0 << std::endl;
-	std::cout << "     = " << eval(exp0) << std::endl;
-	std::cout << "     = " << eval(eval(exp0)) << std::endl;
-	std::cout << std::endl;
+	//auto exp0 = 5.0;
+	//std::cout << "exp0 = " << exp0 << std::endl;
+	//std::cout << "     = " << eval(exp0) << std::endl;
+	//std::cout << "     = " << eval(eval(exp0)) << std::endl;
+	//std::cout << std::endl;
 
-	auto exp1 = 5.0 * e1 + 6 * e2;
-	std::cout << "exp1 = " << exp1 << std::endl;
-	std::cout << "     = " << eval(exp1) << std::endl;
-	std::cout << "     = " << eval(eval(exp1)) << std::endl;
-	std::cout << std::endl;
+	//auto exp1 = 5.0 * e1 + 6 * e2;
+	//std::cout << "exp1 = " << exp1 << std::endl;
+	//std::cout << "     = " << eval(exp1) << std::endl;
+	//std::cout << "     = " << eval(eval(exp1)) << std::endl;
+	//std::cout << std::endl;
 
-	auto exp2 = 5.0 * e(1) + 6 * e2;
-	std::cout << "exp2 = " << exp2 << std::endl;
-	std::cout << "     = " << eval(exp2) << std::endl;
-	std::cout << "     = " << eval(eval(exp2)) << std::endl;
-	std::cout << std::endl;
+	//auto exp2 = 5.0 * e(1) + 6 * e2;
+	//std::cout << "exp2 = " << exp2 << std::endl;
+	//std::cout << "     = " << eval(exp2) << std::endl;
+	//std::cout << "     = " << eval(eval(exp2)) << std::endl;
+	//std::cout << std::endl;
 
-	auto exp3 = 5.0 * e(1) + 6 * e2 + (3 * (e1^e2));
-	std::cout << "exp3 = " << exp3 << std::endl;
-	std::cout << "     = " << eval(exp3) << std::endl;
-	std::cout << "     = " << eval(eval(exp3)) << std::endl;
-	std::cout << std::endl;
+	//auto exp3 = 5.0 * e(1) + 6 * e2 + (3 * (e1^e2));
+	//std::cout << "exp3 = " << exp3 << std::endl;
+	//std::cout << "     = " << eval(exp3) << std::endl;
+	//std::cout << "     = " << eval(eval(exp3)) << std::endl;
+	//std::cout << std::endl;
 
-	auto exp4 = 5.0 * e(1) + 6 * e1;
-	std::cout << "exp4 = " << exp4 << std::endl;
-	std::cout << "     = " << eval(exp4) << std::endl;
-	std::cout << "     = " << eval(eval(exp4)) << std::endl;
-	std::cout << std::endl;
+	//auto exp4 = 5.0 * e(1) + 6 * e1;
+	//std::cout << "exp4 = " << exp4 << std::endl;
+	//std::cout << "     = " << eval(exp4) << std::endl;
+	//std::cout << "     = " << eval(eval(exp4)) << std::endl;
+	//std::cout << std::endl;
 
-	auto exp5 = 5.0 * e(1) + 6 * e2 + (3 * (e1^e2)) - (7 * gp(e(1), e(2)));
-	std::cout << "exp5 = " << exp5 << std::endl;
-	std::cout << "     = " << eval(exp5) << std::endl;
-	std::cout << "     = " << eval(eval(exp5)) << std::endl;
-	std::cout << std::endl;
+	//auto exp5 = 5.0 * e(1) + 6 * e2 + (3 * (e1^e2)) - (7 * gp(e(1), e(2)));
+	//std::cout << "exp5 = " << exp5 << std::endl;
+	//std::cout << "     = " << eval(exp5) << std::endl;
+	//std::cout << "     = " << eval(eval(exp5)) << std::endl;
+	//std::cout << std::endl;
+}
+
+void test_variable() {
+	auto addition = [](auto const &x, auto const &y) {
+		auto r = x + x + y;
+
+		std::cout << "r = " << r << std::endl;
+		std::cout << std::endl;
+	};
+
+	auto subtraction = [](auto const &x) {
+		auto r = x - x;
+
+		std::cout << "r = " << r << std::endl;
+		std::cout << std::endl;
+	};
+
+	auto product = [](auto const &x, auto const &y) {
+		using namespace ga3h;
+
+		auto p = ep + x * e1 + y * e3;
+		auto d = x * e1 + y * e2;
+		auto r = p ^ d;
+
+		std::cout << "p = " << p << std::endl;
+		std::cout << "d = " << d << std::endl;
+		std::cout << "r = " << r << std::endl;
+		std::cout << std::endl;
+	};
+
+	auto span_line = [](auto const &x, auto const &y, auto const &z) {
+		using namespace ga3h;
+
+		auto p = ep + x * e1 + y * e2 + z * e3;
+		auto d = x * e1 + y * e2 + z * e3;
+		auto r = p ^ d;
+
+		std::cout << "p = " << p << std::endl;
+		std::cout << "d = " << d << std::endl;
+		std::cout << "r = " << r << std::endl;
+		std::cout << std::endl;
+	};
+
+	std::cout << "--- test_variable()" << std::endl;
+
+	addition(5.0, 3.0);
+	addition(var1(5.0), var2(3.0));
+
+	subtraction(5.0);
+	subtraction(var1(5.0));
+
+	product(5.0, 3.0);
+	product(var1(5.0), var2(3.0));
+
+	span_line(10.0, 5.0, -7.0);
+	span_line(var1(10.0), var2(5.0), var3(-7.0));
 }
 
 int main() {
-	test_make_cvalue();
+	test_make_constant();
 
 	test_make_scalarc();
 
@@ -452,6 +512,8 @@ int main() {
 	test_pseudoscalar(euclidean_metric_space<2>(), "euclidean<2>");
 	test_pseudoscalar(signed_metric_space<2, 1>(), "signed<2, 1>");
 
+	test_variable();
+
 	test_eval();
 
 	auto e1 = e(1);
@@ -478,7 +540,7 @@ int main() {
 	auto e6 = e(6);
 
 	//auto r = gp(e1^e2^e3^e4, e4^e6, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
-	//
+	
 	//lcont(e(c<1>)^e(c<2>), e(c<1>)^e(c<2>)^e(c<3>)^e(c<4>), signed_metric_space<2, 1>());
 
 	return EXIT_SUCCESS;
@@ -488,6 +550,40 @@ int main() {
 
 int main() {
 	using namespace ga5e;
+
+	auto x1 = c<5>;
+	auto x2 = val(5.0);
+	auto x3 = var<1>(5.0);
+	std::cout << "size(x1) = " << sizeof(decltype(x1)) << "\t x1 = " << x1 << std::endl;
+	std::cout << "size(x2) = " << sizeof(decltype(x2)) << "\t x2 = " << x2 << std::endl;
+	std::cout << "size(x3) = " << sizeof(decltype(x3)) << "\t x3 = " << x3 << std::endl;
+	std::cout << std::endl;
+
+	auto y12 = x1 + x2;
+	auto y13 = x1 + x3;
+	auto y23 = x2 + x3;
+	std::cout << "size(y12) = " << sizeof(decltype(y12)) << "\t y12 = " << y12 << std::endl;
+	std::cout << "size(y13) = " << sizeof(decltype(y13)) << "\t y13 = " << y13 << std::endl;
+	std::cout << "size(y23) = " << sizeof(decltype(y23)) << "\t y23 = " << y23 << std::endl;
+	std::cout << std::endl;
+
+	auto z12 = x1 * x2;
+	auto z13 = x1 * x3;
+	auto z23 = x2 * x3;
+	std::cout << "size(z12) = " << sizeof(decltype(z12)) << "\t z12 = " << z12 << std::endl;
+	std::cout << "size(z13) = " << sizeof(decltype(z13)) << "\t z13 = " << z13 << std::endl;
+	std::cout << "size(z23) = " << sizeof(decltype(z23)) << "\t z23 = " << z23 << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "size(sqrt(x1)) = " << sizeof(decltype(sqrt(x1))) << "\t sqrt(x1) = " << sqrt(x1) << std::endl;
+	std::cout << "size(sqrt(x2)) = " << sizeof(decltype(sqrt(x2))) << "\t sqrt(x2) = " << sqrt(x2) << std::endl;
+	std::cout << "size(sqrt(x3)) = " << sizeof(decltype(sqrt(x3))) << "\t sqrt(x3) = " << sqrt(x3) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "size(sqrt(<8>)) = " << sizeof(decltype(sqrt(c<8>))) << "\t sqrt(<8>) = " << sqrt(c<8>) << std::endl;
+	std::cout << "size(sqrt(<4>)) = " << sizeof(decltype(sqrt(c<4>))) << "\t sqrt(<4>) = " << sqrt(c<4>) << std::endl;
+	std::cout << "size(sqrt(<-4>)) = " << sizeof(decltype(sqrt(c<-4>))) << "\t sqrt(<4>) = " << sqrt(c<-4>) << std::endl;
+	std::cout << std::endl;
 
 	double x, y, z;
 	std::cout << "x = "; std::cin >> x;
@@ -499,14 +595,14 @@ int main() {
 	std::cout << "p = " << p << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "sizeof(empty) = " << sizeof(ga::detail::empty_expression) << std::endl;
+	std::cout << "sizeof(empty) = " << sizeof(ga::clifford::detail::empty_expression_tree) << std::endl;
 	std::cout << "sizeof(x) = " << sizeof(decltype(x)) << std::endl;
 	std::cout << "sizeof(e1) = " << sizeof(decltype(e1)) << std::endl;
 	std::cout << "sizeof(p) = " << sizeof(decltype(p)) << std::endl;
 	std::cout << std::endl;
 
-	auto itr = ga::detail::begin(p);
-	auto oitr = ga::detail::obegin(p);
+	auto itr = ga::clifford::detail::begin(p);
+	auto oitr = ga::clifford::detail::obegin(p);
 
 	std::cout << "sizeof(itr) = " << sizeof(decltype(itr)) << std::endl;
 	std::cout << "sizeof(oitr) = " << sizeof(decltype(oitr)) << std::endl;
@@ -516,6 +612,12 @@ int main() {
 	std::cout << "gp(p, e3) = " << r << std::endl;
 	std::cout << "sizeof(gp(p, e3)) = " << sizeof(decltype(r)) << std::endl;
 	std::cout << std::endl;
+
+	typedef decltype(e(c<1>) + 3.0 * e(c<2>)) root;
+	std::cout << "root = " << sizeof(root) << " bytes" << std::endl;
+	std::cout << "root::element_type = " << sizeof(root::element_type) << " bytes" << std::endl;
+	std::cout << "root::left_type = " << sizeof(root::left_type) << " bytes" << std::endl;
+	std::cout << "root::right_type = " << sizeof(root::right_type) << " bytes" << std::endl;
 
 	return EXIT_SUCCESS;
 }

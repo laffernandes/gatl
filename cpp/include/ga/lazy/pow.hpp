@@ -1,0 +1,78 @@
+#ifndef __GA_LAZY_POW_HPP__
+#define __GA_LAZY_POW_HPP__
+
+namespace ga {
+
+	namespace lazy {
+
+		namespace detail {
+
+			template<class LeftExpressionType, class RightExpressionType>
+			class pow final :
+				public lazy_expression<pow<LeftExpressionType, RightExpressionType> >,
+				private binary_lazy_expression<LeftExpressionType, RightExpressionType> {
+			private:
+
+				typedef binary_lazy_expression<LeftExpressionType, RightExpressionType> _super_for_arguments;
+
+			public:
+
+				typedef pow expression_type;
+
+				using left_type = typename _super_for_arguments::left_type;
+				using right_type = typename _super_for_arguments::right_type;
+
+				typedef decltype(std::pow(typename left_type::value_type(), typename right_type::value_type())) value_type;
+
+				constexpr pow() = default;
+				constexpr pow(pow const &) = default;
+				constexpr pow(pow &&) = default;
+
+				constexpr pow(left_type const &lhs, right_type const &rhs) :
+					_super_for_arguments(lhs, rhs) {
+				}
+
+				constexpr pow & operator=(pow const &) = default;
+				constexpr pow & operator=(pow &&) = default;
+
+				using _super_for_arguments::left;
+				using _super_for_arguments::right;
+				using _super_for_arguments::compile_time_defined;
+
+				static_assert(!std::is_same<left_type, constant<0> >::value, "The left-hand side argument cannot be a ga::lazy::constant<0> expression.");
+				static_assert(!std::is_same<right_type, constant<0> >::value, "The right-hand side argument cannot be a ga::lazy::constant<0> expression.");
+				static_assert(!std::is_same<right_type, constant<1> >::value, "The right-hand side argument cannot be a ga::lazy::constant<1> expression.");
+			};
+
+			template<class LeftExpressionType, class RightExpressionType>
+			constexpr pow<LeftExpressionType, RightExpressionType> make_pow(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+				return pow<LeftExpressionType, RightExpressionType>(lhs, rhs);
+			}
+
+		}
+
+		template<class LeftExpressionType, class RightExpressionType>
+		struct is_lazy_expression<detail::pow<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = true;
+		};
+
+		template<class LeftExpressionType, class RightExpressionType>
+		struct is_constant<detail::pow<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = is_constant<LeftExpressionType>::value && is_constant<RightExpressionType>::value;
+		};
+
+		template<class LeftExpressionType, class RightExpressionType>
+		struct is_value<detail::pow<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = is_value<LeftExpressionType>::value && is_value<RightExpressionType>::value;
+		};
+
+		template<class LeftExpressionType, class RightExpressionType>
+		struct is_variable<detail::pow<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = is_variable<LeftExpressionType>::value && is_variable<RightExpressionType>::value;
+		};
+
+	}
+
+}
+
+#endif // __GA_LAZY_POW_HPP__

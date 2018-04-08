@@ -2,7 +2,7 @@
 #define __GA2C_HPP__
 
 #include <ga.hpp>
-#include <ga/macro_for_algebra_overload.hpp>
+#include <ga/clifford/macro_for_algebra_overload.hpp>
 
 GA_SIGNED_ALGEBRA_OVERLOAD(ga2c, 2 + 1, 1)
 

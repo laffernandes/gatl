@@ -2,7 +2,7 @@
 #define __GA4E_HPP__
 
 #include <ga.hpp>
-#include <ga/macro_for_algebra_overload.hpp>
+#include <ga/clifford/macro_for_algebra_overload.hpp>
 
 GA_SIGNED_ALGEBRA_OVERLOAD(ga4e, 4, 0)
 
