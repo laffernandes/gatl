@@ -31,6 +31,41 @@ namespace ga {
 		return GA_DEFAULT_DBL_TOLERANCE;
 	}
 
+	namespace common {
+
+		namespace detail {
+
+			template<class ExpressionType>
+			struct _lazy_expression_value_type {
+				typedef typename ExpressionType::expression_type::value_type type;
+			};
+
+			template<class ExpressionType>
+			struct clifford_expression_common_value_type {
+				typedef typename ExpressionType::expression_type::value_type type;
+			};
+
+			template<class Type>
+			struct _native_value_type {
+				typedef Type type;
+			};
+
+			template<class Type>
+			struct common_coefficient_value_type : std::conditional<
+				is_lazy_expression<Type>::value,
+				_lazy_expression_value_type<Type>,
+				typename std::conditional<
+					is_clifford_expression<Type>::value,
+					clifford_expression_common_value_type<Type>,
+					_native_value_type<Type>
+				>::type
+			> {
+			};
+
+		}
+
+	}
+	
 }
 
 #endif // __GA_DEFAULT_TOLERANCE_HPP__

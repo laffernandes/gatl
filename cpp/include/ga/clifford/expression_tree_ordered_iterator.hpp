@@ -7,15 +7,6 @@ namespace ga {
 
 		namespace detail {
 
-			constexpr itr_end obegin(empty_expression_tree const &) {
-				return itr_end();
-			}
-
-			template<class ValueType>
-			constexpr decltype(auto) obegin(ValueType const &arg) {
-				return begin(arg);
-			}
-
 			template<class ExpressionType, class TailType>
 			class oitr : public itr<ExpressionType, TailType> {
 			private:
@@ -45,6 +36,11 @@ namespace ga {
 			}
 
 			template<class ExpressionType>
+			constexpr decltype(auto) obegin(clifford_expression<ExpressionType> &root) {
+				return obegin(root());
+			}
+
+			template<class ExpressionType>
 			struct _onext;
 
 			template<class ExpressionType, class TailType>
@@ -61,9 +57,9 @@ namespace ga {
 			};
 
 			template<class ElementType, class LeftSubtreeType>
-			struct _onext<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree> > {
+			struct _onext<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression> > {
 				template<class TailType>
-				constexpr static decltype(auto) bind(oitr<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree>, TailType> const &curr) {
+				constexpr static decltype(auto) bind(oitr<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression>, TailType> const &curr) {
 					return curr.tail();
 				}
 			};
@@ -77,9 +73,9 @@ namespace ga {
 			};
 
 			template<class ElementType, class RightSubtreeType>
-			struct _push_up_to_leftmost<expression_tree<ElementType, empty_expression_tree, RightSubtreeType> > {
+			struct _push_up_to_leftmost<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType> > {
 				template<class TailType>
-				constexpr static oitr<expression_tree<ElementType, empty_expression_tree, RightSubtreeType>, TailType> bind(oitr<expression_tree<ElementType, empty_expression_tree, RightSubtreeType>, TailType> const &curr) {
+				constexpr static oitr<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType>, TailType> bind(oitr<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType>, TailType> const &curr) {
 					return curr;
 				}
 			};
@@ -113,6 +109,11 @@ namespace ga {
 			}
 
 			template<class ExpressionType>
+			constexpr decltype(auto) obegin(clifford_expression<ExpressionType> const &root) {
+				return obegin(root());
+			}
+
+			template<class ExpressionType>
 			struct _conext;
 
 			template<class ExpressionType, class TailType>
@@ -129,9 +130,9 @@ namespace ga {
 			};
 
 			template<class ElementType, class LeftSubtreeType>
-			struct _conext<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree> > {
+			struct _conext<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression> > {
 				template<class TailType>
-				constexpr static decltype(auto) bind(coitr<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree>, TailType> const &curr) {
+				constexpr static decltype(auto) bind(coitr<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression>, TailType> const &curr) {
 					return curr.tail();
 				}
 			};
@@ -145,9 +146,9 @@ namespace ga {
 			};
 
 			template<class ElementType, class RightSubtreeType>
-			struct _cpush_up_to_leftmost<expression_tree<ElementType, empty_expression_tree, RightSubtreeType> > {
+			struct _cpush_up_to_leftmost<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType> > {
 				template<class TailType>
-				constexpr static coitr<expression_tree<ElementType, empty_expression_tree, RightSubtreeType>, TailType> bind(coitr<expression_tree<ElementType, empty_expression_tree, RightSubtreeType>, TailType> const &curr) {
+				constexpr static coitr<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType>, TailType> bind(coitr<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType>, TailType> const &curr) {
 					return curr;
 				}
 			};
@@ -155,6 +156,14 @@ namespace ga {
 			template<class Type>
 			struct obegin_type {
 				typedef typename std::remove_const<typename std::remove_reference<decltype(obegin(Type()))>::type>::type type;
+			};
+
+			template<class ExpressionType>
+			struct obegin_type<lazy_expression<ExpressionType> > : obegin_type<ExpressionType> {
+			};
+
+			template<class ExpressionType>
+			struct obegin_type<clifford_expression<ExpressionType> > : obegin_type<ExpressionType> {
 			};
 
 		}

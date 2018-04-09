@@ -5,23 +5,18 @@ namespace ga {
 
 	namespace clifford {
 
-		template<class Type, class MetricSpaceType>
+		template<class Type, class MetricSpaceType, typename std::enable_if<!is_clifford_expression<Type>::value, int>::type = 0>
 		constexpr decltype(auto) exp(Type const &arg, metric_space<MetricSpaceType> const &) {
 			return exp(arg);
 		}
 
-		template<class MetricSpaceType>
-		constexpr decltype(auto) exp(detail::empty_expression_tree const &, metric_space<MetricSpaceType> const &) {
-			return exp(detail::empty_expression_tree());
-		}
-
-		template<class ElementType, class LeftSubtreeType, class RightSubtreeType, class MetricSpaceType, typename std::enable_if<detail::may_cast_to_native<detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> >::value, int>::type = 0>
-		constexpr decltype(auto) exp(detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &arg, metric_space<MetricSpaceType> const &) {
+		template<class ExpressionType, class MetricSpaceType, typename std::enable_if<detail::may_cast_to_native<ExpressionType>::value, int>::type = 0>
+		constexpr decltype(auto) exp(clifford_expression<ExpressionType> const &arg, metric_space<MetricSpaceType> const &) {
 			return exp(arg);
 		}
 
-		template<class ElementType, class LeftSubtreeType, class RightSubtreeType, class MetricSpaceType, typename std::enable_if<!detail::may_cast_to_native<detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> >::value, int>::type = 0>
-		decltype(auto) exp(detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &arg, metric_space<MetricSpaceType> const &mtr) {
+		template<class ExpressionType, class MetricSpaceType, typename std::enable_if<!detail::may_cast_to_native<ExpressionType>::value, int>::type = 0>
+		decltype(auto) exp(clifford_expression<ExpressionType> const &arg, metric_space<MetricSpaceType> const &mtr) {
 			typedef decltype(sqrt(abs(scp(arg, arg, mtr)))) alpha_t;
 			typedef typename std::common_type<decltype(cosh(alpha_t())), decltype(cos(alpha_t()))>::type scalar_t;
 			//TODO lazy

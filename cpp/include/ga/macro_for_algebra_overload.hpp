@@ -65,8 +65,8 @@
 			return ga::clifford::op(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType, typename std::enable_if<!ga::clifford::detail::may_cast_to_native<ga::clifford::detail::expression_tree<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> >::value && !ga::clifford::detail::may_cast_to_native<ga::clifford::detail::expression_tree<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> >::value, int>::type = 0> \
-		constexpr decltype(auto) operator^(ga::clifford::detail::expression_tree<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, ga::clifford::detail::expression_tree<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) { \
+		template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<!(ga::clifford::detail::may_cast_to_native<LeftExpressionType>::value || ga::clifford::detail::may_cast_to_native<RightExpressionType>::value), int>::type = 0> \
+		constexpr decltype(auto) operator^(ga::clifford::clifford_expression<LeftExpressionType> const &lhs, ga::clifford::clifford_expression<RightExpressionType> const &rhs) { \
 			return ga::clifford::op(lhs, rhs, space); \
 		} \
 		\
@@ -85,8 +85,8 @@
 			return ga::clifford::igp(lhs, rhs, space); \
 		} \
 		\
-		template<class ElementType, class LeftSubtreeType, class RightSubtreeType, typename std::enable_if<!ga::clifford::detail::may_cast_to_native<ga::clifford::detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> >::value, int>::type = 0> \
-		constexpr decltype(auto) exp(ga::clifford::detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) { \
+		template<class ExpressionType, typename std::enable_if<!ga::clifford::detail::may_cast_to_native<ExpressionType>::value, int>::type = 0> \
+		constexpr decltype(auto) exp(ga::clifford::clifford_expression<ExpressionType> const &arg) { \
 			return ga::clifford::exp(arg, space); \
 		} \
 		\

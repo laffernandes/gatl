@@ -73,17 +73,27 @@ namespace ga {
 
 		template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<detail::may_cast_to_native<LeftExpressionType>::value || detail::may_cast_to_native<RightExpressionType>::value, int>::type = 0>
 		constexpr decltype(auto) operator*(clifford_expression<LeftExpressionType> const &lhs, clifford_expression<RightExpressionType> const &rhs) {
-			return gp(lhs(), rhs(), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+			return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 		}
 
 		template<class LeftExpressionType, class RightExpressionType>
 		constexpr decltype(auto) operator*(clifford_expression<LeftExpressionType> const &lhs, lazy_expression<RightExpressionType> const &rhs) {
-			return gp(lhs(), rhs(), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+			return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 		}
 
 		template<class LeftExpressionType, class RightExpressionType>
 		constexpr decltype(auto) operator*(lazy_expression<LeftExpressionType> const &lhs, clifford_expression<RightExpressionType> const &rhs) {
-			return gp(lhs(), rhs(), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+			return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+		}
+
+		template<class LeftExpressionType, class RightType, typename std::enable_if<!(is_lazy_expression<RightType>::value || is_clifford_expression<RightType>::value), int>::type = 0>
+		constexpr decltype(auto) operator*(clifford_expression<LeftExpressionType> const &lhs, RightType const &rhs) {
+			return gp(lhs, value<RightType>(rhs), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+		}
+		
+		template<class LeftType, class RightExpressionType, typename std::enable_if<!(is_lazy_expression<LeftType>::value || is_clifford_expression<LeftType>::value), int>::type = 0>
+		constexpr decltype(auto) operator*(LeftType const &lhs, clifford_expression<RightExpressionType> const &rhs) {
+			return gp(value<LeftType>(lhs), rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 		}
 
 	}

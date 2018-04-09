@@ -15,8 +15,8 @@ namespace ga {
 				return insert(unary_minus(next(arg)), unary_minus_element(arg.element()));
 			}
 
-			constexpr empty_expression_tree unary_minus(itr_end const &) {
-				return empty_expression_tree();
+			constexpr empty_clifford_expression unary_minus(itr_end const &) {
+				return empty_clifford_expression();
 			}
 
 		}
@@ -25,7 +25,7 @@ namespace ga {
 
 		template<class RightExpressionType>
 		constexpr decltype(auto) operator-(clifford_expression<RightExpressionType> const &rhs) {
-			return detail::unary_minus(detail::begin(rhs()));
+			return detail::unary_minus(detail::begin(rhs));
 		}
 
 	}

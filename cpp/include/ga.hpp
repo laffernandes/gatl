@@ -82,6 +82,8 @@ namespace ga {
 #include "ga/lazy/arithmetic_operators.hpp"
 #include "ga/lazy/insertion_operator.hpp"
 
+#include "ga/lazy/eval.hpp"
+
 #include "ga/lazy/macro_for_variable_definition.hpp"
 
 namespace ga {
@@ -89,7 +91,6 @@ namespace ga {
 	namespace clifford {
 
 		using lazy::lazy_expression;
-		using lazy::is_lazy_expression;
 
 		using lazy::constant;
 		using lazy::value;
@@ -122,13 +123,15 @@ namespace ga {
 
 #include "ga/clifford/clifford_expression.hpp"
 
+#include "ga/clifford/basic_iterators.hpp"
+#include "ga/clifford/clifford_expression_copy.hpp"
+
 #include "ga/clifford/expression_tree.hpp"
-#include "ga/clifford/expression_tree_coefficient_type.hpp"
 #include "ga/clifford/expression_tree_insert.hpp"
 #include "ga/clifford/expression_tree_iterator.hpp"
 #include "ga/clifford/expression_tree_ordered_iterator.hpp"
-#include "ga/clifford/expression_tree_reversed_iterator.hpp"
-#include "ga/clifford/expression_tree_copy.hpp"
+
+#include "ga/clifford/clifford_expression_common_value_type.hpp"
 
 #include "ga/clifford/native.hpp"
 
@@ -167,8 +170,6 @@ namespace ga {
 
 #include "ga/clifford/pseudoscalar.hpp"
 #include "ga/clifford/basis_vector.hpp"
-
-#include "ga/clifford/macro_for_operators_overload.hpp"
 
 namespace ga {
 
@@ -241,16 +242,6 @@ LAZY_DEFINE_VARK_FUNCTION(61)
 LAZY_DEFINE_VARK_FUNCTION(62)
 LAZY_DEFINE_VARK_FUNCTION(63)
 
-GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::int16_t, constexpr)
-GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::int32_t, constexpr)
-GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::int64_t, constexpr)
-
-GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::float_t, constexpr)
-GA_OVERLOAD_OPERATORS_FOR_CUSTOM_SCALAR_TYPE(std::double_t, constexpr)
-
-//TODO Refatorar operatores aritméticos
-//TODO Refatorar math
-//TODO Implementar eval
 //TODO verificar onde contant é usado
 
 //TODO Implement equal(lhs, rhs, tol)

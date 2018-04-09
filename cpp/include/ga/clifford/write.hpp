@@ -112,12 +112,12 @@ namespace ga {
 		template<class RightExpressionType>
 		std::ostream & operator<<(std::ostream &os, clifford_expression<RightExpressionType> const &rhs) {
 			bool first = true;
-			detail::write(os, detail::obegin(rhs()), first);
-			return os;
-		}
+			detail::write(os, detail::obegin(rhs), first);
 
-		std::ostream & operator<<(std::ostream &os, detail::empty_expression_tree const &) {
-			os << constant<0>();
+			if (first) {
+				os << constant<0>();
+			}
+
 			return os;
 		}
 

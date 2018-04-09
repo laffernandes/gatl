@@ -13,8 +13,8 @@ namespace ga {
 			}
 
 			template<class SignChangeIfGradeFunc>
-			constexpr static empty_expression_tree graded_unary_minus(itr_end const &, SignChangeIfGradeFunc const &) {
-				return empty_expression_tree();
+			constexpr static empty_clifford_expression graded_unary_minus(itr_end const &, SignChangeIfGradeFunc const &) {
+				return empty_clifford_expression();
 			}
 
 		}

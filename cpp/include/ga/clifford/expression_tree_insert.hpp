@@ -23,18 +23,18 @@ namespace ga {
 			};
 
 			template<>
-			struct _height<empty_expression_tree> {
+			struct _height<empty_clifford_expression> {
 				constexpr static int value = -1;
 			};
 
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 			constexpr decltype(auto) rotate_left(ElementType const &element, LeftSubtreeType const &left, RightSubtreeType const &right) {
-				return make_expression(right.element(), make_expression(element, left, right.left()), right.right());
+				return make_expression_tree(right.element(), make_expression_tree(element, left, right.left()), right.right());
 			}
 
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 			constexpr decltype(auto) rotate_right(ElementType const &element, LeftSubtreeType const &left, RightSubtreeType const &right) {
-				return make_expression(left.element(), left.left(), make_expression(element, left.right(), right));
+				return make_expression_tree(left.element(), left.left(), make_expression_tree(element, left.right(), right));
 			}
 
 			template<class ElementType>
@@ -88,7 +88,7 @@ namespace ga {
 
 				template<class ExpressionType>
 				constexpr static decltype(auto) bind(ExpressionType const &root, ElementType const &element) {
-					return balance(make_expression(root.element(), insert(root.left(), element), root.right()));
+					return balance(make_expression_tree(root.element(), insert(root.left(), element), root.right()));
 				}
 			};
 
@@ -143,7 +143,7 @@ namespace ga {
 
 				template<class ExpressionType>
 				constexpr static decltype(auto) bind(ExpressionType const &root, ElementType const &element) {
-					return balance(make_expression(root.element(), root.left(), insert(root.right(), element)));
+					return balance(make_expression_tree(root.element(), root.left(), insert(root.right(), element)));
 				}
 			};
 
@@ -163,9 +163,9 @@ namespace ga {
 			};
 
 			template<class ElementType>
-			struct _insert<empty_expression_tree, ElementType> {
-				constexpr static decltype(auto) bind(empty_expression_tree const &, ElementType const &element) {
-					return make_expression(element, empty_expression_tree(), empty_expression_tree());
+			struct _insert<empty_clifford_expression, ElementType> {
+				constexpr static decltype(auto) bind(empty_clifford_expression const &, ElementType const &element) {
+					return make_expression_tree(element, empty_clifford_expression(), empty_clifford_expression());
 				}
 			};
 

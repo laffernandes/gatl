@@ -32,8 +32,8 @@ namespace ga {
 				return insert(binary_minus(lhs, next(rhs)), unary_minus_element(rhs.element()));
 			}
 
-			constexpr empty_expression_tree binary_minus(itr_end const &, itr_end const &) {
-				return empty_expression_tree();
+			constexpr empty_clifford_expression binary_minus(itr_end const &, itr_end const &) {
+				return empty_clifford_expression();
 			}
 
 		}
@@ -42,17 +42,27 @@ namespace ga {
 
 		template<class LeftExpressionType, class RightExpressionType>
 		constexpr decltype(auto) operator-(clifford_expression<LeftExpressionType> const &lhs, clifford_expression<RightExpressionType> const &rhs) {
-			return detail::binary_minus(detail::obegin(lhs()), detail::obegin(rhs()));
+			return detail::binary_minus(detail::obegin(lhs), detail::obegin(rhs));
 		}
 
 		template<class LeftExpressionType, class RightExpressionType>
 		constexpr decltype(auto) operator-(clifford_expression<LeftExpressionType> const &lhs, lazy_expression<RightExpressionType> const &rhs) {
-			return detail::binary_minus(detail::obegin(lhs()), detail::obegin(rhs()));
+			return detail::binary_minus(detail::obegin(lhs), detail::obegin(rhs));
 		}
 
 		template<class LeftExpressionType, class RightExpressionType>
 		constexpr decltype(auto) operator-(lazy_expression<LeftExpressionType> const &lhs, clifford_expression<RightExpressionType> const &rhs) {
-			return detail::binary_minus(detail::obegin(lhs()), detail::obegin(rhs()));
+			return detail::binary_minus(detail::obegin(lhs), detail::obegin(rhs));
+		}
+
+		template<class LeftExpressionType, class RightType, typename std::enable_if<!(is_lazy_expression<RightType>::value || is_clifford_expression<RightType>::value), int>::type = 0>
+		constexpr decltype(auto) operator-(clifford_expression<LeftExpressionType> const &lhs, RightType const &rhs) {
+			return detail::binary_minus(detail::obegin(lhs), detail::obegin(value<RightType>(rhs)));
+		}
+
+		template<class LeftType, class RightExpressionType, typename std::enable_if<!(is_lazy_expression<LeftType>::value || is_clifford_expression<LeftType>::value), int>::type = 0>
+		constexpr decltype(auto) operator-(LeftType const &lhs, clifford_expression<RightExpressionType> const &rhs) {
+			return detail::binary_minus(detail::obegin(value<LeftType>(lhs)), detail::obegin(rhs));
 		}
 
 	}

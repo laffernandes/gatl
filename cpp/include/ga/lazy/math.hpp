@@ -33,12 +33,12 @@ namespace ga {
 			return detail::exponentiation(lhs(), rhs());
 		}
 
-		template<class LeftExpressionType, class RightType, typename std::enable_if<!is_lazy_expression<RightType>::value, int>::type = 0>
+		template<class LeftExpressionType, class RightType, typename std::enable_if<!(is_lazy_expression<RightType>::value || is_clifford_expression<RightType>::value), int>::type = 0>
 		constexpr decltype(auto) pow(lazy_expression<LeftExpressionType> const &lhs, RightType const &rhs) {
 			return detail::exponentiation(lhs(), value<RightType>(rhs));
 		}
 
-		template<class LeftType, class RightExpressionType, typename std::enable_if<!is_lazy_expression<LeftType>::value, int>::type = 0>
+		template<class LeftType, class RightExpressionType, typename std::enable_if<!(is_lazy_expression<LeftType>::value || is_clifford_expression<LeftType>::value), int>::type = 0>
 		constexpr decltype(auto) pow(LeftType const &lhs, lazy_expression<RightExpressionType> const &rhs) {
 			return detail::exponentiation(value<LeftType>(lhs), rhs());
 		}

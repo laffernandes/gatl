@@ -13,8 +13,8 @@ namespace ga {
 			}
 
 			template<class KeepIfGradeFunc>
-			constexpr static empty_expression_tree keep_grade(itr_end const &, KeepIfGradeFunc const &) {
-				return empty_expression_tree();
+			constexpr static empty_clifford_expression keep_grade(itr_end const &, KeepIfGradeFunc const &) {
+				return empty_clifford_expression();
 			}
 
 		}

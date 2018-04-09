@@ -7,16 +7,6 @@ namespace ga {
 
 		namespace detail {
 
-			class empty_expression_tree final : public clifford_expression<empty_expression_tree> {
-			public:
-
-				typedef empty_expression_tree expression_type;
-
-				constexpr static bool compile_time_defined() {
-					return true;
-				}
-			};
-
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType, bool CompileTimeDefinedElement = ElementType::compile_time_defined(), bool CompileTimeDefinedLeftSubtree = LeftSubtreeType::compile_time_defined(), bool CompileTimeDefinedRightSubtree = RightSubtreeType::compile_time_defined()>
 			class _super_expression_tree;
 
@@ -432,9 +422,6 @@ namespace ga {
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 			class expression_tree;
 
-			template<class InputElementType, class InputLeftSubtreeType, class InputRightSubtreeType, class OutputElementType, class OutputLeftSubtreeType, class OutputRightSubtreeType>
-			void copy(expression_tree<InputElementType, InputLeftSubtreeType, InputRightSubtreeType> const &, expression_tree<OutputElementType, OutputLeftSubtreeType, OutputRightSubtreeType> &);
-
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 			class expression_tree final :
 				public clifford_expression<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> >,
@@ -480,41 +467,41 @@ namespace ga {
 			};
 
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-			constexpr decltype(auto) make_expression(ElementType const &element, LeftSubtreeType const &left, RightSubtreeType const &right) {
+			constexpr decltype(auto) make_expression_tree(ElementType const &element, LeftSubtreeType const &left, RightSubtreeType const &right) {
 				return expression_tree<ElementType, LeftSubtreeType, RightSubtreeType>(element, left, right);
 			}
 
 			template<class ElementType>
-			constexpr decltype(auto) try_to_make_expression(ElementType const &element) {
-				return make_expression(element, empty_expression_tree(), empty_expression_tree());
+			constexpr decltype(auto) try_to_make_expression_tree(ElementType const &element) {
+				return make_expression_tree(element, empty_clifford_expression(), empty_clifford_expression());
 			}
 
 			template<class BasisBladeType>
-			constexpr empty_expression_tree try_to_make_expression(component<constant<0>, BasisBladeType> const &) {
-				return empty_expression_tree();
+			constexpr empty_clifford_expression try_to_make_expression_tree(component<constant<0>, BasisBladeType> const &) {
+				return empty_clifford_expression();
 			}
 
 			template<class CoefficientType>
-			constexpr empty_expression_tree try_to_make_expression(component<CoefficientType, dbasis_blade<default_bitset_t(0)> > const &) {
-				return empty_expression_tree();
+			constexpr empty_clifford_expression try_to_make_expression_tree(component<CoefficientType, dbasis_blade<default_bitset_t(0)> > const &) {
+				return empty_clifford_expression();
 			}
 
-			constexpr empty_expression_tree try_to_make_expression(component<constant<0>, dbasis_blade<default_bitset_t(0)> > const &) {
-				return empty_expression_tree();
+			constexpr empty_clifford_expression try_to_make_expression_tree(component<constant<0>, dbasis_blade<default_bitset_t(0)> > const &) {
+				return empty_clifford_expression();
 			}
 
 			template<default_bitset_t PossibleGrades>
-			constexpr empty_expression_tree try_to_make_expression(components<constant<0>, PossibleGrades> const &) {
-				return empty_expression_tree();
+			constexpr empty_clifford_expression try_to_make_expression_tree(components<constant<0>, PossibleGrades> const &) {
+				return empty_clifford_expression();
 			}
 
 			template<class CoefficientType>
-			constexpr empty_expression_tree try_to_make_expression(components<CoefficientType, default_bitset_t(0) > const &) {
-				return empty_expression_tree();
+			constexpr empty_clifford_expression try_to_make_expression_tree(components<CoefficientType, default_bitset_t(0) > const &) {
+				return empty_clifford_expression();
 			}
 
-			constexpr empty_expression_tree try_to_make_expression(components<constant<0>, default_bitset_t(0) > const &) {
-				return empty_expression_tree();
+			constexpr empty_clifford_expression try_to_make_expression_tree(components<constant<0>, default_bitset_t(0) > const &) {
+				return empty_clifford_expression();
 			}
 
 		}
@@ -524,7 +511,7 @@ namespace ga {
 	namespace common {
 
 		template<>
-		struct is_clifford_expression<clifford::detail::empty_expression_tree> {
+		struct is_clifford_expression<clifford::detail::empty_clifford_expression> {
 			constexpr static bool value = true;
 		};
 

@@ -29,6 +29,20 @@ namespace ga {
 			constexpr clifford_expression & operator=(clifford_expression &&) = default;
 		};
 
+		namespace detail {
+
+			class empty_clifford_expression final : public clifford_expression<empty_clifford_expression> {
+			public:
+
+				typedef empty_clifford_expression expression_type;
+
+				constexpr static bool compile_time_defined() {
+					return true;
+				}
+			};
+
+		}
+
 	}
 
 	namespace common {

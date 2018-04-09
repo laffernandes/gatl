@@ -8,7 +8,7 @@ namespace ga {
 		namespace detail {
 
 			template<class ElementType>
-			constexpr decltype(auto) try_to_make_expression(ElementType const &);
+			constexpr decltype(auto) try_to_make_expression_tree(ElementType const &);
 
 			template<default_bitset_t LeftBasisBlade, default_bitset_t RightBasisBlade>
 			struct _swaps_count {
@@ -278,22 +278,22 @@ namespace ga {
 
 			template<class LeftCoefficientType, class LeftBasisBladeType, class RightCoefficientType, class RightBasisBladeType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 			constexpr decltype(auto) graded_product_element(component<LeftCoefficientType, LeftBasisBladeType> const &lhs, component<RightCoefficientType, RightBasisBladeType> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-				return try_to_make_expression(_graded_product_component<LeftBasisBladeType, RightBasisBladeType>::bind(lhs, rhs, mtr, keep));
+				return try_to_make_expression_tree(_graded_product_component<LeftBasisBladeType, RightBasisBladeType>::bind(lhs, rhs, mtr, keep));
 			}
 
 			template<class LeftCoefficientType, default_bitset_t LeftPossibleGrades, class RightCoefficientType, class RightBasisBladeType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 			constexpr decltype(auto) graded_product_element(components<LeftCoefficientType, LeftPossibleGrades> const &lhs, component<RightCoefficientType, RightBasisBladeType> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-				return try_to_make_expression(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightBasisBladeType::possible_grades(), OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
+				return try_to_make_expression_tree(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightBasisBladeType::possible_grades(), OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
 			}
 
 			template<class LeftCoefficientType, class LeftBasisBladeType, class RightCoefficientType, default_bitset_t RightPossibleGrades, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 			constexpr decltype(auto) graded_product_element(component<LeftCoefficientType, LeftBasisBladeType> const &lhs, components<RightCoefficientType, RightPossibleGrades> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-				return try_to_make_expression(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftBasisBladeType::possible_grades(), RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
+				return try_to_make_expression_tree(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftBasisBladeType::possible_grades(), RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
 			}
 
 			template<class LeftCoefficientType, default_bitset_t LeftPossibleGrades, class RightCoefficientType, default_bitset_t RightPossibleGrades, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 			constexpr decltype(auto) graded_product_element(components<LeftCoefficientType, LeftPossibleGrades> const &lhs, components<RightCoefficientType, RightPossibleGrades> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-				return try_to_make_expression(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
+				return try_to_make_expression_tree(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
 			}
 
 		}
