@@ -36,22 +36,21 @@ namespace ga {
 		};
 
 		template<default_integral_t Value>
-		struct is_lazy_expression<constant<Value> > {
-			constexpr static bool value = true;
-		};
-
-		template<class ExpressionType>
-		struct is_constant {
-			constexpr static bool value = false;
-		};
-
-		template<default_integral_t Value>
-		struct is_constant<constant<Value> > {
-			constexpr static bool value = true;
-		};
-
-		template<default_integral_t Value>
 		constexpr auto c = constant<Value>();
+
+	}
+
+	namespace common {
+
+		template<default_integral_t Value>
+		struct is_lazy_expression<lazy::constant<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<default_integral_t Value>
+		struct is_lazy_constant<lazy::constant<Value> > {
+			constexpr static bool value = true;
+		};
 
 	}
 

@@ -109,10 +109,10 @@ namespace ga {
 
 		using lazy::operator<<;
 
-		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-		std::ostream & operator<<(std::ostream &os, clifford::detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) {
+		template<class RightExpressionType>
+		std::ostream & operator<<(std::ostream &os, clifford_expression<RightExpressionType> const &rhs) {
 			bool first = true;
-			clifford::detail::write(os, detail::obegin(rhs), first);
+			detail::write(os, detail::obegin(rhs()), first);
 			return os;
 		}
 

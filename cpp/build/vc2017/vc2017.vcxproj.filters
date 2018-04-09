@@ -195,9 +195,6 @@
     <ClInclude Include="..\..\include\ga\clifford\left_contraction.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\macro_for_algebra_overload.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\macro_for_operators_overload.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
@@ -284,6 +281,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\expression_tree_reversed_iterator.hpp">
       <Filter>Header Files\ga\clifford</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\expression_traits.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp">
+      <Filter>Header Files\ga</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -29,13 +29,12 @@ namespace ga {
 			constexpr lazy_expression & operator=(lazy_expression &&) = default;
 		};
 
-		template<class Type>
-		struct is_lazy_expression {
-			constexpr static bool value = false;
-		};
+	}
+
+	namespace common {
 
 		template<class ExpressionType>
-		struct is_lazy_expression<lazy_expression<ExpressionType> > {
+		struct is_lazy_expression<lazy::lazy_expression<ExpressionType> > {
 			constexpr static bool value = true;
 		};
 

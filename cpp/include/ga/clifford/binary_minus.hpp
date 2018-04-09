@@ -38,50 +38,21 @@ namespace ga {
 
 		}
 
-		template<class LeftType, class RightType>
-		constexpr decltype(auto) minus(LeftType const &lhs, RightType const &rhs) {
-			return detail::binary_minus(detail::obegin(lhs), detail::obegin(rhs));
-		}
-
 		using lazy::operator-;
 
-		template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
-		constexpr decltype(auto) operator-(detail::expression_tree<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, detail::expression_tree<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
-			return minus(lhs, rhs);
+		template<class LeftExpressionType, class RightExpressionType>
+		constexpr decltype(auto) operator-(clifford_expression<LeftExpressionType> const &lhs, clifford_expression<RightExpressionType> const &rhs) {
+			return detail::binary_minus(detail::obegin(lhs()), detail::obegin(rhs()));
 		}
 
-		template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType>
-		constexpr decltype(auto) operator-(detail::expression_tree<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, detail::empty_expression_tree const &rhs) {
-			return minus(lhs, rhs);
+		template<class LeftExpressionType, class RightExpressionType>
+		constexpr decltype(auto) operator-(clifford_expression<LeftExpressionType> const &lhs, lazy_expression<RightExpressionType> const &rhs) {
+			return detail::binary_minus(detail::obegin(lhs()), detail::obegin(rhs()));
 		}
 
-		template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightExpressionType>
-		constexpr decltype(auto) operator-(detail::expression_tree<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, lazy_expression<RightExpressionType> const &rhs) {
-			return minus(lhs, rhs());
-		}
-
-		template<class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
-		constexpr decltype(auto) operator-(detail::empty_expression_tree const &lhs, detail::expression_tree<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
-			return minus(lhs, rhs);
-		}
-
-		constexpr decltype(auto) operator-(detail::empty_expression_tree const &lhs, detail::empty_expression_tree const &rhs) {
-			return minus(lhs, rhs);
-		}
-
-		template<class RightExpressionType>
-		constexpr decltype(auto) operator-(detail::empty_expression_tree const &lhs, lazy_expression<RightExpressionType> const &rhs) {
-			return minus(lhs, rhs());
-		}
-
-		template<class LeftExpressionType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
-		constexpr decltype(auto) operator-(lazy_expression<LeftExpressionType> const &lhs, detail::expression_tree<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
-			return minus(lhs(), rhs);
-		}
-
-		template<class LeftExpressionType>
-		constexpr decltype(auto) operator-(lazy_expression<LeftExpressionType> const &lhs, detail::empty_expression_tree const &rhs) {
-			return minus(lhs(), rhs);
+		template<class LeftExpressionType, class RightExpressionType>
+		constexpr decltype(auto) operator-(lazy_expression<LeftExpressionType> const &lhs, clifford_expression<RightExpressionType> const &rhs) {
+			return detail::binary_minus(detail::obegin(lhs()), detail::obegin(rhs()));
 		}
 
 	}

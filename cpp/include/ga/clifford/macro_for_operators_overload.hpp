@@ -6,90 +6,54 @@
 		\
 		namespace clifford { \
 			\
-			template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
-			SPECIFIER decltype(auto) operator+(detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &lhs, SCALAR_TYPE const &rhs) { \
-				return plus(lhs, rhs); \
+			template<class LeftExpressionType> \
+			SPECIFIER decltype(auto) operator+(clifford_expression<LeftExpressionType> const &lhs, SCALAR_TYPE const &rhs) { \
+				return detail::binary_plus(detail::obegin(lhs()), detail::obegin(value<SCALAR_TYPE>(rhs))); \
 			} \
 			\
-			template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
-			SPECIFIER decltype(auto) operator+(SCALAR_TYPE const &lhs, detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) { \
-				return plus(lhs, rhs); \
+			template<class RightExpressionType> \
+			SPECIFIER decltype(auto) operator+(SCALAR_TYPE const &lhs, clifford_expression<RightExpressionType> const &rhs) { \
+				return detail::binary_plus(detail::obegin(value<SCALAR_TYPE>(lhs)), detail::obegin(rhs())); \
 			} \
 			\
-			SPECIFIER decltype(auto) operator+(detail::empty_expression_tree const &lhs, SCALAR_TYPE const &rhs) { \
-				return plus(lhs, rhs); \
+			template<class LeftExpressionType> \
+			SPECIFIER decltype(auto) operator-(clifford_expression<LeftExpressionType> const &lhs, SCALAR_TYPE const &rhs) { \
+				return detail::binary_minus(detail::obegin(lhs()), detail::obegin(value<SCALAR_TYPE>(rhs))); \
 			} \
 			\
-			SPECIFIER decltype(auto) operator+(SCALAR_TYPE const &lhs, detail::empty_expression_tree const &rhs) { \
-				return plus(lhs, rhs); \
+			template<class RightExpressionType> \
+			SPECIFIER decltype(auto) operator-(SCALAR_TYPE const &lhs, clifford_expression<RightExpressionType> const &rhs) { \
+				return detail::binary_minus(detail::obegin(value<SCALAR_TYPE>(lhs)), detail::obegin(rhs())); \
 			} \
 			\
-			template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
-			SPECIFIER decltype(auto) operator-(detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &lhs, SCALAR_TYPE const &rhs) { \
-				return minus(lhs, rhs); \
+			template<class LeftExpressionType> \
+			SPECIFIER decltype(auto) operator*(clifford_expression<LeftExpressionType> const &lhs, SCALAR_TYPE const &rhs) { \
+				return gp(lhs(), value<SCALAR_TYPE>(rhs), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 			} \
 			\
-			template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
-			SPECIFIER decltype(auto) operator-(SCALAR_TYPE const &lhs, detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) { \
-				return minus(lhs, rhs); \
+			template<class RightExpressionType> \
+			SPECIFIER decltype(auto) operator*(SCALAR_TYPE const &lhs, clifford_expression<RightExpressionType> const &rhs) { \
+				return gp(value<SCALAR_TYPE>(lhs), rhs(), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 			} \
 			\
-			SPECIFIER decltype(auto) operator-(detail::empty_expression_tree const &lhs, SCALAR_TYPE const &rhs) { \
-				return minus(lhs, rhs); \
+			template<class LeftExpressionType> \
+			SPECIFIER decltype(auto) operator/(clifford_expression<LeftExpressionType> const &lhs, SCALAR_TYPE const &rhs) { \
+				return igp(lhs(), value<SCALAR_TYPE>(rhs), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 			} \
 			\
-			SPECIFIER decltype(auto) operator-(SCALAR_TYPE const &lhs, detail::empty_expression_tree const &rhs) { \
-				return minus(lhs, rhs); \
+			template<class RightExpressionType> \
+			SPECIFIER decltype(auto) operator/(SCALAR_TYPE const &lhs, clifford_expression<RightExpressionType> const &rhs) { \
+				return igp(value<SCALAR_TYPE>(lhs), rhs(), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 			} \
 			\
-			template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
-			SPECIFIER decltype(auto) operator*(detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &lhs, SCALAR_TYPE const &rhs) { \
-				return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
+			template<class LeftExpressionType> \
+			SPECIFIER decltype(auto) operator^(clifford_expression<LeftExpressionType> const &lhs, SCALAR_TYPE const &rhs) { \
+				return op(lhs(), value<SCALAR_TYPE>(rhs), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 			} \
 			\
-			template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
-			SPECIFIER decltype(auto) operator*(SCALAR_TYPE const &lhs, detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) { \
-				return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
-			} \
-			\
-			SPECIFIER decltype(auto) operator*(detail::empty_expression_tree const &lhs, SCALAR_TYPE const &rhs) { \
-				return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
-			} \
-			\
-			SPECIFIER decltype(auto) operator*(SCALAR_TYPE const &lhs, detail::empty_expression_tree const &rhs) { \
-				return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
-			} \
-			\
-			template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
-			SPECIFIER decltype(auto) operator/(detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &lhs, SCALAR_TYPE const &rhs) { \
-				return igp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
-			} \
-			\
-			template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
-			SPECIFIER decltype(auto) operator/(SCALAR_TYPE const &lhs, detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) { \
-				return igp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
-			} \
-			\
-			SPECIFIER decltype(auto) operator/(detail::empty_expression_tree const &lhs, SCALAR_TYPE const &rhs) { \
-				return igp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
-			} \
-			\
-			template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
-			SPECIFIER decltype(auto) operator^(detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &lhs, SCALAR_TYPE const &rhs) { \
-				return op(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
-			} \
-			\
-			template<class ElementType, class LeftSubtreeType, class RightSubtreeType> \
-			SPECIFIER decltype(auto) operator^(SCALAR_TYPE const &lhs, detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) { \
-				return op(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
-			} \
-			\
-			SPECIFIER decltype(auto) operator^(detail::empty_expression_tree const &lhs, SCALAR_TYPE const &rhs) { \
-				return op(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
-			} \
-			\
-			SPECIFIER decltype(auto) operator^(SCALAR_TYPE const &lhs, detail::empty_expression_tree const &rhs) { \
-				return op(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
+			template<class RightExpressionType> \
+			SPECIFIER decltype(auto) operator^(SCALAR_TYPE const &lhs, clifford_expression<RightExpressionType> const &rhs) { \
+				return op(value<SCALAR_TYPE>(lhs), rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>()); \
 			} \
 			\
 		} \

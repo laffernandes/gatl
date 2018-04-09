@@ -46,25 +46,17 @@ void test_make_ec() {
 	std::cout << std::endl;
 }
 
-decltype(auto) test_uplus_func(double x) {
-	return uplus(x);
-}
-
 void test_uplus() {
 	std::cout << "--- test_uplus()" << std::endl;
-	std::cout << "5 = " << +(uplus(5.0)) << std::endl;
-	std::cout << "5 = " << test_uplus_func(5.0) << std::endl;
-	auto five = uplus(5.0); std::cout << "5 = " << five << std::endl;
 	auto e1 = +(e(1)); std::cout << "e1 = " << e1 << std::endl;
-	auto e2 = uplus(e(c<2>)); std::cout << "e2 = " << e2 << std::endl;
+	auto e2 = +e(c<2>); std::cout << "e2 = " << e2 << std::endl;
 	std::cout << std::endl;
 }
 
 void test_uminus() {
 	std::cout << "--- test_uminus()" << std::endl;
-	auto five = uminus(5.0); std::cout << "-5 = " << five << std::endl;
-	auto e1 = uminus(e(1)); std::cout << "-e1 = " << e1 << std::endl;
-	auto e2 = uminus(e(c<2>)); std::cout << "-e2 = " << e2 << std::endl;
+	auto e1 = -e(1); std::cout << "-e1 = " << e1 << std::endl;
+	auto e2 = -e(c<2>); std::cout << "-e2 = " << e2 << std::endl;
 	std::cout << std::endl;
 }
 

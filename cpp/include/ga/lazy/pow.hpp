@@ -51,24 +51,28 @@ namespace ga {
 
 		}
 
+	}
+
+	namespace common {
+
 		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_expression<detail::pow<LeftExpressionType, RightExpressionType> > {
+		struct is_lazy_expression<lazy::detail::pow<LeftExpressionType, RightExpressionType> > {
 			constexpr static bool value = true;
 		};
 
 		template<class LeftExpressionType, class RightExpressionType>
-		struct is_constant<detail::pow<LeftExpressionType, RightExpressionType> > {
-			constexpr static bool value = is_constant<LeftExpressionType>::value && is_constant<RightExpressionType>::value;
+		struct is_lazy_constant<lazy::detail::pow<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = is_lazy_constant<LeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value;
 		};
 
 		template<class LeftExpressionType, class RightExpressionType>
-		struct is_value<detail::pow<LeftExpressionType, RightExpressionType> > {
-			constexpr static bool value = is_value<LeftExpressionType>::value && is_value<RightExpressionType>::value;
+		struct is_lazy_value<lazy::detail::pow<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = is_lazy_value<LeftExpressionType>::value && is_lazy_value<RightExpressionType>::value;
 		};
 
 		template<class LeftExpressionType, class RightExpressionType>
-		struct is_variable<detail::pow<LeftExpressionType, RightExpressionType> > {
-			constexpr static bool value = is_variable<LeftExpressionType>::value && is_variable<RightExpressionType>::value;
+		struct is_lazy_variable<lazy::detail::pow<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = is_lazy_variable<LeftExpressionType>::value && is_lazy_variable<RightExpressionType>::value;
 		};
 
 	}

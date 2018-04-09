@@ -53,22 +53,22 @@ namespace ga {
 				return std::conditional<(LeftValue % RightValue) == 0, _division_bind_constant<LeftValue, RightValue>, _division_bind_constant_div<LeftValue, RightValue> >::type::bind();
 			}
 
-			template<class BaseExpressionType, class LeftRightExpressionType, class RightRightExpressionType, typename std::enable_if<is_constant<BaseExpressionType>::value || is_variable<BaseExpressionType>::value, int>::type = 0>
+			template<class BaseExpressionType, class LeftRightExpressionType, class RightRightExpressionType, typename std::enable_if<is_lazy_constant<BaseExpressionType>::value || is_lazy_variable<BaseExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication_bind(pow<BaseExpressionType, LeftRightExpressionType> const &lhs, pow<BaseExpressionType, RightRightExpressionType> const &rhs) {
 				return exponentiation(lhs.left(), addition(lhs.right(), rhs.right()));
 			}
 
-			template<class BaseExpressionType, class LeftRightExpressionType, typename std::enable_if<is_constant<BaseExpressionType>::value || is_variable<BaseExpressionType>::value, int>::type = 0>
+			template<class BaseExpressionType, class LeftRightExpressionType, typename std::enable_if<is_lazy_constant<BaseExpressionType>::value || is_lazy_variable<BaseExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication_bind(pow<BaseExpressionType, LeftRightExpressionType> const &lhs, BaseExpressionType const &) {
 				return exponentiation(lhs.left(), addition(lhs.right(), constant<1>()));
 			}
 
-			template<class BaseExpressionType, class RightRightExpressionType, typename std::enable_if<is_constant<BaseExpressionType>::value || is_variable<BaseExpressionType>::value, int>::type = 0>
+			template<class BaseExpressionType, class RightRightExpressionType, typename std::enable_if<is_lazy_constant<BaseExpressionType>::value || is_lazy_variable<BaseExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication_bind(BaseExpressionType const &lhs, pow<BaseExpressionType, RightRightExpressionType> const &rhs) {
 				return exponentiation(lhs, addition(constant<1>(), rhs.right()));
 			}
 
-			template<class BaseExpressionType, typename std::enable_if<is_constant<BaseExpressionType>::value || is_variable<BaseExpressionType>::value, int>::type = 0>
+			template<class BaseExpressionType, typename std::enable_if<is_lazy_constant<BaseExpressionType>::value || is_lazy_variable<BaseExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication_bind(BaseExpressionType const &lhs, BaseExpressionType const &) {
 				return exponentiation(lhs, constant<2>());
 			}
@@ -126,12 +126,12 @@ namespace ga {
 				return multiplication(lhs.left(), multiplication(lhs.right(), rhs));
 			}
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightExpressionType>::value && lt<RightExpressionType, LeftRightExpressionType>::value && (eq<LeftLeftExpressionType, RightExpressionType>::value && !is_value<LeftLeftExpressionType>::value), int>::type = 0>
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightExpressionType>::value && lt<RightExpressionType, LeftRightExpressionType>::value && (eq<LeftLeftExpressionType, RightExpressionType>::value && !is_lazy_value<LeftLeftExpressionType>::value), int>::type = 0>
 			constexpr decltype(auto) multiplication(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
 				return multiplication(multiplication_bind(lhs.left(), rhs), lhs.right());
 			}
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightExpressionType>::value && lt<RightExpressionType, LeftRightExpressionType>::value && (lt<LeftLeftExpressionType, RightExpressionType>::value || is_value<LeftLeftExpressionType>::value || is_value<RightExpressionType>::value), int>::type = 0>
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightExpressionType>::value && lt<RightExpressionType, LeftRightExpressionType>::value && (lt<LeftLeftExpressionType, RightExpressionType>::value || is_lazy_value<LeftLeftExpressionType>::value || is_lazy_value<RightExpressionType>::value), int>::type = 0>
 			constexpr decltype(auto) multiplication(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
 				return multiplication(lhs.left(), multiplication(rhs, lhs.right()));
 			}
@@ -146,7 +146,7 @@ namespace ga {
 				return multiplication_bind(lhs, rhs);
 			}
 
-			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<eq<LeftExpressionType, RightLeftExpressionType>::value && !is_value<LeftExpressionType>::value, int>::type = 0>
+			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<eq<LeftExpressionType, RightLeftExpressionType>::value && !is_lazy_value<LeftExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication(LeftExpressionType const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return multiplication(multiplication_bind(lhs, rhs.left()), rhs.right());
 			}

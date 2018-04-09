@@ -66,7 +66,7 @@ namespace ga {
 
 			template<class Type, class ItrType>
 			constexpr decltype(auto) eval_expression(ItrType const &arg) {
-				return plus(eval_expression<Type>(next(arg)), _eval_expression_element<_eval_dynamic_possible_grades<typename obegin_type<Type>::type, ItrType::element_type::basis_blade_type::possible_grades(), ItrType::element_type::basis_blade_type::compile_time_defined() ? default_bitset_t(0) : ItrType::element_type::basis_blade_type::possible_grades()>::value>::bind(arg.element()));
+				return eval_expression<Type>(next(arg)) + _eval_expression_element<_eval_dynamic_possible_grades<typename obegin_type<Type>::type, ItrType::element_type::basis_blade_type::possible_grades(), ItrType::element_type::basis_blade_type::compile_time_defined() ? default_bitset_t(0) : ItrType::element_type::basis_blade_type::possible_grades()>::value>::bind(arg.element());
 			}
 
 			template<class Type>

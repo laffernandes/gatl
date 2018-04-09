@@ -47,24 +47,23 @@ namespace ga {
 		};
 
 		template<class ValueType>
-		struct is_lazy_expression<value<ValueType> > {
-			constexpr static bool value = true;
-		};
-
-		template<class ExpressionType>
-		struct is_value {
-			constexpr static bool value = false;
-		};
-
-		template<class ValueType>
-		struct is_value<value<ValueType> > {
-			constexpr static bool value = true;
-		};
-
-		template<class ValueType>
 		constexpr value<ValueType> val(ValueType const &arg) {
 			return value<ValueType>(arg);
 		}
+
+	}
+
+	namespace common {
+
+		template<class ValueType>
+		struct is_lazy_expression<lazy::value<ValueType> > {
+			constexpr static bool value = true;
+		};
+
+		template<class ValueType>
+		struct is_lazy_value<lazy::value<ValueType> > {
+			constexpr static bool value = true;
+		};
 
 	}
 

@@ -21,29 +21,11 @@ namespace ga {
 
 		}
 
-		template<class RightType>
-		constexpr decltype(auto) uminus(RightType const &rhs) {
-			return detail::unary_minus(detail::begin(rhs));
-		}
-
-		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-		constexpr decltype(auto) uminus(detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) {
-			return detail::unary_minus(detail::begin(rhs));
-		}
-
-		constexpr detail::empty_expression_tree uminus(detail::empty_expression_tree const &) {
-			return detail::empty_expression_tree();
-		}
-
 		using lazy::operator-;
 
-		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-		constexpr decltype(auto) operator-(detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &rhs) {
-			return uminus(rhs);
-		}
-
-		constexpr detail::empty_expression_tree operator-(detail::empty_expression_tree const &) {
-			return detail::empty_expression_tree();
+		template<class RightExpressionType>
+		constexpr decltype(auto) operator-(clifford_expression<RightExpressionType> const &rhs) {
+			return detail::unary_minus(detail::begin(rhs()));
 		}
 
 	}

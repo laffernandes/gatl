@@ -519,13 +519,17 @@ namespace ga {
 
 		}
 
+	}
+
+	namespace common {
+
 		template<>
-		struct is_clifford_expression<detail::empty_expression_tree> {
+		struct is_clifford_expression<clifford::detail::empty_expression_tree> {
 			constexpr static bool value = true;
 		};
 
 		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-		struct is_clifford_expression<detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> > {
+		struct is_clifford_expression<clifford::detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> > {
 			constexpr static bool value = true;
 		};
 

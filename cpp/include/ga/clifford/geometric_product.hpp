@@ -71,43 +71,19 @@ namespace ga {
 
 		using lazy::operator*;
 
-		template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType, typename std::enable_if<detail::may_cast_to_native<detail::expression_tree<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> >::value || detail::may_cast_to_native<detail::expression_tree<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> >::value, int>::type = 0>
-		constexpr decltype(auto) operator*(detail::expression_tree<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, detail::expression_tree<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
-			return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+		template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<detail::may_cast_to_native<LeftExpressionType>::value || detail::may_cast_to_native<RightExpressionType>::value, int>::type = 0>
+		constexpr decltype(auto) operator*(clifford_expression<LeftExpressionType> const &lhs, clifford_expression<RightExpressionType> const &rhs) {
+			return gp(lhs(), rhs(), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 		}
 
-		template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType>
-		constexpr decltype(auto) operator*(detail::expression_tree<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, detail::empty_expression_tree const &rhs) {
-			return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+		template<class LeftExpressionType, class RightExpressionType>
+		constexpr decltype(auto) operator*(clifford_expression<LeftExpressionType> const &lhs, lazy_expression<RightExpressionType> const &rhs) {
+			return gp(lhs(), rhs(), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 		}
 
-		template<class LeftElementType, class LeftLeftSubtreeType, class LeftRightSubtreeType, class RightExpressionType>
-		constexpr decltype(auto) operator*(detail::expression_tree<LeftElementType, LeftLeftSubtreeType, LeftRightSubtreeType> const &lhs, lazy_expression<RightExpressionType> const &rhs) {
-			return gp(lhs, rhs(), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
-		}
-
-		template<class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
-		constexpr decltype(auto) operator*(detail::empty_expression_tree const &lhs, detail::expression_tree<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
-			return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
-		}
-
-		constexpr decltype(auto) operator*(detail::empty_expression_tree const &lhs, detail::empty_expression_tree const &rhs) {
-			return gp(lhs, rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
-		}
-
-		template<class RightExpressionType>
-		constexpr decltype(auto) operator*(detail::empty_expression_tree const &lhs, lazy_expression<RightExpressionType> const &rhs) {
-			return gp(lhs, rhs(), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
-		}
-
-		template<class LeftExpressionType, class RightElementType, class RightLeftSubtreeType, class RightRightSubtreeType>
-		constexpr decltype(auto) operator*(lazy_expression<LeftExpressionType> const &lhs, detail::expression_tree<RightElementType, RightLeftSubtreeType, RightRightSubtreeType> const &rhs) {
-			return gp(lhs(), rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
-		}
-
-		template<class LeftExpressionType>
-		constexpr decltype(auto) operator*(lazy_expression<LeftExpressionType> const &lhs, detail::empty_expression_tree const &rhs) {
-			return gp(lhs(), rhs, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+		template<class LeftExpressionType, class RightExpressionType>
+		constexpr decltype(auto) operator*(lazy_expression<LeftExpressionType> const &lhs, clifford_expression<RightExpressionType> const &rhs) {
+			return gp(lhs(), rhs(), euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 		}
 
 	}

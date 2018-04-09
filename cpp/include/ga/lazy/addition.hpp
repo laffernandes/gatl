@@ -71,12 +71,12 @@ namespace ga {
 				return addition(lhs.left(), addition(lhs.right(), rhs));
 			}
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightExpressionType>::value && lt<RightExpressionType, LeftRightExpressionType>::value && (is_constant<LeftLeftExpressionType>::value && is_constant<RightExpressionType>::value), int>::type = 0>
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightExpressionType>::value && lt<RightExpressionType, LeftRightExpressionType>::value && (is_lazy_constant<LeftLeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value), int>::type = 0>
 			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
 				return addition(addition_bind(lhs.left(), rhs), lhs.right());
 			}
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightExpressionType>::value && lt<RightExpressionType, LeftRightExpressionType>::value && !(is_constant<LeftLeftExpressionType>::value && is_constant<RightExpressionType>::value), int>::type = 0>
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightExpressionType>::value && lt<RightExpressionType, LeftRightExpressionType>::value && !(is_lazy_constant<LeftLeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value), int>::type = 0>
 			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
 				return addition(lhs.left(), addition(rhs, lhs.right()));
 			}

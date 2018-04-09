@@ -69,7 +69,6 @@
     <ClInclude Include="..\..\include\ga\clifford\inverse_geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\involution.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\left_contraction.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\macro_for_algebra_overload.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\macro_for_operators_overload.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\native.hpp" />
@@ -90,6 +89,7 @@
     <ClInclude Include="..\..\include\ga\clifford\write.hpp" />
     <ClInclude Include="..\..\include\ga\compile_time_ordering.hpp" />
     <ClInclude Include="..\..\include\ga\default_tolerance.hpp" />
+    <ClInclude Include="..\..\include\ga\expression_traits.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\add.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\addition.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\arithmetic_operators.hpp" />
@@ -106,6 +106,7 @@
     <ClInclude Include="..\..\include\ga\lazy\pow.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\value.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\variable.hpp" />
+    <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\sandbox.cpp" />

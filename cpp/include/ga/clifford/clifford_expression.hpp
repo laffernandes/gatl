@@ -29,13 +29,12 @@ namespace ga {
 			constexpr clifford_expression & operator=(clifford_expression &&) = default;
 		};
 
-		template<class Type>
-		struct is_clifford_expression {
-			constexpr static bool value = false;
-		};
+	}
+
+	namespace common {
 
 		template<class ExpressionType>
-		struct is_clifford_expression<clifford_expression<ExpressionType> > {
+		struct is_clifford_expression<clifford::clifford_expression<ExpressionType> > {
 			constexpr static bool value = true;
 		};
 

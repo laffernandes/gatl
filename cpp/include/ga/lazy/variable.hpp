@@ -66,24 +66,23 @@ namespace ga {
 		};
 
 		template<id_t Id, class ValueType>
-		struct is_lazy_expression<variable<Id, ValueType> > {
-			constexpr static bool value = true;
-		};
-
-		template<class ExpressionType>
-		struct is_variable {
-			constexpr static bool value = false;
-		};
-
-		template<id_t Id, class ValueType>
-		struct is_variable<variable<Id, ValueType> > {
-			constexpr static bool value = true;
-		};
-
-		template<id_t Id, class ValueType>
 		constexpr variable<Id, ValueType> var(ValueType const &arg) {
 			return variable<Id, ValueType>(arg);
 		}
+
+	}
+
+	namespace common {
+
+		template<id_t Id, class ValueType>
+		struct is_lazy_expression<lazy::variable<Id, ValueType> > {
+			constexpr static bool value = true;
+		};
+
+		template<id_t Id, class ValueType>
+		struct is_lazy_variable<lazy::variable<Id, ValueType> > {
+			constexpr static bool value = true;
+		};
 
 	}
 

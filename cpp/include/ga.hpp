@@ -16,6 +16,7 @@
 #endif // GA_MAX_BASIS_VECTOR_INDEX
 
 #include "ga/compile_time_ordering.hpp"
+#include "ga/expression_traits.hpp"
 #include "ga/default_tolerance.hpp"
 
 namespace ga {
@@ -36,6 +37,8 @@ namespace ga {
 
 	namespace lazy {
 
+		using namespace ga::common;
+
 		namespace detail {
 
 			using namespace ga::common::detail;
@@ -45,6 +48,8 @@ namespace ga {
 	}
 
 	namespace clifford {
+
+		using namespace ga::common;
 
 		namespace detail {
 

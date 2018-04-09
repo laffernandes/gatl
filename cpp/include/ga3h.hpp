@@ -2,7 +2,7 @@
 #define __GA3H_HPP__
 
 #include <ga.hpp>
-#include <ga/clifford/macro_for_algebra_overload.hpp>
+#include <ga/macro_for_algebra_overload.hpp>
 
 GA_SIGNED_ALGEBRA_OVERLOAD(ga3h, 3 + 1, 0)
 
