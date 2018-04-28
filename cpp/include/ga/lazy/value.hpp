@@ -24,7 +24,21 @@ namespace ga {
 				value_(arg) {
 			}
 
-			constexpr operator value_type () const {
+			constexpr value & operator=(value const &) = default;
+			constexpr value & operator=(value &&) = default;
+
+			constexpr value & operator=(value_type const &arg) {
+				value_ = arg;
+				return (*this);
+			}
+
+			template<class OtherValueType>
+			constexpr value & operator=(OtherValueType const &arg) {
+				value_ = arg;
+				return (*this);
+			}
+
+			constexpr operator value_type() const {
 				return value_;
 			}
 
@@ -43,7 +57,7 @@ namespace ga {
 
 		private:
 
-			value_type const value_;
+			value_type value_;
 		};
 
 		template<class ValueType>

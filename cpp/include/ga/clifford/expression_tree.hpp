@@ -442,9 +442,9 @@ namespace ga {
 				constexpr expression_tree(expression_tree const &) = default;
 				constexpr expression_tree(expression_tree &&) = default;
 
-				template<class OtherElementType, class OtherLeftSubtreeType, class OtherRightSubtreeType>
-				constexpr expression_tree(expression_tree<OtherElementType, OtherLeftSubtreeType, OtherRightSubtreeType> const &other) {
-					copy(other, *this);
+				template<class OtherExpressionType>
+				constexpr expression_tree(clifford_expression<OtherExpressionType> const &other) {
+					copy(obegin(other), obegin(*this));
 				}
 
 				constexpr expression_tree(element_type const &element, left_type const &left, right_type const &right) :
@@ -454,9 +454,9 @@ namespace ga {
 				constexpr expression_tree & operator=(expression_tree const &) = default;
 				constexpr expression_tree & operator=(expression_tree &&) = default;
 
-				template<class OtherElementType, class OtherLeftSubtreeType, class OtherRightSubtreeType>
-				constexpr expression_tree & operator=(expression_tree<OtherElementType, OtherLeftSubtreeType, OtherRightSubtreeType> const &other) {
-					copy(other, *this);
+				template<class OtherExpressionType>
+				constexpr expression_tree & operator=(clifford_expression<OtherExpressionType> const &other) {
+					copy(obegin(other), obegin(*this));
 					return *this;
 				}
 

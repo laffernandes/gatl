@@ -22,8 +22,6 @@ namespace ga {
 				using left_type = typename _super_for_arguments::left_type;
 				using right_type = typename _super_for_arguments::right_type;
 
-				typedef decltype(typename left_type::value_type() * typename right_type::value_type()) value_type;
-
 				constexpr mul() = default;
 				constexpr mul(mul const &) = default;
 				constexpr mul(mul &&) = default;
@@ -77,6 +75,11 @@ namespace ga {
 			constexpr static bool value = is_lazy_variable<LeftExpressionType>::value && is_lazy_variable<RightExpressionType>::value;
 		};
 
+
+		template<class LeftExpressionType, class RightExpressionType>
+		struct allows_lazy_simplification<lazy::detail::mul<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = allows_lazy_simplification<LeftExpressionType>::value && allows_lazy_simplification<RightExpressionType>::value;
+		};
 
 	}
 

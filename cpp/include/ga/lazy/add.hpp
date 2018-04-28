@@ -22,8 +22,6 @@ namespace ga {
 				using left_type = typename _super_for_arguments::left_type;
 				using right_type = typename _super_for_arguments::right_type;
 
-				typedef decltype(typename left_type::value_type() + typename right_type::value_type()) value_type;
-
 				constexpr add() = default;
 				constexpr add(add const &) = default;
 				constexpr add(add &&) = default;
@@ -51,29 +49,34 @@ namespace ga {
 
 		}
 
-		namespace common {
+	}
 
-			template<class LeftExpressionType, class RightExpressionType>
-			struct is_lazy_expression<lazy::detail::add<LeftExpressionType, RightExpressionType> > {
-				constexpr static bool value = true;
-			};
+	namespace common {
 
-			template<class LeftExpressionType, class RightExpressionType>
-			struct is_lazy_constant<lazy::detail::add<LeftExpressionType, RightExpressionType> > {
-				constexpr static bool value = is_lazy_constant<LeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value;
-			};
+		template<class LeftExpressionType, class RightExpressionType>
+		struct is_lazy_expression<lazy::detail::add<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = true;
+		};
 
-			template<class LeftExpressionType, class RightExpressionType>
-			struct is_lazy_value<lazy::detail::add<LeftExpressionType, RightExpressionType> > {
-				constexpr static bool value = is_lazy_value<LeftExpressionType>::value && is_lazy_value<RightExpressionType>::value;
-			};
+		template<class LeftExpressionType, class RightExpressionType>
+		struct is_lazy_constant<lazy::detail::add<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = is_lazy_constant<LeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value;
+		};
 
-			template<class LeftExpressionType, class RightExpressionType>
-			struct is_lazy_variable<lazy::detail::add<LeftExpressionType, RightExpressionType> > {
-				constexpr static bool value = is_lazy_variable<LeftExpressionType>::value && is_lazy_variable<RightExpressionType>::value;
-			};
+		template<class LeftExpressionType, class RightExpressionType>
+		struct is_lazy_value<lazy::detail::add<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = is_lazy_value<LeftExpressionType>::value && is_lazy_value<RightExpressionType>::value;
+		};
 
-		}
+		template<class LeftExpressionType, class RightExpressionType>
+		struct is_lazy_variable<lazy::detail::add<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = is_lazy_variable<LeftExpressionType>::value && is_lazy_variable<RightExpressionType>::value;
+		};
+
+		template<class LeftExpressionType, class RightExpressionType>
+		struct allows_lazy_simplification<lazy::detail::add<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = allows_lazy_simplification<LeftExpressionType>::value && allows_lazy_simplification<RightExpressionType>::value;
+		};
 
 	}
 

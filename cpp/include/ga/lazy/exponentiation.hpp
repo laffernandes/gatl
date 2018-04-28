@@ -7,75 +7,156 @@ namespace ga {
 
 		namespace detail {
 
+			// Default exponentiation "bind" operation.
 			template<class LeftExpressionType, class RightExpressionType>
 			constexpr decltype(auto) exponentiation(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
-				return make_pow(lhs, rhs);
+				return make_power(lhs, rhs);
 			}
 
-			constexpr std::uint64_t isqrt_impl(std::uint64_t sq, std::uint64_t dlt, std::uint64_t value) {
+			// Simplify exponentiation of values.
+			//     A^{B} = simpler C
+			template<class LeftValueType>
+			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, constant<-1> const &) {
+				return val(static_cast<default_floating_point_t>(1) / lhs.get());
+			}
+
+			template<class LeftValueType, class RightValueType>
+			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, value<RightValueType> const &rhs) {
+				return val(pow(lhs.get(), rhs.get()));
+			}
+
+			template<class LeftValueType>
+			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, power<constant<2>, constant<-1> > const &) {
+				return val(sqrt(lhs.get()));
+			}
+
+			template<class LeftValueType>
+			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, power<constant<3>, constant<-1> > const &) {
+				return val(cbrt(lhs.get()));
+			}
+
+			// Simplify zero raised to the constant power of K (except for K <= 0).
+			//     0^{X} = 0, for X > 0
+			//     0^{1/Y} = 0, for 1/Y > 0
+			//     0^{X/Y} = 0, for X/Y > 0
+			template<default_integral_t RightValue>
+			constexpr decltype(auto) exponentiation(constant<0> const &, constant<RightValue> const &) {
+				static_assert(RightValue <= 0, "The value of pow(0, N) is undefined for N <= 0.");
+				return constant<0>();
+			}
+
+			template<default_integral_t RightValue>
+			constexpr decltype(auto) exponentiation(constant<0> const &, power<constant<RightValue>, constant<-1> > const &) {
+				static_assert(RightValue <= 0, "The value of pow(0, N) is undefined for N <= 0.");
+				return constant<0>();
+			}
+
+			template<default_integral_t RightLeftValue, default_integral_t RightRightValue>
+			constexpr decltype(auto) exponentiation(constant<0> const &, mul<constant<RightLeftValue>, power<constant<RightRightValue>, constant<-1> > > const &) {
+				static_assert(constant_sign(RightLeftValue) * constant_sign(RightRightValue) <= 0, "The value of pow(0, N) is undefined for N <= 0.");
+				return constant<0>();
+			}
+
+			// Simplify one raised to the power of X.
+			//     1^{X} = 1
+			template<class RightExpressionType>
+			constexpr decltype(auto) exponentiation(constant<1> const &, RightExpressionType const &) {
+				return constant<1>();
+			}
+
+			// Simplify minus one raised to the power of K, for integer K.
+			//     (-1)^{K} =  1, if K is odd
+			//              = -1, if K is even
+			template<default_integral_t RightValue, typename std::enable_if<(RightValue & 1) == 0, int>::type = 0>
+			constexpr decltype(auto) exponentiation(constant<-1> const &, constant<RightValue> const &) {
+				return constant<1>();
+			}
+
+			template<default_integral_t RightValue, typename std::enable_if<(RightValue & 1) == 1, int>::type = 0>
+			constexpr decltype(auto) exponentiation(constant<-1> const &, constant<RightValue> const &) {
+				return constant<-1>();
+			}
+
+			// Simplify something raised to the power of zero (except for X == 0 and X == 1 and X == -1).
+			//     X^{0} = 1
+			template<class LeftExpressionType, typename std::enable_if<!(std::is_same<LeftExpressionType, constant<0> >::value || std::is_same<LeftExpressionType, constant<1> >::value || std::is_same<LeftExpressionType, constant<-1> >::value), int>::type = 0>
+			constexpr decltype(auto) exponentiation(LeftExpressionType const &lhs, constant<0> const &) {
+				return constant<1>();
+			}
+
+			// Simplify something raised to the power of one (except for X == 0 and X == 1 and X == -1).
+			//     X^{1} = X
+			template<class LeftExpressionType, typename std::enable_if<!(std::is_same<LeftExpressionType, constant<0> >::value || std::is_same<LeftExpressionType, constant<1> >::value || std::is_same<LeftExpressionType, constant<-1> >::value), int>::type = 0>
+			constexpr LeftExpressionType exponentiation(LeftExpressionType const &lhs, constant<1> const &) {
+				return lhs;
+			}
+
+			// Simplify square root of integers (except for X <= 1).
+			//     sqrt(X) = Y, if it is possible simplify for given integer X and Y values
+			constexpr default_integral_t isqrt_impl(default_integral_t sq, default_integral_t dlt, default_integral_t value) {
 				return sq <= value ? isqrt_impl(sq + dlt, dlt + 2, value) : (dlt >> 1) - 1;
 			}
 
-			constexpr std::uint64_t isqrt(std::uint64_t value) {
+			constexpr default_integral_t isqrt(default_integral_t value) {
 				return isqrt_impl(1, 3, value);
 			}
 
 			template<default_integral_t Value>
-			struct _sqrt_value {
+			struct exponentiation_isqrt {
 			private:
 
-				constexpr static default_integral_t result = static_cast<default_integral_t>(isqrt(Value));
+				constexpr static default_integral_t result = isqrt(Value);
 
-				struct _return_constant {
+				struct return_constant {
 					constexpr static decltype(auto) bind() {
 						return constant<result>();
 					}
 				};
 
-				struct _return_constant_sqrt {
+				struct return_constant_sqrt {
 					constexpr static decltype(auto) bind() {
-						return make_pow(constant<Value>(), make_pow(constant<2>(), constant<-1>())); //TODO Pode ser melhorado
+						return make_power(constant<Value>(), make_power(constant<2>(), constant<-1>()));
 					}
 				};
 
 			public:
 
 				constexpr static decltype(auto) bind() {
-					return std::conditional<(result * result) == Value, _return_constant, _return_constant_sqrt>::type::bind();
+					return std::conditional<(result * result) == Value, return_constant, return_constant_sqrt>::type::bind();
 				}
 			};
 
-			template<default_integral_t LeftValue, typename std::enable_if<(LeftValue >= 0), int>::type = 0>
-			constexpr decltype(auto) exponentiation(constant<LeftValue> const &, pow<constant<2>, constant<-1> > const &) {
-				return _sqrt_value<LeftValue>::bind();
+			template<default_integral_t LeftValue, typename std::enable_if<(LeftValue > 1), int>::type = 0>
+			constexpr decltype(auto) exponentiation(constant<LeftValue> const &, power<constant<2>, constant<-1> > const &) {
+				return exponentiation_isqrt<LeftValue>::bind();
 			}
 
-			template<default_integral_t LeftValue, default_integral_t RightValue, typename std::enable_if<(RightValue != 0) && (RightValue > 1), int>::type = 0>
-			constexpr decltype(auto) exponentiation(constant<LeftValue> const &lhs, constant<RightValue> const &rhs) {
-				return multiplication(multiplication(exponentiation(lhs, constant<RightValue / 2>()), exponentiation(lhs, constant<RightValue / 2>())), exponentiation(lhs, constant<RightValue % 2>()));
+			// Simplify constant raised to the power of other constant (except for X == 0 or X == 1 and X == -1 and Y == 0).
+			//     X^{Y} = simpler
+			constexpr default_integral_t ipow(default_integral_t base, default_integral_t exponent) {
+				return exponent == 1 ? base : (exponent == 0 ? 1 : (ipow(base, exponent >> 1) * ipow(base, exponent >> 1) * ipow(base, exponent % 2)));
 			}
 
-			template<class LeftExpressionType>
-			constexpr LeftExpressionType exponentiation(LeftExpressionType const &lhs, constant<1> const &) {
-				return lhs;
+			template<default_integral_t LeftValue, default_integral_t RightValue, typename std::enable_if<(LeftValue < -1 || 1 < LeftValue) && (RightValue > 0), int>::type = 0>
+			constexpr decltype(auto) exponentiation(constant<LeftValue> const &, constant<RightValue> const &) {
+				return constant<ipow(LeftValue, RightValue)>();
 			}
 
-			template<class LeftExpressionType, typename std::enable_if<!std::is_same<LeftExpressionType, constant<0> >::value, int>::type = 0>
-			constexpr constant<1> exponentiation(LeftExpressionType const &lhs, constant<0> const &) {
-				return constant<1>();
+			template<default_integral_t LeftValue, default_integral_t RightValue, typename std::enable_if<(LeftValue < -1 || 1 < LeftValue) && (RightValue < 0), int>::type = 0>
+			constexpr decltype(auto) exponentiation(constant<LeftValue> const &, constant<RightValue> const &) {
+				return make_power(constant<ipow(LeftValue, -RightValue)>(), constant<-1>());
 			}
 
-			template<class RightExpressionType, typename std::enable_if<!std::is_same<RightExpressionType, constant<0> >::value, int>::type = 0>
-			constexpr constant<0> exponentiation(constant<0> const &, RightExpressionType const &rhs) {
-				return constant<0>();
+			// Simplify to single exponentiation (except for C == 0 and C == 1).
+			//     (A^{B})^{C} = A^{B * C}
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<!(std::is_same<RightExpressionType, constant<0> >::value || std::is_same<RightExpressionType, constant<1> >::value), int>::type = 0>
+			constexpr decltype(auto) exponentiation(power<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
+				return exponentiation(lhs.left(), multiplication(lhs.right(), rhs));
 			}
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType>
-			constexpr decltype(auto) exponentiation(pow<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
-				return exponentiation(lhs.left(), multiplication(lhs.right, rhs));
-			}
-
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType>
+			// Distributive property over multiplication (except for C == 0 and C == 1).
+			//     (A * B)^{C} = A^{C} * B^{C}
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<!(std::is_same<RightExpressionType, constant<0> >::value || std::is_same<RightExpressionType, constant<1> >::value), int>::type = 0>
 			constexpr decltype(auto) exponentiation(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
 				return multiplication(exponentiation(lhs.left(), rhs), exponentiation(lhs.right(), rhs));
 			}

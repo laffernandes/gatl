@@ -7,9 +7,11 @@ namespace ga {
 
 		namespace detail {
 
+			// Basic types ordering:
+			//     value < constant < variable[Id] < variable[Id+1]
 			template<default_integral_t LeftValue, default_integral_t RightValue>
 			struct lt<lazy::constant<LeftValue>, lazy::constant<RightValue> > {
-				constexpr static bool value = false;
+				constexpr static bool value = LeftValue < RightValue; //TODO Mudei aqui
 			};
 
 			template<default_integral_t LeftValue, class RightValueType>
@@ -20,10 +22,6 @@ namespace ga {
 			template<default_integral_t LeftValue, id_t RightId, class RightValueType>
 			struct lt<lazy::constant<LeftValue>, lazy::variable<RightId, RightValueType> > {
 				constexpr static bool value = true;
-			};
-
-			template<default_integral_t LeftValue, class RightLeftExpression, class RightRightExpression>
-			struct lt<lazy::constant<LeftValue>, lazy::detail::pow<RightLeftExpression, RightRightExpression> > : lt<lazy::constant<LeftValue>, RightLeftExpression> {
 			};
 
 			template<class LeftValueType, default_integral_t RightValue>
@@ -41,10 +39,6 @@ namespace ga {
 				constexpr static bool value = true;
 			};
 
-			template<class LeftValueType, class RightLeftExpression, class RightRightExpression>
-			struct lt<lazy::value<LeftValueType>, lazy::detail::pow<RightLeftExpression, RightRightExpression> > : lt<lazy::value<LeftValueType>, RightLeftExpression> {
-			};
-
 			template<id_t LeftId, class LeftValueType, default_integral_t RightValue>
 			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::constant<RightValue> > {
 				constexpr static bool value = false;
@@ -60,41 +54,9 @@ namespace ga {
 				constexpr static bool value = LeftId < RightId;
 			};
 
-			template<id_t LeftId, class LeftValueType, class RightLeftExpression, class RightRightExpression>
-			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::pow<RightLeftExpression, RightRightExpression> > : lt<lazy::variable<LeftId, LeftValueType>, RightLeftExpression> {
-			};
-
-			template<class LeftLeftExpression, class LeftRightExpression, default_integral_t RightValue>
-			struct lt<lazy::detail::pow<LeftLeftExpression, LeftRightExpression>, lazy::constant<RightValue> > : lt<LeftLeftExpression, lazy::constant<RightValue> > {
-			};
-
-			template<class LeftLeftExpression, class LeftRightExpression, class RightValueType>
-			struct lt<lazy::detail::pow<LeftLeftExpression, LeftRightExpression>, lazy::value<RightValueType> > : lt<LeftLeftExpression, lazy::value<RightValueType> > {
-			};
-
-			template<class LeftLeftExpression, class LeftRightExpression, id_t RightId, class RightValueType>
-			struct lt<lazy::detail::pow<LeftLeftExpression, LeftRightExpression>, lazy::variable<RightId, RightValueType> > : lt<LeftLeftExpression, lazy::variable<RightId, RightValueType> > {
-			};
-
-			template<class LeftLeftExpression, class LeftRightExpression, class RightLeftExpression, class RightRightExpression>
-			struct lt<lazy::detail::pow<LeftLeftExpression, LeftRightExpression>, lazy::detail::pow<RightLeftExpression, RightRightExpression> > : lt<LeftLeftExpression, RightLeftExpression> {
-			};
-
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > {
-				constexpr static bool value = is_lazy_constant<LeftLeftExpressionType>::value ? (is_lazy_constant<RightLeftExpressionType>::value ? lt<LeftRightExpressionType, RightRightExpressionType>::value : lt<LeftRightExpressionType, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> >::value) : (is_lazy_constant<RightLeftExpressionType>::value ? lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, RightRightExpressionType>::value : lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value));
-			};
-
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType>
-			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, RightExpressionType> {
-				constexpr static bool value = !is_lazy_constant<RightExpressionType>::value && std::conditional<is_lazy_constant<LeftLeftExpressionType>::value, lt<LeftRightExpressionType, RightExpressionType>, lt<LeftLeftExpressionType, RightExpressionType> >::type::value;
-			};
-
-			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<LeftExpressionType, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > {
-				constexpr static bool value = is_lazy_constant<LeftExpressionType>::value || std::conditional<is_lazy_constant<RightLeftExpressionType>::value, lt<LeftExpressionType, RightRightExpressionType>, lt<LeftExpressionType, RightLeftExpressionType> >::type::value;
-			};
-
+			// Addition ordering:
+			//     add<LeftExpressionType, RightExpressionType> == RightExpressionType, if LeftExpressionType is constant
+			//                                                  == LeftExpressionType, otherwise
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
 			struct lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::add<RightLeftExpressionType, RightRightExpressionType> > {
 				constexpr static bool value = is_lazy_constant<LeftLeftExpressionType>::value ? (is_lazy_constant<RightLeftExpressionType>::value ? lt<LeftRightExpressionType, RightRightExpressionType>::value : lt<LeftRightExpressionType, lazy::detail::add<RightLeftExpressionType, RightRightExpressionType> >::value) : (is_lazy_constant<RightLeftExpressionType>::value ? lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, RightRightExpressionType>::value : lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value));
@@ -102,22 +64,92 @@ namespace ga {
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType>
 			struct lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, RightExpressionType> {
-				constexpr static bool value = !is_lazy_constant<RightExpressionType>::value && std::conditional<is_lazy_constant<LeftLeftExpressionType>::value, lt<LeftRightExpressionType, RightExpressionType>, lt<LeftLeftExpressionType, RightExpressionType> >::type::value;
+				constexpr static bool value = ((is_lazy_constant<LeftLeftExpressionType>::value || eq<LeftLeftExpressionType, RightExpressionType>::value) && lt<LeftRightExpressionType, RightExpressionType>::value) || (!is_lazy_constant<LeftLeftExpressionType>::value && lt<LeftLeftExpressionType, RightExpressionType>::value);
 			};
 
 			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
 			struct lt<LeftExpressionType, lazy::detail::add<RightLeftExpressionType, RightRightExpressionType> > {
-				constexpr static bool value = is_lazy_constant<LeftExpressionType>::value || std::conditional<is_lazy_constant<RightLeftExpressionType>::value, lt<LeftExpressionType, RightRightExpressionType>, lt<LeftExpressionType, RightLeftExpressionType> >::type::value;
+				constexpr static bool value = ((is_lazy_constant<RightLeftExpressionType>::value || eq<LeftExpressionType, RightLeftExpressionType>::value) && lt<LeftExpressionType, RightRightExpressionType>::value) || (!is_lazy_constant<RightLeftExpressionType>::value && lt<LeftExpressionType, RightLeftExpressionType>::value);
 			};
 
+			// Multiplication ordering:
+			//     mul<LeftExpressionType, RightExpressionType> == RightExpressionType, if LeftExpressionType is constant
+			//                                                  == LeftExpressionType, otherwise
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
+			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > {
+				constexpr static bool value = is_lazy_constant<LeftLeftExpressionType>::value ? (is_lazy_constant<RightLeftExpressionType>::value ? lt<LeftRightExpressionType, RightRightExpressionType>::value : lt<LeftRightExpressionType, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> >::value) : (is_lazy_constant<RightLeftExpressionType>::value ? lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, RightRightExpressionType>::value : lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value));
+			};
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType>
+			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, RightExpressionType> {
+				constexpr static bool value = ((is_lazy_constant<LeftLeftExpressionType>::value || eq<LeftLeftExpressionType, RightExpressionType>::value) && lt<LeftRightExpressionType, RightExpressionType>::value) || (!is_lazy_constant<LeftLeftExpressionType>::value && lt<LeftLeftExpressionType, RightExpressionType>::value);
+			};
+
+			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
+			struct lt<LeftExpressionType, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > {
+				constexpr static bool value = ((is_lazy_constant<RightLeftExpressionType>::value || eq<LeftExpressionType, RightLeftExpressionType>::value) && lt<LeftExpressionType, RightRightExpressionType>::value) || (!is_lazy_constant<RightLeftExpressionType>::value && lt<LeftExpressionType, RightLeftExpressionType>::value);
+			};
+
+			// Exponentiation ordering:
+			//     power<BaseExpressionType, ...> == BaseExpressionType
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, default_integral_t RightValue>
+			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::constant<RightValue> > : lt<LeftLeftExpressionType, lazy::constant<RightValue> > {
+			};
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightValueType>
+			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::value<RightValueType> > : lt<LeftLeftExpressionType, lazy::value<RightValueType> > {
+			};
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, id_t RightId, class RightValueType>
+			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::variable<RightId, RightValueType> > : lt<LeftLeftExpressionType, lazy::variable<RightId, RightValueType> > {
+			};
+
+			template<default_integral_t LeftValue, class RightLeftExpressionType, class RightRightExpressionType>
+			struct lt<lazy::constant<LeftValue>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > : lt<lazy::constant<LeftValue>, RightLeftExpressionType> {
+			};
+
+			template<class LeftValueType, class RightLeftExpressionType, class RightRightExpressionType>
+			struct lt<lazy::value<LeftValueType>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > : lt<lazy::value<LeftValueType>, RightLeftExpressionType> {
+			};
+
+			template<id_t LeftId, class LeftValueType, class RightLeftExpressionType, class RightRightExpressionType>
+			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > : lt<lazy::variable<LeftId, LeftValueType>, RightLeftExpressionType> {
+			};
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
+			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > {
+				constexpr static bool value = lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value); //TODO Mudei aqui!
+			};
+
+			// Compound types ordering.
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
 			struct lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > {
 				constexpr static bool value = is_lazy_constant<LeftLeftExpressionType>::value ? (is_lazy_constant<RightLeftExpressionType>::value ? lt<LeftRightExpressionType, RightRightExpressionType>::value : lt<LeftRightExpressionType, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> >::value) : (is_lazy_constant<RightLeftExpressionType>::value ? lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, RightRightExpressionType>::value : lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value));
 			};
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
+			struct lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > {
+				constexpr static bool value = ((is_lazy_constant<LeftLeftExpressionType>::value || eq<LeftLeftExpressionType, RightLeftExpressionType>::value) && lt<LeftRightExpressionType, RightLeftExpressionType>::value) || (!is_lazy_constant<LeftLeftExpressionType>::value && lt<LeftLeftExpressionType, RightLeftExpressionType>::value);
+			};
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
 			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::add<RightLeftExpressionType, RightRightExpressionType> > {
 				constexpr static bool value = is_lazy_constant<LeftLeftExpressionType>::value ? (is_lazy_constant<RightLeftExpressionType>::value ? lt<LeftRightExpressionType, RightRightExpressionType>::value : lt<LeftRightExpressionType, lazy::detail::add<RightLeftExpressionType, RightRightExpressionType> >::value) : (is_lazy_constant<RightLeftExpressionType>::value ? lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, RightRightExpressionType>::value : lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value));
+			};
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
+			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > {
+				constexpr static bool value = ((is_lazy_constant<LeftLeftExpressionType>::value || eq<LeftLeftExpressionType, RightLeftExpressionType>::value) && lt<LeftRightExpressionType, RightLeftExpressionType>::value) || (!is_lazy_constant<LeftLeftExpressionType>::value && lt<LeftLeftExpressionType, RightLeftExpressionType>::value);
+			};
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
+			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::add<RightLeftExpressionType, RightRightExpressionType> > {
+				constexpr static bool value = ((is_lazy_constant<RightLeftExpressionType>::value || eq<LeftLeftExpressionType, RightLeftExpressionType>::value) && lt<LeftLeftExpressionType, RightRightExpressionType>::value) || (!is_lazy_constant<RightLeftExpressionType>::value && lt<LeftLeftExpressionType, RightLeftExpressionType>::value);
+			};
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
+			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > {
+				constexpr static bool value = ((is_lazy_constant<RightLeftExpressionType>::value || eq<LeftLeftExpressionType, RightLeftExpressionType>::value) && lt<LeftLeftExpressionType, RightRightExpressionType>::value) || (!is_lazy_constant<RightLeftExpressionType>::value && lt<LeftLeftExpressionType, RightLeftExpressionType>::value);
 			};
 
 		}

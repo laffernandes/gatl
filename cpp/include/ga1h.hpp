@@ -15,6 +15,8 @@ namespace ga1h {
 	static auto const Ie = e1;
 	static auto const I = pseudoscalar();
 
+	GA_USE_LAZY_VARK_FUNCTIONS()
+
 }
 
 #endif // __GA1H_HPP__

@@ -40,10 +40,13 @@ namespace ga {
 					right_(rhs) {
 				}
 
+				constexpr binary_lazy_expression & operator=(binary_lazy_expression const &) = default;
+				constexpr binary_lazy_expression & operator=(binary_lazy_expression &&) = default;
+
 			private:
 
-				left_type const left_;
-				right_type const right_;
+				left_type left_;
+				right_type right_;
 			};
 
 			template<class LeftExpressionType, class RightExpressionType>
@@ -75,9 +78,12 @@ namespace ga {
 					right_(rhs) {
 				}
 
+				constexpr binary_lazy_expression & operator=(binary_lazy_expression const &) = default;
+				constexpr binary_lazy_expression & operator=(binary_lazy_expression &&) = default;
+
 			private:
 
-				right_type const right_;
+				right_type right_;
 			};
 
 			template<class LeftExpressionType, class RightExpressionType>
@@ -109,9 +115,12 @@ namespace ga {
 					left_(lhs) {
 				}
 
+				constexpr binary_lazy_expression & operator=(binary_lazy_expression const &) = default;
+				constexpr binary_lazy_expression & operator=(binary_lazy_expression &&) = default;
+
 			private:
 
-				left_type const left_;
+				left_type left_;
 			};
 
 			template<class LeftExpressionType, class RightExpressionType>
@@ -141,6 +150,9 @@ namespace ga {
 
 				constexpr binary_lazy_expression(left_type const &, right_type const &) {
 				}
+
+				constexpr binary_lazy_expression & operator=(binary_lazy_expression const &) = default;
+				constexpr binary_lazy_expression & operator=(binary_lazy_expression &&) = default;
 			};
 
 		}

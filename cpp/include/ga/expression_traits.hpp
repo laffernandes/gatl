@@ -26,6 +26,11 @@ namespace ga {
 		};
 
 		template<class Type>
+		struct allows_lazy_simplification {
+			constexpr static bool value = false;
+		};
+
+		template<class Type>
 		struct is_clifford_expression {
 			constexpr static bool value = false;
 		};

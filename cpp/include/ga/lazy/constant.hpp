@@ -13,12 +13,15 @@ namespace ga {
 
 			typedef default_integral_t value_type;
 
+			constexpr constant() = default;
+			constexpr constant(constant const &) = default;
+			constexpr constant(constant &&) = default;
+
+			constexpr constant & operator=(constant const &) = default;
+			constexpr constant & operator=(constant &&) = default;
+
 			constexpr operator value_type() const {
 				return Value;
-			}
-
-			constexpr operator lazy_expression<constant<Value> > const & () const {
-				return *this;
 			}
 
 			template<class OtherValueType>
@@ -49,6 +52,11 @@ namespace ga {
 
 		template<default_integral_t Value>
 		struct is_lazy_constant<lazy::constant<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<default_integral_t Value>
+		struct allows_lazy_simplification<lazy::constant<Value> > {
 			constexpr static bool value = true;
 		};
 

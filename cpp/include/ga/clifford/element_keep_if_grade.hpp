@@ -77,7 +77,7 @@ namespace ga {
 				template<default_integral_t CoefficientValue, default_bitset_t BasisBlade, class KeepIfGradeFunc>
 				constexpr static decltype(auto) bind(component<constant<CoefficientValue>, cbasis_blade<BasisBlade> > const &arg, KeepIfGradeFunc const &keep) {
 					//TODO lazy
-					return make_component(value<default_integral_t>(keep(_basis_blade_grade<cbasis_blade<BasisBlade> >::value) ? CoefficientValue : static_cast<default_integral_t>(0)), cbasis_blade<BasisBlade>());
+					return make_component(val(keep(_basis_blade_grade<cbasis_blade<BasisBlade> >::value) ? CoefficientValue : static_cast<default_integral_t>(0)), cbasis_blade<BasisBlade>());
 				}
 
 				template<class CoefficientType, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
@@ -89,7 +89,7 @@ namespace ga {
 				template<default_integral_t CoefficientValue, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
 				constexpr static decltype(auto) bind(component<constant<CoefficientValue>, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
 					//TODO lazy
-					return make_component(value<default_integral_t>(keep(basis_blade_grade(arg.basis_blade())) ? CoefficientValue : static_cast<default_integral_t>(0)), dbasis_blade<ResultPossibleGrades>(arg.basis_blade().get()));
+					return make_component(val(keep(basis_blade_grade(arg.basis_blade())) ? CoefficientValue : static_cast<default_integral_t>(0)), dbasis_blade<ResultPossibleGrades>(arg.basis_blade().get()));
 				}
 			};
 
@@ -105,7 +105,7 @@ namespace ga {
 				template<default_integral_t CoefficientValue, class KeepIfGradeFunc>
 				constexpr static decltype(auto) bind(component<constant<CoefficientValue>, cbasis_blade<0> > const &arg, KeepIfGradeFunc const &keep) {
 					//TODO lazy
-					return make_component(value<default_integral_t>(keep(0) ? CoefficientValue : static_cast<default_integral_t>(0)), cbasis_blade<0>());
+					return make_component(va(keep(0) ? CoefficientValue : static_cast<default_integral_t>(0)), cbasis_blade<0>());
 				}
 
 				template<class CoefficientType, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
@@ -117,7 +117,7 @@ namespace ga {
 				template<default_integral_t CoefficientValue, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
 				constexpr static decltype(auto) bind(component<constant<CoefficientValue>, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
 					//TODO lazy
-					return make_component(value<default_integral_t>(keep(basis_blade_grade(arg.basis_blade())) ? CoefficientValue : static_cast<default_integral_t>(0)), cbasis_blade<0>());
+					return make_component(val(keep(basis_blade_grade(arg.basis_blade())) ? CoefficientValue : static_cast<default_integral_t>(0)), cbasis_blade<0>());
 				}
 			};
 

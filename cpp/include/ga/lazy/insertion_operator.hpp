@@ -42,7 +42,7 @@ namespace ga {
 		}
 
 		template<class LeftExpressionType, class RightExpressionType>
-		std::ostream & operator<<(std::ostream &os, detail::pow<LeftExpressionType, RightExpressionType> const &rhs) {
+		std::ostream & operator<<(std::ostream &os, detail::power<LeftExpressionType, RightExpressionType> const &rhs) {
 			os << "pow(" << rhs.left() << ", " << rhs.right() << ")";
 			return os;
 		}

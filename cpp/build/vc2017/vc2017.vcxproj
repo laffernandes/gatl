@@ -103,7 +103,7 @@
     <ClInclude Include="..\..\include\ga\lazy\math.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\mul.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\multiplication.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\pow.hpp" />
+    <ClInclude Include="..\..\include\ga\lazy\power.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\value.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\variable.hpp" />
     <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp" />

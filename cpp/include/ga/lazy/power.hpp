@@ -1,5 +1,5 @@
-#ifndef __GA_LAZY_POW_HPP__
-#define __GA_LAZY_POW_HPP__
+#ifndef __GA_LAZY_POWER_HPP__
+#define __GA_LAZY_POWER_HPP__
 
 namespace ga {
 
@@ -8,8 +8,8 @@ namespace ga {
 		namespace detail {
 
 			template<class LeftExpressionType, class RightExpressionType>
-			class pow final :
-				public lazy_expression<pow<LeftExpressionType, RightExpressionType> >,
+			class power final :
+				public lazy_expression<power<LeftExpressionType, RightExpressionType> >,
 				private binary_lazy_expression<LeftExpressionType, RightExpressionType> {
 			private:
 
@@ -17,23 +17,21 @@ namespace ga {
 
 			public:
 
-				typedef pow expression_type;
+				typedef power expression_type;
 
 				using left_type = typename _super_for_arguments::left_type;
 				using right_type = typename _super_for_arguments::right_type;
 
-				typedef decltype(std::pow(typename left_type::value_type(), typename right_type::value_type())) value_type;
+				constexpr power() = default;
+				constexpr power(power const &) = default;
+				constexpr power(power &&) = default;
 
-				constexpr pow() = default;
-				constexpr pow(pow const &) = default;
-				constexpr pow(pow &&) = default;
-
-				constexpr pow(left_type const &lhs, right_type const &rhs) :
+				constexpr power(left_type const &lhs, right_type const &rhs) :
 					_super_for_arguments(lhs, rhs) {
 				}
 
-				constexpr pow & operator=(pow const &) = default;
-				constexpr pow & operator=(pow &&) = default;
+				constexpr power & operator=(power const &) = default;
+				constexpr power & operator=(power &&) = default;
 
 				using _super_for_arguments::left;
 				using _super_for_arguments::right;
@@ -45,8 +43,8 @@ namespace ga {
 			};
 
 			template<class LeftExpressionType, class RightExpressionType>
-			constexpr pow<LeftExpressionType, RightExpressionType> make_pow(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
-				return pow<LeftExpressionType, RightExpressionType>(lhs, rhs);
+			constexpr power<LeftExpressionType, RightExpressionType> make_power(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+				return power<LeftExpressionType, RightExpressionType>(lhs, rhs);
 			}
 
 		}
@@ -56,27 +54,32 @@ namespace ga {
 	namespace common {
 
 		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_expression<lazy::detail::pow<LeftExpressionType, RightExpressionType> > {
+		struct is_lazy_expression<lazy::detail::power<LeftExpressionType, RightExpressionType> > {
 			constexpr static bool value = true;
 		};
 
 		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_constant<lazy::detail::pow<LeftExpressionType, RightExpressionType> > {
+		struct is_lazy_constant<lazy::detail::power<LeftExpressionType, RightExpressionType> > {
 			constexpr static bool value = is_lazy_constant<LeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value;
 		};
 
 		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_value<lazy::detail::pow<LeftExpressionType, RightExpressionType> > {
+		struct is_lazy_value<lazy::detail::power<LeftExpressionType, RightExpressionType> > {
 			constexpr static bool value = is_lazy_value<LeftExpressionType>::value && is_lazy_value<RightExpressionType>::value;
 		};
 
 		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_variable<lazy::detail::pow<LeftExpressionType, RightExpressionType> > {
+		struct is_lazy_variable<lazy::detail::power<LeftExpressionType, RightExpressionType> > {
 			constexpr static bool value = is_lazy_variable<LeftExpressionType>::value && is_lazy_variable<RightExpressionType>::value;
+		};
+
+		template<class LeftExpressionType, class RightExpressionType>
+		struct allows_lazy_simplification<lazy::detail::power<LeftExpressionType, RightExpressionType> > {
+			constexpr static bool value = allows_lazy_simplification<LeftExpressionType>::value && allows_lazy_simplification<RightExpressionType>::value;
 		};
 
 	}
 
 }
 
-#endif // __GA_LAZY_POW_HPP__
+#endif // __GA_LAZY_POWER_HPP__

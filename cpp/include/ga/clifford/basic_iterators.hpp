@@ -58,7 +58,7 @@ namespace ga {
 
 			template<class ValueType, typename std::enable_if<!(is_lazy_expression<ValueType>::value || is_clifford_expression<ValueType>::value), int>::type = 0>
 			constexpr decltype(auto) begin(ValueType const &arg) {
-				return begin(value<ValueType>(arg));
+				return begin(val(arg));
 			}
 
 			constexpr itr_end begin(constant<0> const &) {

@@ -78,9 +78,6 @@
     <ClInclude Include="..\..\include\ga\lazy\constant.hpp">
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\lazy\exponentiation.hpp">
-      <Filter>Header Files\ga\lazy</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\lazy\expression_ordering.hpp">
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
@@ -97,9 +94,6 @@
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\lazy\multiplication.hpp">
-      <Filter>Header Files\ga\lazy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\lazy\pow.hpp">
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\lazy\value.hpp">
@@ -286,6 +280,12 @@
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\lazy\eval.hpp">
+      <Filter>Header Files\ga\lazy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\lazy\exponentiation.hpp">
+      <Filter>Header Files\ga\lazy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\lazy\power.hpp">
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
   </ItemGroup>
