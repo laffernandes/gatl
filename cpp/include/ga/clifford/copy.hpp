@@ -1,5 +1,5 @@
-#ifndef __GA_CLIFFORD_CLIFFORD_EXPRESSION_COPY_HPP__
-#define __GA_CLIFFORD_CLIFFORD_EXPRESSION_COPY_HPP__
+#ifndef __GA_CLIFFORD_COPY_HPP__
+#define __GA_CLIFFORD_COPY_HPP__
 
 namespace ga {
 
@@ -22,4 +22,4 @@ namespace ga {
 
 }
 
-#endif // __GA_CLIFFORD_CLIFFORD_EXPRESSION_COPY_HPP__
+#endif // __GA_CLIFFORD_COPY_HPP__

@@ -15,6 +15,10 @@
 	#define GA_MAX_BASIS_VECTOR_INDEX 63
 #endif // GA_MAX_BASIS_VECTOR_INDEX
 
+#if !defined(GA_USE_CLIFFORD_EXPRESSION_LIST) && !defined(GA_USE_CLIFFORD_EXPRESSION_TREE)
+	#define GA_USE_CLIFFORD_EXPRESSION_LIST
+#endif // !GA_USE_CLIFFORD_EXPRESSION_LIST && !GA_USE_CLIFFORD_EXPRESSION_TREE
+
 #include "ga/compile_time_ordering.hpp"
 #include "ga/expression_traits.hpp"
 #include "ga/default_tolerance.hpp"
@@ -91,9 +95,7 @@ namespace ga {
 	namespace clifford {
 
 		using lazy::lazy_expression;
-
 		using lazy::constant;
-		using lazy::value;
 
 	}
 
@@ -122,18 +124,26 @@ namespace ga {
 #include "ga/clifford/element_deduce_grade.hpp"
 
 #include "ga/clifford/clifford_expression.hpp"
-
-#include "ga/clifford/basic_iterators.hpp"
-#include "ga/clifford/clifford_expression_copy.hpp"
-
-#include "ga/clifford/expression_tree.hpp"
-#include "ga/clifford/expression_tree_insert.hpp"
-#include "ga/clifford/expression_tree_iterator.hpp"
-#include "ga/clifford/expression_tree_ordered_iterator.hpp"
-
+#include "ga/clifford/clifford_expression_insert.hpp"
+#include "ga/clifford/clifford_expression_iterators.hpp"
+#include "ga/clifford/clifford_expression_native.hpp"
 #include "ga/clifford/clifford_expression_common_value_type.hpp"
 
-#include "ga/clifford/native.hpp"
+#include "ga/clifford/copy.hpp"
+
+#if defined(GA_USE_CLIFFORD_EXPRESSION_LIST)
+	#include "ga/clifford/expression_list.hpp"
+	#include "ga/clifford/expression_list_insert.hpp"
+	#include "ga/clifford/expression_list_iterators.hpp"
+	#include "ga/clifford/expression_list_native.hpp"
+	#include "ga/clifford/expression_list_common_value_type.hpp"
+#elif defined(GA_USE_CLIFFORD_EXPRESSION_TREE)
+	#include "ga/clifford/expression_tree.hpp"
+	#include "ga/clifford/expression_tree_insert.hpp"
+	#include "ga/clifford/expression_tree_iterators.hpp"
+	#include "ga/clifford/expression_tree_native.hpp"
+	#include "ga/clifford/expression_tree_common_value_type.hpp"
+#endif // GA_USE_CLIFFORD_EXPRESSION_LIST || GA_USE_CLIFFORD_EXPRESSION_TREE
 
 #include "ga/clifford/unary_minus.hpp"
 #include "ga/clifford/unary_plus.hpp"
@@ -177,8 +187,6 @@ namespace ga {
 	using namespace clifford;
 
 }
-
-//TODO Trocar árvore AVL por Linked List
 
 //TODO Implement equal(lhs, rhs, tol)
 //TODO Implement is_zero(arg, tol)

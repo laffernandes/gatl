@@ -7,7 +7,7 @@ namespace ga {
 
 		template<class SpaceType>
 		constexpr decltype(auto) pseudoscalar(space<SpaceType> const &spc) {
-			return detail::make_expression_tree(detail::make_component(constant<1>(), spc.basis_vectors()), detail::empty_clifford_expression(), detail::empty_clifford_expression());
+			return detail::make_simple_clifford_expression(detail::make_component(constant<1>(), spc.basis_vectors()));
 		}
 
 	}

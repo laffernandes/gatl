@@ -33,12 +33,12 @@ namespace ga {
 			struct _eval_clifford_expression_element {
 				template<class CoefficientType, class BasisBladeType>
 				constexpr static decltype(auto) bind(component<CoefficientType, BasisBladeType> const &arg) {
-					return make_expression_tree(make_component(lazy::eval(arg.coefficient()), dbasis_blade<DynamicPossibleGrades>(arg.basis_blade().get())), empty_clifford_expression(), empty_clifford_expression());
+					return make_simple_clifford_expression(make_component(lazy::eval(arg.coefficient()), dbasis_blade<DynamicPossibleGrades>(arg.basis_blade().get())));
 				}
 
 				template<class CoefficientType>
 				constexpr static decltype(auto) bind(component<CoefficientType, dbasis_blade<DynamicPossibleGrades> > const &arg) {
-					return make_expression_tree(make_component(lazy::eval(arg.coefficient()), arg.basis_blade()), empty_clifford_expression(), empty_clifford_expression());
+					return make_simple_clifford_expression(make_component(lazy::eval(arg.coefficient()), arg.basis_blade()));
 				}
 
 				template<class CoefficientType, default_bitset_t PossibleGrades>
@@ -47,12 +47,12 @@ namespace ga {
 					for (auto itr = arg.begin(), end = arg.end(); itr != end; ++itr) {
 						element.insert(dbasis_blade<DynamicPossibleGrades>(itr->first.get()), itr->second); //TODO lazy
 					}
-					return make_expression_tree(element, empty_clifford_expression(), empty_clifford_expression());
+					return make_simple_clifford_expression(element);
 				}
 
 				template<class CoefficientType>
 				constexpr static decltype(auto) bind(components<CoefficientType, DynamicPossibleGrades> const &arg) {
-					return make_expression_tree(arg, empty_clifford_expression(), empty_clifford_expression()); //TODO lazy
+					return make_simple_clifford_expression(arg); //TODO lazy
 				}
 			};
 
@@ -60,7 +60,7 @@ namespace ga {
 			struct _eval_clifford_expression_element<default_bitset_t(0)> {
 				template<class ElementType>
 				constexpr static decltype(auto) bind(ElementType const &arg) {
-					return make_expression_tree(make_component(lazy::eval(arg.coefficient()), arg.basis_blade()), empty_clifford_expression(), empty_clifford_expression());
+					return make_simple_clifford_expression(make_component(lazy::eval(arg.coefficient()), arg.basis_blade()));
 				}
 			};
 

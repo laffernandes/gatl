@@ -16,7 +16,7 @@ namespace ga {
 			}
 
 			template<class ValueType>
-			void write_coefficient(std::ostream &os, value<ValueType> const &rhs, bool const first) {
+			void write_coefficient(std::ostream &os, lazy::value<ValueType> const &rhs, bool const first) {
 				if (first) {
 					os << rhs.get();
 				}

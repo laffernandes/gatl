@@ -39,6 +39,7 @@
     <ClInclude Include="..\..\include\ga\clifford\binary_plus.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\blade_exponential.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\clifford_expression_insert.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\compile_time_basis_blade.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\component.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\components.hpp" />
@@ -56,11 +57,17 @@
     <ClInclude Include="..\..\include\ga\clifford\euclidean_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\eval.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression_common_value_type.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\clifford_expression_copy.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\copy.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\expression_list.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\expression_list_common_value_type.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\expression_list_insert.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\expression_list_iterators.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\expression_list_native.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\expression_tree_common_value_type.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\expression_tree_insert.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree_iterator.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\expression_tree_iterators.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\expression_tree.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree_ordered_iterator.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\expression_tree_native.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\grade.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\graded_product.hpp" />
@@ -69,7 +76,7 @@
     <ClInclude Include="..\..\include\ga\clifford\involution.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\left_contraction.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\metric_space.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\native.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\clifford_expression_native.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\orthogonal_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\outer_product.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\pseudoscalar.hpp" />
@@ -83,7 +90,7 @@
     <ClInclude Include="..\..\include\ga\clifford\take_grade.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\unary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\unary_plus.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\basic_iterators.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\clifford_expression_iterators.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\versor_inverse.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\write.hpp" />
     <ClInclude Include="..\..\include\ga\compile_time_ordering.hpp" />
