@@ -71,53 +71,26 @@ namespace ga {
 				template<class CoefficientType, default_bitset_t BasisBlade, class KeepIfGradeFunc>
 				constexpr static decltype(auto) bind(component<CoefficientType, cbasis_blade<BasisBlade> > const &arg, KeepIfGradeFunc const &keep) {
 					//TODO lazy
-					return keep(_basis_blade_grade<cbasis_blade<BasisBlade> >::value) ? arg : make_component(CoefficientType(), cbasis_blade<BasisBlade>());
-				}
-
-				template<default_integral_t CoefficientValue, default_bitset_t BasisBlade, class KeepIfGradeFunc>
-				constexpr static decltype(auto) bind(component<constant<CoefficientValue>, cbasis_blade<BasisBlade> > const &arg, KeepIfGradeFunc const &keep) {
-					//TODO lazy
-					return make_component(val(keep(_basis_blade_grade<cbasis_blade<BasisBlade> >::value) ? CoefficientValue : static_cast<default_integral_t>(0)), cbasis_blade<BasisBlade>());
+					typedef decltype(val(arg.coefficient())) coefficient_t;
+					return make_component(keep(basis_blade_grade(arg.basis_blade())) ? val(arg.coefficient()) : coefficient_t(0), cbasis_blade<BasisBlade>());
 				}
 
 				template<class CoefficientType, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
 				constexpr static decltype(auto) bind(component<CoefficientType, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
 					//TODO lazy
-					return make_component(keep(basis_blade_grade(arg.basis_blade())) ? arg.coefficient() : CoefficientType(), dbasis_blade<ResultPossibleGrades>(arg.basis_blade().get()));
-				}
-
-				template<default_integral_t CoefficientValue, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
-				constexpr static decltype(auto) bind(component<constant<CoefficientValue>, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
-					//TODO lazy
-					return make_component(val(keep(basis_blade_grade(arg.basis_blade())) ? CoefficientValue : static_cast<default_integral_t>(0)), dbasis_blade<ResultPossibleGrades>(arg.basis_blade().get()));
+					typedef decltype(val(arg.coefficient())) coefficient_t;
+					return make_component(keep(basis_blade_grade(arg.basis_blade())) ? val(arg.coefficient()) : coefficient_t(0), dbasis_blade<ResultPossibleGrades>(arg.basis_blade().get()));
 				}
 			};
 
 			//TODO Fazer o mesmo para pseudoscalar
 			template<>
 			struct _keep_if_grade_component_maybe_keep<default_bitset_t(1)> {
-				template<class CoefficientType, class KeepIfGradeFunc>
-				constexpr static decltype(auto) bind(component<CoefficientType, cbasis_blade<0> > const &arg, KeepIfGradeFunc const &keep) {
+				template<class CoefficientType, class BasisBladeType, class KeepIfGradeFunc>
+				constexpr static decltype(auto) bind(component<CoefficientType, BasisBladeType> const &arg, KeepIfGradeFunc const &keep) {
 					//TODO lazy
-					return keep(0) ? arg : make_component(CoefficientType(), cbasis_blade<0>());
-				}
-
-				template<default_integral_t CoefficientValue, class KeepIfGradeFunc>
-				constexpr static decltype(auto) bind(component<constant<CoefficientValue>, cbasis_blade<0> > const &arg, KeepIfGradeFunc const &keep) {
-					//TODO lazy
-					return make_component(va(keep(0) ? CoefficientValue : static_cast<default_integral_t>(0)), cbasis_blade<0>());
-				}
-
-				template<class CoefficientType, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
-				constexpr static decltype(auto) bind(component<CoefficientType, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
-					//TODO lazy
-					return make_component(keep(basis_blade_grade(arg.basis_blade())) ? arg.coefficient() : CoefficientType(), cbasis_blade<0>());
-				}
-
-				template<default_integral_t CoefficientValue, default_bitset_t PossibleGrades, class KeepIfGradeFunc>
-				constexpr static decltype(auto) bind(component<constant<CoefficientValue>, dbasis_blade<PossibleGrades> > const &arg, KeepIfGradeFunc const &keep) {
-					//TODO lazy
-					return make_component(val(keep(basis_blade_grade(arg.basis_blade())) ? CoefficientValue : static_cast<default_integral_t>(0)), cbasis_blade<0>());
+					typedef decltype(val(arg.coefficient())) coefficient_t;
+					return make_component(keep(basis_blade_grade(arg.basis_blade())) ? val(arg.coefficient()) : coefficient_t(0), cbasis_blade<0>());
 				}
 			};
 

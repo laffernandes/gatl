@@ -46,15 +46,6 @@ namespace ga {
 						//TODO lazy
 						return change(basis_blade_grade(arg.basis_blade())) ? make_component(-arg.coefficient(), arg.basis_blade()) : arg;
 					}
-
-					//TODO Precisa?
-					/*
-					template<default_integral_t CoefficientValue, class SignChangeIfGradeFunc>
-					constexpr static decltype(auto) bind(component<constant<CoefficientValue>, dbasis_blade<PossibleGrades> > const &arg, SignChangeIfGradeFunc const &change) {
-						//TODO lazy
-						return (change(basis_blade_grade(arg.basis_blade()))) ? make_component(-CoefficientValue, arg.basis_blade()) : make_component(CoefficientValue, arg.basis_blade());
-					}
-					*/
 				};
 
 			public:

@@ -619,3 +619,94 @@ int main() {
 	return EXIT_SUCCESS;
 }
 /**/
+
+//#include <ga.hpp>
+//#include <ga/macro_for_algebra_overload.hpp>
+//
+////#define K 0
+////#define N 1
+//
+////#define K 0
+////#define K 1
+////#define N 2
+//
+////#define K 0
+////#define K 1
+////#define K 2
+////#define N 3
+//
+////#define K 0
+////#define K 1
+//#define K 2
+////#define K 3
+//#define N 4
+//
+//GA_SIGNED_ALGEBRA_OVERLOAD(dummy, N + 1, 1)
+//
+//using namespace dummy;
+//
+//static auto const ep = e(c<N + 1>);
+//static auto const em = e(c<N + 2>);
+//
+//static auto const no = (em - ep) / c<2>;
+//static auto const ni = ep + em;
+//
+//template<std::size_t Index>
+//decltype(auto) _euclidean_vector_impl(double(&coeffs)[N]) {
+//	return _euclidean_vector_impl<Index - 1>(coeffs)  + coeffs[Index - 1] * e(c<Index>);
+//}
+//
+//template<>
+//decltype(auto) _euclidean_vector_impl<0>(double(&coeffs)[N]) {
+//	return ga::clifford::detail::empty_clifford_expression();
+//}
+//
+//decltype(auto) euclidean_vector(double(&coeffs)[N]) {
+//	return _euclidean_vector_impl<N>(coeffs);
+//}
+//
+//decltype(auto) point(double(&coeffs)[N]) {
+//	auto v = euclidean_vector(coeffs);
+//	return no + v + (scp(v, v) / c<2>) * ni;
+//}
+//
+//template<std::size_t Index>
+//decltype(auto) kdirection() {
+//	return op(kdirection<Index - 1>(), e(c<Index>));
+//}
+//
+//template<>
+//decltype(auto) kdirection<0>() {
+//	return c<1>;
+//}
+//
+//template<class PointType, class RadiusType, class DirectionType>
+//decltype(auto) ksphere(PointType const &p, RadiusType const &r, DirectionType const &d) {
+//	return op(p + ((r * r) / c<2>) * ni, lcont(-p, op(involution(d), ni)));
+//}
+//
+//template<class RoundType>
+//decltype(auto) radius(RoundType const &x) {
+//	auto aux = lcont(ni, x);
+//	return native(scp(x, involution(x)) / scp(aux, aux));
+//}
+//
+//template<class RoundType>
+//decltype(auto) sign(RoundType const &x) {
+//	return native(-scp(x, reversion(x)));
+//}
+//
+//int main() {
+//	double coeffs[N] = { -8.0 };
+//	auto s = dual(-3 * ksphere(point(coeffs), 5.0, kdirection<K + 1>()));
+//
+//	std::cout << K << "-sphere = " << s << std::endl;
+//	std::cout << std::endl;
+//	std::cout << "radius^{2} = " << radius(s) << std::endl;
+//	std::cout << std::endl;
+//
+//	std::cout << "      sign = " << sign(s) << std::endl;
+//	std::cout << std::endl;
+//
+//	return EXIT_SUCCESS;
+//}

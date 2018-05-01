@@ -65,9 +65,14 @@ namespace ga {
 			value_type value_;
 		};
 
-		template<id_t Id, class ValueType>
-		constexpr variable<Id, ValueType> var(ValueType const &arg) {
+		template<id_t Id, class ValueType, typename std::enable_if<!(is_lazy_expression<ValueType>::value || is_clifford_expression<ValueType>::value), int>::type = 0>
+		constexpr decltype(auto) var(ValueType const &arg) {
 			return variable<Id, ValueType>(arg);
+		}
+
+		template<id_t Id, class ExpressionType>
+		constexpr decltype(auto) var(lazy_expression<ExpressionType> const &arg) {
+			return var<Id>(detail::cast_to_value(arg).get());
 		}
 
 	}
@@ -76,11 +81,6 @@ namespace ga {
 
 		template<id_t Id, class ValueType>
 		struct is_lazy_expression<lazy::variable<Id, ValueType> > {
-			constexpr static bool value = true;
-		};
-
-		template<id_t Id, class ValueType>
-		struct is_lazy_variable<lazy::variable<Id, ValueType> > {
 			constexpr static bool value = true;
 		};
 

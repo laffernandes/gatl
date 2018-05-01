@@ -38,6 +38,14 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
+		template<class ExpressionType>
+		struct is_lazy_constant<lazy::lazy_expression<ExpressionType> > : is_lazy_constant<ExpressionType> {
+		};
+
+		template<class ExpressionType>
+		struct allows_lazy_simplification<lazy::lazy_expression<ExpressionType> > : allows_lazy_simplification<ExpressionType> {
+		};
+
 	}
 
 }

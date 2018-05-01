@@ -11,7 +11,7 @@ namespace ga {
 			//     value < constant < variable[Id] < variable[Id+1]
 			template<default_integral_t LeftValue, default_integral_t RightValue>
 			struct lt<lazy::constant<LeftValue>, lazy::constant<RightValue> > {
-				constexpr static bool value = LeftValue < RightValue; //TODO Mudei aqui
+				constexpr static bool value = LeftValue < RightValue;
 			};
 
 			template<default_integral_t LeftValue, class RightValueType>
@@ -118,7 +118,7 @@ namespace ga {
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
 			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > {
-				constexpr static bool value = lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value); //TODO Mudei aqui!
+				constexpr static bool value = lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value);
 			};
 
 			// Compound types ordering.

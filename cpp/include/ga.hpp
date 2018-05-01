@@ -178,7 +178,7 @@ namespace ga {
 
 }
 
-//TODO verificar onde contant é usado
+//TODO Trocar árvore AVL por Linked List
 
 //TODO Implement equal(lhs, rhs, tol)
 //TODO Implement is_zero(arg, tol)

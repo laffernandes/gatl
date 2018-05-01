@@ -66,19 +66,8 @@ namespace ga {
 		};
 
 		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_value<lazy::detail::mul<LeftExpressionType, RightExpressionType> > {
-			constexpr static bool value = is_lazy_value<LeftExpressionType>::value && is_lazy_value<RightExpressionType>::value;
-		};
-
-		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_variable<lazy::detail::mul<LeftExpressionType, RightExpressionType> > {
-			constexpr static bool value = is_lazy_variable<LeftExpressionType>::value && is_lazy_variable<RightExpressionType>::value;
-		};
-
-
-		template<class LeftExpressionType, class RightExpressionType>
 		struct allows_lazy_simplification<lazy::detail::mul<LeftExpressionType, RightExpressionType> > {
-			constexpr static bool value = allows_lazy_simplification<LeftExpressionType>::value && allows_lazy_simplification<RightExpressionType>::value;
+			constexpr static bool value = allows_lazy_simplification<LeftExpressionType>::value; // By sorting, we do not to check the right-hand side argument.
 		};
 
 	}

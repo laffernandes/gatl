@@ -14,25 +14,19 @@ namespace ga {
 			}
 
 			// Simplify exponentiation of values.
-			//     A^{B} = simpler C
-			template<class LeftValueType>
-			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, constant<-1> const &) {
-				return val(static_cast<default_floating_point_t>(1) / lhs.get());
-			}
-
 			template<class LeftValueType, class RightValueType>
 			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, value<RightValueType> const &rhs) {
-				return val(pow(lhs.get(), rhs.get()));
+				return eval_lazy_power(lhs, rhs);
 			}
 
-			template<class LeftValueType>
-			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, power<constant<2>, constant<-1> > const &) {
-				return val(sqrt(lhs.get()));
+			template<class LeftValueType, class RightExpressionType, typename std::enable_if<!(std::is_same<RightExpressionType, constant<0> >::value || std::is_same<RightExpressionType, constant<1> >::value), int>::type = 0>
+			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, RightExpressionType const &rhs) {
+				return eval_lazy_power(lhs, rhs);
 			}
 
-			template<class LeftValueType>
-			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, power<constant<3>, constant<-1> > const &) {
-				return val(cbrt(lhs.get()));
+			template<class LeftExpressionType, class RightValueType, typename std::enable_if<!std::is_same<LeftExpressionType, constant<0> >::value, int>::type = 0>
+			constexpr decltype(auto) exponentiation(LeftExpressionType const &lhs, value<RightValueType> const &rhs) {
+				return eval_lazy_power(lhs, rhs);
 			}
 
 			// Simplify zero raised to the constant power of K (except for K <= 0).

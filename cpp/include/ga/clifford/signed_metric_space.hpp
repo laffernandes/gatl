@@ -138,7 +138,7 @@ namespace ga {
 
 				template<index_t Row, index_t Col>
 				struct cmetric_entry {
-					static_assert(0 < Row && Row <= (P + Q) && 0 < Col && Col <= (P + Q), "Basis vector index Row or Col out is of bounds. It is expected 0 < Row <= (P + Q) and 0 < Col <= (P + Q).");
+					static_assert(0 < Row && Row <= (P + Q) && 0 < Col && Col <= (P + Q), "Basis vector index Row or Col is out of bounds. It is expected 0 < Row <= (P + Q) and 0 < Col <= (P + Q).");
 					constexpr static auto value = constant<Row == Col ? (Row <= P ? 1 : -1) : 0>();
 				};
 

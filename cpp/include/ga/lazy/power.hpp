@@ -64,16 +64,6 @@ namespace ga {
 		};
 
 		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_value<lazy::detail::power<LeftExpressionType, RightExpressionType> > {
-			constexpr static bool value = is_lazy_value<LeftExpressionType>::value && is_lazy_value<RightExpressionType>::value;
-		};
-
-		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_variable<lazy::detail::power<LeftExpressionType, RightExpressionType> > {
-			constexpr static bool value = is_lazy_variable<LeftExpressionType>::value && is_lazy_variable<RightExpressionType>::value;
-		};
-
-		template<class LeftExpressionType, class RightExpressionType>
 		struct allows_lazy_simplification<lazy::detail::power<LeftExpressionType, RightExpressionType> > {
 			constexpr static bool value = allows_lazy_simplification<LeftExpressionType>::value && allows_lazy_simplification<RightExpressionType>::value;
 		};

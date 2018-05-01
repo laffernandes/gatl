@@ -10,17 +10,17 @@ namespace ga {
 
 		namespace detail {
 
-			template<default_integral_t CoefficientValue, default_bitset_t BasisBlade, class ToleranceType>
-			constexpr decltype(auto) grade_element(component<constant<CoefficientValue>, cbasis_blade<BasisBlade> > const &, ToleranceType const &) {
+			template<class CoefficientType, default_bitset_t BasisBlade, class ToleranceType, typename std::enable_if<is_lazy_constant<CoefficientType>::value, int>::type = 0>
+			constexpr decltype(auto) grade_element(component<CoefficientType, cbasis_blade<BasisBlade> > const &, ToleranceType const &) {
 				return grade_result<constant<_basis_blade_grade<cbasis_blade<BasisBlade> >::value> >(); // The coefficient is different than zero by construction.
 			}
 
-			template<default_integral_t CoefficientValue, default_bitset_t PossibleGrades, class ToleranceType>
-			constexpr decltype(auto) grade_element(component<constant<CoefficientValue>, dbasis_blade<PossibleGrades> > const &arg, ToleranceType const &) {
+			template<class CoefficientType, default_bitset_t PossibleGrades, class ToleranceType, typename std::enable_if<is_lazy_constant<CoefficientType>::value, int>::type = 0>
+			constexpr decltype(auto) grade_element(component<CoefficientType, dbasis_blade<PossibleGrades> > const &arg, ToleranceType const &) {
 				return grade_result<grade_t>(basis_blade_grade(arg.basis_blade())); // The coefficient is different than zero by construction.
 			}
 
-			template<class CoefficientType, class BasisBladeType, class ToleranceType>
+			template<class CoefficientType, class BasisBladeType, class ToleranceType, typename std::enable_if<!is_lazy_constant<CoefficientType>::value, int>::type = 0>
 			constexpr decltype(auto) grade_element(component<CoefficientType, BasisBladeType> const &arg, ToleranceType const &tol) {
 				return grade_result<grade_t>(abs(arg.coefficient()) > tol ? basis_blade_grade(arg.basis_blade()) : -2);
 			}

@@ -13,28 +13,20 @@ namespace ga {
 				return make_mul(lhs, rhs);
 			}
 
-			// Simplify multiplication of values (by sorting, "..." is an expression of constants or variables).
-			//     A * B = simpler C
-			//     A * (B * ...) = simpler C * ...
+			// Simplify multiplication of values.
 			template<class LeftValueType, class RightValueType>
 			constexpr decltype(auto) multiplication_bind(value<LeftValueType> const &lhs, value<RightValueType> const &rhs) {
-				return val(lhs.get() * rhs.get());
+				return eval_lazy_mul(lhs, rhs);
 			}
 
-			template<class LeftValueType, default_integral_t RightValue, typename std::enable_if<RightValue != 0 && RightValue != 1, int>::type = 0>
-			constexpr decltype(auto) multiplication_bind(value<LeftValueType> const &lhs, constant<RightValue> const &) {
-				return val(lhs.get() * RightValue);
+			template<class LeftValueType, class RightExpressionType, typename std::enable_if<!(std::is_same<RightExpressionType, constant<0> >::value || std::is_same<RightExpressionType, constant<1> >::value), int>::type = 0>
+			constexpr decltype(auto) multiplication_bind(value<LeftValueType> const &lhs, RightExpressionType const &rhs) {
+				return eval_lazy_mul(lhs, rhs);
 			}
 
-			template<class LeftValueType, class RightValueType, class RightTailExpressionType>
-			constexpr decltype(auto) multiplication_bind(value<LeftValueType> const &lhs, mul<value<RightValueType>, RightTailExpressionType> const &rhs) {
-				return make_mul(val(lhs.get() * rhs.left().get()), rhs.right());
-			}
-
-			template<class LeftValueType, default_integral_t RightValue>
-			constexpr decltype(auto) multiplication_bind(value<LeftValueType> const &lhs, power<constant<RightValue>, constant<-1> > const &) {
-				typedef typename std::conditional<std::is_floating_point<LeftValueType>::value, default_integral_t, default_floating_point_t>::type constant_value_t;
-				return val(lhs.get() / static_cast<constant_value_t>(RightValue));
+			template<class LeftExpressionType, class RightValueType, typename std::enable_if<!(std::is_same<LeftExpressionType, constant<0> >::value || std::is_same<LeftExpressionType, constant<1> >::value), int>::type = 0>
+			constexpr decltype(auto) multiplication_bind(LeftExpressionType const &lhs, value<RightValueType> const &rhs) {
+				return eval_lazy_mul(lhs, rhs);
 			}
 
 			// Simplify multiplication by zero.
