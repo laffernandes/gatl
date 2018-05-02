@@ -610,11 +610,13 @@ int main() {
 	std::cout << "sizeof(gp(p, e3)) = " << sizeof(decltype(r)) << std::endl;
 	std::cout << std::endl;
 
+#if defined(GA_USE_CLIFFORD_EXPRESSION_TREE)
 	typedef decltype(e(c<1>) + 3.0 * e(c<2>)) root;
 	std::cout << "root = " << sizeof(root) << " bytes" << std::endl;
 	std::cout << "root::element_type = " << sizeof(root::element_type) << " bytes" << std::endl;
 	std::cout << "root::left_type = " << sizeof(root::left_type) << " bytes" << std::endl;
 	std::cout << "root::right_type = " << sizeof(root::right_type) << " bytes" << std::endl;
+#endif
 
 	return EXIT_SUCCESS;
 }

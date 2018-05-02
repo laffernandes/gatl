@@ -162,14 +162,9 @@ namespace ga {
 			}
 
 			// Specializations of the eval_lazy_expression() function.
-			template<class ExpressionType, typename std::enable_if<is_lazy_constant<ExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) eval_lazy_expression(ExpressionType const &) {
-				return ExpressionType(); // Identity
-			}
-
-			template<class ValueType>
-			constexpr value<ValueType> eval_lazy_expression(value<ValueType> const &arg) {
-				return arg; // Identity
+			template<class ExpressionType>
+			constexpr ExpressionType eval_lazy_expression(ExpressionType const &arg) {
+				return arg; // Identity for value and constant expressions
 			}
 
 			template<id_t Id, class ValueType>

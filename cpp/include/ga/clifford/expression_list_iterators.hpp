@@ -7,31 +7,101 @@ namespace ga {
 
 		namespace detail {
 
-			template<class ElementType, class NextListType>
-			constexpr decltype(auto) begin(expression_list<ElementType, NextListType> &root) {
-				return make_oitr(&root, begin(root.next()));
+			template<class ExpressionType>
+			class itr {
+			public:
+
+				typedef ExpressionType expression_type;
+				typedef typename expression_type::element_type element_type;
+
+				constexpr itr() :
+					expression_(nullptr) {
+				}
+
+				constexpr itr(expression_type *value) :
+					expression_(value) {
+				}
+
+				constexpr expression_type * expression() const {
+					return expression_;
+				}
+
+				constexpr decltype(auto) element() const {
+					return expression_->element();
+				}
+
+			protected:
+
+				expression_type *expression_;
+			};
+
+			template<class ExpressionType>
+			constexpr itr<ExpressionType> make_itr(ExpressionType *value) {
+				return itr<ExpressionType>(value);
 			}
 
 			template<class ElementType, class NextListType>
-			struct _onext<expression_list<ElementType, NextListType> > {
-				template<class TailType>
-				constexpr static decltype(auto) bind(oitr<expression_list<ElementType, NextListType>, TailType> const &curr) {
-					return curr.tail();
+			constexpr decltype(auto) begin(expression_list<ElementType, NextListType> &root) {
+				return make_itr(&root);
+			}
+
+			template<class ElementType, class NextListType>
+			constexpr decltype(auto) next(itr<expression_list<ElementType, NextListType> > const &curr) {
+				return make_itr(&curr.expression()->next());
+			}
+
+			template<class ElementType>
+			constexpr decltype(auto) next(itr<expression_list<ElementType, empty_clifford_expression> > const &) {
+				return itr_end();
+			}
+
+			template<class ExpressionType>
+			class citr {
+			public:
+
+				typedef ExpressionType expression_type;
+				typedef typename expression_type::element_type element_type;
+
+				constexpr citr() :
+					expression_(nullptr) {
+				};
+
+				constexpr citr(expression_type const *value) :
+					expression_(value) {
+				};
+
+				constexpr expression_type const * expression() const {
+					return expression_;
 				}
+
+				constexpr decltype(auto) element() const {
+					return expression_->element();
+				}
+
+			protected:
+
+				expression_type const *expression_;
 			};
+
+			template<class ExpressionType>
+			constexpr citr<ExpressionType> make_citr(ExpressionType const *value) {
+				return citr<ExpressionType>(value);
+			}
 
 			template<class ElementType, class NextListType>
 			constexpr decltype(auto) begin(expression_list<ElementType, NextListType> const &root) {
-				return make_coitr(&root, begin(root.next()));
+				return make_citr(&root);
 			}
 
 			template<class ElementType, class NextListType>
-			struct _conext<expression_list<ElementType, NextListType> > {
-				template<class TailType>
-				constexpr static decltype(auto) bind(coitr<expression_list<ElementType, NextListType>, TailType> const &curr) {
-					return curr.tail();
-				}
-			};
+			constexpr decltype(auto) next(citr<expression_list<ElementType, NextListType> > const &curr) {
+				return make_citr(&curr.expression()->next());
+			}
+
+			template<class ElementType>
+			constexpr decltype(auto) next(citr<expression_list<ElementType, empty_clifford_expression> > const &) {
+				return itr_end();
+			}
 
 			template<class ElementType, class NextListType>
 			constexpr decltype(auto) obegin(expression_list<ElementType, NextListType> &root) {

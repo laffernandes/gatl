@@ -131,19 +131,9 @@ namespace ga {
 				return addition_bind(rhs, lhs);
 			}
 
-			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<le<LeftExpressionType, RightLeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(LeftExpressionType const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
-				return addition_bind(lhs, rhs);
-			}
-
 			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightLeftExpressionType, LeftExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) addition(LeftExpressionType const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition(rhs.left(), addition(lhs, rhs.right()));
-			}
-
-			template<class LeftLeftExpressionType, class LeftRighExpressionType, class RightExpressionType, typename std::enable_if<lt<RightExpressionType, LeftLeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRighExpressionType> const &lhs, RightExpressionType const &rhs) {
-				return addition_bind(rhs, lhs);
 			}
 
 			template<class LeftLeftExpressionType, class LeftRighExpressionType, class RightExpressionType, typename std::enable_if<eq<LeftLeftExpressionType, RightExpressionType>::value, int>::type = 0>
@@ -159,16 +149,6 @@ namespace ga {
 			template<class LeftLeftExpressionType, class LeftRighExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<eq<LeftLeftExpressionType, RightLeftExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRighExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition(lhs.left(), addition(rhs.left(), addition(lhs.right(), rhs.right())));
-			}
-
-			template<class LeftLeftExpressionType, class LeftRighExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<LeftLeftExpressionType, RightLeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRighExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
-				return addition(lhs.left(), addition(lhs.right(), rhs));
-			}
-
-			template<class LeftLeftExpressionType, class LeftRighExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightLeftExpressionType, LeftLeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRighExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
-				return addition(rhs.left(), addition(lhs, rhs.right()));
 			}
 
 		}
