@@ -540,8 +540,54 @@ int main() {
 	
 	//lcont(e(c<1>)^e(c<2>), e(c<1>)^e(c<2>)^e(c<3>)^e(c<4>), signed_metric_space<2, 1>());
 
+	//TODO Problema grave: sistema de simplificação com falhas
+	/*
 	std::cout << ((c<4> * ((var<1>(3) * e(c<1>) * c<5>) * c<2>)) * (var<2>(5) + var<1>(10))) << std::endl;
+	std::cout << std::endl;
+
 	std::cout << ((c<4> + ((var<1>(3) * e(c<1>) * c<5>) + c<2>)) * (var<2>(5) + var<1>(10))) << std::endl;
+	std::cout << std::endl;
+
+	{
+		auto A = c<2> / c<3>;
+		auto B = c<4>;
+		auto C = c<7> / c<5>;
+
+		std::cout << ((A * B) * C) << std::endl;
+		std::cout << (A * (B * C)) << std::endl;
+		std::cout << ((A * C) * B) << std::endl;
+		std::cout << (A * (C * B)) << std::endl;
+		std::cout << ((B * A) * C) << std::endl;
+		std::cout << (B * (A * C)) << std::endl;
+		std::cout << ((B * C) * A) << std::endl;
+		std::cout << (B * (C * A)) << std::endl;
+		std::cout << ((C * A) * B) << std::endl;
+		std::cout << (C * (A * B)) << std::endl;
+		std::cout << ((C * B) * A) << std::endl;
+		std::cout << (C * (B * A)) << std::endl;
+	}
+	std::cout << std::endl;
+
+	{
+		auto A = c<2> / c<3>;
+		auto B = c<4>;
+		auto C = c<7> / c<5>;
+
+		std::cout << ((A + B) + C) << std::endl;
+		std::cout << (A + (B + C)) << std::endl;
+		std::cout << ((A + C) + B) << std::endl;
+		std::cout << (A + (C + B)) << std::endl;
+		std::cout << ((B + A) + C) << std::endl;
+		std::cout << (B + (A + C)) << std::endl;
+		std::cout << ((B + C) + A) << std::endl;
+		std::cout << (B + (C + A)) << std::endl;
+		std::cout << ((C + A) + B) << std::endl;
+		std::cout << (C + (A + B)) << std::endl;
+		std::cout << ((C + B) + A) << std::endl;
+		std::cout << (C + (B + A)) << std::endl;
+	}
+	std::cout << std::endl;
+	*/
 
 	return EXIT_SUCCESS;
 }

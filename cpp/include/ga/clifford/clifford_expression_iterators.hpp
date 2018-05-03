@@ -53,9 +53,13 @@ namespace ga {
 				return itr_end();
 			}
 
-			template<class ExpressionType, typename std::enable_if<!std::is_same<ExpressionType, constant<0> >::value, int>::type = 0>
+			template<class ExpressionType>
 			constexpr itr_value<ExpressionType> begin(lazy_expression<ExpressionType> const &arg) {
 				return itr_value<ExpressionType>(arg());
+			}
+
+			constexpr itr_end begin(lazy_expression<constant<0> > const &arg) {
+				return itr_end();
 			}
 
 			constexpr itr_end begin(constant<0> const &) {
