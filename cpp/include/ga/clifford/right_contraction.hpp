@@ -56,7 +56,7 @@ namespace ga {
 
 		template<class LeftType, class RightType, class MetricSpaceType>
 		constexpr decltype(auto) rcont(LeftType const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &mtr) {
-			return detail::graded_product(detail::begin(lhs), detail::begin(rhs), mtr, detail::rcont_func());
+			return detail::try_to_cast_to_native(detail::graded_product(detail::begin(lhs), detail::begin(rhs), mtr, detail::rcont_func()));
 		}
 
 	}

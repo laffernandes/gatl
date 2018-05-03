@@ -87,7 +87,7 @@ namespace ga {
 
 			template<class ExpressionType>
 			constexpr decltype(auto) obegin(lazy_expression<ExpressionType> const &arg) {
-				return begin(arg);
+				return begin(arg());
 			}
 
 			template<class ValueType, typename std::enable_if<!(is_lazy_expression<ValueType>::value || is_clifford_expression<ValueType>::value), int>::type = 0>

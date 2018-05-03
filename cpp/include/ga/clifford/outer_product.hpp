@@ -57,7 +57,7 @@ namespace ga {
 
 		template<class LeftType, class RightType, class MetricSpaceType>
 		constexpr decltype(auto) op(LeftType const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &mtr) {
-			return detail::graded_product(detail::begin(lhs), detail::begin(rhs), mtr, detail::op_func());
+			return detail::try_to_cast_to_native(detail::graded_product(detail::begin(lhs), detail::begin(rhs), mtr, detail::op_func()));
 		}
 
 		template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<detail::may_cast_to_native<LeftExpressionType>::value || detail::may_cast_to_native<RightExpressionType>::value, int>::type = 0>

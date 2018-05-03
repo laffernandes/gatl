@@ -23,18 +23,42 @@ namespace ga {
 
 		}
 
-		template<class Type>
+		template<class Type, typename std::enable_if<!is_clifford_expression<Type>::value, int>::type = 0>
 		constexpr Type native(Type const &arg) {
 			return arg;
 		}
 
-		constexpr constant<0> native(detail::empty_clifford_expression const &) {
+		template<class ValueType>
+		constexpr ValueType native(lazy::value<ValueType> const &arg) {
+			return arg.get();
+		}
+
+		constexpr decltype(auto) native(detail::empty_clifford_expression const &) {
 			return constant<0>();
+		}
+
+		template<class ExpressionType>
+		constexpr decltype(auto) native(lazy_expression<ExpressionType> const &arg) {
+			return native(arg());
 		}
 
 		template<class ExpressionType>
 		constexpr decltype(auto) native(clifford_expression<ExpressionType> const &arg) {
 			return native(arg());
+		}
+
+		namespace detail {
+
+			template<class Type, typename std::enable_if<may_cast_to_native<Type>::value, int>::type = 0>
+			constexpr decltype(auto) try_to_cast_to_native(Type const &arg) {
+				return native(arg);
+			}
+
+			template<class Type, typename std::enable_if<!may_cast_to_native<Type>::value, int>::type = 0>
+			constexpr Type try_to_cast_to_native(Type const &arg) {
+				return arg;
+			}
+
 		}
 
 	}

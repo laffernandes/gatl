@@ -540,6 +540,9 @@ int main() {
 	
 	//lcont(e(c<1>)^e(c<2>), e(c<1>)^e(c<2>)^e(c<3>)^e(c<4>), signed_metric_space<2, 1>());
 
+	std::cout << ((c<4> * ((var<1>(3) * e(c<1>) * c<5>) * c<2>)) * (var<2>(5) + var<1>(10))) << std::endl;
+	std::cout << ((c<4> + ((var<1>(3) * e(c<1>) * c<5>) + c<2>)) * (var<2>(5) + var<1>(10))) << std::endl;
+
 	return EXIT_SUCCESS;
 }
 /*/

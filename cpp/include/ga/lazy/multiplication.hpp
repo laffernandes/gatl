@@ -151,10 +151,22 @@ namespace ga {
 			constexpr decltype(auto) multiplication_bind(power<BaseExpressionType, LeftPowerExpressionType> const &lhs, power<BaseExpressionType, RightPowerExpressionType> const &rhs) {
 				return exponentiation(lhs.left(), addition(lhs.right(), rhs.right()));
 			}
+
+			// Simplify multiplication of constants (except for A == 0 and A == 1).
+			//     A * (B * C) = (A * B) * C
+			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<is_lazy_constant<LeftExpressionType>::value && is_lazy_constant<RightLeftExpressionType>::value && !(std::is_same<LeftExpressionType, constant<0> >::value || std::is_same<LeftExpressionType, constant<1> >::value), int>::type = 0>
+			constexpr decltype(auto) multiplication_bind(LeftExpressionType const &, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+				return multiplication_bind(multiplication_bind(LeftExpressionType(), RightLeftExpressionType()), rhs.right());
+			}
 			
 			// Multiplication merge.
 			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<le<LeftExpressionType, RightExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication_merge(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+				return multiplication_bind(lhs, rhs);
+			}
+
+			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<le<LeftExpressionType, RightLeftExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(LeftExpressionType const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return multiplication_bind(lhs, rhs);
 			}
 
@@ -163,24 +175,59 @@ namespace ga {
 				return multiplication_bind(rhs, lhs);
 			}
 
-			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightLeftExpressionType, LeftExpressionType>::value, int>::type = 0>
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<lt<RightExpressionType, LeftLeftExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
+				return multiplication_bind(rhs, lhs);
+			}
+
+			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightLeftExpressionType, LeftExpressionType>::value && le<LeftExpressionType, RightRightExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication_merge(LeftExpressionType const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
-				return multiplication(rhs.left(), multiplication(lhs, rhs.right()));
+				return multiplication_bind(rhs.left(), multiplication_bind(lhs, rhs.right()));
 			}
 
-			template<class LeftLeftExpressionType, class LeftRighExpressionType, class RightExpressionType, typename std::enable_if<eq<LeftLeftExpressionType, RightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRighExpressionType> const &lhs, RightExpressionType const &rhs) {
-				return multiplication(lhs.left(), multiplication(rhs, lhs.right()));
+			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightRightExpressionType, LeftExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(LeftExpressionType const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+				return multiplication_bind(rhs.left(), multiplication_bind(rhs.right(), lhs));
 			}
 
-			template<class LeftLeftExpressionType, class LeftRighExpressionType, class RightExpressionType, typename std::enable_if<lt<LeftLeftExpressionType, RightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRighExpressionType> const &lhs, RightExpressionType const &rhs) {
-				return multiplication(lhs.left(), multiplication(lhs.right(), rhs));
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightRightExpressionType, LeftLeftExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+				return multiplication_bind(rhs.left(), multiplication_bind(rhs.right(), lhs));
 			}
 
-			template<class LeftLeftExpressionType, class LeftRighExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<eq<LeftLeftExpressionType, RightLeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRighExpressionType> const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
-				return multiplication(lhs.left(), multiplication(rhs.left(), multiplication(lhs.right(), rhs.right())));
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftRightExpressionType, RightExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
+				return multiplication_bind(lhs.left(), multiplication_bind(lhs.right(), rhs));
+			}
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<le<LeftRightExpressionType, RightLeftExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+				return multiplication_bind(lhs.left(), multiplication_bind(lhs.right(), rhs));
+			}
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightExpressionType>::value && lt<RightExpressionType, LeftRightExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
+				return multiplication_bind(lhs.left(), multiplication_bind(rhs, lhs.right()));
+			}
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<RightLeftExpressionType, LeftRightExpressionType>::value && le<LeftRightExpressionType, RightRightExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+				return multiplication_bind(lhs.left(), multiplication_bind(rhs.left(), multiplication_bind(lhs.right(), rhs.right())));
+			}
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<RightRightExpressionType, LeftRightExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+				return multiplication_bind(lhs.left(), multiplication_bind(rhs.left(), multiplication_bind(rhs.right(), lhs.right())));
+			}
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightLeftExpressionType, LeftLeftExpressionType>::value && le<LeftRightExpressionType, RightRightExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+				return multiplication_bind(rhs.left(), multiplication_bind(lhs.left(), multiplication_bind(lhs.right(), rhs.right())));
+			}
+
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightLeftExpressionType, LeftLeftExpressionType>::value && le<LeftLeftExpressionType, RightRightExpressionType>::value && lt<RightRightExpressionType, LeftRightExpressionType>::value, int>::type = 0>
+			constexpr decltype(auto) multiplication_merge(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, mul<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+				return multiplication_bind(rhs.left(), multiplication_bind(lhs.left(), multiplication_bind(rhs.right(), lhs.right())));
 			}
 
 			// Distributive property over addition.

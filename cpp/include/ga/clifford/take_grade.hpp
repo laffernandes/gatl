@@ -26,7 +26,7 @@ namespace ga {
 
 		template<class Type, grade_t K>
 		constexpr decltype(auto) take_grade(Type const &arg, constant<K> const &k) {
-			return detail::keep_grade(detail::begin(arg), detail::keep_if_grade_func<constant<K> >());
+			return detail::try_to_cast_to_native(detail::keep_grade(detail::begin(arg), detail::keep_if_grade_func<constant<K> >()));
 		}
 
 	}

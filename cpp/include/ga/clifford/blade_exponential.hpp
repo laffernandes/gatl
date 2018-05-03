@@ -21,13 +21,12 @@ namespace ga {
 			typedef typename std::common_type<decltype(cosh(alpha_t())), decltype(cos(alpha_t()))>::type scalar_t;
 			//TODO lazy
 			auto signed_alpha_sqr = scp(arg, arg, mtr);
-			auto native_signed_alpha_sqr = native(signed_alpha_sqr);
-			if (native_signed_alpha_sqr == 0) {
+			if (signed_alpha_sqr == 0) {
 				return static_cast<scalar_t>(1) + (arg * static_cast<scalar_t>(1)); //TODO Gabiarra
 			}
 			else {
 				alpha_t alpha = sqrt(abs(signed_alpha_sqr));
-				if (native_signed_alpha_sqr > 0) {
+				if (signed_alpha_sqr > 0) {
 					return cosh(alpha) + (arg * (sinh(alpha) / alpha));
 				}
 				else {

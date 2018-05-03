@@ -33,7 +33,7 @@ namespace ga {
 
 		template<class Type>
 		constexpr decltype(auto) involution(Type const &arg) {
-			return detail::graded_unary_minus(detail::begin(arg), detail::involution_func());
+			return detail::try_to_cast_to_native(detail::graded_unary_minus(detail::begin(arg), detail::involution_func()));
 		}
 
 	}
