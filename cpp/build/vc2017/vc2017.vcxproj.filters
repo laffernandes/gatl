@@ -54,15 +54,6 @@
     <ClInclude Include="..\..\include\ga4h.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga1c.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga2c.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga3c.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\compile_time_ordering.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
@@ -308,6 +299,36 @@
     </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\copy.hpp">
       <Filter>Header Files\ga\clifford</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\clifford\general_metric_space.hpp">
+      <Filter>Header Files\ga\clifford</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\clifford\lazy_expression_iterator.hpp">
+      <Filter>Header Files\ga\clifford</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\clifford\conformal_metric_space.hpp">
+      <Filter>Header Files\ga\clifford</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\clifford\element_graded_product_general_metric.hpp">
+      <Filter>Header Files\ga\clifford</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga1m.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga2m.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga3m.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga1c.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga2c.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga3c.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

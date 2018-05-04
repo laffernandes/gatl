@@ -41,33 +41,8 @@ namespace ga {
 				}
 			};
 
-			template<class BasisBladeType>
-			constexpr empty_clifford_expression make_simple_clifford_expression(component<constant<0>, BasisBladeType> const &) {
-				return empty_clifford_expression();
-			}
-
-			template<class CoefficientType>
-			constexpr empty_clifford_expression make_simple_clifford_expression(component<CoefficientType, dbasis_blade<default_bitset_t(0)> > const &) {
-				return empty_clifford_expression();
-			}
-
-			constexpr empty_clifford_expression make_simple_clifford_expression(component<constant<0>, dbasis_blade<default_bitset_t(0)> > const &) {
-				return empty_clifford_expression();
-			}
-
-			template<default_bitset_t PossibleGrades>
-			constexpr empty_clifford_expression make_simple_clifford_expression(components<constant<0>, PossibleGrades> const &) {
-				return empty_clifford_expression();
-			}
-
-			template<class CoefficientType>
-			constexpr empty_clifford_expression make_simple_clifford_expression(components<CoefficientType, default_bitset_t(0) > const &) {
-				return empty_clifford_expression();
-			}
-
-			constexpr empty_clifford_expression make_simple_clifford_expression(components<constant<0>, default_bitset_t(0) > const &) {
-				return empty_clifford_expression();
-			}
+			template<class ElementType>
+			constexpr decltype(auto) make_simple_clifford_expression(ElementType const &);
 
 		}
 

@@ -7,9 +7,6 @@ namespace ga {
 
 		namespace detail {
 
-			template<class ElementType>
-			constexpr decltype(auto) make_simple_clifford_expression(ElementType const &);
-
 			template<default_bitset_t LeftBasisBlade, default_bitset_t RightBasisBlade>
 			struct _swaps_count {
 				constexpr static size_t value = _basis_blade_grade<cbasis_blade<LeftBasisBlade & RightBasisBlade> >::value + _swaps_count<(LeftBasisBlade >> 1), RightBasisBlade>::value;
@@ -43,7 +40,7 @@ namespace ga {
 			};
 
 			template<default_bitset_t ResultPossibleGrades>
-			struct _graded_product_component_maybe_eval {
+			struct _orthogonal_graded_product_component_maybe_eval {
 				template<class LeftComponentType, class RightComponentType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 				constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
 					//TODO lazy
@@ -60,7 +57,7 @@ namespace ga {
 
 			//TODO Fazer o mesmo para pseudoscalar
 			template<>
-			struct _graded_product_component_maybe_eval<default_bitset_t(1)> {
+			struct _orthogonal_graded_product_component_maybe_eval<default_bitset_t(1)> {
 				template<class LeftComponentType, class RightComponentType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 				constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
 					//TODO lazy
@@ -75,11 +72,11 @@ namespace ga {
 			};
 
 			template<>
-			struct _graded_product_component_maybe_eval<default_bitset_t(0)> : _graded_product_element_make_zero {
+			struct _orthogonal_graded_product_component_maybe_eval<default_bitset_t(0)> : _graded_product_element_make_zero {
 			};
 
 			template<default_bitset_t ResultPossibleGrades>
-			struct _graded_product_components_maybe_eval {
+			struct _orthogonal_graded_product_components_maybe_eval {
 				template<class LeftCoefficientType, default_bitset_t LeftPossibleGrades, class RightCoefficientType, class RightBasisBladeType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 				constexpr static decltype(auto) bind(components<LeftCoefficientType, LeftPossibleGrades> const &lhs, component<RightCoefficientType, RightBasisBladeType> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
 					//TODO lazy
@@ -175,7 +172,7 @@ namespace ga {
 
 			//TODO Fazer o mesmo para pseudoscalar
 			template<>
-			struct _graded_product_components_maybe_eval<default_bitset_t(1)> {
+			struct _orthogonal_graded_product_components_maybe_eval<default_bitset_t(1)> {
 				template<class LeftCoefficientType, default_bitset_t LeftPossibleGrades, class RightCoefficientType, class RightBasisBladeType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 				constexpr static decltype(auto) bind(components<LeftCoefficientType, LeftPossibleGrades> const &lhs, component<RightCoefficientType, RightBasisBladeType> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
 					//TODO lazy
@@ -227,14 +224,14 @@ namespace ga {
 			};
 
 			template<>
-			struct _graded_product_components_maybe_eval<default_bitset_t(0)> : _graded_product_element_make_zero {
+			struct _orthogonal_graded_product_components_maybe_eval<default_bitset_t(0)> : _graded_product_element_make_zero {
 			};
 
 			template<class LeftBasisBladeType, class RightBasisBladeType>
-			struct _graded_product_component;
+			struct _orthogonal_graded_product_component;
 
 			template<default_bitset_t LeftBasisBlade, default_bitset_t RightBasisBlade>
-			struct _graded_product_component<cbasis_blade<LeftBasisBlade>, cbasis_blade<RightBasisBlade> > {
+			struct _orthogonal_graded_product_component<cbasis_blade<LeftBasisBlade>, cbasis_blade<RightBasisBlade> > {
 			private:
 
 				struct _eval {
@@ -253,47 +250,37 @@ namespace ga {
 			};
 
 			template<default_bitset_t LeftBasisBlade, default_bitset_t RightPossibleGrades>
-			struct _graded_product_component<cbasis_blade<LeftBasisBlade>, dbasis_blade<RightPossibleGrades> > {
+			struct _orthogonal_graded_product_component<cbasis_blade<LeftBasisBlade>, dbasis_blade<RightPossibleGrades> > {
 				template<class LeftComponentType, class RightComponentType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 				constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-					return _graded_product_component_maybe_eval<KeepIfGradesFunc::template possible_grades<cbasis_blade<LeftBasisBlade>::possible_grades(), RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep);
+					return _orthogonal_graded_product_component_maybe_eval<KeepIfGradesFunc::template possible_grades<cbasis_blade<LeftBasisBlade>::possible_grades(), RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep);
 				}
 			};
 
 			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightBasisBlade>
-			struct _graded_product_component<dbasis_blade<LeftPossibleGrades>, cbasis_blade<RightBasisBlade> > {
+			struct _orthogonal_graded_product_component<dbasis_blade<LeftPossibleGrades>, cbasis_blade<RightBasisBlade> > {
 				template<class LeftComponentType, class RightComponentType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 				constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-					return _graded_product_component_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, cbasis_blade<RightBasisBlade>::possible_grades(), OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep);
+					return _orthogonal_graded_product_component_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, cbasis_blade<RightBasisBlade>::possible_grades(), OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep);
 				}
 			};
 
 			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
-			struct _graded_product_component<dbasis_blade<LeftPossibleGrades>, dbasis_blade<RightPossibleGrades> > {
+			struct _orthogonal_graded_product_component<dbasis_blade<LeftPossibleGrades>, dbasis_blade<RightPossibleGrades> > {
 				template<class LeftComponentType, class RightComponentType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 				constexpr static decltype(auto) bind(LeftComponentType const &lhs, RightComponentType const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-					return _graded_product_component_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep);
+					return _orthogonal_graded_product_component_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep);
 				}
 			};
 
 			template<class LeftCoefficientType, class LeftBasisBladeType, class RightCoefficientType, class RightBasisBladeType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 			constexpr decltype(auto) graded_product_element(component<LeftCoefficientType, LeftBasisBladeType> const &lhs, component<RightCoefficientType, RightBasisBladeType> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-				return make_simple_clifford_expression(_graded_product_component<LeftBasisBladeType, RightBasisBladeType>::bind(lhs, rhs, mtr, keep));
+				return make_simple_clifford_expression(_orthogonal_graded_product_component<LeftBasisBladeType, RightBasisBladeType>::bind(lhs, rhs, mtr, keep));
 			}
 
-			template<class LeftCoefficientType, default_bitset_t LeftPossibleGrades, class RightCoefficientType, class RightBasisBladeType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
-			constexpr decltype(auto) graded_product_element(components<LeftCoefficientType, LeftPossibleGrades> const &lhs, component<RightCoefficientType, RightBasisBladeType> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-				return make_simple_clifford_expression(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightBasisBladeType::possible_grades(), OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
-			}
-
-			template<class LeftCoefficientType, class LeftBasisBladeType, class RightCoefficientType, default_bitset_t RightPossibleGrades, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
-			constexpr decltype(auto) graded_product_element(component<LeftCoefficientType, LeftBasisBladeType> const &lhs, components<RightCoefficientType, RightPossibleGrades> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-				return make_simple_clifford_expression(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftBasisBladeType::possible_grades(), RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
-			}
-
-			template<class LeftCoefficientType, default_bitset_t LeftPossibleGrades, class RightCoefficientType, default_bitset_t RightPossibleGrades, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
-			constexpr decltype(auto) graded_product_element(components<LeftCoefficientType, LeftPossibleGrades> const &lhs, components<RightCoefficientType, RightPossibleGrades> const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-				return make_simple_clifford_expression(_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftPossibleGrades, RightPossibleGrades, OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
+			template<class LeftElementType, class RightElementType, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
+			constexpr decltype(auto) graded_product_element(LeftElementType const &lhs, RightElementType const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
+				return make_simple_clifford_expression(_orthogonal_graded_product_components_maybe_eval<KeepIfGradesFunc::template possible_grades<LeftElementType::basis_blade_type::possible_grades(), RightElementType::basis_blade_type::possible_grades(), OrthogonalMetricSpaceType::vector_space_dimension()>::value>::bind(lhs, rhs, mtr, keep));
 			}
 
 		}

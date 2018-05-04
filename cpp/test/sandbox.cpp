@@ -1,7 +1,7 @@
 /**/
 #include <ga3e.hpp>
 #include <ga3h.hpp>
-#include <ga3c.hpp>
+#include <ga3m.hpp>
 
 using namespace ga;
 using namespace ga::lazy;
@@ -375,7 +375,7 @@ void test_pseudoscalar(space<SpaceType> const &spc, std::string const &name) {
 }
 
 void test_eval() {
-	using namespace ga3c;
+	using namespace ga3m;
 
 	std::cout << "--- test_eval()" << std::endl;
 

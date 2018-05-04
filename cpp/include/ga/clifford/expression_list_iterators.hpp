@@ -41,8 +41,8 @@ namespace ga {
 			}
 
 			template<class ElementType, class NextListType>
-			constexpr decltype(auto) begin(expression_list<ElementType, NextListType> &root) {
-				return make_itr(&root);
+			constexpr decltype(auto) begin(expression_list<ElementType, NextListType> &head) {
+				return make_itr(&head);
 			}
 
 			template<class ElementType, class NextListType>
@@ -89,8 +89,8 @@ namespace ga {
 			}
 
 			template<class ElementType, class NextListType>
-			constexpr decltype(auto) begin(expression_list<ElementType, NextListType> const &root) {
-				return make_citr(&root);
+			constexpr decltype(auto) begin(expression_list<ElementType, NextListType> const &head) {
+				return make_citr(&head);
 			}
 
 			template<class ElementType, class NextListType>
@@ -104,13 +104,13 @@ namespace ga {
 			}
 
 			template<class ElementType, class NextListType>
-			constexpr decltype(auto) obegin(expression_list<ElementType, NextListType> &root) {
-				return begin(root);
+			constexpr decltype(auto) obegin(expression_list<ElementType, NextListType> &head) {
+				return begin(head);
 			}
 
 			template<class ElementType, class NextListType>
-			constexpr decltype(auto) obegin(expression_list<ElementType, NextListType> const &root) {
-				return begin(root);
+			constexpr decltype(auto) obegin(expression_list<ElementType, NextListType> const &head) {
+				return begin(head);
 			}
 
 		}

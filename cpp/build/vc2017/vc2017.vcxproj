@@ -21,12 +21,15 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\ga.hpp" />
     <ClInclude Include="..\..\include\ga1c.hpp" />
+    <ClInclude Include="..\..\include\ga1m.hpp" />
     <ClInclude Include="..\..\include\ga1e.hpp" />
     <ClInclude Include="..\..\include\ga1h.hpp" />
     <ClInclude Include="..\..\include\ga2c.hpp" />
+    <ClInclude Include="..\..\include\ga2m.hpp" />
     <ClInclude Include="..\..\include\ga2e.hpp" />
     <ClInclude Include="..\..\include\ga2h.hpp" />
     <ClInclude Include="..\..\include\ga3c.hpp" />
+    <ClInclude Include="..\..\include\ga3m.hpp" />
     <ClInclude Include="..\..\include\ga3e.hpp" />
     <ClInclude Include="..\..\include\ga3h.hpp" />
     <ClInclude Include="..\..\include\ga4e.hpp" />
@@ -43,12 +46,14 @@
     <ClInclude Include="..\..\include\ga\clifford\compile_time_basis_blade.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\component.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\components.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\conformal_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\conjugation.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\dualization.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\dynamic_basis_blade.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\element_binary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\element_binary_plus.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\element_deduce_grade.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\element_graded_product_general_metric.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\element_graded_product_orthogonal_metric.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\element_graded_unary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\element_keep_if_grade.hpp" />
@@ -68,6 +73,7 @@
     <ClInclude Include="..\..\include\ga\clifford\expression_tree_iterators.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\expression_tree.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\expression_tree_native.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\general_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\grade.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\graded_product.hpp" />
@@ -77,6 +83,7 @@
     <ClInclude Include="..\..\include\ga\clifford\left_contraction.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression_native.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\lazy_expression_iterator.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\orthogonal_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\outer_product.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\pseudoscalar.hpp" />

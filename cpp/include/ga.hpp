@@ -108,9 +108,17 @@ namespace ga {
 
 #include "ga/clifford/space.hpp"
 #include "ga/clifford/metric_space.hpp"
+#include "ga/clifford/general_metric_space.hpp"
 #include "ga/clifford/orthogonal_metric_space.hpp"
 #include "ga/clifford/signed_metric_space.hpp"
 #include "ga/clifford/euclidean_metric_space.hpp"
+#include "ga/clifford/conformal_metric_space.hpp"
+
+#include "ga/clifford/clifford_expression.hpp"
+#include "ga/clifford/clifford_expression_insert.hpp"
+#include "ga/clifford/clifford_expression_iterators.hpp"
+#include "ga/clifford/clifford_expression_native.hpp"
+#include "ga/clifford/clifford_expression_common_value_type.hpp"
 
 #include "ga/clifford/component.hpp"
 #include "ga/clifford/components.hpp"
@@ -119,17 +127,14 @@ namespace ga {
 #include "ga/clifford/element_graded_unary_minus.hpp"
 #include "ga/clifford/element_binary_plus.hpp"
 #include "ga/clifford/element_binary_minus.hpp"
+#include "ga/clifford/element_graded_product_general_metric.hpp"
 #include "ga/clifford/element_graded_product_orthogonal_metric.hpp"
 #include "ga/clifford/element_keep_if_grade.hpp"
 #include "ga/clifford/element_deduce_grade.hpp"
 
-#include "ga/clifford/clifford_expression.hpp"
-#include "ga/clifford/clifford_expression_insert.hpp"
-#include "ga/clifford/clifford_expression_iterators.hpp"
-#include "ga/clifford/clifford_expression_native.hpp"
-#include "ga/clifford/clifford_expression_common_value_type.hpp"
-
 #include "ga/clifford/copy.hpp"
+
+#include "ga/clifford/lazy_expression_iterator.hpp"
 
 #if defined(GA_USE_CLIFFORD_EXPRESSION_LIST)
 	#include "ga/clifford/expression_list.hpp"
@@ -187,6 +192,8 @@ namespace ga {
 	using namespace clifford;
 
 }
+
+//TODO Utilizar variadic templates nas listas
 
 //TODO Implement equal(lhs, rhs, tol)
 //TODO Implement is_zero(arg, tol)

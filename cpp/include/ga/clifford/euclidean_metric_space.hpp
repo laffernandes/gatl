@@ -28,6 +28,8 @@ namespace ga {
 			using cmetric_factor = typename super::template cmetric_factor<BasisBlade>;
 		};
 
+		template class euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>;
+
 	}
 
 }

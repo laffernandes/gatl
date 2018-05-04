@@ -67,6 +67,20 @@ namespace ga {
 				std::map<basis_blade_type, coefficient_type> entries_;
 			};
 
+			template<default_bitset_t PossibleGrades>
+			constexpr empty_clifford_expression make_simple_clifford_expression(components<constant<0>, PossibleGrades> const &) {
+				return empty_clifford_expression();
+			}
+
+			template<class CoefficientType>
+			constexpr empty_clifford_expression make_simple_clifford_expression(components<CoefficientType, default_bitset_t(0) > const &) {
+				return empty_clifford_expression();
+			}
+
+			constexpr empty_clifford_expression make_simple_clifford_expression(components<constant<0>, default_bitset_t(0) > const &) {
+				return empty_clifford_expression();
+			}
+
 		}
 
 	}
