@@ -13,22 +13,6 @@ namespace ga {
 				return make_add(lhs, rhs);
 			}
 
-			// Simplify addition of values.
-			template<class LeftValueType, class RightValueType>
-			constexpr decltype(auto) addition_bind(value<LeftValueType> const &lhs, value<RightValueType> const &rhs) {
-				return eval_lazy_add(lhs, rhs);
-			}
-
-			template<class LeftValueType, class RightExpressionType, typename std::enable_if<!std::is_same<RightExpressionType, constant<0> >::value, int>::type = 0>
-			constexpr decltype(auto) addition_bind(value<LeftValueType> const &lhs, RightExpressionType const &rhs) {
-				return eval_lazy_add(lhs, rhs);
-			}
-
-			template<class LeftExpressionType, class RightValueType, typename std::enable_if<!std::is_same<LeftExpressionType, constant<0> >::value, int>::type = 0>
-			constexpr decltype(auto) addition_bind(LeftExpressionType const &lhs, value<RightValueType> const &rhs) {
-				return eval_lazy_add(lhs, rhs);
-			}
-
 			// Simplify addition to zero.
 			//     0 + X = X
 			//     X + 0 = X
@@ -90,12 +74,12 @@ namespace ga {
 			//     ... + (P * ...) = (1 + P) * ...
 			//     (P * ...) + ... = (P + 1) * ...
 			//     (P * ...) + (Q * ...) = (P + Q) * ...
-			template<class ExpressionType, typename std::enable_if<allows_lazy_simplification<ExpressionType>::value && !std::is_same<ExpressionType, constant<0> >::value, int>::type = 0>
+			template<class ExpressionType, typename std::enable_if<!std::is_same<ExpressionType, constant<0> >::value, int>::type = 0>
 			constexpr decltype(auto) addition_bind(ExpressionType const &lhs, ExpressionType const &) {
 				return multiplication(constant<2>(), lhs);
 			}
 
-			template<class ExpressionType, class TailExpressionType, typename std::enable_if<allows_lazy_simplification<ExpressionType>::value && !std::is_same<ExpressionType, constant<0> >::value, int>::type = 0>
+			template<class ExpressionType, class TailExpressionType, typename std::enable_if<!std::is_same<ExpressionType, constant<0> >::value, int>::type = 0>
 			constexpr decltype(auto) addition_bind(ExpressionType const &lhs, add<ExpressionType, TailExpressionType> const &rhs) {
 				return addition(multiplication(constant<2>(), lhs), rhs.right());
 			}
@@ -105,7 +89,7 @@ namespace ga {
 				return multiplication(constant<LeftValue + 1>(), rhs);
 			}
 
-			template<class ExpressionType, class TailExpressionType, typename std::enable_if<allows_lazy_simplification<ExpressionType>::value && !std::is_same<ExpressionType, constant<0> >::value, int>::type = 0>
+			template<class ExpressionType, class TailExpressionType, typename std::enable_if<!std::is_same<ExpressionType, constant<0> >::value, int>::type = 0>
 			constexpr decltype(auto) addition_bind(add<ExpressionType, TailExpressionType> const &lhs, ExpressionType const &rhs) {
 				return addition(multiplication(constant<2>(), rhs), lhs.right());
 			}
@@ -127,75 +111,96 @@ namespace ga {
 				return addition_bind(addition_bind(LeftExpressionType(), RightLeftExpressionType()), rhs.right());
 			}
 
-			// Addition merge.
+			// Addition merge (it is called by the default multiplication method).
 			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<le<LeftExpressionType, RightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+			constexpr decltype(auto) addition_merge(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
 				return addition_bind(lhs, rhs);
 			}
 
 			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<le<LeftExpressionType, RightLeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(LeftExpressionType const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+			constexpr decltype(auto) addition_merge(LeftExpressionType const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition_bind(lhs, rhs);
 			}
 
 			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<lt<RightExpressionType, LeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+			constexpr decltype(auto) addition_merge(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
 				return addition_bind(rhs, lhs);
 			}
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<lt<RightExpressionType, LeftLeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
+			constexpr decltype(auto) addition_merge(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
 				return addition_bind(rhs, lhs);
 			}
 
 			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightLeftExpressionType, LeftExpressionType>::value && le<LeftExpressionType, RightRightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(LeftExpressionType const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+			constexpr decltype(auto) addition_merge(LeftExpressionType const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition_bind(rhs.left(), addition_bind(lhs, rhs.right()));
 			}
 
 			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightRightExpressionType, LeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(LeftExpressionType const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+			constexpr decltype(auto) addition_merge(LeftExpressionType const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition_bind(rhs.left(), addition_bind(rhs.right(), lhs));
 			}
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightRightExpressionType, LeftLeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+			constexpr decltype(auto) addition_merge(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition_bind(rhs.left(), addition_bind(rhs.right(), lhs));
 			}
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftRightExpressionType, RightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
+			constexpr decltype(auto) addition_merge(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
 				return addition_bind(lhs.left(), addition_bind(lhs.right(), rhs));
 			}
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<le<LeftRightExpressionType, RightLeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+			constexpr decltype(auto) addition_merge(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition_bind(lhs.left(), addition_bind(lhs.right(), rhs));
 			}
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightExpressionType>::value && lt<RightExpressionType, LeftRightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
+			constexpr decltype(auto) addition_merge(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
 				return addition_bind(lhs.left(), addition_bind(rhs, lhs.right()));
 			}
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<RightLeftExpressionType, LeftRightExpressionType>::value && le<LeftRightExpressionType, RightRightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+			constexpr decltype(auto) addition_merge(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition_bind(lhs.left(), addition_bind(rhs.left(), addition_bind(lhs.right(), rhs.right())));
 			}
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<le<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<RightRightExpressionType, LeftRightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+			constexpr decltype(auto) addition_merge(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition_bind(lhs.left(), addition_bind(rhs.left(), addition_bind(rhs.right(), lhs.right())));
 			}
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightLeftExpressionType, LeftLeftExpressionType>::value && le<LeftRightExpressionType, RightRightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+			constexpr decltype(auto) addition_merge(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition_bind(rhs.left(), addition_bind(lhs.left(), addition_bind(lhs.right(), rhs.right())));
 			}
 
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<lt<RightLeftExpressionType, LeftLeftExpressionType>::value && le<LeftLeftExpressionType, RightRightExpressionType>::value && lt<RightRightExpressionType, LeftRightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) addition(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
+			constexpr decltype(auto) addition_merge(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition_bind(rhs.left(), addition_bind(lhs.left(), addition_bind(rhs.right(), lhs.right())));
+			}
+
+			template<class LeftExpressionType, class RightExpressionType>
+			constexpr decltype(auto) addition(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+				return addition_merge(lhs, rhs);
+			}
+
+			// Evaluate the addition of values.
+			template<class LeftValueType, class RightValueType>
+			constexpr decltype(auto) addition(value<LeftValueType> const &lhs, value<RightValueType> const &rhs) {
+				return eval_lazy_add(lhs, rhs);
+			}
+
+			template<class LeftValueType, class RightExpressionType, typename std::enable_if<!std::is_same<RightExpressionType, constant<0> >::value, int>::type = 0>
+			constexpr decltype(auto) addition(value<LeftValueType> const &lhs, RightExpressionType const &rhs) {
+				return eval_lazy_add(lhs, rhs);
+			}
+
+			template<class LeftExpressionType, class RightValueType, typename std::enable_if<!std::is_same<LeftExpressionType, constant<0> >::value, int>::type = 0>
+			constexpr decltype(auto) addition(LeftExpressionType const &lhs, value<RightValueType> const &rhs) {
+				return eval_lazy_add(lhs, rhs);
 			}
 
 		}

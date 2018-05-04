@@ -11,27 +11,27 @@ namespace ga {
 			struct lt;
 
 			template<class LeftType, class RightType>
-			struct le final {
+			struct le {
 				constexpr static bool value = lt<LeftType, RightType>::value || !lt<RightType, LeftType>::value;
 			};
 
 			template<class LeftType, class RightType>
-			struct eq final {
+			struct eq {
 				constexpr static bool value = !lt<LeftType, RightType>::value && !lt<RightType, LeftType>::value;
 			};
 
 			template<class LeftType, class RightType>
-			struct ne final {
+			struct ne {
 				constexpr static bool value = lt<LeftType, RightType>::value || lt<RightType, LeftType>::value;
 			};
 
 			template<class LeftType, class RightType>
-			struct gt final {
+			struct gt {
 				constexpr static bool value = !lt<LeftType, RightType>::value && lt<RightType, LeftType>::value;
 			};
 
 			template<class LeftType, class RightType>
-			struct ge final {
+			struct ge {
 				constexpr static bool value = !lt<LeftType, RightType>::value;
 			};
 

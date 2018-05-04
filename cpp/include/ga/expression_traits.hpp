@@ -21,8 +21,13 @@ namespace ga {
 		};
 
 		template<class Type>
-		struct allows_lazy_simplification {
+		struct is_lazy_value {
 			constexpr static bool value = false;
+		};
+
+		template<class Type>
+		struct allows_lazy_simplification {
+			constexpr static bool value = !is_lazy_value<Type>::value;
 		};
 
 	}

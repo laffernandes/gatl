@@ -65,11 +65,6 @@ namespace ga {
 			constexpr static bool value = is_lazy_constant<LeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value;
 		};
 
-		template<class LeftExpressionType, class RightExpressionType>
-		struct allows_lazy_simplification<lazy::detail::mul<LeftExpressionType, RightExpressionType> > {
-			constexpr static bool value = allows_lazy_simplification<LeftExpressionType>::value; // By sorting, we do not to check the right-hand side argument.
-		};
-
 	}
 
 }

@@ -422,6 +422,47 @@ void test_eval() {
 	std::cout << std::endl;
 }
 
+void test_simplification() {
+	std::cout << "--- test_simplification()" << std::endl;
+
+	auto A = c<2> / c<3>;
+	auto B = c<4>;
+	auto C = c<7> / c<5>;
+
+	std::cout << ((A * B) * C) << std::endl;
+	std::cout << (A * (B * C)) << std::endl;
+	std::cout << ((A * C) * B) << std::endl;
+	std::cout << (A * (C * B)) << std::endl;
+	std::cout << ((B * A) * C) << std::endl;
+	std::cout << (B * (A * C)) << std::endl;
+	std::cout << ((B * C) * A) << std::endl;
+	std::cout << (B * (C * A)) << std::endl;
+	std::cout << ((C * A) * B) << std::endl;
+	std::cout << (C * (A * B)) << std::endl;
+	std::cout << ((C * B) * A) << std::endl;
+	std::cout << (C * (B * A)) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << ((A + B) + C) << std::endl;
+	std::cout << (A + (B + C)) << std::endl;
+	std::cout << ((A + C) + B) << std::endl;
+	std::cout << (A + (C + B)) << std::endl;
+	std::cout << ((B + A) + C) << std::endl;
+	std::cout << (B + (A + C)) << std::endl;
+	std::cout << ((B + C) + A) << std::endl;
+	std::cout << (B + (C + A)) << std::endl;
+	std::cout << ((C + A) + B) << std::endl;
+	std::cout << (C + (A + B)) << std::endl;
+	std::cout << ((C + B) + A) << std::endl;
+	std::cout << (C + (B + A)) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << (10.0 * (var<1>(5.0) + var<2>(3.0))) << std::endl;
+	std::cout << (10.0 * c<0>) << std::endl;
+	std::cout << (c<0> * 10.0) << std::endl;
+	std::cout << std::endl;
+}
+
 void test_variable() {
 	auto addition = [](auto const &x, auto const &y) {
 		auto r = x + x + y;
@@ -509,6 +550,8 @@ int main() {
 	test_pseudoscalar(euclidean_metric_space<2>(), "euclidean<2>");
 	test_pseudoscalar(signed_metric_space<2, 1>(), "signed<2, 1>");
 
+	test_simplification();
+	
 	test_variable();
 
 	test_eval();
@@ -532,62 +575,15 @@ int main() {
 	std::cout << "s2 = " << s2 << std::endl;
 	std::cout << std::endl;
 
-	auto e4 = e(4);
-	auto e5 = e(5);
-	auto e6 = e(6);
-
-	//auto r = gp(e1^e2^e3^e4, e4^e6, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
-	
-	//lcont(e(c<1>)^e(c<2>), e(c<1>)^e(c<2>)^e(c<3>)^e(c<4>), signed_metric_space<2, 1>());
-
-	//TODO Problema grave: sistema de simplificação com falhas
-	/*
-	std::cout << ((c<4> * ((var<1>(3) * e(c<1>) * c<5>) * c<2>)) * (var<2>(5) + var<1>(10))) << std::endl;
+	auto xxx = (c<4> * ((var<1>(3) * e(c<1>) * c<5>) * c<2>)) * (var<2>(5) + var<1>(10));
+	std::cout << xxx << std::endl;
+	std::cout << eval(xxx) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << ((c<4> + ((var<1>(3) * e(c<1>) * c<5>) + c<2>)) * (var<2>(5) + var<1>(10))) << std::endl;
+	auto yyy = (c<4> +((var<1>(3) * e(c<1>) * c<5>) + c<2>)) * (var<2>(5) + var<1>(10));
+	std::cout << yyy << std::endl;
+	std::cout << eval(yyy) << std::endl;
 	std::cout << std::endl;
-
-	{
-		auto A = c<2> / c<3>;
-		auto B = c<4>;
-		auto C = c<7> / c<5>;
-
-		std::cout << ((A * B) * C) << std::endl;
-		std::cout << (A * (B * C)) << std::endl;
-		std::cout << ((A * C) * B) << std::endl;
-		std::cout << (A * (C * B)) << std::endl;
-		std::cout << ((B * A) * C) << std::endl;
-		std::cout << (B * (A * C)) << std::endl;
-		std::cout << ((B * C) * A) << std::endl;
-		std::cout << (B * (C * A)) << std::endl;
-		std::cout << ((C * A) * B) << std::endl;
-		std::cout << (C * (A * B)) << std::endl;
-		std::cout << ((C * B) * A) << std::endl;
-		std::cout << (C * (B * A)) << std::endl;
-	}
-	std::cout << std::endl;
-
-	{
-		auto A = c<2> / c<3>;
-		auto B = c<4>;
-		auto C = c<7> / c<5>;
-
-		std::cout << ((A + B) + C) << std::endl;
-		std::cout << (A + (B + C)) << std::endl;
-		std::cout << ((A + C) + B) << std::endl;
-		std::cout << (A + (C + B)) << std::endl;
-		std::cout << ((B + A) + C) << std::endl;
-		std::cout << (B + (A + C)) << std::endl;
-		std::cout << ((B + C) + A) << std::endl;
-		std::cout << (B + (C + A)) << std::endl;
-		std::cout << ((C + A) + B) << std::endl;
-		std::cout << (C + (A + B)) << std::endl;
-		std::cout << ((C + B) + A) << std::endl;
-		std::cout << (C + (B + A)) << std::endl;
-	}
-	std::cout << std::endl;
-	*/
 
 	return EXIT_SUCCESS;
 }

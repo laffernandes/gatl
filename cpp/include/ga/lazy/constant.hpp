@@ -55,11 +55,6 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
-		template<default_integral_t Value>
-		struct allows_lazy_simplification<lazy::constant<Value> > {
-			constexpr static bool value = true;
-		};
-
 	}
 
 }

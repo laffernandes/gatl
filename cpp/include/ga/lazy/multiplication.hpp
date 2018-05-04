@@ -13,22 +13,6 @@ namespace ga {
 				return make_mul(lhs, rhs);
 			}
 
-			// Simplify multiplication of values.
-			template<class LeftValueType, class RightValueType>
-			constexpr decltype(auto) multiplication_bind(value<LeftValueType> const &lhs, value<RightValueType> const &rhs) {
-				return eval_lazy_mul(lhs, rhs);
-			}
-
-			template<class LeftValueType, class RightExpressionType, typename std::enable_if<!(std::is_same<RightExpressionType, constant<0> >::value || std::is_same<RightExpressionType, constant<1> >::value), int>::type = 0>
-			constexpr decltype(auto) multiplication_bind(value<LeftValueType> const &lhs, RightExpressionType const &rhs) {
-				return eval_lazy_mul(lhs, rhs);
-			}
-
-			template<class LeftExpressionType, class RightValueType, typename std::enable_if<!(std::is_same<LeftExpressionType, constant<0> >::value || std::is_same<LeftExpressionType, constant<1> >::value), int>::type = 0>
-			constexpr decltype(auto) multiplication_bind(LeftExpressionType const &lhs, value<RightValueType> const &rhs) {
-				return eval_lazy_mul(lhs, rhs);
-			}
-
 			// Simplify multiplication by zero.
 			//     0 * X = 0
 			//     X * 0 = 0
@@ -132,22 +116,22 @@ namespace ga {
 			//     X^{P} * X = X^{P+1}
 			//     X * X^{Q} = X^{1+Q}
 			//     X^{P} * X^{Q} = X^{P+Q}
-			template<class BaseExpressionType, typename std::enable_if<allows_lazy_simplification<BaseExpressionType>::value && !(std::is_same<BaseExpressionType, constant<0> >::value || std::is_same<BaseExpressionType, constant<1> >::value), int>::type = 0>
+			template<class BaseExpressionType, typename std::enable_if<!(std::is_same<BaseExpressionType, constant<0> >::value || std::is_same<BaseExpressionType, constant<1> >::value), int>::type = 0>
 			constexpr decltype(auto) multiplication_bind(BaseExpressionType const &lhs, BaseExpressionType const &) {
 				return exponentiation(lhs, constant<2>());
 			}
 
-			template<class BaseExpressionType, class LeftPowerExpressionType, typename std::enable_if<allows_lazy_simplification<BaseExpressionType>::value && !(std::is_same<BaseExpressionType, constant<0> >::value || std::is_same<BaseExpressionType, constant<1> >::value), int>::type = 0>
+			template<class BaseExpressionType, class LeftPowerExpressionType, typename std::enable_if<!(std::is_same<BaseExpressionType, constant<0> >::value || std::is_same<BaseExpressionType, constant<1> >::value), int>::type = 0>
 			constexpr decltype(auto) multiplication_bind(power<BaseExpressionType, LeftPowerExpressionType> const &lhs, BaseExpressionType const &) {
 				return exponentiation(lhs.left(), addition(lhs.right(), constant<1>()));
 			}
 
-			template<class BaseExpressionType, class RightPowerExpressionType, typename std::enable_if<allows_lazy_simplification<BaseExpressionType>::value && !(std::is_same<BaseExpressionType, constant<0> >::value || std::is_same<BaseExpressionType, constant<1> >::value), int>::type = 0>
+			template<class BaseExpressionType, class RightPowerExpressionType, typename std::enable_if<!(std::is_same<BaseExpressionType, constant<0> >::value || std::is_same<BaseExpressionType, constant<1> >::value), int>::type = 0>
 			constexpr decltype(auto) multiplication_bind(BaseExpressionType const &, power<BaseExpressionType, RightPowerExpressionType> const &rhs) {
 				return exponentiation(rhs.left(), addition(constant<1>(), rhs.right()));
 			}
 
-			template<class BaseExpressionType, class LeftPowerExpressionType, class RightPowerExpressionType, typename std::enable_if<allows_lazy_simplification<BaseExpressionType>::value && !std::is_same<LeftPowerExpressionType, RightPowerExpressionType>::value, int>::type = 0>
+			template<class BaseExpressionType, class LeftPowerExpressionType, class RightPowerExpressionType, typename std::enable_if<!std::is_same<LeftPowerExpressionType, RightPowerExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication_bind(power<BaseExpressionType, LeftPowerExpressionType> const &lhs, power<BaseExpressionType, RightPowerExpressionType> const &rhs) {
 				return exponentiation(lhs.left(), addition(lhs.right(), rhs.right()));
 			}
@@ -159,7 +143,7 @@ namespace ga {
 				return multiplication_bind(multiplication_bind(LeftExpressionType(), RightLeftExpressionType()), rhs.right());
 			}
 			
-			// Multiplication merge.
+			// Multiplication merge (it is called by the default multiplication method).
 			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<le<LeftExpressionType, RightExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication_merge(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
 				return multiplication_bind(lhs, rhs);
@@ -230,21 +214,18 @@ namespace ga {
 				return multiplication_bind(rhs.left(), multiplication_bind(lhs.left(), multiplication_bind(rhs.right(), lhs.right())));
 			}
 
-			// Distributive property over addition.
-			//     A * (B + C) = (A * B) + (A * C)
-			//     (A + B) * C = (A * C) + (B * C)
-			//     (A + B) * (C + D) = ((A * C) + (B * C)) + ((A * D) + (B * D))
 			template<class LeftExpressionType, class RightExpressionType>
 			constexpr decltype(auto) multiplication(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
 				return multiplication_merge(lhs, rhs);
 			}
 
-			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
+			// Apply the distributive property over addition (except for values).
+			template<class LeftExpressionType, class RightLeftExpressionType, class RightRightExpressionType, typename std::enable_if<!is_lazy_value<LeftExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication(LeftExpressionType const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition(multiplication(lhs, rhs.left()), multiplication(lhs, rhs.right()));
 			}
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType>
+			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<!is_lazy_value<RightExpressionType>::value, int>::type = 0>
 			constexpr decltype(auto) multiplication(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
 				return addition(multiplication(lhs.left(), rhs), multiplication(lhs.right(), rhs));
 			}
@@ -252,6 +233,22 @@ namespace ga {
 			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
 			constexpr decltype(auto) multiplication(add<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, add<RightLeftExpressionType, RightRightExpressionType> const &rhs) {
 				return addition(addition(multiplication(lhs.left(), rhs.left()), multiplication(lhs.right(), rhs.left())), addition(multiplication(lhs.left(), rhs.right()), multiplication(lhs.right(), rhs.right())));
+			}
+
+			// Evaluate the multiplication of values.
+			template<class LeftValueType, class RightValueType>
+			constexpr decltype(auto) multiplication(value<LeftValueType> const &lhs, value<RightValueType> const &rhs) {
+				return eval_lazy_mul(lhs, rhs);
+			}
+
+			template<class LeftValueType, class RightExpressionType, typename std::enable_if<!(std::is_same<RightExpressionType, constant<0> >::value || std::is_same<RightExpressionType, constant<1> >::value), int>::type = 0>
+			constexpr decltype(auto) multiplication(value<LeftValueType> const &lhs, RightExpressionType const &rhs) {
+				return eval_lazy_mul(lhs, rhs);
+			}
+
+			template<class LeftExpressionType, class RightValueType, typename std::enable_if<!(std::is_same<LeftExpressionType, constant<0> >::value || std::is_same<LeftExpressionType, constant<1> >::value), int>::type = 0>
+			constexpr decltype(auto) multiplication(LeftExpressionType const &lhs, value<RightValueType> const &rhs) {
+				return eval_lazy_mul(lhs, rhs);
 			}
 
 		}

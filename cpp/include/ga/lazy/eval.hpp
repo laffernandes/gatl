@@ -74,19 +74,24 @@ namespace ga {
 				return val(eval_lazy_expression(rhs).get() - eval_lazy_expression(lhs.right()).get()); // (-A) + B = B - A = R
 			}
 
-			template<class LeftValueType, class TailExpressionType, class RightValueType, typename std::enable_if<allows_lazy_simplification<TailExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) eval_lazy_add(mul<value<LeftValueType>, TailExpressionType> const &lhs, mul<value<RightValueType>, TailExpressionType> const &rhs) {
-				return eval_lazy_mul(val(lhs.left().get() + rhs.left().get()), lhs.right()); // (A * C) + (B * C) = (A + B) * C, where C is an expression of constants or variables
+			template<class HeadExpressionType, class LeftRightExpressionType, class RightRightExpressionType>
+			constexpr decltype(auto) eval_lazy_add(mul<HeadExpressionType, LeftRightExpressionType> const &lhs, mul<HeadExpressionType, RightRightExpressionType> const &rhs) {
+				return eval_lazy_mul(lhs.left(), eval_lazy_add(lhs.right(), rhs.right()));
 			}
 
-			template<class LeftValueType, class TailExpressionType, class RightValueType, class RightTailExpressionType, typename std::enable_if<allows_lazy_simplification<TailExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) eval_lazy_add(mul<value<LeftValueType>, TailExpressionType> const &lhs, add<mul<value<RightValueType>, TailExpressionType>, RightTailExpressionType> const &rhs) {
-				return eval_lazy_add(eval_lazy_mul(val(lhs.left().get() + rhs.left().left().get()), lhs.right()), rhs.right()); // (A * C) + ((B * C) + D) = (A + B) * C + D, where C is an expression of constants or variables
+			template<class LeftLeftExpressionType, class TailExpressionType, class RightLeftExpressionType>
+			constexpr decltype(auto) eval_lazy_add(mul<LeftLeftExpressionType, TailExpressionType> const &lhs, mul<RightLeftExpressionType, TailExpressionType> const &rhs) {
+				return eval_lazy_mul(eval_lazy_add(lhs.left(), rhs.left()), lhs.right()); // (A * C) + (B * C) = (A + B) * C
 			}
 
-			template<class LeftValueType, class TailExpressionType, class LeftTailExpressionType, class RightValueType, typename std::enable_if<allows_lazy_simplification<TailExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) eval_lazy_add(add<mul<value<LeftValueType>, TailExpressionType>, LeftTailExpressionType> const &lhs, mul<value<RightValueType>, TailExpressionType> const &rhs) {
-				return eval_lazy_add(eval_lazy_mul(val(lhs.left().left().get() + rhs.left().get()), rhs.right()), lhs.right()); // ((A * C) + D) + (B * C) = (A + B) * C + D, where C is an expression of constants or variables
+			template<class LeftLeftExpressionType, class TailExpressionType, class RightLeftExpressionType, class RightTailExpressionType>
+			constexpr decltype(auto) eval_lazy_add(mul<LeftLeftExpressionType, TailExpressionType> const &lhs, add<mul<RightLeftExpressionType, TailExpressionType>, RightTailExpressionType> const &rhs) {
+				return eval_lazy_add(eval_lazy_mul(eval_lazy_add(lhs.left(), rhs.left().left()), lhs.right()), rhs.right()); // (A * C) + ((B * C) + D) = (A + B) * C + D
+			}
+
+			template<class LeftLeftExpressionType, class TailExpressionType, class LeftTailExpressionType, class RightLeftExpressionType>
+			constexpr decltype(auto) eval_lazy_add(add<mul<LeftLeftExpressionType, TailExpressionType>, LeftTailExpressionType> const &lhs, mul<RightLeftExpressionType, TailExpressionType> const &rhs) {
+				return eval_lazy_add(eval_lazy_mul(eval_lazy_add(lhs.left().left(), rhs.left()), rhs.right()), lhs.right()); // ((A * C) + D) + (B * C) = (A + B) * C + D
 			}
 
 			// Specializations of the eval_lazy_mul() function.

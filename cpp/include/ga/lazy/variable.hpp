@@ -84,11 +84,6 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
-		template<id_t Id, class ValueType>
-		struct allows_lazy_simplification<lazy::variable<Id, ValueType> > {
-			constexpr static bool value = true;
-		};
-
 	}
 
 }

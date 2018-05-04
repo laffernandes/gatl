@@ -98,6 +98,11 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
+		template<class ValueType>
+		struct is_lazy_value<lazy::value<ValueType> > {
+			constexpr static bool value = true;
+		};
+
 	}
 
 }
