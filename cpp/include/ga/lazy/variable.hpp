@@ -88,6 +88,11 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
+		template<id_t Id, class ValueType>
+		struct common_value_type<lazy::variable<Id, ValueType> > {
+			typedef ValueType type;
+		};
+
 	}
 
 }

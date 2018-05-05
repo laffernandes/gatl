@@ -31,34 +31,6 @@ namespace ga {
 		return GA_DEFAULT_DBL_TOLERANCE;
 	}
 
-	namespace common {
-
-		namespace detail {
-
-			//TODO Rever, pois agora posso usar std::common_type
-
-			template<class ExpressionType>
-			struct common_value_type {
-				typedef typename ExpressionType::expression_type::value_type type;
-			};
-
-			template<class Type>
-			struct _native_value_type {
-				typedef Type type;
-			};
-
-			template<class Type>
-			struct common_coefficient_value_type : std::conditional<
-				is_lazy_expression<Type>::value || is_clifford_expression<Type>::value,
-				common_value_type<Type>,
-				_native_value_type<Type>
-			> {
-			};
-
-		}
-
-	}
-	
 }
 
 #endif // __GA_DEFAULT_TOLERANCE_HPP__

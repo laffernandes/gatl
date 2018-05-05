@@ -63,6 +63,11 @@ namespace ga {
 			constexpr static bool value = is_lazy_constant<LeftArgumentType>::value && is_lazy_constant<RightArgumentType>::value;
 		};
 
+		template<class LeftArgumentType, class RightArgumentType>
+		struct common_value_type<lazy::detail::power<LeftArgumentType, RightArgumentType> > {
+			typedef default_floating_point_t type;
+		};
+
 	}
 
 }

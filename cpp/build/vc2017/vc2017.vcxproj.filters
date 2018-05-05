@@ -246,9 +246,6 @@
     <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\clifford_expression_common_value_type.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\lazy\eval.hpp">
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
@@ -283,12 +280,6 @@
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\expression_list_native.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\expression_list_common_value_type.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree_common_value_type.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\copy.hpp">

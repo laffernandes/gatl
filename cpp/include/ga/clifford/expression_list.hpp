@@ -285,6 +285,19 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
+		template<class ElementType, class... OtherElementTypes>
+		struct common_value_type<clifford::detail::expression_list<ElementType, OtherElementTypes...> > : std::common_type<
+			typename common_value_type<typename ElementType::coefficient_type>::type,
+			typename common_value_type<typename clifford::detail::expression_list<ElementType, OtherElementTypes...>::next_type>::type
+		> {
+		};
+
+		template<class ElementType>
+		struct common_value_type<clifford::detail::expression_list<ElementType> > : std::common_type<
+			typename common_value_type<typename ElementType::coefficient_type>::type
+		> {
+		};
+
 	}
 
 }

@@ -113,7 +113,7 @@ namespace ga {
 
 		}
 
-		template<class Type, class ToleranceType = typename detail::common_coefficient_value_type<Type>::type>
+		template<class Type, class ToleranceType = typename detail::common_value_type<Type>::type>
 		constexpr decltype(auto) grade(Type const &arg, ToleranceType const &tol = default_tolerance<ToleranceType>()) {
 			return detail::deduce_grade(detail::begin(eval(arg)), tol);
 		}

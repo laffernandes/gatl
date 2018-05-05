@@ -40,6 +40,11 @@ namespace ga {
 			constexpr static bool value = !is_lazy_value<Type>::value;
 		};
 
+		template<class Type>
+		struct common_value_type {
+			typedef Type type;
+		};
+
 	}
 
 }

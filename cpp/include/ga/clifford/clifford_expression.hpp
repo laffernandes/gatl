@@ -60,6 +60,15 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
+		template<class ExpressionType>
+		struct common_value_type<clifford::clifford_expression<ExpressionType> > : common_value_type<ExpressionType> {
+		};
+
+		template<>
+		struct common_value_type<clifford::detail::empty_clifford_expression> {
+			typedef default_integral_t type;
+		};
+
 	}
 
 }

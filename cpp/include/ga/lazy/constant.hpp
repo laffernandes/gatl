@@ -55,6 +55,11 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
+		template<default_integral_t Value>
+		struct common_value_type<lazy::constant<Value> > {
+			typedef default_integral_t type;
+		};
+
 	}
 
 }

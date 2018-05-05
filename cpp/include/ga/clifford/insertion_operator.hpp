@@ -77,7 +77,7 @@ namespace ga {
 				write(os, next(rhs), first);
 			}
 
-			void write(std::ostream &, itr_end const &, bool const) {
+			inline void write(std::ostream &, itr_end const &, bool const) {
 			}
 
 		}

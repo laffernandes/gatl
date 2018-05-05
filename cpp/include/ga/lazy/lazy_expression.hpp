@@ -58,6 +58,10 @@ namespace ga {
 		struct allows_lazy_simplification<lazy::lazy_expression<ExpressionType> > : allows_lazy_simplification<ExpressionType> {
 		};
 
+		template<class ExpressionType>
+		struct common_value_type<lazy::lazy_expression<ExpressionType> > : common_value_type<ExpressionType> {
+		};
+
 	}
 
 }

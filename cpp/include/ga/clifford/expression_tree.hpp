@@ -487,6 +487,14 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
+		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
+		struct common_value_type<clifford::detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> > : std::common_type<
+			typename common_value_type<typename ElementType::coefficient_type>::type,
+			typename common_value_type<LeftSubtreeType>::type,
+			typename common_value_type<RightSubtreeType>::type
+		> {
+		};
+
 	}
 
 }

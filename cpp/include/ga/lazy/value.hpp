@@ -103,6 +103,11 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
+		template<class ValueType>
+		struct common_value_type<lazy::value<ValueType> > {
+			typedef ValueType type;
+		};
+
 	}
 
 }

@@ -119,6 +119,20 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
+		template<class LeftArgumentType, class... RightArgumentTypes>
+		struct common_value_type<lazy::detail::add<LeftArgumentType, RightArgumentTypes...> > : std::common_type<
+			typename common_value_type<LeftArgumentType>::type,
+			typename common_value_type<lazy::detail::add<RightArgumentTypes...> >::type
+		> {
+		};
+
+		template<class LeftArgumentType, class RightArgumentType>
+		struct common_value_type<lazy::detail::add<LeftArgumentType, RightArgumentType> > : std::common_type<
+			typename common_value_type<LeftArgumentType>::type,
+			typename common_value_type<RightArgumentType>::type
+		> {
+		};
+
 	}
 
 }
