@@ -225,16 +225,10 @@
     <ClInclude Include="..\..\include\ga\clifford\versor_inverse.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\write.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\default_tolerance.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\lazy\lazy_expression.hpp">
-      <Filter>Header Files\ga\lazy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\lazy\binary_lazy_expression.hpp">
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression.hpp">
@@ -329,6 +323,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\ga3c.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\lazy\arguments_storage.hpp">
+      <Filter>Header Files\ga\lazy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\clifford\insertion_operator.hpp">
+      <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

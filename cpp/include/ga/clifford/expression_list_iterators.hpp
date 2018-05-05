@@ -40,18 +40,18 @@ namespace ga {
 				return itr<ExpressionType>(value);
 			}
 
-			template<class ElementType, class NextListType>
-			constexpr decltype(auto) begin(expression_list<ElementType, NextListType> &head) {
-				return make_itr(&head);
+			template<class ElementType, class... OtherElementTypes>
+			constexpr decltype(auto) begin(expression_list<ElementType, OtherElementTypes...> &arg) {
+				return make_itr(&arg);
 			}
 
-			template<class ElementType, class NextListType>
-			constexpr decltype(auto) next(itr<expression_list<ElementType, NextListType> > const &curr) {
+			template<class ElementType, class... OtherElementTypes>
+			constexpr decltype(auto) next(itr<expression_list<ElementType, OtherElementTypes...> > const &curr) {
 				return make_itr(&curr.expression()->next());
 			}
 
 			template<class ElementType>
-			constexpr decltype(auto) next(itr<expression_list<ElementType, empty_clifford_expression> > const &) {
+			constexpr decltype(auto) next(itr<expression_list<ElementType> > const &) {
 				return itr_end();
 			}
 
@@ -88,29 +88,29 @@ namespace ga {
 				return citr<ExpressionType>(value);
 			}
 
-			template<class ElementType, class NextListType>
-			constexpr decltype(auto) begin(expression_list<ElementType, NextListType> const &head) {
-				return make_citr(&head);
+			template<class ElementType, class... OtherElementTypes>
+			constexpr decltype(auto) begin(expression_list<ElementType, OtherElementTypes...> const &arg) {
+				return make_citr(&arg);
 			}
 
-			template<class ElementType, class NextListType>
-			constexpr decltype(auto) next(citr<expression_list<ElementType, NextListType> > const &curr) {
+			template<class ElementType, class... OtherElementTypes>
+			constexpr decltype(auto) next(citr<expression_list<ElementType, OtherElementTypes...> > const &curr) {
 				return make_citr(&curr.expression()->next());
 			}
 
 			template<class ElementType>
-			constexpr decltype(auto) next(citr<expression_list<ElementType, empty_clifford_expression> > const &) {
+			constexpr decltype(auto) next(citr<expression_list<ElementType> > const &) {
 				return itr_end();
 			}
 
-			template<class ElementType, class NextListType>
-			constexpr decltype(auto) obegin(expression_list<ElementType, NextListType> &head) {
-				return begin(head);
+			template<class ElementType, class... OtherElementTypes>
+			constexpr decltype(auto) obegin(expression_list<ElementType, OtherElementTypes...> &arg) {
+				return begin(arg);
 			}
 
-			template<class ElementType, class NextListType>
-			constexpr decltype(auto) obegin(expression_list<ElementType, NextListType> const &head) {
-				return begin(head);
+			template<class ElementType, class... OtherElementTypes>
+			constexpr decltype(auto) obegin(expression_list<ElementType, OtherElementTypes...> const &arg) {
+				return begin(arg);
 			}
 
 		}

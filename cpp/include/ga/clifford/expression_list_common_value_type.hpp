@@ -7,15 +7,15 @@ namespace ga {
 
 		namespace detail {
 
-			template<class ElementType, class NextListType>
-			struct common_value_type<clifford::detail::expression_list<ElementType, NextListType> > : std::common_type<
+			template<class ElementType, class... OtherElementTypes>
+			struct common_value_type<clifford::detail::expression_list<ElementType, OtherElementTypes...> > : std::common_type<
 				typename ElementType::coefficient_type::value_type,
-				typename common_value_type<NextListType>::type
+				typename common_value_type<typename clifford::detail::expression_list<ElementType, OtherElementTypes...>::next_type>::type
 			> {
 			};
 
 			template<class ElementType>
-			struct common_value_type<clifford::detail::expression_list<ElementType, clifford::detail::empty_clifford_expression> > : std::common_type<
+			struct common_value_type<clifford::detail::expression_list<ElementType> > : std::common_type<
 				typename ElementType::coefficient_type::value_type
 			> {
 			};

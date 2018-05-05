@@ -8,8 +8,8 @@ namespace ga {
 		namespace detail {
 
 			// Default exponentiation "bind" operation.
-			template<class LeftExpressionType, class RightExpressionType>
-			constexpr decltype(auto) exponentiation(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+			template<class LeftArgumentType, class RightArgumentType>
+			constexpr decltype(auto) exponentiation(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
 				return make_power(lhs, rhs);
 			}
 
@@ -19,42 +19,43 @@ namespace ga {
 				return eval_lazy_power(lhs, rhs);
 			}
 
-			template<class LeftValueType, class RightExpressionType, typename std::enable_if<!(std::is_same<RightExpressionType, constant<0> >::value || std::is_same<RightExpressionType, constant<1> >::value), int>::type = 0>
-			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, RightExpressionType const &rhs) {
+			template<class LeftValueType, class RightArgumentType, typename std::enable_if<!(std::is_same<RightArgumentType, constant<0> >::value || std::is_same<RightArgumentType, constant<1> >::value), int>::type = 0>
+			constexpr decltype(auto) exponentiation(value<LeftValueType> const &lhs, RightArgumentType const &rhs) {
 				return eval_lazy_power(lhs, rhs);
 			}
 
-			template<class LeftExpressionType, class RightValueType, typename std::enable_if<!std::is_same<LeftExpressionType, constant<0> >::value, int>::type = 0>
-			constexpr decltype(auto) exponentiation(LeftExpressionType const &lhs, value<RightValueType> const &rhs) {
+			template<class LeftArgumentType, class RightValueType, typename std::enable_if<!std::is_same<LeftArgumentType, constant<0> >::value, int>::type = 0>
+			constexpr decltype(auto) exponentiation(LeftArgumentType const &lhs, value<RightValueType> const &rhs) {
 				return eval_lazy_power(lhs, rhs);
 			}
 
-			// Simplify zero raised to the constant power of K (except for K <= 0).
+			// Simplify zero raised to the constant power of X (except for X <= 0).
 			//     0^{X} = 0, for X > 0
-			//     0^{1/Y} = 0, for 1/Y > 0
-			//     0^{X/Y} = 0, for X/Y > 0
-			template<default_integral_t RightValue>
-			constexpr decltype(auto) exponentiation(constant<0> const &, constant<RightValue> const &) {
-				static_assert(RightValue <= 0, "The value of pow(0, N) is undefined for N <= 0.");
-				return constant<0>();
+			template<default_integral_t Value>
+			constexpr default_integral_t sign(constant<Value> const &) {
+				return sign(Value);
 			}
 
-			template<default_integral_t RightValue>
-			constexpr decltype(auto) exponentiation(constant<0> const &, power<constant<RightValue>, constant<-1> > const &) {
-				static_assert(RightValue <= 0, "The value of pow(0, N) is undefined for N <= 0.");
-				return constant<0>();
+			template<class LeftArgumentType, class... RightArgumentTypes, typename std::enable_if<is_lazy_constant<mul<LeftArgumentType, RightArgumentTypes...> >::value, int>::type = 0>
+			constexpr default_integral_t sign(mul<LeftArgumentType, RightArgumentTypes...> const &arg) {
+				return sign(arg.left()) * sign(arg.right());
 			}
 
-			template<default_integral_t RightLeftValue, default_integral_t RightRightValue>
-			constexpr decltype(auto) exponentiation(constant<0> const &, mul<constant<RightLeftValue>, power<constant<RightRightValue>, constant<-1> > > const &) {
-				static_assert(constant_sign(RightLeftValue) * constant_sign(RightRightValue) <= 0, "The value of pow(0, N) is undefined for N <= 0.");
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<is_lazy_constant<LeftArgumentType>::value && is_lazy_constant<RightArgumentType>::value, int>::type = 0>
+			constexpr default_integral_t sign(power<LeftArgumentType, RightArgumentType> const &) {
+				return sign(LeftArgumentType());
+			}
+
+			template<class RightArgumentType, typename std::enable_if<is_lazy_constant<RightArgumentType>::value, int>::type = 0>
+			constexpr decltype(auto) exponentiation(constant<0> const &, RightArgumentType const &) {
+				static_assert(sign(RightArgumentType()) > 0, "The value of pow(0, N) is undefined for N <= 0.");
 				return constant<0>();
 			}
 
 			// Simplify one raised to the power of X.
 			//     1^{X} = 1
-			template<class RightExpressionType>
-			constexpr decltype(auto) exponentiation(constant<1> const &, RightExpressionType const &) {
+			template<class RightArgumentType>
+			constexpr decltype(auto) exponentiation(constant<1> const &, RightArgumentType const &) {
 				return constant<1>();
 			}
 
@@ -73,15 +74,15 @@ namespace ga {
 
 			// Simplify something raised to the power of zero (except for X == 0 and X == 1 and X == -1).
 			//     X^{0} = 1
-			template<class LeftExpressionType, typename std::enable_if<!(std::is_same<LeftExpressionType, constant<0> >::value || std::is_same<LeftExpressionType, constant<1> >::value || std::is_same<LeftExpressionType, constant<-1> >::value), int>::type = 0>
-			constexpr decltype(auto) exponentiation(LeftExpressionType const &lhs, constant<0> const &) {
+			template<class LeftArgumentType, typename std::enable_if<!(std::is_same<LeftArgumentType, constant<0> >::value || std::is_same<LeftArgumentType, constant<1> >::value || std::is_same<LeftArgumentType, constant<-1> >::value), int>::type = 0>
+			constexpr decltype(auto) exponentiation(LeftArgumentType const &lhs, constant<0> const &) {
 				return constant<1>();
 			}
 
 			// Simplify something raised to the power of one (except for X == 0 and X == 1 and X == -1).
 			//     X^{1} = X
-			template<class LeftExpressionType, typename std::enable_if<!(std::is_same<LeftExpressionType, constant<0> >::value || std::is_same<LeftExpressionType, constant<1> >::value || std::is_same<LeftExpressionType, constant<-1> >::value), int>::type = 0>
-			constexpr LeftExpressionType exponentiation(LeftExpressionType const &lhs, constant<1> const &) {
+			template<class LeftArgumentType, typename std::enable_if<!(std::is_same<LeftArgumentType, constant<0> >::value || std::is_same<LeftArgumentType, constant<1> >::value || std::is_same<LeftArgumentType, constant<-1> >::value), int>::type = 0>
+			constexpr LeftArgumentType exponentiation(LeftArgumentType const &lhs, constant<1> const &) {
 				return lhs;
 			}
 
@@ -143,15 +144,15 @@ namespace ga {
 
 			// Simplify to single exponentiation (except for C == 0 and C == 1).
 			//     (A^{B})^{C} = A^{B * C}
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<!(std::is_same<RightExpressionType, constant<0> >::value || std::is_same<RightExpressionType, constant<1> >::value), int>::type = 0>
-			constexpr decltype(auto) exponentiation(power<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
+			template<class LeftLeftArgumentType, class LeftRightArgumentType, class RightArgumentType, typename std::enable_if<!(std::is_same<RightArgumentType, constant<0> >::value || std::is_same<RightArgumentType, constant<1> >::value), int>::type = 0>
+			constexpr decltype(auto) exponentiation(power<LeftLeftArgumentType, LeftRightArgumentType> const &lhs, RightArgumentType const &rhs) {
 				return exponentiation(lhs.left(), multiplication(lhs.right(), rhs));
 			}
 
 			// Distributive property over multiplication (except for C == 0 and C == 1).
 			//     (A * B)^{C} = A^{C} * B^{C}
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightExpressionType, typename std::enable_if<!(std::is_same<RightExpressionType, constant<0> >::value || std::is_same<RightExpressionType, constant<1> >::value), int>::type = 0>
-			constexpr decltype(auto) exponentiation(mul<LeftLeftExpressionType, LeftRightExpressionType> const &lhs, RightExpressionType const &rhs) {
+			template<class... LeftArgumentTypes, class RightArgumentType, typename std::enable_if<!(std::is_same<RightArgumentType, constant<0> >::value || std::is_same<RightArgumentType, constant<1> >::value), int>::type = 0>
+			constexpr decltype(auto) exponentiation(mul<LeftArgumentTypes...> const &lhs, RightArgumentType const &rhs) {
 				return multiplication(exponentiation(lhs.left(), rhs), exponentiation(lhs.right(), rhs));
 			}
 

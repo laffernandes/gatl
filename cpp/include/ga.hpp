@@ -71,7 +71,7 @@ namespace ga {
 #include "ga/lazy/value.hpp"
 #include "ga/lazy/variable.hpp"
 
-#include "ga/lazy/binary_lazy_expression.hpp"
+#include "ga/lazy/arguments_storage.hpp"
 #include "ga/lazy/add.hpp"
 #include "ga/lazy/mul.hpp"
 #include "ga/lazy/power.hpp"
@@ -178,7 +178,7 @@ namespace ga {
 #include "ga/clifford/dualization.hpp"
 #include "ga/clifford/take_grade.hpp"
 
-#include "ga/clifford/write.hpp"
+#include "ga/clifford/insertion_operator.hpp"
 
 #include "ga/clifford/eval.hpp"
 #include "ga/clifford/grade.hpp"
@@ -192,8 +192,6 @@ namespace ga {
 	using namespace clifford;
 
 }
-
-//TODO Utilizar variadic templates nas listas
 
 //TODO Implement equal(lhs, rhs, tol)
 //TODO Implement is_zero(arg, tol)

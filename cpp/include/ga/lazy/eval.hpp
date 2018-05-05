@@ -13,162 +13,157 @@ namespace ga {
 				return constant<Value>();
 			}
 
-			template<class LeftExpressionType, class RightLeftExpressionType>
-			constexpr decltype(auto) eval_constant_to_primitive(mul<LeftExpressionType, power<RightLeftExpressionType, constant<-1> > > const &) {
-				return val(static_cast<default_floating_point_t>(eval_constant_to_primitive(LeftExpressionType()).get()) / eval_constant_to_primitive(RightLeftExpressionType()).get());
+			template<class... ArgumentTypes>
+			constexpr decltype(auto) eval_constant_to_primitive(add<ArgumentTypes...> const &arg) {
+				return eval_lazy_add(arg.left(), arg.right());
 			}
 
-			template<class LeftExpressionType, class RightExpressionType>
-			constexpr decltype(auto) eval_constant_to_primitive(power<LeftExpressionType, RightExpressionType> const &) {
-				return val(pow(static_cast<default_floating_point_t>(eval_constant_to_primitive(LeftExpressionType()).get()), eval_constant_to_primitive(RightExpressionType()).get()));
+			template<class... ArgumentTypes>
+			constexpr decltype(auto) eval_constant_to_primitive(mul<ArgumentTypes...> const &arg) {
+				return eval_lazy_mul(arg.left(), arg.right());
 			}
 
-			template<class LeftExpressionType>
-			constexpr decltype(auto) eval_constant_to_primitive(power<LeftExpressionType, constant<-1> > const &) {
-				return val(static_cast<default_floating_point_t>(1) / eval_constant_to_primitive(LeftExpressionType()).get());
+			template<class LeftArgumentType, class RightArgumentType>
+			constexpr decltype(auto) eval_constant_to_primitive(power<LeftArgumentType, RightArgumentType> const &) {
+				return val(pow(static_cast<default_floating_point_t>(eval_constant_to_primitive(LeftArgumentType()).get()), eval_constant_to_primitive(RightArgumentType()).get()));
 			}
 
-			template<class LeftExpressionType>
-			constexpr decltype(auto) eval_constant_to_primitive(power<LeftExpressionType, power<constant<2>, constant<-1> > > const &) {
-				return val(sqrt(static_cast<default_floating_point_t>(eval_constant_to_primitive(LeftExpressionType()).get())));
+			template<class LeftArgumentType>
+			constexpr decltype(auto) eval_constant_to_primitive(power<LeftArgumentType, constant<-1> > const &) {
+				return val(static_cast<default_floating_point_t>(1) / eval_constant_to_primitive(LeftArgumentType()).get());
 			}
 
-			template<class LeftExpressionType>
-			constexpr decltype(auto) eval_constant_to_primitive(power<LeftExpressionType, power<constant<3>, constant<-1> > > const &) {
-				return val(cbrt(static_cast<default_floating_point_t>(eval_constant_to_primitive(LeftExpressionType()).get())));
+			template<class LeftArgumentType>
+			constexpr decltype(auto) eval_constant_to_primitive(power<LeftArgumentType, power<constant<2>, constant<-1> > > const &) {
+				return val(sqrt(static_cast<default_floating_point_t>(eval_constant_to_primitive(LeftArgumentType()).get())));
+			}
+
+			template<class LeftArgumentType>
+			constexpr decltype(auto) eval_constant_to_primitive(power<LeftArgumentType, power<constant<3>, constant<-1> > > const &) {
+				return val(cbrt(static_cast<default_floating_point_t>(eval_constant_to_primitive(LeftArgumentType()).get())));
 			}
 
 			// Specializations of the eval_lazy_add() function.
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<!(is_lazy_constant<LeftExpressionType>::value || is_lazy_constant<RightExpressionType>::value), int>::type = 0>
-			constexpr decltype(auto) eval_lazy_add(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<!(is_lazy_constant<LeftArgumentType>::value || is_lazy_constant<RightArgumentType>::value), int>::type = 0>
+			constexpr decltype(auto) eval_lazy_add(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
 				return val(eval_lazy_expression(lhs).get() + eval_lazy_expression(rhs).get()); // default when both arguments are not constant expressions
 			}
 
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<is_lazy_constant<LeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) eval_lazy_add(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
-				return val(eval_constant_to_primitive(lhs).get() + eval_lazy_expression(rhs).get()); // default when the left-hand side argument is a constant expression
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<is_lazy_constant<LeftArgumentType>::value && !is_lazy_constant<RightArgumentType>::value, int>::type = 0>
+			constexpr decltype(auto) eval_lazy_add(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
+				return val(eval_constant_to_primitive(lhs).get() + eval_lazy_expression(rhs).get()); // default when only the left-hand side argument is a constant expression
 			}
 
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<is_lazy_constant<RightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) eval_lazy_add(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
-				return val(eval_lazy_expression(lhs).get() + eval_constant_to_primitive(rhs).get()); // default when the right-hand side argument is a constant expression
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<!is_lazy_constant<LeftArgumentType>::value && is_lazy_constant<RightArgumentType>::value, int>::type = 0>
+			constexpr decltype(auto) eval_lazy_add(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
+				return val(eval_lazy_expression(lhs).get() + eval_constant_to_primitive(rhs).get()); // default when only the right-hand side argument is a constant expression
 			}
 
-			template<class LeftExpressionType, class RightExpressionType>
-			constexpr decltype(auto) eval_lazy_add(LeftExpressionType const &lhs, mul<RightExpressionType, constant<-1> > const &rhs) {
-				return val(eval_lazy_expression(lhs).get() - eval_lazy_expression(rhs.left()).get()); // A - B = R
-			}
-
-			template<class LeftExpressionType, class RightExpressionType>
-			constexpr decltype(auto) eval_lazy_add(mul<LeftExpressionType, constant<-1> > const &lhs, RightExpressionType const &rhs) {
-				return val(eval_lazy_expression(rhs).get() - eval_lazy_expression(lhs.left()).get()); // (-A) + B = B - A = R
-			}
-
-			template<class LeftExpressionType, class RightExpressionType>
-			constexpr decltype(auto) eval_lazy_add(LeftExpressionType const &lhs, mul<constant<-1>, RightExpressionType> const &rhs) {
+			template<class LeftArgumentType, class... RightRightArgumentTypes>
+			constexpr decltype(auto) eval_lazy_add(LeftArgumentType const &lhs, mul<constant<-1>, RightRightArgumentTypes...> const &rhs) {
 				return val(eval_lazy_expression(lhs).get() - eval_lazy_expression(rhs.right()).get()); // A - B = R
 			}
 
-			template<class LeftExpressionType, class RightExpressionType>
-			constexpr decltype(auto) eval_lazy_add(mul<constant<-1>, LeftExpressionType> const &lhs, RightExpressionType const &rhs) {
+			template<class... LeftRightArgumentTypes, class RightArgumentType>
+			constexpr decltype(auto) eval_lazy_add(mul<constant<-1>, LeftRightArgumentTypes...> const &lhs, RightArgumentType const &rhs) {
 				return val(eval_lazy_expression(rhs).get() - eval_lazy_expression(lhs.right()).get()); // (-A) + B = B - A = R
 			}
 
-			template<class HeadExpressionType, class LeftRightExpressionType, class RightRightExpressionType>
-			constexpr decltype(auto) eval_lazy_add(mul<HeadExpressionType, LeftRightExpressionType> const &lhs, mul<HeadExpressionType, RightRightExpressionType> const &rhs) {
+			template<class ArgumentType, class... LeftRightArgumentTypes, class... RightRightArgumentTypes>
+			constexpr decltype(auto) eval_lazy_add(mul<ArgumentType, LeftRightArgumentTypes...> const &lhs, mul<ArgumentType, RightRightArgumentTypes...> const &rhs) {
 				return eval_lazy_mul(lhs.left(), eval_lazy_add(lhs.right(), rhs.right()));
 			}
 
-			template<class LeftLeftExpressionType, class TailExpressionType, class RightLeftExpressionType>
-			constexpr decltype(auto) eval_lazy_add(mul<LeftLeftExpressionType, TailExpressionType> const &lhs, mul<RightLeftExpressionType, TailExpressionType> const &rhs) {
+			template<class LeftLeftArgumentType, class... ArgumentTypes, class RightLeftArgumentType>
+			constexpr decltype(auto) eval_lazy_add(mul<LeftLeftArgumentType, ArgumentTypes...> const &lhs, mul<RightLeftArgumentType, ArgumentTypes...> const &rhs) {
 				return eval_lazy_mul(eval_lazy_add(lhs.left(), rhs.left()), lhs.right()); // (A * C) + (B * C) = (A + B) * C
 			}
 
-			template<class LeftLeftExpressionType, class TailExpressionType, class RightLeftExpressionType, class RightTailExpressionType>
-			constexpr decltype(auto) eval_lazy_add(mul<LeftLeftExpressionType, TailExpressionType> const &lhs, add<mul<RightLeftExpressionType, TailExpressionType>, RightTailExpressionType> const &rhs) {
+			template<class LeftLeftArgumentType, class... ArgumentTypes, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			constexpr decltype(auto) eval_lazy_add(mul<LeftLeftArgumentType, ArgumentTypes...> const &lhs, add<mul<RightLeftArgumentType, ArgumentTypes...>, RightRightArgumentTypes...> const &rhs) {
 				return eval_lazy_add(eval_lazy_mul(eval_lazy_add(lhs.left(), rhs.left().left()), lhs.right()), rhs.right()); // (A * C) + ((B * C) + D) = (A + B) * C + D
 			}
 
-			template<class LeftLeftExpressionType, class TailExpressionType, class LeftTailExpressionType, class RightLeftExpressionType>
-			constexpr decltype(auto) eval_lazy_add(add<mul<LeftLeftExpressionType, TailExpressionType>, LeftTailExpressionType> const &lhs, mul<RightLeftExpressionType, TailExpressionType> const &rhs) {
+			template<class LeftLeftArgumentType, class... ArgumentTypes, class... LeftRightArgumentTypes, class RightLeftArgumentType>
+			constexpr decltype(auto) eval_lazy_add(add<mul<LeftLeftArgumentType, ArgumentTypes...>, LeftRightArgumentTypes...> const &lhs, mul<RightLeftArgumentType, ArgumentTypes...> const &rhs) {
 				return eval_lazy_add(eval_lazy_mul(eval_lazy_add(lhs.left().left(), rhs.left()), rhs.right()), lhs.right()); // ((A * C) + D) + (B * C) = (A + B) * C + D
 			}
 
 			// Specializations of the eval_lazy_mul() function.
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<!(is_lazy_constant<LeftExpressionType>::value || is_lazy_constant<RightExpressionType>::value), int>::type = 0>
-			constexpr decltype(auto) eval_lazy_mul(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<!(is_lazy_constant<LeftArgumentType>::value || is_lazy_constant<RightArgumentType>::value), int>::type = 0>
+			constexpr decltype(auto) eval_lazy_mul(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
 				return val(eval_lazy_expression(lhs).get() * eval_lazy_expression(rhs).get()); // default when both arguments are not constant expressions
 			}
 
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<is_lazy_constant<LeftExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) eval_lazy_mul(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
-				return val(eval_constant_to_primitive(lhs).get() * eval_lazy_expression(rhs).get()); // default when the left-hand side argument is a constant expression
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<is_lazy_constant<LeftArgumentType>::value && !is_lazy_constant<RightArgumentType>::value, int>::type = 0>
+			constexpr decltype(auto) eval_lazy_mul(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
+				return val(eval_constant_to_primitive(lhs).get() * eval_lazy_expression(rhs).get()); // default when only the left-hand side argument is a constant expression
 			}
 
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<is_lazy_constant<RightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) eval_lazy_mul(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
-				return val(eval_lazy_expression(lhs).get() * eval_constant_to_primitive(rhs).get()); // default when the right-hand side argument is a constant expression
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<!is_lazy_constant<LeftArgumentType>::value && is_lazy_constant<RightArgumentType>::value, int>::type = 0>
+			constexpr decltype(auto) eval_lazy_mul(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
+				return val(eval_lazy_expression(lhs).get() * eval_constant_to_primitive(rhs).get()); // default when only the right-hand side argument is a constant expression
 			}
 
-			template<class RightExpressionType>
-			constexpr decltype(auto) eval_lazy_mul(constant<-1> const &, RightExpressionType const &rhs) {
+			template<class RightArgumentType>
+			constexpr decltype(auto) eval_lazy_mul(constant<-1> const &, RightArgumentType const &rhs) {
 				return val(-eval_lazy_expression(rhs).get()); // (-1) * A = -A
 			}
 
-			template<class LeftExpressionType>
-			constexpr decltype(auto) eval_lazy_mul(LeftExpressionType const &lhs, constant<-1> const &) {
+			template<class LeftArgumentType>
+			constexpr decltype(auto) eval_lazy_mul(LeftArgumentType const &lhs, constant<-1> const &) {
 				return val(-eval_lazy_expression(lhs).get()); // A * (-1) = -A
 			}
 
-			template<class LeftExpressionType, class RightLeftExpressionType, typename std::enable_if<!(is_lazy_constant<LeftExpressionType>::value || is_lazy_constant<RightLeftExpressionType>::value), int>::type = 0>
-			constexpr decltype(auto) eval_lazy_mul(LeftExpressionType const &lhs, power<RightLeftExpressionType, constant<-1> > const &rhs) {
+			template<class LeftArgumentType, class RightLeftArgumentType, typename std::enable_if<!(is_lazy_constant<LeftArgumentType>::value || is_lazy_constant<RightLeftArgumentType>::value), int>::type = 0>
+			constexpr decltype(auto) eval_lazy_mul(LeftArgumentType const &lhs, power<RightLeftArgumentType, constant<-1> > const &rhs) {
 				return val(eval_lazy_expression(lhs).get() / eval_lazy_expression(rhs.left()).get()); // A * (1 / B) = A / B
 			}
 
-			template<class LeftLeftExpressionType, class RightExpressionType, typename std::enable_if<!(is_lazy_constant<LeftLeftExpressionType>::value || is_lazy_constant<RightExpressionType>::value), int>::type = 0>
-			constexpr decltype(auto) eval_lazy_mul(power<LeftLeftExpressionType, constant<-1> > const &lhs, RightExpressionType const &rhs) {
+			template<class LeftLeftArgumentType, class RightArgumentType, typename std::enable_if<!(is_lazy_constant<LeftLeftArgumentType>::value || is_lazy_constant<RightArgumentType>::value), int>::type = 0>
+			constexpr decltype(auto) eval_lazy_mul(power<LeftLeftArgumentType, constant<-1> > const &lhs, RightArgumentType const &rhs) {
 				return val(eval_lazy_expression(rhs).get() / eval_lazy_expression(lhs.left()).get()); // (1 / A) * B = B / A
 			}
 
-			template<class LeftLeftExpressionType, class RightLeftExpressionType>
-			constexpr decltype(auto) eval_lazy_mul(power<LeftLeftExpressionType, constant<-1> > const &lhs, power<RightLeftExpressionType, constant<-1> > const &rhs) {
+			template<class LeftLeftArgumentType, class RightLeftArgumentType>
+			constexpr decltype(auto) eval_lazy_mul(power<LeftLeftArgumentType, constant<-1> > const &lhs, power<RightLeftArgumentType, constant<-1> > const &rhs) {
 				return eval_lazy_power(eval_lazy_mul(lhs.left(), rhs.left()), constant<-1>()); // (1 / A) * (1 / B) = 1 / (A * B)
 			}
 
 			// Specializations of the eval_lazy_power() function.
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<!(is_lazy_constant<LeftExpressionType>::value || is_lazy_constant<RightExpressionType>::value), int>::type = 0>
-			constexpr decltype(auto) eval_lazy_power(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<!(is_lazy_constant<LeftArgumentType>::value || is_lazy_constant<RightArgumentType>::value), int>::type = 0>
+			constexpr decltype(auto) eval_lazy_power(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
 				return val(pow(eval_lazy_expression(lhs).get(), eval_lazy_expression(rhs).get())); // default when both arguments are not constant expressions
 			}
 
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<is_lazy_constant<LeftExpressionType>::value, int>::value>
-			constexpr decltype(auto) eval_lazy_power(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<is_lazy_constant<LeftArgumentType>::value, int>::value>
+			constexpr decltype(auto) eval_lazy_power(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
 				return val(pow(eval_constant_to_primitive(lhs).get(), eval_lazy_expression(rhs).get())); // default when the left-hand side argument is a constant expression
 			}
 
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<is_lazy_constant<RightExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) eval_lazy_power(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<is_lazy_constant<RightArgumentType>::value, int>::type = 0>
+			constexpr decltype(auto) eval_lazy_power(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
 				return val(pow(eval_lazy_expression(lhs).get(), eval_constant_to_primitive(rhs).get())); // default when the right-hand side argument is a constant expression
 			}
 
-			template<class LeftExpressionType>
-			constexpr decltype(auto) eval_lazy_power(LeftExpressionType const &lhs, constant<-1> const &) {
+			template<class LeftArgumentType>
+			constexpr decltype(auto) eval_lazy_power(LeftArgumentType const &lhs, constant<-1> const &) {
 				return val(static_cast<default_floating_point_t>(1) / eval_lazy_expression(lhs).get()); // pow(A, -1) = 1 / A
 			}
 
-			template<class LeftExpressionType>
-			constexpr decltype(auto) eval_lazy_power(LeftExpressionType const &lhs, power<constant<2>, constant<-1> > const &) {
+			template<class LeftArgumentType>
+			constexpr decltype(auto) eval_lazy_power(LeftArgumentType const &lhs, power<constant<2>, constant<-1> > const &) {
 				return val(sqrt(eval_lazy_expression(lhs).get())); // pow(A, 1 / 2) = sqrt(A)
 			}
 
-			template<class LeftExpressionType>
-			constexpr decltype(auto) eval_lazy_power(LeftExpressionType const &lhs, power<constant<3>, constant<-1> > const &) {
+			template<class LeftArgumentType>
+			constexpr decltype(auto) eval_lazy_power(LeftArgumentType const &lhs, power<constant<3>, constant<-1> > const &) {
 				return val(cbrt(eval_lazy_expression(lhs).get())); // pow(A, 1 / 3) = cbrt(A)
 			}
 
 			// Specializations of the eval_lazy_expression() function.
-			template<class ExpressionType>
-			constexpr ExpressionType eval_lazy_expression(ExpressionType const &arg) {
+			template<class ArgumentType>
+			constexpr ArgumentType eval_lazy_expression(ArgumentType const &arg) {
 				return arg; // Identity for value and constant expressions
 			}
 
@@ -177,18 +172,18 @@ namespace ga {
 				return val(arg.get()); // Convertion to value
 			}
 
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<!(is_lazy_constant<LeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value), int>::type = 0>
-			constexpr decltype(auto) eval_lazy_expression(add<LeftExpressionType, RightExpressionType> const &arg) {
+			template<class... ArgumentTypes, typename std::enable_if<!is_lazy_constant<add<ArgumentTypes...> >::value, int>::type = 0>
+			constexpr decltype(auto) eval_lazy_expression(add<ArgumentTypes...> const &arg) {
 				return eval_lazy_add(arg.left(), arg.right()); // Proxy to eval_lazy_add
 			}
 
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<!(is_lazy_constant<LeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value), int>::type = 0>
-			constexpr decltype(auto) eval_lazy_expression(mul<LeftExpressionType, RightExpressionType> const &arg) {
+			template<class... ArgumentTypes, typename std::enable_if<!is_lazy_constant<mul<ArgumentTypes...> >::value, int>::type = 0>
+			constexpr decltype(auto) eval_lazy_expression(mul<ArgumentTypes...> const &arg) {
 				return eval_lazy_mul(arg.left(), arg.right()); // Proxy to eval_lazy_mul
 			}
 			
-			template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<!(is_lazy_constant<LeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value), int>::type = 0>
-			constexpr decltype(auto) eval_lazy_expression(power<LeftExpressionType, RightExpressionType> const &arg) {
+			template<class LeftArgumentType, class RightArgumentType, typename std::enable_if<!(is_lazy_constant<LeftArgumentType>::value && is_lazy_constant<RightArgumentType>::value), int>::type = 0>
+			constexpr decltype(auto) eval_lazy_expression(power<LeftArgumentType, RightArgumentType> const &arg) {
 				return eval_lazy_power(arg.left(), arg.right()); // Proxy to eval_lazy_power
 			}
 

@@ -35,6 +35,8 @@ namespace ga {
 
 		namespace detail {
 
+			//TODO Rever, pois agora posso usar std::common_type
+
 			template<class ExpressionType>
 			struct common_value_type {
 				typedef typename ExpressionType::expression_type::value_type type;

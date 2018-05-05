@@ -181,16 +181,13 @@ namespace ga {
 				static_assert(!std::is_same<typename element_type::coefficient_type, constant<0> >::value, "Zeros are not alowed here!");
 			};
 
-			template<class ElementType, class NextListType>
-			class expression_list;
-
-			template<class ElementType, class NextListType>
+			template<class ElementType, class... OtherElementTypes>
 			class expression_list final :
-				public clifford_expression<expression_list<ElementType, NextListType> >,
-				private _super_expression_list<ElementType, NextListType> {
+				public clifford_expression<expression_list<ElementType, OtherElementTypes...> >,
+				private _super_expression_list<ElementType, expression_list<OtherElementTypes...> > {
 			private:
 
-				typedef _super_expression_list<ElementType, NextListType> _super;
+				typedef _super_expression_list<ElementType, expression_list<OtherElementTypes...> > _super;
 
 			public:
 
@@ -206,6 +203,10 @@ namespace ga {
 				template<class OtherExpressionType>
 				constexpr expression_list(clifford_expression<OtherExpressionType> const &other) {
 					copy(obegin(other), obegin(*this));
+				}
+
+				constexpr expression_list(element_type const &element, OtherElementTypes const &... args) :
+					_super(element, next_type(args...)) {
 				}
 
 				constexpr expression_list(element_type const &element, next_type const &next) :
@@ -226,14 +227,51 @@ namespace ga {
 				using _super::compile_time_defined;
 			};
 
-			template<class ElementType, class NextListType>
-			constexpr decltype(auto) make_expression_list(ElementType const &element, NextListType const &next) {
-				return expression_list<ElementType, NextListType>(element, next);
-			}
+			template<class ElementType>
+			class expression_list<ElementType> final :
+				public clifford_expression<expression_list<ElementType> >,
+				private _super_expression_list<ElementType, empty_clifford_expression> {
+			private:
+
+				typedef _super_expression_list<ElementType, empty_clifford_expression> _super;
+
+			public:
+
+				typedef expression_list expression_type;
+
+				using element_type = typename _super::element_type;
+				using next_type = typename _super::next_type;
+
+				constexpr expression_list() = default;
+				constexpr expression_list(expression_list const &) = default;
+				constexpr expression_list(expression_list &&) = default;
+
+				template<class OtherExpressionType>
+				constexpr expression_list(clifford_expression<OtherExpressionType> const &other) {
+					copy(obegin(other), obegin(*this));
+				}
+
+				constexpr expression_list(element_type const &element) :
+					_super(element, empty_clifford_expression()) {
+				}
+
+				constexpr expression_list & operator=(expression_list const &) = default;
+				constexpr expression_list & operator=(expression_list &&) = default;
+
+				template<class OtherExpressionType>
+				constexpr expression_list & operator=(clifford_expression<OtherExpressionType> const &other) {
+					copy(obegin(other), obegin(*this));
+					return *this;
+				}
+
+				using _super::element;
+				using _super::next;
+				using _super::compile_time_defined;
+			};
 
 			template<class ElementType>
 			constexpr decltype(auto) make_simple_clifford_expression(ElementType const &element) {
-				return make_expression_list(element, empty_clifford_expression());
+				return expression_list<ElementType>(element);
 			}
 
 		}
@@ -242,8 +280,8 @@ namespace ga {
 
 	namespace common {
 
-		template<class ElementType, class NextListType>
-		struct is_clifford_expression<clifford::detail::expression_list<ElementType, NextListType> > {
+		template<class ElementType, class... OtherElementTypes>
+		struct is_clifford_expression<clifford::detail::expression_list<ElementType, OtherElementTypes...> > {
 			constexpr static bool value = true;
 		};
 

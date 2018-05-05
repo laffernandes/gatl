@@ -99,14 +99,14 @@
     <ClInclude Include="..\..\include\ga\clifford\unary_plus.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression_iterators.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\versor_inverse.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\write.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\insertion_operator.hpp" />
     <ClInclude Include="..\..\include\ga\compile_time_ordering.hpp" />
     <ClInclude Include="..\..\include\ga\default_tolerance.hpp" />
     <ClInclude Include="..\..\include\ga\expression_traits.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\add.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\addition.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\arithmetic_operators.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\binary_lazy_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\lazy\arguments_storage.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\constant.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\eval.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\exponentiation.hpp" />

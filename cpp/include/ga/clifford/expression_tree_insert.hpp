@@ -147,13 +147,13 @@ namespace ga {
 				}
 			};
 
-			template<class RootElementType, class LeftSubtreeType, class RightSubtreeType, class ElementType>
-			struct _insert<expression_tree<RootElementType, LeftSubtreeType, RightSubtreeType>, ElementType> : std::conditional<
-				lt<ElementType, RootElementType>::value,
-				_insert_element_left<ElementType>,
+			template<class RootElementType, class LeftSubtreeType, class RightSubtreeType, class NewElementType>
+			struct _insert<expression_tree<RootElementType, LeftSubtreeType, RightSubtreeType>, NewElementType> : std::conditional<
+				lt<NewElementType, RootElementType>::value,
+				_insert_element_left<NewElementType>,
 				typename std::conditional<
-					lt<RootElementType, ElementType>::value,
-					_insert_element_right<ElementType>,
+					lt<RootElementType, NewElementType>::value,
+					_insert_element_right<NewElementType>,
 					std::nullptr_t // It should not be called.
 				>::type
 			>::type {

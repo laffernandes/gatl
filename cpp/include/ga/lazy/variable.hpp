@@ -5,6 +5,8 @@ namespace ga {
 
 	namespace lazy {
 
+		//TODO Armazenar ponteiro.
+
 		template<id_t Id, class ValueType>
 		class variable final : public lazy_expression<variable<Id, ValueType> > {
 		public:
@@ -74,6 +76,8 @@ namespace ga {
 		constexpr decltype(auto) var(lazy_expression<ExpressionType> const &arg) {
 			return var<Id>(detail::cast_to_value(arg).get());
 		}
+
+		//TODO Fazer wrapper para clifford_expression. Requer Id composto.
 
 	}
 

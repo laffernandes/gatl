@@ -1,37 +1,11 @@
-#ifndef __GA_CLIFFORD_WRITE_HPP__
-#define __GA_CLIFFORD_WRITE_HPP__
+#ifndef __GA_CLIFFORD_INSERTION_OPERATOR_HPP__
+#define __GA_CLIFFORD_INSERTION_OPERATOR_HPP__
 
 namespace ga {
 
 	namespace clifford {
 
 		namespace detail {
-
-			template<class ExpressionType>
-			void write_coefficient(std::ostream &os, lazy_expression<ExpressionType> const &rhs, bool const first) {
-				if (!first) {
-					os << " + ";
-				}
-				os << rhs;
-			}
-
-			template<class ValueType>
-			void write_coefficient(std::ostream &os, lazy::value<ValueType> const &rhs, bool const first) {
-				if (first) {
-					os << rhs.get();
-				}
-				else {
-					if (rhs.get() >= static_cast<ValueType>(0)) {
-						os << " + ";
-					}
-					else {
-						if (rhs.get() < static_cast<ValueType>(0)) {
-							os << " - ";
-						}
-					}
-					os << abs(rhs.get());
-				}
-			}
 
 			void write_basis_blade(std::ostream &os, default_bitset_t rhs) {
 				if (rhs == 0) {
@@ -66,32 +40,33 @@ namespace ga {
 
 			template<class CoefficientType, class BasisBladeType>
 			void write_element(std::ostream &os, component<CoefficientType, BasisBladeType> const &rhs, bool &first) {
-				write_coefficient(os, rhs.coefficient(), first);
-				os << " * ";
+				if (first) {
+					first = false;
+				}
+				else {
+					os << " + ";
+				}
+				os << rhs.coefficient() << " * ";
 				write_basis_blade(os, rhs.basis_blade());
-				first = false;
 			}
 
 			template<class CoefficientType, default_bitset_t PossibleGrades>
 			void write_element(std::ostream &os, components<CoefficientType, PossibleGrades> const &rhs, bool &first) {
 				if (first) {
+					first = false;
 					os << "[";
 				}
 				else {
 					os << " + [";
-					first = true;
 				}
-				if (!rhs.empty()) {
-					for (auto itr = rhs.begin(), end = rhs.end(); itr != end; ++itr) {
-						write_coefficient(os, itr->second, first);
-						os << " * ";
-						write_basis_blade(os, itr->first);
-						first = false;
-					}
+				if (rhs.empty()) {
+					os << constant<0>();
 				}
 				else {
-					write_coefficient(os, constant<0>(), first);
-					first = false;
+					for (auto itr = rhs.begin(), end = rhs.end(); itr != end; ++itr) {
+						os << itr->second << " * ";
+						write_basis_blade(os, itr->first);
+					}
 				}
 				os << "]";
 			}
@@ -125,4 +100,4 @@ namespace ga {
 
 }
 
-#endif // __GA_CLIFFORD_WRITE_HPP__
+#endif // __GA_CLIFFORD_INSERTION_OPERATOR_HPP__

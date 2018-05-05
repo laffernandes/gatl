@@ -1,4 +1,4 @@
-/**/
+/**
 #include <ga3e.hpp>
 #include <ga3h.hpp>
 #include <ga3m.hpp>
@@ -593,12 +593,16 @@ int main() {
 int main() {
 	using namespace ga5e;
 
-	auto x1 = c<5>;
+	auto x1 = c<5> + pow(c<2>, c<10>);
 	auto x2 = val(5.0);
-	auto x3 = var<1>(5.0);
+	auto x3 = var<1>(5.0) + var<2>(7.0);
+	auto x4 = c<5> + sqrt(var<3>(7.0));
+	auto x5 = c<5> + sqrt(c<7>) + cbrt(c<11>);
 	std::cout << "size(x1) = " << sizeof(decltype(x1)) << "\t x1 = " << x1 << std::endl;
 	std::cout << "size(x2) = " << sizeof(decltype(x2)) << "\t x2 = " << x2 << std::endl;
 	std::cout << "size(x3) = " << sizeof(decltype(x3)) << "\t x3 = " << x3 << std::endl;
+	std::cout << "size(x4) = " << sizeof(decltype(x4)) << "\t x4 = " << x4 << std::endl;
+	std::cout << "size(x5) = " << sizeof(decltype(x5)) << "\t x5 = " << x5 << std::endl;
 	std::cout << std::endl;
 
 	auto y12 = x1 + x2;

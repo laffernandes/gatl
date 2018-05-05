@@ -5,6 +5,32 @@ namespace ga {
 
 	namespace lazy {
 
+		namespace detail {
+
+			template<class LeftArgumentType, class... RightArgumentTypes>
+			inline void write_add(std::ostream &os, detail::add<LeftArgumentType, RightArgumentTypes...> const &rhs) {
+				os << rhs.left() << " + ";
+				detail::write_add(os, rhs.right());
+			}
+
+			template<class LeftArgumentType, class RightArgumentType>
+			inline void write_add(std::ostream &os, detail::add<LeftArgumentType, RightArgumentType> const &rhs) {
+				os << rhs.left() << " + " << rhs.right();
+			}
+
+			template<class LeftArgumentType, class... RightArgumentTypes>
+			inline void write_mul(std::ostream &os, detail::mul<LeftArgumentType, RightArgumentTypes...> const &rhs) {
+				os << rhs.left() << " * ";
+				detail::write_mul(os, rhs.right());
+			}
+
+			template<class LeftArgumentType, class RightArgumentType>
+			inline void write_mul(std::ostream &os, detail::mul<LeftArgumentType, RightArgumentType> const &rhs) {
+				os << rhs.left() << " * " << rhs.right();
+			}
+
+		}
+
 		template<class ExpressionType>
 		std::ostream & operator<<(std::ostream &os, lazy_expression<ExpressionType> const &rhs) {
 			os << rhs();
@@ -19,7 +45,12 @@ namespace ga {
 
 		template<class ValueType>
 		std::ostream & operator<<(std::ostream &os, value<ValueType> const &rhs) {
-			os << rhs.get();
+			if (rhs.get() < 0) {
+				os << "(" << rhs.get() << ")";
+			}
+			else {
+				os << rhs.get();
+			}
 			return os;
 		}
 
@@ -29,15 +60,19 @@ namespace ga {
 			return os;
 		}
 
-		template<class LeftExpressionType, class RightExpressionType>
-		std::ostream & operator<<(std::ostream &os, detail::add<LeftExpressionType, RightExpressionType> const &rhs) {
-			os << "(" << rhs.left() << " + " << rhs.right() << ")";
+		template<class... ArgumentTypes>
+		std::ostream & operator<<(std::ostream &os, detail::add<ArgumentTypes...> const &rhs) {
+			os << "(";
+			detail::write_add(os, rhs);
+			os << ")";
 			return os;
 		}
 
-		template<class LeftExpressionType, class RightExpressionType>
-		std::ostream & operator<<(std::ostream &os, detail::mul<LeftExpressionType, RightExpressionType> const &rhs) {
-			os << "(" << rhs.left() << " * " << rhs.right() << ")";
+		template<class... ArgumentTypes>
+		std::ostream & operator<<(std::ostream &os, detail::mul<ArgumentTypes...> const &rhs) {
+			os << "(";
+			detail::write_mul(os, rhs);
+			os << ")";
 			return os;
 		}
 

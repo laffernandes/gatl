@@ -45,33 +45,33 @@ namespace ga {
 				constexpr static bool value = false;
 			};
 
-			template<default_integral_t LeftValue, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::constant<LeftValue>, lazy::detail::add<RightLeftExpressionType, RightRightExpressionType> > {
+			template<default_integral_t LeftValue, class... RightArgumentTypes>
+			struct lt<lazy::constant<LeftValue>, lazy::detail::add<RightArgumentTypes...> > {
 				constexpr static bool value = true;
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, default_integral_t RightValue>
-			struct lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, lazy::constant<RightValue> > {
+			template<class... LeftArgumentTypes, default_integral_t RightValue>
+			struct lt<lazy::detail::add<LeftArgumentTypes...>, lazy::constant<RightValue> > {
 				constexpr static bool value = false;
 			};
 
-			template<default_integral_t LeftValue, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::constant<LeftValue>, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > {
+			template<default_integral_t LeftValue, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::constant<LeftValue>, lazy::detail::mul<RightLeftArgumentType, RightRightArgumentTypes...> > {
 				constexpr static bool value = true;
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, default_integral_t RightValue>
-			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType> , lazy::constant<RightValue> > {
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, default_integral_t RightValue>
+			struct lt<lazy::detail::mul<LeftLeftArgumentType, LeftRightArgumentTypes...> , lazy::constant<RightValue> > {
 				constexpr static bool value = false;
 			};
 
-			template<default_integral_t LeftValue, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::constant<LeftValue>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > {
+			template<default_integral_t LeftValue, class RightLeftArgumentType, class RightRightArgumentType>
+			struct lt<lazy::constant<LeftValue>, lazy::detail::power<RightLeftArgumentType, RightRightArgumentType> > {
 				constexpr static bool value = true;
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, default_integral_t RightValue>
-			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::constant<RightValue> > {
+			template<class LeftLeftArgumentType, class LeftRightArgumentType, default_integral_t RightValue>
+			struct lt<lazy::detail::power<LeftLeftArgumentType, LeftRightArgumentType>, lazy::constant<RightValue> > {
 				constexpr static bool value = false;
 			};
 
@@ -85,88 +85,88 @@ namespace ga {
 				constexpr static bool value = LeftId < RightId;
 			};
 
-			template<id_t LeftId, class LeftValueType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::add<RightLeftExpressionType, RightRightExpressionType> > :
-				le<lazy::variable<LeftId, LeftValueType>, RightLeftExpressionType> {
+			template<id_t LeftId, class LeftValueType, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::add<RightLeftArgumentType, RightRightArgumentTypes...> > :
+				le<lazy::variable<LeftId, LeftValueType>, RightLeftArgumentType> {
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, id_t RightId, class RightValueType>
-			struct lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, lazy::variable<RightId, RightValueType> > :
-				lt<LeftLeftExpressionType, lazy::variable<RightId, RightValueType>> {
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, id_t RightId, class RightValueType>
+			struct lt<lazy::detail::add<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::variable<RightId, RightValueType> > :
+				lt<LeftLeftArgumentType, lazy::variable<RightId, RightValueType> > {
 			};
 
-			template<id_t LeftId, class LeftValueType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > :
-				le<lazy::variable<LeftId, LeftValueType>, RightLeftExpressionType> {
+			template<id_t LeftId, class LeftValueType, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::mul<RightLeftArgumentType, RightRightArgumentTypes...> > :
+				le<lazy::variable<LeftId, LeftValueType>, RightLeftArgumentType> {
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, id_t RightId, class RightValueType>
-			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, lazy::variable<RightId, RightValueType> > :
-				lt<LeftLeftExpressionType, lazy::variable<RightId, RightValueType>> {
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, id_t RightId, class RightValueType>
+			struct lt<lazy::detail::mul<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::variable<RightId, RightValueType> > :
+				lt<LeftLeftArgumentType, lazy::variable<RightId, RightValueType> > {
 			};
 
-			template<id_t LeftId, class LeftValueType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > :
-				le<lazy::variable<LeftId, LeftValueType>, RightLeftExpressionType> {
+			template<id_t LeftId, class LeftValueType, class RightLeftArgumentType, class RightRightArgumentType>
+			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::power<RightLeftArgumentType, RightRightArgumentType> > :
+				le<lazy::variable<LeftId, LeftValueType>, RightLeftArgumentType> {
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, id_t RightId, class RightValueType>
-			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::variable<RightId, RightValueType> > :
-				lt<LeftLeftExpressionType, lazy::variable<RightId, RightValueType>> {
+			template<class LeftLeftArgumentType, class LeftRightArgumentType, id_t RightId, class RightValueType>
+			struct lt<lazy::detail::power<LeftLeftArgumentType, LeftRightArgumentType>, lazy::variable<RightId, RightValueType> > :
+				lt<LeftLeftArgumentType, lazy::variable<RightId, RightValueType> > {
 			};
 
 			// Addition type ordering:
 			//     add_left < add_right, if add_left[Left] < add_right[Left] || (add_left[Left] == add_right[Left] && add_left[Right] < add_right[Right])
 			//     add < mul, if add[Left] < mul
 			//     add < power, if add[Left] < power
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::add<RightLeftExpressionType, RightRightExpressionType> > {
-				constexpr static bool value = lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value);
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::detail::add<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::detail::add<RightLeftArgumentType, RightRightArgumentTypes...> > {
+				constexpr static bool value = lt<LeftLeftArgumentType, RightLeftArgumentType>::value || (eq<LeftLeftArgumentType, RightLeftArgumentType>::value && lt<typename lazy::detail::add<LeftLeftArgumentType, LeftRightArgumentTypes...>::right_type, typename lazy::detail::add<RightLeftArgumentType, RightRightArgumentTypes...>::right_type>::value);
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > :
-				lt<LeftLeftExpressionType, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > {
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::detail::add<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::detail::mul<RightLeftArgumentType, RightRightArgumentTypes...> > :
+				lt<LeftLeftArgumentType, lazy::detail::mul<RightLeftArgumentType, RightRightArgumentTypes...> > {
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::add<RightLeftExpressionType, RightRightExpressionType>> :
-				le<lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType>, LeftLeftExpressionType> {
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::detail::mul<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::detail::add<RightLeftArgumentType, RightRightArgumentTypes...> > :
+				le<lazy::detail::mul<LeftLeftArgumentType, LeftRightArgumentTypes...>, RightLeftArgumentType> {
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::detail::add<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > :
-				lt<LeftLeftExpressionType, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > {
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, class RightLeftArgumentType, class RightRightArgumentType>
+			struct lt<lazy::detail::add<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::detail::power<RightLeftArgumentType, RightRightArgumentType> > :
+				lt<LeftLeftArgumentType, lazy::detail::power<RightLeftArgumentType, RightRightArgumentType> > {
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType> , lazy::detail::add<RightLeftExpressionType, RightRightExpressionType>> :
-				le<lazy::detail::power<RightLeftExpressionType, RightRightExpressionType>, LeftLeftExpressionType> {
+			template<class LeftLeftArgumentType, class LeftRightArgumentType, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::detail::power<LeftLeftArgumentType, LeftRightArgumentType> , lazy::detail::add<RightLeftArgumentType, RightRightArgumentTypes...> > :
+				le<lazy::detail::power<LeftLeftArgumentType, LeftRightArgumentType>, RightLeftArgumentType> {
 			};
 
 			// Multiplication type ordering:
 			//     mul_left < mul_right, if mul_left[Left] < mul_right[Left] || (mul_left[Left] == mul_right[Left] && mul_left[Right] < mul_right[Right])
 			//     mul < power, if mul[Left] < power
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType> > {
-				constexpr static bool value = lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value);
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::detail::mul<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::detail::mul<RightLeftArgumentType, RightRightArgumentTypes...> > {
+				constexpr static bool value = lt<LeftLeftArgumentType, RightLeftArgumentType>::value || (eq<LeftLeftArgumentType, RightLeftArgumentType>::value && lt<typename lazy::detail::mul<LeftLeftArgumentType, LeftRightArgumentTypes...>::right_type, typename lazy::detail::mul<RightLeftArgumentType, RightRightArgumentTypes...>::right_type>::value);
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::detail::mul<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > :
-				lt<LeftLeftExpressionType, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > {
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, class RightLeftArgumentType, class RightRightArgumentType>
+			struct lt<lazy::detail::mul<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::detail::power<RightLeftArgumentType, RightRightArgumentType> > :
+				lt<LeftLeftArgumentType, lazy::detail::power<RightLeftArgumentType, RightRightArgumentType> > {
 			};
 
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::mul<RightLeftExpressionType, RightRightExpressionType>> :
-				le<lazy::detail::power<RightLeftExpressionType, RightRightExpressionType>, LeftLeftExpressionType> {
+			template<class LeftLeftArgumentType, class LeftRightArgumentType, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::detail::power<LeftLeftArgumentType, LeftRightArgumentType>, lazy::detail::mul<RightLeftArgumentType, RightRightArgumentTypes...> > :
+				le<lazy::detail::power<LeftLeftArgumentType, LeftRightArgumentType>, RightLeftArgumentType> {
 			};
 
 			// Exponentiation type ordering:
 			//     power_left < lower_right, if power_left[Left] < power_right[Left] || (power_left[Left] == power_right[Left] && power_left[Right] < power_right[Right])
-			template<class LeftLeftExpressionType, class LeftRightExpressionType, class RightLeftExpressionType, class RightRightExpressionType>
-			struct lt<lazy::detail::power<LeftLeftExpressionType, LeftRightExpressionType>, lazy::detail::power<RightLeftExpressionType, RightRightExpressionType> > {
-				constexpr static bool value = lt<LeftLeftExpressionType, RightLeftExpressionType>::value || (eq<LeftLeftExpressionType, RightLeftExpressionType>::value && lt<LeftRightExpressionType, RightRightExpressionType>::value);
+			template<class LeftLeftArgumentType, class LeftRightArgumentType, class RightLeftArgumentType, class RightRightArgumentType>
+			struct lt<lazy::detail::power<LeftLeftArgumentType, LeftRightArgumentType>, lazy::detail::power<RightLeftArgumentType, RightRightArgumentType> > {
+				constexpr static bool value = lt<LeftLeftArgumentType, RightLeftArgumentType>::value || (eq<LeftLeftArgumentType, RightLeftArgumentType>::value && lt<LeftRightArgumentType, RightRightArgumentType>::value);
 			};
 
 		}

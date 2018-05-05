@@ -7,13 +7,13 @@ namespace ga {
 
 		namespace detail {
 
-			template<class LeftExpressionType, class RightExpressionType>
+			template<class LeftArgumentType, class RightArgumentType>
 			class power final :
-				public lazy_expression<power<LeftExpressionType, RightExpressionType> >,
-				private binary_lazy_expression<LeftExpressionType, RightExpressionType> {
+				public lazy_expression<power<LeftArgumentType, RightArgumentType> >,
+				private arguments_storage<LeftArgumentType, RightArgumentType> {
 			private:
 
-				typedef binary_lazy_expression<LeftExpressionType, RightExpressionType> _super_for_arguments;
+				typedef arguments_storage<LeftArgumentType, RightArgumentType> _super_for_arguments;
 
 			public:
 
@@ -42,9 +42,9 @@ namespace ga {
 				static_assert(!std::is_same<right_type, constant<1> >::value, "The right-hand side argument cannot be a ga::lazy::constant<1> expression.");
 			};
 
-			template<class LeftExpressionType, class RightExpressionType>
-			constexpr power<LeftExpressionType, RightExpressionType> make_power(LeftExpressionType const &lhs, RightExpressionType const &rhs) {
-				return power<LeftExpressionType, RightExpressionType>(lhs, rhs);
+			template<class LeftArgumentType, class RightArgumentType>
+			constexpr power<LeftArgumentType, RightArgumentType> make_power(LeftArgumentType const &lhs, RightArgumentType const &rhs) {
+				return power<LeftArgumentType, RightArgumentType>(lhs, rhs);
 			}
 
 		}
@@ -53,14 +53,14 @@ namespace ga {
 
 	namespace common {
 
-		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_expression<lazy::detail::power<LeftExpressionType, RightExpressionType> > {
+		template<class LeftArgumentType, class RightArgumentType>
+		struct is_lazy_expression<lazy::detail::power<LeftArgumentType, RightArgumentType> > {
 			constexpr static bool value = true;
 		};
 
-		template<class LeftExpressionType, class RightExpressionType>
-		struct is_lazy_constant<lazy::detail::power<LeftExpressionType, RightExpressionType> > {
-			constexpr static bool value = is_lazy_constant<LeftExpressionType>::value && is_lazy_constant<RightExpressionType>::value;
+		template<class LeftArgumentType, class RightArgumentType>
+		struct is_lazy_constant<lazy::detail::power<LeftArgumentType, RightArgumentType> > {
+			constexpr static bool value = is_lazy_constant<LeftArgumentType>::value && is_lazy_constant<RightArgumentType>::value;
 		};
 
 	}

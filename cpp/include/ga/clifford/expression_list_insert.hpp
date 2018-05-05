@@ -8,22 +8,22 @@ namespace ga {
 		namespace detail {
 
 			struct _insert_element_next {
-				template<class ExpressionType, class ElementType>
-				constexpr static decltype(auto) bind(ExpressionType const &curr, ElementType const &element) {
-					return make_expression_list(curr.element(), insert(curr.next(), element));
+				template<class ElementType, class... OtherElementTypes, class NewElementType>
+				constexpr static decltype(auto) bind(expression_list<ElementType, OtherElementTypes...> const &expression, NewElementType const &element) {
+					return expression_list<ElementType, NewElementType, OtherElementTypes...>(expression.element(), insert(expression.next(), element));
 				}
 			};
 
 			struct _insert_element_here {
-				template<class ExpressionType, class ElementType>
-				constexpr static decltype(auto) bind(ExpressionType const &curr, ElementType const &element) {
-					return make_expression_list(element, curr);
+				template<class ElementType, class... OtherElementTypes, class NewElementType>
+				constexpr static decltype(auto) bind(expression_list<ElementType, OtherElementTypes...> const &expression, NewElementType const &element) {
+					return expression_list<NewElementType, ElementType, OtherElementTypes...>(element, expression);
 				}
 			};
 
-			template<class CurrentElementType, class NextListType, class ElementType>
-			struct _insert<expression_list<CurrentElementType, NextListType>, ElementType> : std::conditional<
-				lt<CurrentElementType, ElementType>::value,
+			template<class ElementType, class... OtherElementTypes, class NewElementType>
+			struct _insert<expression_list<ElementType, OtherElementTypes...>, NewElementType> : std::conditional<
+				lt<ElementType, NewElementType>::value,
 				_insert_element_next,
 				_insert_element_here
 			>::type {
