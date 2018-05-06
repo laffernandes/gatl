@@ -162,6 +162,11 @@ namespace ga {
 			}
 
 			// Specializations of the eval_lazy_expression() function.
+			template<class ExpressionType>
+			constexpr decltype(auto) eval_lazy_expression(lazy_expression<ExpressionType> const &arg) {
+				return eval_lazy_expression(arg());
+			}
+
 			template<default_integral_t Value>
 			constexpr constant<Value> eval_lazy_expression(constant<Value> const &) {
 				return constant<Value>();

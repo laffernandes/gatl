@@ -119,6 +119,18 @@ namespace ga {
 #include "ga/clifford/clifford_expression_iterators.hpp"
 #include "ga/clifford/clifford_expression_native.hpp"
 
+#include "ga/clifford/copy.hpp"
+
+#if defined(GA_USE_CLIFFORD_EXPRESSION_LIST)
+	#include "ga/clifford/expression_list.hpp"
+	#include "ga/clifford/expression_list_insert.hpp"
+	#include "ga/clifford/expression_list_iterators.hpp"
+#elif defined(GA_USE_CLIFFORD_EXPRESSION_TREE)
+	#include "ga/clifford/expression_tree.hpp"
+	#include "ga/clifford/expression_tree_insert.hpp"
+	#include "ga/clifford/expression_tree_iterators.hpp"
+#endif // GA_USE_CLIFFORD_EXPRESSION_LIST || GA_USE_CLIFFORD_EXPRESSION_TREE
+
 #include "ga/clifford/component.hpp"
 #include "ga/clifford/components.hpp"
 #include "ga/clifford/element_ordering.hpp"
@@ -131,19 +143,12 @@ namespace ga {
 #include "ga/clifford/element_keep_if_grade.hpp"
 #include "ga/clifford/element_deduce_grade.hpp"
 
-#include "ga/clifford/copy.hpp"
 #include "ga/clifford/cast_to_variable.hpp"
 #include "ga/clifford/lazy_expression_iterator.hpp"
 
 #if defined(GA_USE_CLIFFORD_EXPRESSION_LIST)
-	#include "ga/clifford/expression_list.hpp"
-	#include "ga/clifford/expression_list_insert.hpp"
-	#include "ga/clifford/expression_list_iterators.hpp"
 	#include "ga/clifford/expression_list_native.hpp"
 #elif defined(GA_USE_CLIFFORD_EXPRESSION_TREE)
-	#include "ga/clifford/expression_tree.hpp"
-	#include "ga/clifford/expression_tree_insert.hpp"
-	#include "ga/clifford/expression_tree_iterators.hpp"
 	#include "ga/clifford/expression_tree_native.hpp"
 #endif // GA_USE_CLIFFORD_EXPRESSION_LIST || GA_USE_CLIFFORD_EXPRESSION_TREE
 

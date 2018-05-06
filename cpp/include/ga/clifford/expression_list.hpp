@@ -181,8 +181,11 @@ namespace ga {
 				static_assert(!std::is_same<typename element_type::coefficient_type, constant<0> >::value, "Zeros are not alowed here!");
 			};
 
+			template<class... ElementTypes>
+			class expression_list;
+
 			template<class ElementType, class... OtherElementTypes>
-			class expression_list final :
+			class expression_list<ElementType, OtherElementTypes...> final :
 				public clifford_expression<expression_list<ElementType, OtherElementTypes...> >,
 				private _super_expression_list<ElementType, expression_list<OtherElementTypes...> > {
 			private:
@@ -227,51 +230,25 @@ namespace ga {
 				using _super::compile_time_defined;
 			};
 
-			template<class ElementType>
-			class expression_list<ElementType> final :
-				public clifford_expression<expression_list<ElementType> >,
-				private _super_expression_list<ElementType, empty_clifford_expression> {
-			private:
-
-				typedef _super_expression_list<ElementType, empty_clifford_expression> _super;
-
+			template<>
+			class expression_list<> final :
+				public clifford_expression<expression_list<> > {
 			public:
 
 				typedef expression_list expression_type;
 
-				using element_type = typename _super::element_type;
-				using next_type = typename _super::next_type;
-
-				constexpr expression_list() = default;
-				constexpr expression_list(expression_list const &) = default;
-				constexpr expression_list(expression_list &&) = default;
-
-				template<class OtherExpressionType>
-				constexpr expression_list(clifford_expression<OtherExpressionType> const &other) {
-					copy(obegin(other), obegin(*this));
+				constexpr static bool compile_time_defined() {
+					return true;
 				}
-
-				constexpr expression_list(element_type const &element) :
-					_super(element, empty_clifford_expression()) {
-				}
-
-				constexpr expression_list & operator=(expression_list const &) = default;
-				constexpr expression_list & operator=(expression_list &&) = default;
-
-				template<class OtherExpressionType>
-				constexpr expression_list & operator=(clifford_expression<OtherExpressionType> const &other) {
-					copy(obegin(other), obegin(*this));
-					return *this;
-				}
-
-				using _super::element;
-				using _super::next;
-				using _super::compile_time_defined;
 			};
 
 			template<class ElementType>
 			constexpr decltype(auto) make_simple_clifford_expression(ElementType const &element) {
 				return expression_list<ElementType>(element);
+			}
+
+			constexpr decltype(auto) make_empty_clifford_expression() {
+				return expression_list<>();
 			}
 
 		}
@@ -280,22 +257,21 @@ namespace ga {
 
 	namespace common {
 
-		template<class ElementType, class... OtherElementTypes>
-		struct is_clifford_expression<clifford::detail::expression_list<ElementType, OtherElementTypes...> > {
+		template<class... ElementTypes>
+		struct is_clifford_expression<clifford::detail::expression_list<ElementTypes...> > {
 			constexpr static bool value = true;
 		};
 
 		template<class ElementType, class... OtherElementTypes>
 		struct common_value_type<clifford::detail::expression_list<ElementType, OtherElementTypes...> > : std::common_type<
 			typename common_value_type<typename ElementType::coefficient_type>::type,
-			typename common_value_type<typename clifford::detail::expression_list<ElementType, OtherElementTypes...>::next_type>::type
+			typename common_value_type<clifford::detail::expression_list<OtherElementTypes...> >::type
 		> {
 		};
 
-		template<class ElementType>
-		struct common_value_type<clifford::detail::expression_list<ElementType> > : std::common_type<
-			typename common_value_type<typename ElementType::coefficient_type>::type
-		> {
+		template<>
+		struct common_value_type<clifford::detail::expression_list<> > {
+			typedef default_integral_t type;
 		};
 
 	}

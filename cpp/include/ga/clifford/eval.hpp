@@ -70,8 +70,8 @@ namespace ga {
 			}
 
 			template<class Type>
-			constexpr empty_clifford_expression eval_clifford_expression(itr_end const &) {
-				return empty_clifford_expression();
+			constexpr decltype(auto) eval_clifford_expression(itr_end const &) {
+				return make_empty_clifford_expression();
 			}
 
 			struct _eval_clifford_expression {

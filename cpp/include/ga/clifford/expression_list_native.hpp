@@ -22,6 +22,11 @@ namespace ga {
 				constexpr static bool value = true;
 			};
 
+			template<>
+			struct may_cast_to_native<expression_list<> > {
+				constexpr static bool value = true;
+			};
+
 		}
 
 		template<class CoefficientType>
@@ -37,6 +42,10 @@ namespace ga {
 		template<class CoefficientType>
 		constexpr decltype(auto) native(detail::expression_list<detail::components<CoefficientType, default_bitset_t(1)> > const &arg) {
 			return native(arg.element().begin()->second);
+		}
+
+		constexpr decltype(auto) native(detail::expression_list<> const &) {
+			return constant<0>();
 		}
 
 		template<class ElementType, class... OtherElementTypes>

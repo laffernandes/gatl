@@ -13,8 +13,8 @@ namespace ga {
 			}
 
 			template<class LeftItrType, class MetricSpaceType, class KeepIfGradesFunc>
-			constexpr empty_clifford_expression graded_product_inner_loop(LeftItrType const &, itr_end const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
-				return empty_clifford_expression();
+			constexpr decltype(auto) graded_product_inner_loop(LeftItrType const &, itr_end const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
+				return make_empty_clifford_expression();
 			}
 
 			template<class LeftItrType, class RightItrType, class MetricSpaceType, class KeepIfGradesFunc>
@@ -23,18 +23,18 @@ namespace ga {
 			}
 
 			template<class RightItrType, class MetricSpaceType, class KeepIfGradesFunc>
-			constexpr empty_clifford_expression graded_product(itr_end const &, RightItrType const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
-				return empty_clifford_expression();
+			constexpr decltype(auto) graded_product(itr_end const &, RightItrType const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
+				return make_empty_clifford_expression();
 			}
 
 			template<class LeftItrType, class MetricSpaceType, class KeepIfGradesFunc>
-			constexpr empty_clifford_expression graded_product(LeftItrType const &, itr_end const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
-				return empty_clifford_expression();
+			constexpr decltype(auto) graded_product(LeftItrType const &, itr_end const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
+				return make_empty_clifford_expression();
 			}
 
 			template<class MetricSpaceType, class KeepIfGradesFunc>
-			constexpr empty_clifford_expression graded_product(itr_end const &, itr_end const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
-				return empty_clifford_expression();
+			constexpr decltype(auto) graded_product(itr_end const &, itr_end const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
+				return make_empty_clifford_expression();
 			}
 
 		}

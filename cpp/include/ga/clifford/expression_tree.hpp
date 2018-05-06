@@ -466,6 +466,16 @@ namespace ga {
 				using _super::compile_time_defined;
 			};
 
+			class empty_expression_tree final : public clifford_expression<empty_expression_tree> {
+			public:
+
+				typedef empty_expression_tree expression_type;
+
+				constexpr static bool compile_time_defined() {
+					return true;
+				}
+			};
+
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 			constexpr decltype(auto) make_expression_tree(ElementType const &element, LeftSubtreeType const &left, RightSubtreeType const &right) {
 				return expression_tree<ElementType, LeftSubtreeType, RightSubtreeType>(element, left, right);
@@ -473,7 +483,11 @@ namespace ga {
 
 			template<class ElementType>
 			constexpr decltype(auto) make_simple_clifford_expression(ElementType const &element) {
-				return make_expression_tree(element, empty_clifford_expression(), empty_clifford_expression());
+				return make_expression_tree(element, empty_expression_tree(), empty_expression_tree());
+			}
+
+			constexpr decltype(auto) make_empty_expression_tree() {
+				return empty_expression_tree();
 			}
 
 		}
@@ -487,12 +501,22 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
+		template<>
+		struct is_clifford_expression<clifford::detail::empty_expression_tree> {
+			constexpr static bool value = true;
+		};
+
 		template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 		struct common_value_type<clifford::detail::expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> > : std::common_type<
 			typename common_value_type<typename ElementType::coefficient_type>::type,
 			typename common_value_type<LeftSubtreeType>::type,
 			typename common_value_type<RightSubtreeType>::type
 		> {
+		};
+
+		template<>
+		struct common_value_type<clifford::detail::empty_expression_tree> {
+			typedef default_integral_t type;
 		};
 
 	}

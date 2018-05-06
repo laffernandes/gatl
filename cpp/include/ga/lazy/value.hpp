@@ -67,12 +67,17 @@ namespace ga {
 
 		template<class ExpressionType>
 		constexpr decltype(auto) val(lazy_expression<ExpressionType> const &arg) {
-			return detail::eval_lazy_expression(arg);
+			return detail::eval_lazy_expression(arg());
 		}
 
 		template<default_integral_t Value>
 		constexpr value<default_integral_t> val(lazy_expression<constant<Value> > const &) {
 			return value<default_integral_t>(Value);
+		}
+
+		template<class ValueType>
+		constexpr value<ValueType> val(lazy_expression<value<ValueType> > const &arg) {
+			return arg();
 		}
 
 	}

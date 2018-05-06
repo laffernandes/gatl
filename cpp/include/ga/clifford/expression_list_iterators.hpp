@@ -45,6 +45,10 @@ namespace ga {
 				return make_itr(&arg);
 			}
 
+			constexpr decltype(auto) begin(expression_list<> &) {
+				return itr_end();
+			}
+
 			template<class ElementType, class... OtherElementTypes>
 			constexpr decltype(auto) next(itr<expression_list<ElementType, OtherElementTypes...> > const &curr) {
 				return make_itr(&curr.expression()->next());
@@ -93,6 +97,10 @@ namespace ga {
 				return make_citr(&arg);
 			}
 
+			constexpr decltype(auto) begin(expression_list<> const &) {
+				return itr_end();
+			}
+
 			template<class ElementType, class... OtherElementTypes>
 			constexpr decltype(auto) next(citr<expression_list<ElementType, OtherElementTypes...> > const &curr) {
 				return make_citr(&curr.expression()->next());
@@ -103,13 +111,13 @@ namespace ga {
 				return itr_end();
 			}
 
-			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) obegin(expression_list<ElementType, OtherElementTypes...> &arg) {
+			template<class... ElementTypes>
+			constexpr decltype(auto) obegin(expression_list<ElementTypes...> &arg) {
 				return begin(arg);
 			}
 
-			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) obegin(expression_list<ElementType, OtherElementTypes...> const &arg) {
+			template<class... ElementTypes>
+			constexpr decltype(auto) obegin(expression_list<ElementTypes...> const &arg) {
 				return begin(arg);
 			}
 

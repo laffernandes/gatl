@@ -15,17 +15,9 @@ namespace ga {
 				return begin(arg());
 			}
 
-			constexpr itr_end begin(empty_clifford_expression &) {
-				return itr_end();
-			}
-
 			template<class ExpressionType>
 			constexpr decltype(auto) begin(clifford_expression<ExpressionType> const &arg) {
 				return begin(arg());
-			}
-
-			constexpr itr_end begin(empty_clifford_expression const &) {
-				return itr_end();
 			}
 
 			template<class ValueType, typename std::enable_if<!(is_lazy_expression<ValueType>::value || is_clifford_expression<ValueType>::value), int>::type = 0>
@@ -38,17 +30,9 @@ namespace ga {
 				return obegin(arg());
 			}
 
-			constexpr itr_end obegin(empty_clifford_expression &) {
-				return itr_end();
-			}
-
 			template<class ExpressionType>
 			constexpr decltype(auto) obegin(clifford_expression<ExpressionType> const &arg) {
 				return obegin(arg());
-			}
-
-			constexpr itr_end obegin(empty_clifford_expression const &) {
-				return itr_end();
 			}
 
 			template<class ValueType, typename std::enable_if<!(is_lazy_expression<ValueType>::value || is_clifford_expression<ValueType>::value), int>::type = 0>

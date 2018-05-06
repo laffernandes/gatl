@@ -10,13 +10,6 @@ namespace ga {
 			template<class ExpressionType, class NewElementType>
 			struct _insert;
 
-			template<class NewElementType>
-			struct _insert<empty_clifford_expression, NewElementType> {
-				constexpr static decltype(auto) bind(empty_clifford_expression const &, NewElementType const &element) {
-					return make_simple_clifford_expression(element);
-				}
-			};
-
 			template<class CoefficientType, class BasisBladeType>
 			struct _insert_non_zero {
 				template<class ExpressionType, class NewElementType>

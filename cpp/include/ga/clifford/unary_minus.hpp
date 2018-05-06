@@ -15,8 +15,8 @@ namespace ga {
 				return insert(unary_minus(next(arg)), unary_minus_element(arg.element()));
 			}
 
-			constexpr empty_clifford_expression unary_minus(itr_end const &) {
-				return empty_clifford_expression();
+			constexpr decltype(auto) unary_minus(itr_end const &) {
+				return make_empty_clifford_expression();
 			}
 
 		}

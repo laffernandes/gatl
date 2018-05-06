@@ -32,8 +32,8 @@ namespace ga {
 				return insert(binary_minus(lhs, next(rhs)), unary_minus_element(rhs.element()));
 			}
 
-			constexpr empty_clifford_expression binary_minus(itr_end const &, itr_end const &) {
-				return empty_clifford_expression();
+			constexpr decltype(auto) binary_minus(itr_end const &, itr_end const &) {
+				return make_empty_clifford_expression();
 			}
 
 		}

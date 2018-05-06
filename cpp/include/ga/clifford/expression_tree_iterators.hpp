@@ -87,6 +87,10 @@ namespace ga {
 				return make_itr(&root, itr_end());
 			}
 
+			constexpr itr_end begin(empty_expression_tree &) {
+				return itr_end();
+			}
+
 			template<class ExpressionType>
 			struct _next;
 
@@ -99,25 +103,25 @@ namespace ga {
 			};
 
 			template<class ElementType, class RightSubtreeType>
-			struct _next<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType> > {
+			struct _next<expression_tree<ElementType, empty_expression_tree, RightSubtreeType> > {
 				template<class TailType>
-				constexpr static decltype(auto) bind(itr<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType>, TailType> const &curr) {
+				constexpr static decltype(auto) bind(itr<expression_tree<ElementType, empty_expression_tree, RightSubtreeType>, TailType> const &curr) {
 					return make_itr(&curr.expression()->right(), curr.tail());
 				}
 			};
 
 			template<class ElementType, class LeftSubtreeType>
-			struct _next<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression> > {
+			struct _next<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree> > {
 				template<class TailType>
-				constexpr static decltype(auto) bind(itr<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression>, TailType> const &curr) {
+				constexpr static decltype(auto) bind(itr<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree>, TailType> const &curr) {
 					return make_itr(&curr.expression()->left(), curr.tail());
 				}
 			};
 
 			template<class ElementType>
-			struct _next<expression_tree<ElementType, empty_clifford_expression, empty_clifford_expression> > {
+			struct _next<expression_tree<ElementType, empty_expression_tree, empty_expression_tree> > {
 				template<class TailType>
-				constexpr static decltype(auto) bind(itr<expression_tree<ElementType, empty_clifford_expression, empty_clifford_expression>, TailType> const &curr) {
+				constexpr static decltype(auto) bind(itr<expression_tree<ElementType, empty_expression_tree, empty_expression_tree>, TailType> const &curr) {
 					return curr.tail();
 				}
 			};
@@ -207,6 +211,10 @@ namespace ga {
 				return make_citr(&root, itr_end());
 			}
 
+			constexpr itr_end begin(empty_expression_tree const &) {
+				return itr_end();
+			}
+
 			template<class ExpressionType>
 			struct _cnext;
 
@@ -219,25 +227,25 @@ namespace ga {
 			};
 
 			template<class ElementType, class RightSubtreeType>
-			struct _cnext<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType> > {
+			struct _cnext<expression_tree<ElementType, empty_expression_tree, RightSubtreeType> > {
 				template<class TailType>
-				constexpr static decltype(auto) bind(citr<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType>, TailType> const &curr) {
+				constexpr static decltype(auto) bind(citr<expression_tree<ElementType, empty_expression_tree, RightSubtreeType>, TailType> const &curr) {
 					return make_citr(&curr.expression()->right(), curr.tail());
 				}
 			};
 
 			template<class ElementType, class LeftSubtreeType>
-			struct _cnext<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression> > {
+			struct _cnext<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree> > {
 				template<class TailType>
-				constexpr static decltype(auto) bind(citr<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression>, TailType> const &curr) {
+				constexpr static decltype(auto) bind(citr<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree>, TailType> const &curr) {
 					return make_citr(&curr.expression()->left(), curr.tail());
 				}
 			};
 
 			template<class ElementType>
-			struct _cnext<expression_tree<ElementType, empty_clifford_expression, empty_clifford_expression> > {
+			struct _cnext<expression_tree<ElementType, empty_expression_tree, empty_expression_tree> > {
 				template<class TailType>
-				constexpr static decltype(auto) bind(citr<expression_tree<ElementType, empty_clifford_expression, empty_clifford_expression>, TailType> const &curr) {
+				constexpr static decltype(auto) bind(citr<expression_tree<ElementType, empty_expression_tree, empty_expression_tree>, TailType> const &curr) {
 					return curr.tail();
 				}
 			};
@@ -284,9 +292,9 @@ namespace ga {
 			};
 
 			template<class ElementType, class RightSubtreeType>
-			struct _push_up_to_leftmost<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType> > {
+			struct _push_up_to_leftmost<expression_tree<ElementType, empty_expression_tree, RightSubtreeType> > {
 				template<class TailType>
-				constexpr static oitr<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType>, TailType> bind(oitr<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType>, TailType> const &curr) {
+				constexpr static oitr<expression_tree<ElementType, empty_expression_tree, RightSubtreeType>, TailType> bind(oitr<expression_tree<ElementType, empty_expression_tree, RightSubtreeType>, TailType> const &curr) {
 					return curr;
 				}
 			};
@@ -294,6 +302,10 @@ namespace ga {
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 			constexpr decltype(auto) obegin(expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> &root) {
 				return _push_up_to_leftmost<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> >::bind(oitr<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType>, itr_end>(&root, itr_end()));
+			}
+
+			constexpr itr_end obegin(empty_expression_tree &) {
+				return itr_end();
 			}
 
 			template<class ExpressionType>
@@ -308,9 +320,9 @@ namespace ga {
 			};
 
 			template<class ElementType, class LeftSubtreeType>
-			struct _onext<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression> > {
+			struct _onext<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree> > {
 				template<class TailType>
-				constexpr static decltype(auto) bind(oitr<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression>, TailType> const &curr) {
+				constexpr static decltype(auto) bind(oitr<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree>, TailType> const &curr) {
 					return curr.tail();
 				}
 			};
@@ -357,9 +369,9 @@ namespace ga {
 			};
 
 			template<class ElementType, class RightSubtreeType>
-			struct _cpush_up_to_leftmost<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType> > {
+			struct _cpush_up_to_leftmost<expression_tree<ElementType, empty_expression_tree, RightSubtreeType> > {
 				template<class TailType>
-				constexpr static coitr<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType>, TailType> bind(coitr<expression_tree<ElementType, empty_clifford_expression, RightSubtreeType>, TailType> const &curr) {
+				constexpr static coitr<expression_tree<ElementType, empty_expression_tree, RightSubtreeType>, TailType> bind(coitr<expression_tree<ElementType, empty_expression_tree, RightSubtreeType>, TailType> const &curr) {
 					return curr;
 				}
 			};
@@ -367,6 +379,10 @@ namespace ga {
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
 			constexpr decltype(auto) obegin(expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &root) {
 				return _cpush_up_to_leftmost<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> >::bind(coitr<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType>, itr_end>(&root, itr_end()));
+			}
+
+			constexpr itr_end obegin(empty_expression_tree const &) {
+				return itr_end();
 			}
 
 			template<class ExpressionType>
@@ -381,9 +397,9 @@ namespace ga {
 			};
 
 			template<class ElementType, class LeftSubtreeType>
-			struct _conext<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression> > {
+			struct _conext<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree> > {
 				template<class TailType>
-				constexpr static decltype(auto) bind(coitr<expression_tree<ElementType, LeftSubtreeType, empty_clifford_expression>, TailType> const &curr) {
+				constexpr static decltype(auto) bind(coitr<expression_tree<ElementType, LeftSubtreeType, empty_expression_tree>, TailType> const &curr) {
 					return curr.tail();
 				}
 			};

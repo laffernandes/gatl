@@ -31,18 +31,10 @@ namespace ga {
 
 		namespace detail {
 
-			class empty_clifford_expression final : public clifford_expression<empty_clifford_expression> {
-			public:
-
-				typedef empty_clifford_expression expression_type;
-
-				constexpr static bool compile_time_defined() {
-					return true;
-				}
-			};
-
 			template<class ElementType>
 			constexpr decltype(auto) make_simple_clifford_expression(ElementType const &);
+
+			constexpr decltype(auto) make_empty_clifford_expression();
 
 		}
 
@@ -55,18 +47,8 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
-		template<>
-		struct is_clifford_expression<clifford::detail::empty_clifford_expression> {
-			constexpr static bool value = true;
-		};
-
 		template<class ExpressionType>
 		struct common_value_type<clifford::clifford_expression<ExpressionType> > : common_value_type<ExpressionType> {
-		};
-
-		template<>
-		struct common_value_type<clifford::detail::empty_clifford_expression> {
-			typedef default_integral_t type;
 		};
 
 	}

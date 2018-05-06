@@ -1,4 +1,4 @@
-/**
+/**/
 #include <ga3e.hpp>
 #include <ga3h.hpp>
 #include <ga3m.hpp>
@@ -641,7 +641,6 @@ int main() {
 	std::cout << "p = " << p << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "sizeof(empty) = " << sizeof(ga::clifford::detail::empty_clifford_expression) << std::endl;
 	std::cout << "sizeof(x) = " << sizeof(decltype(x)) << std::endl;
 	std::cout << "sizeof(e1) = " << sizeof(decltype(e1)) << std::endl;
 	std::cout << "sizeof(p) = " << sizeof(decltype(p)) << std::endl;
@@ -715,7 +714,7 @@ int main() {
 //
 //template<>
 //decltype(auto) _euclidean_vector_impl<0>(double(&coeffs)[N]) {
-//	return ga::clifford::detail::empty_clifford_expression();
+//	return ga::lazy::constant<0>();
 //}
 //
 //decltype(auto) euclidean_vector(double(&coeffs)[N]) {

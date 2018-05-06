@@ -23,7 +23,7 @@ namespace ga {
 			};
 
 			template<>
-			struct _height<empty_clifford_expression> {
+			struct _height<empty_expression_tree> {
 				constexpr static int value = -1;
 			};
 
@@ -157,6 +157,13 @@ namespace ga {
 					std::nullptr_t // It should not be called.
 				>::type
 			>::type {
+			};
+
+			template<class NewElementType>
+			struct _insert<empty_expression_tree, NewElementType> {
+				constexpr static decltype(auto) bind(empty_expression_tree const &, NewElementType const &element) {
+					return make_simple_clifford_expression(element);
+				}
 			};
 
 		}

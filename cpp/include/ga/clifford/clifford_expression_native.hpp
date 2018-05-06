@@ -12,11 +12,6 @@ namespace ga {
 				constexpr static bool value = false;
 			};
 
-			template<>
-			struct may_cast_to_native<empty_clifford_expression> {
-				constexpr static bool value = true;
-			};
-
 			template<class ExpressionType>
 			struct may_cast_to_native<clifford_expression<ExpressionType> > : may_cast_to_native<ExpressionType> {
 			};
@@ -31,10 +26,6 @@ namespace ga {
 		template<class ValueType>
 		constexpr ValueType native(lazy::value<ValueType> const &arg) {
 			return arg.get();
-		}
-
-		constexpr decltype(auto) native(detail::empty_clifford_expression const &) {
-			return constant<0>();
 		}
 
 		template<class ExpressionType>

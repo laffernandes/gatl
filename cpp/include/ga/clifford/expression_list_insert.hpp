@@ -29,6 +29,13 @@ namespace ga {
 			>::type {
 			};
 
+			template<class NewElementType>
+			struct _insert<expression_list<>, NewElementType> {
+				constexpr static decltype(auto) bind(expression_list<> const &, NewElementType const &element) {
+					return make_simple_clifford_expression(element);
+				}
+			};
+
 		}
 
 	}
