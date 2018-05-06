@@ -1,4 +1,4 @@
-/**
+/**/
 #include <ga3e.hpp>
 #include <ga3h.hpp>
 #include <ga3m.hpp>
