@@ -87,43 +87,7 @@ namespace ga {
 
 			template<class LeftCoefficientType, default_bitset_t PossibleGrades, class RightCoefficientType>
 			constexpr decltype(auto) binary_plus_element(component<LeftCoefficientType, dbasis_blade<PossibleGrades> > const &lhs, components<RightCoefficientType, PossibleGrades> const &rhs) {
-				//TODO lazy
-				typedef typename std::common_type<LeftCoefficientType, RightCoefficientType, decltype(LeftCoefficientType() + RightCoefficientType())>::type coefficient_t;
-
-				components<coefficient_t, PossibleGrades> result;
-
-				bool lhs_not_used = true;
-				auto rhs_itr = rhs.begin(), rhs_end = rhs.end();
-				while (lhs_not_used && rhs_itr != rhs_end) {
-					if (lhs.basis_blade().get() < rhs_itr->first.get()) {
-						if (lhs.coefficient() != 0) {
-							result.insert(lhs.basis_blade(), lhs.coefficient());
-						}
-						lhs_not_used = false;
-					}
-					else if (lhs.basis_blade().get() > rhs_itr->first.get()) {
-						result.insert(rhs_itr->first, rhs_itr->second);
-						++rhs_itr;
-					}
-					else {
-						auto aux = lhs.coefficient() + rhs_itr->second;
-						if (aux != 0) {
-							result.insert(lhs.basis_blade(), aux);
-						}
-						lhs_not_used = false;
-						++rhs_itr;
-					}
-				}
-
-				if (lhs_not_used && lhs.coefficient() != 0) {
-					result.insert(lhs.basis_blade(), lhs.coefficient());
-				}
-
-				for (; rhs_itr != rhs_end; ++rhs_itr) {
-					result.insert(rhs_itr->first, rhs_itr->second);
-				}
-
-				return result;
+				return binary_plus_element(rhs, lhs);
 			}
 
 			template<class LeftCoefficientType, default_bitset_t PossibleGrades, class RightCoefficientType>

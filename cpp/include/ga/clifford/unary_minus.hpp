@@ -7,9 +7,6 @@ namespace ga {
 
 		namespace detail {
 
-			struct _unary_minus_neg;
-			struct _unary_minus_end;
-
 			template<class ItrType>
 			constexpr decltype(auto) unary_minus(ItrType const &arg) {
 				return insert(unary_minus(next(arg)), unary_minus_element(element(arg)));
