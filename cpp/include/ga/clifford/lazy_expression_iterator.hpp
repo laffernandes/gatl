@@ -20,7 +20,7 @@ namespace ga {
 					element_(make_component(arg, cbasis_blade<0>())) {
 				}
 
-				constexpr decltype(auto) element() const {
+				constexpr element_type const & element() const {
 					return element_;
 				}
 
@@ -52,6 +52,11 @@ namespace ga {
 			template<class ExpressionType>
 			constexpr itr_end next(lazy_expression_itr<ExpressionType> const &) {
 				return itr_end();
+			}
+
+			template<class ExpressionType>
+			constexpr decltype(auto) element(lazy_expression_itr<ExpressionType> const &itr) {
+				return itr.element();
 			}
 
 			template<class ExpressionType>

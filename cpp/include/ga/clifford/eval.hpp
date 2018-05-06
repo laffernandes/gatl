@@ -11,17 +11,17 @@ namespace ga {
 			struct _eval_dynamic_possible_grades {
 			private:
 
-				constexpr static bool overlap = (!ItrType::element_type::basis_blade_type::compile_time_defined()) && ((PossibleGrades & ItrType::element_type::basis_blade_type::possible_grades()) != default_bitset_t(0));
+				constexpr static bool overlap = (!element_type<ItrType>::type::basis_blade_type::compile_time_defined()) && ((PossibleGrades & element_type<ItrType>::type::basis_blade_type::possible_grades()) != default_bitset_t(0));
 
 				constexpr static default_bitset_t aux = _eval_dynamic_possible_grades<
 					typename next_type<ItrType>::type,
-					overlap ? (PossibleGrades | ItrType::element_type::basis_blade_type::possible_grades()) : PossibleGrades,
-					overlap ? (DynamicPossibleGrades | ItrType::element_type::basis_blade_type::possible_grades()) : DynamicPossibleGrades
+					overlap ? (PossibleGrades | element_type<ItrType>::type::basis_blade_type::possible_grades()) : PossibleGrades,
+					overlap ? (DynamicPossibleGrades | element_type<ItrType>::type::basis_blade_type::possible_grades()) : DynamicPossibleGrades
 				>::value;
 
 			public:
 
-				constexpr static default_bitset_t value = (ItrType::element_type::basis_blade_type::possible_grades() & aux) != default_bitset_t(0) ? (ItrType::element_type::basis_blade_type::possible_grades() | aux) : aux;
+				constexpr static default_bitset_t value = (element_type<ItrType>::type::basis_blade_type::possible_grades() & aux) != default_bitset_t(0) ? (element_type<ItrType>::type::basis_blade_type::possible_grades() | aux) : aux;
 			};
 
 			template<default_bitset_t PossibleGrades, default_bitset_t DynamicPossibleGrades>
@@ -66,7 +66,7 @@ namespace ga {
 
 			template<class Type, class ItrType>
 			constexpr decltype(auto) eval_clifford_expression(ItrType const &arg) {
-				return eval_clifford_expression<Type>(next(arg)) + _eval_clifford_expression_element<_eval_dynamic_possible_grades<typename obegin_type<Type>::type, ItrType::element_type::basis_blade_type::possible_grades(), ItrType::element_type::basis_blade_type::compile_time_defined() ? default_bitset_t(0) : ItrType::element_type::basis_blade_type::possible_grades()>::value>::bind(arg.element());
+				return eval_clifford_expression<Type>(next(arg)) + _eval_clifford_expression_element<_eval_dynamic_possible_grades<typename obegin_type<Type>::type, element_type<ItrType>::type::basis_blade_type::possible_grades(), element_type<ItrType>::type::basis_blade_type::compile_time_defined() ? default_bitset_t(0) : element_type<ItrType>::type::basis_blade_type::possible_grades()>::value>::bind(element(arg));
 			}
 
 			template<class Type>

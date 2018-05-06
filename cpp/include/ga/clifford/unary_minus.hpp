@@ -12,7 +12,7 @@ namespace ga {
 
 			template<class ItrType>
 			constexpr decltype(auto) unary_minus(ItrType const &arg) {
-				return insert(unary_minus(next(arg)), unary_minus_element(arg.element()));
+				return insert(unary_minus(next(arg)), unary_minus_element(element(arg)));
 			}
 
 			constexpr decltype(auto) unary_minus(itr_end const &) {

@@ -9,7 +9,7 @@ namespace ga {
 
 			template<class ItrType, class KeepIfGradeFunc>
 			constexpr decltype(auto) keep_grade(ItrType const &arg, KeepIfGradeFunc const &keep) {
-				return insert(keep_grade(next(arg), keep), keep_if_grade_element(arg.element(), keep));
+				return insert(keep_grade(next(arg), keep), keep_if_grade_element(element(arg), keep));
 			}
 
 			template<class KeepIfGradeFunc>

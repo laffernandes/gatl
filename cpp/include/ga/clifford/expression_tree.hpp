@@ -486,7 +486,7 @@ namespace ga {
 				return make_expression_tree(element, empty_expression_tree(), empty_expression_tree());
 			}
 
-			constexpr decltype(auto) make_empty_expression_tree() {
+			constexpr decltype(auto) make_empty_clifford_expression() {
 				return empty_expression_tree();
 			}
 

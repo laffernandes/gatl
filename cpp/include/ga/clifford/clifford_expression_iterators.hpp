@@ -63,6 +63,19 @@ namespace ga {
 				typedef typename std::remove_const<typename std::remove_reference<decltype(next(ItrType()))>::type>::type type;
 			};
 
+			template<>
+			struct next_type<itr_end> {
+			};
+
+			template<class ItrType>
+			struct element_type {
+				typedef typename std::remove_const<typename std::remove_reference<decltype(element(ItrType()))>::type>::type type;
+			};
+
+			template<>
+			struct element_type<itr_end> {
+			};
+
 		}
 
 	}

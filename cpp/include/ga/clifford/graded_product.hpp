@@ -9,7 +9,7 @@ namespace ga {
 
 			template<class LeftItrType, class RightItrType, class MetricSpaceType, class KeepIfGradesFunc>
 			constexpr decltype(auto) graded_product_inner_loop(LeftItrType const &lhs, RightItrType const &rhs, metric_space<MetricSpaceType> const &mtr, KeepIfGradesFunc const &keep) {
-				return (graded_product_inner_loop(lhs, next(rhs), mtr, keep) + graded_product_element(lhs.element(), rhs.element(), mtr, keep));
+				return (graded_product_inner_loop(lhs, next(rhs), mtr, keep) + graded_product_element(element(lhs), element(rhs), mtr, keep));
 			}
 
 			template<class LeftItrType, class MetricSpaceType, class KeepIfGradesFunc>

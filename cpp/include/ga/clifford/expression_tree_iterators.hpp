@@ -132,6 +132,11 @@ namespace ga {
 			}
 
 			template<class ExpressionType, class TailType>
+			constexpr decltype(auto) element(itr<ExpressionType, TailType> const &curr) {
+				return curr.element();
+			}
+
+			template<class ExpressionType, class TailType>
 			class citr {
 			public:
 
@@ -256,6 +261,11 @@ namespace ga {
 			}
 
 			template<class ExpressionType, class TailType>
+			constexpr decltype(auto) element(citr<ExpressionType, TailType> const &curr) {
+				return curr.element();
+			}
+
+			template<class ExpressionType, class TailType>
 			class oitr : public itr<ExpressionType, TailType> {
 			private:
 
@@ -333,6 +343,11 @@ namespace ga {
 			}
 
 			template<class ExpressionType, class TailType>
+			constexpr decltype(auto) element(oitr<ExpressionType, TailType> const &curr) {
+				return curr.element();
+			}
+
+			template<class ExpressionType, class TailType>
 			class coitr : public citr<ExpressionType, TailType> {
 			private:
 
@@ -407,6 +422,11 @@ namespace ga {
 			template<class ExpressionType, class TailType>
 			constexpr decltype(auto) next(coitr<ExpressionType, TailType> const &curr) {
 				return _conext<ExpressionType>::bind(curr);
+			}
+
+			template<class ExpressionType, class TailType>
+			constexpr decltype(auto) element(coitr<ExpressionType, TailType> const &curr) {
+				return curr.element();
 			}
 
 		}

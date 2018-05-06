@@ -1,4 +1,4 @@
-/**/
+/**
 #include <ga3e.hpp>
 #include <ga3h.hpp>
 #include <ga3m.hpp>
@@ -643,6 +643,7 @@ int main() {
 
 	std::cout << "sizeof(x) = " << sizeof(decltype(x)) << std::endl;
 	std::cout << "sizeof(e1) = " << sizeof(decltype(e1)) << std::endl;
+	std::cout << "sizeof(e1 + e2 + e3) = " << sizeof(decltype(e1 + e2 + e3)) << std::endl;
 	std::cout << "sizeof(p) = " << sizeof(decltype(p)) << std::endl;
 	std::cout << std::endl;
 

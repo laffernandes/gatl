@@ -7,29 +7,29 @@ namespace ga {
 
 		namespace detail {
 
-			template<class LeftItrType, class RightItrType, typename std::enable_if<eq<typename LeftItrType::element_type, typename RightItrType::element_type>::value, int>::type = 0>
+			template<class LeftItrType, class RightItrType, typename std::enable_if<eq<typename element_type<LeftItrType>::type, typename element_type<RightItrType>::type>::value, int>::type = 0>
 			constexpr decltype(auto) binary_minus(LeftItrType const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(next(lhs), next(rhs)), binary_minus_element(lhs.element(), rhs.element()));
+				return insert(binary_minus(next(lhs), next(rhs)), binary_minus_element(element(lhs), element(rhs)));
 			}
 
-			template<class LeftItrType, class RightItrType, typename std::enable_if<lt<typename LeftItrType::element_type, typename RightItrType::element_type>::value, int>::type = 0>
+			template<class LeftItrType, class RightItrType, typename std::enable_if<lt<typename element_type<LeftItrType>::type, typename element_type<RightItrType>::type>::value, int>::type = 0>
 			constexpr decltype(auto) binary_minus(LeftItrType const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(next(lhs), rhs), lhs.element());
+				return insert(binary_minus(next(lhs), rhs), element(lhs));
 			}
 
 			template<class LeftItrType>
 			constexpr decltype(auto) binary_minus(LeftItrType const &lhs, itr_end const &rhs) {
-				return insert(binary_minus(next(lhs), rhs), lhs.element());
+				return insert(binary_minus(next(lhs), rhs), element(lhs));
 			}
 
-			template<class LeftItrType, class RightItrType, typename std::enable_if<lt<typename RightItrType::element_type, typename LeftItrType::element_type>::value, int>::type = 0>
+			template<class LeftItrType, class RightItrType, typename std::enable_if<lt<typename element_type<RightItrType>::type, typename element_type<LeftItrType>::type>::value, int>::type = 0>
 			constexpr decltype(auto) binary_minus(LeftItrType const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(lhs, next(rhs)), unary_minus_element(rhs.element()));
+				return insert(binary_minus(lhs, next(rhs)), unary_minus_element(element(rhs)));
 			}
 
 			template<class RightItrType>
 			constexpr decltype(auto) binary_minus(itr_end const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(lhs, next(rhs)), unary_minus_element(rhs.element()));
+				return insert(binary_minus(lhs, next(rhs)), unary_minus_element(element(rhs)));
 			}
 
 			constexpr decltype(auto) binary_minus(itr_end const &, itr_end const &) {

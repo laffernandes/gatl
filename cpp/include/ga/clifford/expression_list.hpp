@@ -75,8 +75,9 @@ namespace ga {
 					return element_;
 				}
 
-				constexpr next_type next() const {
-					return next_type();
+				constexpr next_type const & next() const {
+					static next_type const next_;
+					return next_;
 				}
 
 				constexpr static bool compile_time_defined() {
@@ -111,8 +112,9 @@ namespace ga {
 				typedef ElementType element_type;
 				typedef NextListType next_type;
 
-				constexpr element_type element() const {
-					return element_type();
+				constexpr element_type const & element() const {
+					static element_type const element_;
+					return element_;
 				}
 
 				constexpr next_type & next() {
@@ -154,12 +156,14 @@ namespace ga {
 				typedef ElementType element_type;
 				typedef NextListType next_type;
 
-				constexpr element_type element() const {
-					return element_type();
+				constexpr element_type const & element() const {
+					static element_type const element_;
+					return element_;
 				}
 
-				constexpr next_type next() const {
-					return next_type();
+				constexpr next_type const & next() const {
+					static next_type const next_;
+					return next_;
 				}
 
 				constexpr static bool compile_time_defined() {

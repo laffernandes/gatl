@@ -7,42 +7,9 @@ namespace ga {
 
 		namespace detail {
 
-			template<class ExpressionType>
-			class itr {
-			public:
-
-				typedef ExpressionType expression_type;
-				typedef typename expression_type::element_type element_type;
-
-				constexpr itr() :
-					expression_(nullptr) {
-				}
-
-				constexpr itr(expression_type *value) :
-					expression_(value) {
-				}
-
-				constexpr expression_type * expression() const {
-					return expression_;
-				}
-
-				constexpr decltype(auto) element() const {
-					return expression_->element();
-				}
-
-			protected:
-
-				expression_type *expression_;
-			};
-
-			template<class ExpressionType>
-			constexpr itr<ExpressionType> make_itr(ExpressionType *value) {
-				return itr<ExpressionType>(value);
-			}
-
 			template<class ElementType, class... OtherElementTypes>
 			constexpr decltype(auto) begin(expression_list<ElementType, OtherElementTypes...> &arg) {
-				return make_itr(&arg);
+				return &arg;
 			}
 
 			constexpr decltype(auto) begin(expression_list<> &) {
@@ -50,51 +17,23 @@ namespace ga {
 			}
 
 			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) next(itr<expression_list<ElementType, OtherElementTypes...> > const &curr) {
-				return make_itr(&curr.expression()->next());
+			constexpr decltype(auto) next(expression_list<ElementType, OtherElementTypes...> *curr) {
+				return &curr->next();
 			}
 
 			template<class ElementType>
-			constexpr decltype(auto) next(itr<expression_list<ElementType> > const &) {
+			constexpr decltype(auto) next(expression_list<ElementType> *) {
 				return itr_end();
 			}
 
-			template<class ExpressionType>
-			class citr {
-			public:
-
-				typedef ExpressionType expression_type;
-				typedef typename expression_type::element_type element_type;
-
-				constexpr citr() :
-					expression_(nullptr) {
-				};
-
-				constexpr citr(expression_type const *value) :
-					expression_(value) {
-				};
-
-				constexpr expression_type const * expression() const {
-					return expression_;
-				}
-
-				constexpr decltype(auto) element() const {
-					return expression_->element();
-				}
-
-			protected:
-
-				expression_type const *expression_;
-			};
-
-			template<class ExpressionType>
-			constexpr citr<ExpressionType> make_citr(ExpressionType const *value) {
-				return citr<ExpressionType>(value);
+			template<class ElementType, class... OtherElementTypes>
+			constexpr decltype(auto) element(expression_list<ElementType, OtherElementTypes...> *curr) {
+				return curr->element();
 			}
 
 			template<class ElementType, class... OtherElementTypes>
 			constexpr decltype(auto) begin(expression_list<ElementType, OtherElementTypes...> const &arg) {
-				return make_citr(&arg);
+				return &arg;
 			}
 
 			constexpr decltype(auto) begin(expression_list<> const &) {
@@ -102,13 +41,18 @@ namespace ga {
 			}
 
 			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) next(citr<expression_list<ElementType, OtherElementTypes...> > const &curr) {
-				return make_citr(&curr.expression()->next());
+			constexpr decltype(auto) next(expression_list<ElementType, OtherElementTypes...> const *curr) {
+				return &curr->next();
 			}
 
 			template<class ElementType>
-			constexpr decltype(auto) next(citr<expression_list<ElementType> > const &) {
+			constexpr decltype(auto) next(expression_list<ElementType> const *) {
 				return itr_end();
+			}
+
+			template<class ElementType, class... OtherElementTypes>
+			constexpr decltype(auto) element(expression_list<ElementType, OtherElementTypes...> const *curr) {
+				return curr->element();
 			}
 
 			template<class... ElementTypes>

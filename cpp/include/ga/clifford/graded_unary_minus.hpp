@@ -9,7 +9,7 @@ namespace ga {
 
 			template<class ItrType, class SignChangeIfGradeFunc>
 			constexpr decltype(auto) graded_unary_minus(ItrType const &arg, SignChangeIfGradeFunc const &change) {
-				return insert(graded_unary_minus(next(arg), change), graded_unary_minus_element(arg.element(), change));
+				return insert(graded_unary_minus(next(arg), change), graded_unary_minus_element(element(arg), change));
 			}
 
 			template<class SignChangeIfGradeFunc>

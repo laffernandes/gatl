@@ -103,7 +103,7 @@ namespace ga {
 
 			template<class ItrType, class ToleranceType>
 			constexpr decltype(auto) deduce_grade(ItrType const &arg, ToleranceType const &tol) {
-				return deduce_grade_look_left(deduce_grade(next(arg), tol), arg.element(), tol);
+				return deduce_grade_look_left(deduce_grade(next(arg), tol), element(arg), tol);
 			}
 
 			template<class ToleranceType>

@@ -73,7 +73,7 @@ namespace ga {
 
 			template<class ItrType>
 			void write(std::ostream &os, ItrType const &rhs, bool &first) {
-				write_element(os, rhs.element(), first);
+				write_element(os, element(rhs), first);
 				write(os, next(rhs), first);
 			}
 

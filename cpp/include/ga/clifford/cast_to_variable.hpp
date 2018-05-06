@@ -17,7 +17,7 @@ namespace ga {
 
 			template<id_t ExtraId, id_t Id, id_t... SubIds, class ItrType>
 			constexpr decltype(auto) cast_clifford_to_var(ItrType const &itr) {
-				return insert(cast_clifford_to_var<ExtraId + 1, Id, SubIds...>(next(itr)), cast_element_to_var<ExtraId, Id, SubIds...>(itr.element()));
+				return insert(cast_clifford_to_var<ExtraId + 1, Id, SubIds...>(next(itr)), cast_element_to_var<ExtraId, Id, SubIds...>(element(itr)));
 			}
 
 			template<id_t ExtraId, id_t Id, id_t... SubIds>
