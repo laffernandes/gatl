@@ -90,6 +90,11 @@ namespace ga {
 
 		}
 
+		template<id_t Id, id_t... SubIds, class... ArgumentTypes>
+		constexpr detail::add<ArgumentTypes...> var(detail::add<ArgumentTypes...> const &arg) {
+			return arg;
+		}
+
 	}
 
 	namespace common {

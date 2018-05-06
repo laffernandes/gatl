@@ -41,6 +41,7 @@
     <ClInclude Include="..\..\include\ga\clifford\binary_minus.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\binary_plus.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\blade_exponential.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford\cast_to_variable.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression_insert.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\compile_time_basis_blade.hpp" />

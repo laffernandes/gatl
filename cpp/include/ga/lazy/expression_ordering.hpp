@@ -35,13 +35,13 @@ namespace ga {
 				constexpr static bool value = LeftValue < RightValue;
 			};
 
-			template<default_integral_t LeftValue, id_t RightId, class RightValueType>
-			struct lt<lazy::constant<LeftValue>, lazy::variable<RightId, RightValueType> > {
+			template<default_integral_t LeftValue, class RightValueType, id_t RightId, id_t... RightSubIds>
+			struct lt<lazy::constant<LeftValue>, lazy::variable<RightValueType, RightId, RightSubIds...> > {
 				constexpr static bool value = true;
 			};
 
-			template<id_t LeftId, class LeftValueType, default_integral_t RightValue>
-			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::constant<RightValue> > {
+			template<class LeftValueType, id_t LeftId, id_t... LeftSubIds, default_integral_t RightValue>
+			struct lt<lazy::variable<LeftValueType, LeftId, LeftSubIds...>, lazy::constant<RightValue> > {
 				constexpr static bool value = false;
 			};
 
@@ -80,39 +80,74 @@ namespace ga {
 			//     variable < add, if variable <= add[Left]
 			//     variable < mul, if variable <= mul[Left]
 			//     variable < power, if variable <= power[Left]
-			template<id_t LeftId, class LeftValueType, id_t RightId, class RightValueType>
-			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::variable<RightId, RightValueType> > {
-				constexpr static bool value = LeftId < RightId;
+			template<id_t LeftId, id_t... LeftSubIds>
+			struct _variable_id_cmp {
+				template<id_t RightId, id_t... RightSubIds>
+				struct lt {
+					constexpr static bool value = LeftId < RightId;
+				};
+
+				template<id_t... RightSubIds>
+				struct lt<LeftId, RightSubIds...> : _variable_id_cmp<LeftSubIds...>::template lt<RightSubIds...> {
+				};
+
+				template<>
+				struct lt<LeftId> {
+					constexpr static bool value = false;
+				};
 			};
 
-			template<id_t LeftId, class LeftValueType, class RightLeftArgumentType, class... RightRightArgumentTypes>
-			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::add<RightLeftArgumentType, RightRightArgumentTypes...> > :
-				le<lazy::variable<LeftId, LeftValueType>, RightLeftArgumentType> {
+			template<id_t LeftId>
+			struct _variable_id_cmp<LeftId> {
+				template<id_t RightId, id_t... RightSubIds>
+				struct lt {
+					constexpr static bool value = LeftId < RightId;
+				};
+
+				template<id_t... RightSubIds>
+				struct lt<LeftId, RightSubIds...> {
+					constexpr static bool value = true;
+				};
+
+				template<>
+				struct lt<LeftId> {
+					constexpr static bool value = false;
+				};
 			};
 
-			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, id_t RightId, class RightValueType>
-			struct lt<lazy::detail::add<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::variable<RightId, RightValueType> > :
-				lt<LeftLeftArgumentType, lazy::variable<RightId, RightValueType> > {
+			template<class LeftValueType, id_t LeftId, id_t... LeftSubIds, class RightValueType, id_t RightId, id_t... RightSubIds>
+			struct lt<lazy::variable<LeftValueType, LeftId, LeftSubIds...>, lazy::variable<RightValueType, RightId, RightSubIds...> > {
+				constexpr static bool value = _variable_id_cmp<LeftId, LeftSubIds...>::template lt<RightId, RightSubIds...>::value;
 			};
 
-			template<id_t LeftId, class LeftValueType, class RightLeftArgumentType, class... RightRightArgumentTypes>
-			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::mul<RightLeftArgumentType, RightRightArgumentTypes...> > :
-				le<lazy::variable<LeftId, LeftValueType>, RightLeftArgumentType> {
+			template<class LeftValueType, id_t LeftId, id_t... LeftSubIds, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::variable<LeftValueType, LeftId, LeftSubIds...>, lazy::detail::add<RightLeftArgumentType, RightRightArgumentTypes...> > :
+				le<lazy::variable<LeftValueType, LeftId, LeftSubIds...>, RightLeftArgumentType> {
 			};
 
-			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, id_t RightId, class RightValueType>
-			struct lt<lazy::detail::mul<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::variable<RightId, RightValueType> > :
-				lt<LeftLeftArgumentType, lazy::variable<RightId, RightValueType> > {
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, class RightValueType, id_t RightId, id_t... RightSubIds>
+			struct lt<lazy::detail::add<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::variable<RightValueType, RightId, RightSubIds...> > :
+				lt<LeftLeftArgumentType, lazy::variable<RightValueType, RightId, RightSubIds...> > {
 			};
 
-			template<id_t LeftId, class LeftValueType, class RightLeftArgumentType, class RightRightArgumentType>
-			struct lt<lazy::variable<LeftId, LeftValueType>, lazy::detail::power<RightLeftArgumentType, RightRightArgumentType> > :
-				le<lazy::variable<LeftId, LeftValueType>, RightLeftArgumentType> {
+			template<class LeftValueType, id_t LeftId, id_t... LeftSubIds, class RightLeftArgumentType, class... RightRightArgumentTypes>
+			struct lt<lazy::variable<LeftValueType, LeftId, LeftSubIds...>, lazy::detail::mul<RightLeftArgumentType, RightRightArgumentTypes...> > :
+				le<lazy::variable<LeftValueType, LeftId, LeftSubIds...>, RightLeftArgumentType> {
 			};
 
-			template<class LeftLeftArgumentType, class LeftRightArgumentType, id_t RightId, class RightValueType>
-			struct lt<lazy::detail::power<LeftLeftArgumentType, LeftRightArgumentType>, lazy::variable<RightId, RightValueType> > :
-				lt<LeftLeftArgumentType, lazy::variable<RightId, RightValueType> > {
+			template<class LeftLeftArgumentType, class... LeftRightArgumentTypes, class RightValueType, id_t RightId, id_t... RightSubIds>
+			struct lt<lazy::detail::mul<LeftLeftArgumentType, LeftRightArgumentTypes...>, lazy::variable<RightValueType, RightId, RightSubIds...> > :
+				lt<LeftLeftArgumentType, lazy::variable<RightValueType, RightId, RightSubIds...> > {
+			};
+
+			template<class LeftValueType, id_t LeftId, id_t... LeftSubIds, class RightLeftArgumentType, class RightRightArgumentType>
+			struct lt<lazy::variable<LeftValueType, LeftId, LeftSubIds...>, lazy::detail::power<RightLeftArgumentType, RightRightArgumentType> > :
+				le<lazy::variable<LeftValueType, LeftId, LeftSubIds...>, RightLeftArgumentType> {
+			};
+
+			template<class LeftLeftArgumentType, class LeftRightArgumentType, class RightValueType, id_t RightId, id_t... RightSubIds>
+			struct lt<lazy::detail::power<LeftLeftArgumentType, LeftRightArgumentType>, lazy::variable<RightValueType, RightId, RightSubIds...> > :
+				lt<LeftLeftArgumentType, lazy::variable<RightValueType, RightId, RightSubIds...> > {
 			};
 
 			// Addition type ordering:

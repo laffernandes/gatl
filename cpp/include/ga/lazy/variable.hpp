@@ -7,8 +7,8 @@ namespace ga {
 
 		//TODO Armazenar ponteiro.
 
-		template<id_t Id, class ValueType>
-		class variable final : public lazy_expression<variable<Id, ValueType> > {
+		template<class ValueType, id_t Id, id_t... SubIds>
+		class variable final : public lazy_expression<variable<ValueType, Id, SubIds...> > {
 		public:
 
 			typedef variable expression_type;
@@ -67,29 +67,42 @@ namespace ga {
 			value_type value_;
 		};
 
-		template<id_t Id, class ValueType, typename std::enable_if<!(is_lazy_expression<ValueType>::value || is_clifford_expression<ValueType>::value), int>::type = 0>
+		template<id_t Id, id_t... SubIds, class ValueType, typename std::enable_if<!(is_lazy_expression<ValueType>::value || is_clifford_expression<ValueType>::value), int>::type = 0>
 		constexpr decltype(auto) var(ValueType const &arg) {
-			return variable<Id, ValueType>(arg);
+			return variable<ValueType, Id, SubIds...>(arg);
 		}
 
-		template<id_t Id, class ExpressionType>
+		template<id_t Id, id_t... SubIds, class ExpressionType>
 		constexpr decltype(auto) var(lazy_expression<ExpressionType> const &arg) {
-			return var<Id>(detail::cast_to_value(arg).get());
+			return var<Id, SubIds...>(arg());
 		}
 
-		//TODO Fazer wrapper para clifford_expression. Requer Id composto.
+		template<id_t Id, id_t... SubIds, default_integral_t Value>
+		constexpr decltype(auto) var(constant<Value> const &) {
+			return constant<Value>();
+		}
+
+		template<id_t Id, id_t... SubIds, class ValueType>
+		constexpr decltype(auto) var(value<ValueType> const &arg) {
+			return var<Id, SubIds...>(arg.get());
+		}
+
+		template<id_t Id, id_t... SubIds, class ValueType, id_t CurrentId, id_t... CurrentSubIds>
+		constexpr variable<ValueType, CurrentId, CurrentSubIds...> var(variable<ValueType, CurrentId, CurrentSubIds...> const &arg) {
+			return arg;
+		}
 
 	}
 
 	namespace common {
 
-		template<id_t Id, class ValueType>
-		struct is_lazy_expression<lazy::variable<Id, ValueType> > {
+		template<class ValueType, id_t Id, id_t... SubIds>
+		struct is_lazy_expression<lazy::variable<ValueType, Id, SubIds...> > {
 			constexpr static bool value = true;
 		};
 
-		template<id_t Id, class ValueType>
-		struct common_value_type<lazy::variable<Id, ValueType> > {
+		template<class ValueType, id_t Id, id_t... SubIds>
+		struct common_value_type<lazy::variable<ValueType, Id, SubIds...> > {
 			typedef ValueType type;
 		};
 

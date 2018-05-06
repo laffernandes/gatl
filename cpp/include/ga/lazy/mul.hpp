@@ -93,6 +93,11 @@ namespace ga {
 
 		}
 
+		template<id_t Id, id_t... SubIds, class... ArgumentTypes>
+		constexpr detail::mul<ArgumentTypes...> var(detail::mul<ArgumentTypes...> const &arg) {
+			return arg;
+		}
+
 	}
 
 	namespace common {

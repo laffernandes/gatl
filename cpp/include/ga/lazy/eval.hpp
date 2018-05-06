@@ -162,13 +162,18 @@ namespace ga {
 			}
 
 			// Specializations of the eval_lazy_expression() function.
-			template<class ArgumentType>
-			constexpr ArgumentType eval_lazy_expression(ArgumentType const &arg) {
-				return arg; // Identity for value and constant expressions
+			template<default_integral_t Value>
+			constexpr constant<Value> eval_lazy_expression(constant<Value> const &) {
+				return constant<Value>();
 			}
 
-			template<id_t Id, class ValueType>
-			constexpr value<ValueType> eval_lazy_expression(variable<Id, ValueType> const &arg) {
+			template<class ValueType>
+			constexpr value<ValueType> eval_lazy_expression(value<ValueType> const &arg) {
+				return arg;
+			}
+
+			template<class ValueType, id_t Id, id_t... SubIds>
+			constexpr value<ValueType> eval_lazy_expression(variable<ValueType, Id, SubIds...> const &arg) {
 				return val(arg.get()); // Convertion to value
 			}
 

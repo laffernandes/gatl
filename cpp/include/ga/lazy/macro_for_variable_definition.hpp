@@ -6,9 +6,9 @@
 		\
 		namespace lazy { \
 			\
-			template<class ValueType> \
-			constexpr variable<ID, ValueType> var##ID(ValueType const &arg) { \
-				return variable<ID, ValueType>(arg); \
+			template<class Type> \
+			constexpr decltype(auto) var##ID(Type const &arg) { \
+				return var<ID>(arg); \
 			} \
 			\
 		} \

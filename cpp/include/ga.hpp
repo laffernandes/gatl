@@ -118,7 +118,6 @@ namespace ga {
 #include "ga/clifford/clifford_expression_insert.hpp"
 #include "ga/clifford/clifford_expression_iterators.hpp"
 #include "ga/clifford/clifford_expression_native.hpp"
-#include "ga/clifford/clifford_expression_common_value_type.hpp"
 
 #include "ga/clifford/component.hpp"
 #include "ga/clifford/components.hpp"
@@ -133,7 +132,7 @@ namespace ga {
 #include "ga/clifford/element_deduce_grade.hpp"
 
 #include "ga/clifford/copy.hpp"
-
+#include "ga/clifford/cast_to_variable.hpp"
 #include "ga/clifford/lazy_expression_iterator.hpp"
 
 #if defined(GA_USE_CLIFFORD_EXPRESSION_LIST)
@@ -141,13 +140,11 @@ namespace ga {
 	#include "ga/clifford/expression_list_insert.hpp"
 	#include "ga/clifford/expression_list_iterators.hpp"
 	#include "ga/clifford/expression_list_native.hpp"
-	#include "ga/clifford/expression_list_common_value_type.hpp"
 #elif defined(GA_USE_CLIFFORD_EXPRESSION_TREE)
 	#include "ga/clifford/expression_tree.hpp"
 	#include "ga/clifford/expression_tree_insert.hpp"
 	#include "ga/clifford/expression_tree_iterators.hpp"
 	#include "ga/clifford/expression_tree_native.hpp"
-	#include "ga/clifford/expression_tree_common_value_type.hpp"
 #endif // GA_USE_CLIFFORD_EXPRESSION_LIST || GA_USE_CLIFFORD_EXPRESSION_TREE
 
 #include "ga/clifford/unary_minus.hpp"

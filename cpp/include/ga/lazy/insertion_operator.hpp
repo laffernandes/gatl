@@ -29,6 +29,16 @@ namespace ga {
 				os << rhs.left() << " * " << rhs.right();
 			}
 
+			template<id_t Id, id_t SubId, id_t... OtherSubIds>
+			inline void write_variable_id(std::ostream &os) {
+				os << static_cast<std::int32_t>(Id) << ".";
+				write_variable_id<SubId, OtherSubIds...>(os);
+			}
+
+			template<id_t Id>
+			inline void write_variable_id(std::ostream &os) {
+				os << static_cast<std::int32_t>(Id);
+			}
 		}
 
 		template<class ExpressionType>
@@ -54,9 +64,11 @@ namespace ga {
 			return os;
 		}
 
-		template<id_t Id, class ValueType>
-		std::ostream & operator<<(std::ostream &os, variable<Id, ValueType> const &rhs) {
-			os << "{" << rhs.get() << " | Id = <" << static_cast<std::int32_t>(Id) << ">}";
+		template<class ValueType, id_t Id, id_t... SubIds>
+		std::ostream & operator<<(std::ostream &os, variable<ValueType, Id, SubIds...> const &rhs) {
+			os << "{" << rhs.get() << " | Id = <";
+			detail::write_variable_id<Id, SubIds...>(os);
+			os << ">}";
 			return os;
 		}
 

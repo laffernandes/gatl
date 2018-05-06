@@ -667,6 +667,12 @@ int main() {
 	std::cout << "root::right_type = " << sizeof(root::right_type) << " bytes" << std::endl;
 #endif
 
+	std::cout << "p = " << p << std::endl;
+	std::cout << "var<1, 9>(p) = " << ga::lazy::var<1, 9>(p) << std::endl;
+	std::cout << "sizeof(p) = " << sizeof(p) << std::endl;
+	std::cout << "sizeof(var<1, 9>(p)) = " << sizeof(ga::lazy::var<1, 9>(p)) << std::endl;
+	std::cout << std::endl;
+
 	return EXIT_SUCCESS;
 }
 /**/

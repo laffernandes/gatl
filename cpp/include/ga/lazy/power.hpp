@@ -49,6 +49,11 @@ namespace ga {
 
 		}
 
+		template<id_t Id, id_t... SubIds, class LeftArgumentType, class RightArgumentType>
+		constexpr detail::power<LeftArgumentType, RightArgumentType> var(detail::power<LeftArgumentType, RightArgumentType> const &arg) {
+			return arg;
+		}
+
 	}
 
 	namespace common {

@@ -5,25 +5,6 @@ namespace ga {
 
 	namespace lazy {
 
-		namespace detail {
-
-			template<class ExpressionType, typename std::enable_if<!is_lazy_constant<ExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) cast_to_value(lazy_expression<ExpressionType> const &arg) {
-				return eval_lazy_expression(arg());
-			}
-
-			template<class ExpressionType, typename std::enable_if<is_lazy_constant<ExpressionType>::value, int>::type = 0>
-			constexpr decltype(auto) cast_to_value(lazy_expression<ExpressionType> const &) {
-				return eval_constant_to_primitive(ExpressionType());
-			}
-
-			template<default_integral_t Value>
-			constexpr decltype(auto) cast_to_value(lazy_expression<constant<Value> > const &) {
-				return value<default_integral_t>(Value);
-			}
-
-		}
-
 		template<class ValueType>
 		class value final : public lazy_expression<value<ValueType> > {
 		public:
@@ -86,7 +67,12 @@ namespace ga {
 
 		template<class ExpressionType>
 		constexpr decltype(auto) val(lazy_expression<ExpressionType> const &arg) {
-			return detail::cast_to_value(arg);
+			return detail::eval_lazy_expression(arg);
+		}
+
+		template<default_integral_t Value>
+		constexpr value<default_integral_t> val(lazy_expression<constant<Value> > const &) {
+			return value<default_integral_t>(Value);
 		}
 
 	}
