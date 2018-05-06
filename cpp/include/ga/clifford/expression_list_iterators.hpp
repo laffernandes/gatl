@@ -9,7 +9,7 @@ namespace ga {
 
 			template<class ElementType, class... OtherElementTypes>
 			constexpr decltype(auto) begin(expression_list<ElementType, OtherElementTypes...> &arg) {
-				return &arg;
+				return arg;
 			}
 
 			constexpr decltype(auto) begin(expression_list<> &) {
@@ -17,23 +17,23 @@ namespace ga {
 			}
 
 			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) next(expression_list<ElementType, OtherElementTypes...> *curr) {
-				return &curr->next();
+			constexpr decltype(auto) next(expression_list<ElementType, OtherElementTypes...> &arg) {
+				return arg.next();
 			}
 
 			template<class ElementType>
-			constexpr decltype(auto) next(expression_list<ElementType> *) {
+			constexpr decltype(auto) next(expression_list<ElementType> &) {
 				return itr_end();
 			}
 
 			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) element(expression_list<ElementType, OtherElementTypes...> *curr) {
-				return curr->element();
+			constexpr decltype(auto) element(expression_list<ElementType, OtherElementTypes...> &arg) {
+				return arg.element();
 			}
 
 			template<class ElementType, class... OtherElementTypes>
 			constexpr decltype(auto) begin(expression_list<ElementType, OtherElementTypes...> const &arg) {
-				return &arg;
+				return arg;
 			}
 
 			constexpr decltype(auto) begin(expression_list<> const &) {
@@ -41,18 +41,18 @@ namespace ga {
 			}
 
 			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) next(expression_list<ElementType, OtherElementTypes...> const *curr) {
-				return &curr->next();
+			constexpr decltype(auto) next(expression_list<ElementType, OtherElementTypes...> const &arg) {
+				return arg.next();
 			}
 
 			template<class ElementType>
-			constexpr decltype(auto) next(expression_list<ElementType> const *) {
+			constexpr decltype(auto) next(expression_list<ElementType> const &) {
 				return itr_end();
 			}
 
 			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) element(expression_list<ElementType, OtherElementTypes...> const *curr) {
-				return curr->element();
+			constexpr decltype(auto) element(expression_list<ElementType, OtherElementTypes...> const &arg) {
+				return arg.element();
 			}
 
 			template<class... ElementTypes>
