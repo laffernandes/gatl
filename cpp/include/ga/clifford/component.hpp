@@ -196,6 +196,11 @@ namespace ga {
 				constexpr component(component const &) = default;
 				constexpr component(component &&) = default;
 
+				template<class OtherCoefficientType, class OtherBasisBladeType>
+				constexpr component(component<OtherCoefficientType, OtherBasisBladeType> const &other) :
+					_super(other.coefficient(), other.basis_blade()) {
+				}
+
 				constexpr component(coefficient_type const &coefficient, basis_blade_type const &basis_blade) :
 					_super(coefficient, basis_blade) {
 				}
@@ -205,7 +210,7 @@ namespace ga {
 
 				using _super::coefficient;
 				using _super::basis_blade;
-				using _super:: compile_time_defined;
+				using _super::compile_time_defined;
 			};
 
 			template<class CoefficientType, class BasisBladeType>

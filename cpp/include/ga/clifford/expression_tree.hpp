@@ -444,7 +444,7 @@ namespace ga {
 
 				template<class OtherExpressionType>
 				constexpr expression_tree(clifford_expression<OtherExpressionType> const &other) {
-					copy(obegin(other), obegin(*this));
+					copy(obegin(other()), obegin(*this));
 				}
 
 				constexpr expression_tree(element_type const &element, left_type const &left, right_type const &right) :
@@ -456,7 +456,7 @@ namespace ga {
 
 				template<class OtherExpressionType>
 				constexpr expression_tree & operator=(clifford_expression<OtherExpressionType> const &other) {
-					copy(obegin(other), obegin(*this));
+					copy(obegin(other()), obegin(*this));
 					return *this;
 				}
 

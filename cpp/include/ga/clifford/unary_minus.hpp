@@ -22,7 +22,7 @@ namespace ga {
 
 		template<class RightExpressionType>
 		constexpr decltype(auto) operator-(clifford_expression<RightExpressionType> const &rhs) {
-			return detail::unary_minus(detail::begin(rhs));
+			return detail::unary_minus(detail::begin(rhs()));
 		}
 
 	}

@@ -33,7 +33,7 @@ namespace ga {
 
 		template<id_t Id, id_t... SubIds, class ExpressionType>
 		constexpr decltype(auto) var(clifford::clifford_expression<ExpressionType> const &arg) {
-			return clifford::detail::cast_clifford_to_var<1, Id, SubIds...>(clifford::detail::begin(arg));
+			return clifford::detail::cast_clifford_to_var<1, Id, SubIds...>(clifford::detail::begin(arg()));
 		}
 
 	}

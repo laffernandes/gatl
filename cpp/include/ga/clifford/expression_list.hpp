@@ -209,7 +209,7 @@ namespace ga {
 
 				template<class OtherExpressionType>
 				constexpr expression_list(clifford_expression<OtherExpressionType> const &other) {
-					copy(obegin(other), obegin(*this));
+					copy(obegin(other()), obegin(*this));
 				}
 
 				constexpr expression_list(element_type const &element, OtherElementTypes const &... args) :
@@ -225,7 +225,7 @@ namespace ga {
 
 				template<class OtherExpressionType>
 				constexpr expression_list & operator=(clifford_expression<OtherExpressionType> const &other) {
-					copy(obegin(other), obegin(*this));
+					copy(obegin(other()), obegin(*this));
 					return *this;
 				}
 

@@ -585,6 +585,21 @@ int main() {
 	std::cout << eval(yyy) << std::endl;
 	std::cout << std::endl;
 
+	{
+		using namespace ga3e;
+
+		auto copy_in  = 5  + 3  * ga3e::e1 + 7  * (ga3e::e1^ga3e::e2);
+		std::cout << " in = " << copy_in << std::endl;
+
+		auto copy_out = 0. + 0. * ga3e::e1 + 0. * (ga3e::e1^ga3e::e2) + 10. * ga3e::e2;
+		std::cout << "out = " << copy_out << std::endl;
+
+		copy_out = copy_in;
+		std::cout << "out = " << copy_out << std::endl;
+
+		std::cout << std::endl;
+	}
+
 	return EXIT_SUCCESS;
 }
 /*/

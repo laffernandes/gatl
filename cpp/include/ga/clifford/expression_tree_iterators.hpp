@@ -83,8 +83,8 @@ namespace ga {
 			}
 
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-			constexpr decltype(auto) begin(expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> &root) {
-				return make_itr(&root, itr_end());
+			constexpr decltype(auto) begin(expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> &arg) {
+				return make_itr(&arg, itr_end());
 			}
 
 			constexpr itr_end begin(empty_expression_tree &) {
@@ -212,8 +212,8 @@ namespace ga {
 			}
 
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-			constexpr decltype(auto) begin(expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &root) {
-				return make_citr(&root, itr_end());
+			constexpr decltype(auto) begin(expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
+				return make_citr(&arg, itr_end());
 			}
 
 			constexpr itr_end begin(empty_expression_tree const &) {
@@ -310,8 +310,8 @@ namespace ga {
 			};
 
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-			constexpr decltype(auto) obegin(expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> &root) {
-				return _push_up_to_leftmost<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> >::bind(oitr<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType>, itr_end>(&root, itr_end()));
+			constexpr decltype(auto) obegin(expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> &arg) {
+				return _push_up_to_leftmost<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> >::bind(oitr<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType>, itr_end>(&arg, itr_end()));
 			}
 
 			constexpr itr_end obegin(empty_expression_tree &) {
@@ -392,8 +392,8 @@ namespace ga {
 			};
 
 			template<class ElementType, class LeftSubtreeType, class RightSubtreeType>
-			constexpr decltype(auto) obegin(expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &root) {
-				return _cpush_up_to_leftmost<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> >::bind(coitr<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType>, itr_end>(&root, itr_end()));
+			constexpr decltype(auto) obegin(expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> const &arg) {
+				return _cpush_up_to_leftmost<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType> >::bind(coitr<expression_tree<ElementType, LeftSubtreeType, RightSubtreeType>, itr_end>(&arg, itr_end()));
 			}
 
 			constexpr itr_end obegin(empty_expression_tree const &) {

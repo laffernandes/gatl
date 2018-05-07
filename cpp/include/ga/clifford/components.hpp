@@ -18,6 +18,11 @@ namespace ga {
 				constexpr components(components const &) = default;
 				constexpr components(components &&) = default;
 
+				template<class OtherCoefficientType>
+				constexpr components(components<OtherCoefficientType, PossibleGrades> const &other) :
+					entries_(other.begin(), other.end()) {
+				}
+
 				constexpr components& operator=(components const &) = default;
 				constexpr components& operator=(components &&) = default;
 
