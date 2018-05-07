@@ -102,12 +102,12 @@ namespace ga {
 			}
 
 			template<class ElementType, class... OtherElementTypes, class ToleranceType>
-			constexpr decltype(auto) deduce_grade(expression_list<ElementType, OtherElementTypes...> const &arg, ToleranceType const &tol) {
+			constexpr decltype(auto) deduce_grade(clifford_expression<ElementType, OtherElementTypes...> const &arg, ToleranceType const &tol) {
 				return deduce_grade_look_left(deduce_grade(arg.next(), tol), arg.element(), tol);
 			}
 
 			template<class ToleranceType>
-			constexpr grade_result<constant<-2> > deduce_grade(expression_list<> const &, ToleranceType const &) {
+			constexpr grade_result<constant<-2> > deduce_grade(clifford_expression<> const &, ToleranceType const &) {
 				return grade_result<constant<-2> >();
 			}
 

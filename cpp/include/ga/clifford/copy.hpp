@@ -8,24 +8,24 @@ namespace ga {
 		namespace detail {
 
 			template<class InputElementType, class... InputOtherElementTypes, class OutputElementType, class... OutputOtherElementTypes, typename std::enable_if<eq<InputElementType, OutputElementType>::value, int>::type = 0>
-			inline void copy(expression_list<InputElementType, InputOtherElementTypes...> const &in, expression_list<OutputElementType, OutputOtherElementTypes...> &out) {
+			inline void copy(clifford_expression<InputElementType, InputOtherElementTypes...> const &in, clifford_expression<OutputElementType, OutputOtherElementTypes...> &out) {
 				out.element() = in.element();
 				copy(in.next(), out.next());
 			}
 
 			template<class InputElementType, class... InputOtherElementTypes, class OutputElementType, class... OutputOtherElementTypes, typename std::enable_if<lt<OutputElementType, InputElementType>::value, int>::type = 0>
-			inline void copy(expression_list<InputElementType, InputOtherElementTypes...> const &in, expression_list<OutputElementType, OutputOtherElementTypes...> &out) {
+			inline void copy(clifford_expression<InputElementType, InputOtherElementTypes...> const &in, clifford_expression<OutputElementType, OutputOtherElementTypes...> &out) {
 				out.element() = make_component(constant<0>(), out.element().basis_blade());
 				copy(in, out.next());
 			}
 
 			template<class OutputElementType, class... OutputOtherElementTypes>
-			inline void copy(expression_list<> const &in, expression_list<OutputElementType, OutputOtherElementTypes...> &out) {
+			inline void copy(clifford_expression<> const &in, clifford_expression<OutputElementType, OutputOtherElementTypes...> &out) {
 				out.element() = make_component(constant<0>(), out.element().basis_blade());
 				copy(in, out.next());
 			}
 
-			inline void copy(expression_list<> const &, expression_list<> const &) {
+			inline void copy(clifford_expression<> const &, clifford_expression<> const &) {
 			}
 
 		}

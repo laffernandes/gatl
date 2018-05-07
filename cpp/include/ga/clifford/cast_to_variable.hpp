@@ -16,12 +16,12 @@ namespace ga {
 			constexpr decltype(auto) cast_element_to_var(components<CoefficientType, PossibleGrades> const &arg) = delete; //TODO lazy
 
 			template<id_t ExtraId, id_t Id, id_t... SubIds, class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) cast_clifford_to_var(expression_list<ElementType, OtherElementTypes...> const &itr) {
+			constexpr decltype(auto) cast_clifford_to_var(clifford_expression<ElementType, OtherElementTypes...> const &itr) {
 				return insert(cast_clifford_to_var<ExtraId + 1, Id, SubIds...>(itr.next()), cast_element_to_var<ExtraId, Id, SubIds...>(itr.element()));
 			}
 
 			template<id_t ExtraId, id_t Id, id_t... SubIds>
-			constexpr decltype(auto) cast_clifford_to_var(expression_list<> const &) {
+			constexpr decltype(auto) cast_clifford_to_var(clifford_expression<> const &) {
 				return make_empty_clifford_expression();
 			}
 
@@ -31,9 +31,9 @@ namespace ga {
 
 	namespace lazy {
 
-		template<id_t Id, id_t... SubIds, class ExpressionType>
-		constexpr decltype(auto) var(clifford::clifford_expression<ExpressionType> const &arg) {
-			return clifford::detail::cast_clifford_to_var<1, Id, SubIds...>(clifford::detail::begin(arg()));
+		template<id_t Id, id_t... SubIds, class... ElementTypes>
+		constexpr decltype(auto) var(clifford::clifford_expression<ElementTypes...> const &arg) {
+			return clifford::detail::cast_clifford_to_var<1, Id, SubIds...>(arg);
 		}
 
 	}

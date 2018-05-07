@@ -8,11 +8,11 @@ namespace ga {
 		namespace detail {
 
 			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) unary_minus(expression_list<ElementType, OtherElementTypes...> const &arg) {
+			constexpr decltype(auto) unary_minus(clifford_expression<ElementType, OtherElementTypes...> const &arg) {
 				return insert(unary_minus(arg.next()), unary_minus_element(arg.element()));
 			}
 
-			constexpr decltype(auto) unary_minus(expression_list<> const &) {
+			constexpr decltype(auto) unary_minus(clifford_expression<> const &) {
 				return make_empty_clifford_expression();
 			}
 
@@ -20,9 +20,9 @@ namespace ga {
 
 		using lazy::operator-;
 
-		template<class RightExpressionType>
-		constexpr decltype(auto) operator-(clifford_expression<RightExpressionType> const &rhs) {
-			return detail::unary_minus(detail::begin(rhs()));
+		template<class... RightElementTypes>
+		constexpr decltype(auto) operator-(clifford_expression<RightElementTypes...> const &rhs) {
+			return detail::unary_minus(rhs);
 		}
 
 	}

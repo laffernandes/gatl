@@ -12,13 +12,29 @@ namespace ga {
 				constexpr static bool value = false;
 			};
 
-			template<class ExpressionType>
-			struct may_cast_to_native<clifford_expression<ExpressionType> > : may_cast_to_native<ExpressionType> {
+			template<class CoefficientType>
+			struct may_cast_to_native<clifford_expression<component<CoefficientType, cbasis_blade<0> > > > {
+				constexpr static bool value = true;
+			};
+
+			template<class CoefficientType>
+			struct may_cast_to_native<clifford_expression<component<CoefficientType, dbasis_blade<default_bitset_t(1)> > > > {
+				constexpr static bool value = true;
+			};
+
+			template<class CoefficientType>
+			struct may_cast_to_native<clifford_expression<components<CoefficientType, default_bitset_t(1)> > > {
+				constexpr static bool value = true;
+			};
+
+			template<>
+			struct may_cast_to_native<clifford_expression<> > {
+				constexpr static bool value = true;
 			};
 
 		}
 
-		template<class Type, typename std::enable_if<!is_clifford_expression<Type>::value, int>::type = 0>
+		template<class Type>
 		constexpr Type native(Type const &arg) {
 			return arg;
 		}
@@ -33,10 +49,27 @@ namespace ga {
 			return native(arg());
 		}
 
-		template<class ExpressionType>
-		constexpr decltype(auto) native(clifford_expression<ExpressionType> const &arg) {
-			return native(arg());
+		template<class CoefficientType>
+		constexpr decltype(auto) native(clifford_expression<detail::component<CoefficientType, detail::cbasis_blade<0> > > const &arg) {
+			return native(arg.element().coefficient());
 		}
+
+		template<class CoefficientType>
+		constexpr decltype(auto) native(clifford_expression<detail::component<CoefficientType, detail::dbasis_blade<default_bitset_t(1)> > > const &arg) {
+			return native(arg.element().coefficient());
+		}
+
+		template<class CoefficientType>
+		constexpr decltype(auto) native(clifford_expression<detail::components<CoefficientType, default_bitset_t(1)> > const &arg) {
+			return native(arg.element().begin()->second);
+		}
+
+		constexpr decltype(auto) native(clifford_expression<> const &) {
+			return constant<0>();
+		}
+
+		template<class... ElementTypes>
+		constexpr decltype(auto) native(clifford_expression<ElementTypes...> const &) = delete;
 
 		namespace detail {
 

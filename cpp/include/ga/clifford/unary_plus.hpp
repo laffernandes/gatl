@@ -7,9 +7,9 @@ namespace ga {
 
 		using lazy::operator+;
 
-		template<class RightExpressionType>
-		constexpr RightExpressionType operator+(clifford_expression<RightExpressionType> const &rhs) {
-			return rhs();
+		template<class... RightElementTypes>
+		constexpr clifford_expression<RightElementTypes...> operator+(clifford_expression<RightElementTypes...> const &rhs) {
+			return rhs;
 		}
 
 	}

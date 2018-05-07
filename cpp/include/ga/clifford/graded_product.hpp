@@ -8,32 +8,32 @@ namespace ga {
 		namespace detail {
 
 			template<class LeftElementType, class... LeftOtherElementTypes, class RightElementType, class... RightOtherElementTypes, class MetricSpaceType, class KeepIfGradesFunc>
-			constexpr decltype(auto) graded_product_inner_loop(expression_list<LeftElementType, LeftOtherElementTypes...> const &lhs, expression_list<RightElementType, RightOtherElementTypes...> const &rhs, metric_space<MetricSpaceType> const &mtr, KeepIfGradesFunc const &keep) {
+			constexpr decltype(auto) graded_product_inner_loop(clifford_expression<LeftElementType, LeftOtherElementTypes...> const &lhs, clifford_expression<RightElementType, RightOtherElementTypes...> const &rhs, metric_space<MetricSpaceType> const &mtr, KeepIfGradesFunc const &keep) {
 				return (graded_product_inner_loop(lhs, rhs.next(), mtr, keep) + graded_product_element(lhs.element(), rhs.element(), mtr, keep));
 			}
 
 			template<class LeftElementType, class... LeftOtherElementTypes, class MetricSpaceType, class KeepIfGradesFunc>
-			constexpr decltype(auto) graded_product_inner_loop(expression_list<LeftElementType, LeftOtherElementTypes...> const &, expression_list<> const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
+			constexpr decltype(auto) graded_product_inner_loop(clifford_expression<LeftElementType, LeftOtherElementTypes...> const &, clifford_expression<> const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
 				return make_empty_clifford_expression();
 			}
 
 			template<class LeftElementType, class... LeftOtherElementTypes, class RightElementType, class... RightOtherElementTypes, class MetricSpaceType, class KeepIfGradesFunc>
-			constexpr decltype(auto) graded_product(expression_list<LeftElementType, LeftOtherElementTypes...> const &lhs, expression_list<RightElementType, RightOtherElementTypes...> const &rhs, metric_space<MetricSpaceType> const &mtr, KeepIfGradesFunc const &keep) {
+			constexpr decltype(auto) graded_product(clifford_expression<LeftElementType, LeftOtherElementTypes...> const &lhs, clifford_expression<RightElementType, RightOtherElementTypes...> const &rhs, metric_space<MetricSpaceType> const &mtr, KeepIfGradesFunc const &keep) {
 				return (graded_product(lhs.next(), rhs, mtr, keep) + graded_product_inner_loop(lhs, rhs, mtr, keep));
 			}
 
 			template<class RightElementType, class... RightOtherElementTypes, class MetricSpaceType, class KeepIfGradesFunc>
-			constexpr decltype(auto) graded_product(expression_list<> const &, expression_list<RightElementType, RightOtherElementTypes...> const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
+			constexpr decltype(auto) graded_product(clifford_expression<> const &, clifford_expression<RightElementType, RightOtherElementTypes...> const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
 				return make_empty_clifford_expression();
 			}
 
 			template<class LeftElementType, class... LeftOtherElementTypes, class MetricSpaceType, class KeepIfGradesFunc>
-			constexpr decltype(auto) graded_product(expression_list<LeftElementType, LeftOtherElementTypes...> const &, expression_list<> const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
+			constexpr decltype(auto) graded_product(clifford_expression<LeftElementType, LeftOtherElementTypes...> const &, clifford_expression<> const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
 				return make_empty_clifford_expression();
 			}
 
 			template<class MetricSpaceType, class KeepIfGradesFunc>
-			constexpr decltype(auto) graded_product(expression_list<> const &, expression_list<> const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
+			constexpr decltype(auto) graded_product(clifford_expression<> const &, clifford_expression<> const &, metric_space<MetricSpaceType> const &, KeepIfGradesFunc const &) {
 				return make_empty_clifford_expression();
 			}
 

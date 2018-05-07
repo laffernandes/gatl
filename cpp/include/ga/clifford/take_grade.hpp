@@ -8,12 +8,12 @@ namespace ga {
 		namespace detail {
 
 			template<class ElementType, class... OtherElementTypes, class KeepIfGradeFunc>
-			constexpr decltype(auto) keep_grade(expression_list<ElementType, OtherElementTypes...> const &arg, KeepIfGradeFunc const &keep) {
+			constexpr decltype(auto) keep_grade(clifford_expression<ElementType, OtherElementTypes...> const &arg, KeepIfGradeFunc const &keep) {
 				return insert(keep_grade(arg.next(), keep), keep_if_grade_element(arg.element(), keep));
 			}
 
 			template<class KeepIfGradeFunc>
-			constexpr static decltype(auto) keep_grade(expression_list<> const &, KeepIfGradeFunc const &) {
+			constexpr static decltype(auto) keep_grade(clifford_expression<> const &, KeepIfGradeFunc const &) {
 				return make_empty_clifford_expression();
 			}
 

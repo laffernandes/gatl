@@ -65,8 +65,8 @@
 			return ga::clifford::op(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<!(ga::clifford::detail::may_cast_to_native<LeftExpressionType>::value || ga::clifford::detail::may_cast_to_native<RightExpressionType>::value), int>::type = 0> \
-		constexpr decltype(auto) operator^(ga::clifford::clifford_expression<LeftExpressionType> const &lhs, ga::clifford::clifford_expression<RightExpressionType> const &rhs) { \
+		template<class... LeftElementTypes, class... RightElementTypes, typename std::enable_if<!(ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<LeftElementTypes...> >::value || ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<RightElementTypes...> >::value), int>::type = 0> \
+		constexpr decltype(auto) operator^(ga::clifford::clifford_expression<LeftElementTypes...> const &lhs, ga::clifford::clifford_expression<RightElementTypes...> const &rhs) { \
 			return ga::clifford::op(lhs, rhs, space); \
 		} \
 		\
@@ -85,8 +85,8 @@
 			return ga::clifford::igp(lhs, rhs, space); \
 		} \
 		\
-		template<class ExpressionType, typename std::enable_if<!ga::clifford::detail::may_cast_to_native<ExpressionType>::value, int>::type = 0> \
-		constexpr decltype(auto) exp(ga::clifford::clifford_expression<ExpressionType> const &arg) { \
+		template<class... ElementTypes, typename std::enable_if<!ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<ElementTypes...> >::value, int>::type = 0> \
+		constexpr decltype(auto) exp(ga::clifford::clifford_expression<ElementTypes...> const &arg) { \
 			return ga::clifford::exp(arg, space); \
 		} \
 		\
@@ -191,8 +191,8 @@
 			return ga::clifford::op(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftExpressionType, class RightExpressionType, typename std::enable_if<!(ga::clifford::detail::may_cast_to_native<LeftExpressionType>::value || ga::clifford::detail::may_cast_to_native<RightExpressionType>::value), int>::type = 0> \
-		constexpr decltype(auto) operator^(ga::clifford::clifford_expression<LeftExpressionType> const &lhs, ga::clifford::clifford_expression<RightExpressionType> const &rhs) { \
+		template<class... LeftElementTypes, class... RightElementTypes, typename std::enable_if<!(ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<LeftElementTypes...> >::value || ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<RightElementTypes...> >::value), int>::type = 0> \
+		constexpr decltype(auto) operator^(ga::clifford::clifford_expression<LeftElementTypes...> const &lhs, ga::clifford::clifford_expression<RightElementTypes...> const &rhs) { \
 			return ga::clifford::op(lhs, rhs, space); \
 		} \
 		\
@@ -211,8 +211,8 @@
 			return ga::clifford::igp(lhs, rhs, space); \
 		} \
 		\
-		template<class ExpressionType, typename std::enable_if<!ga::clifford::detail::may_cast_to_native<ExpressionType>::value, int>::type = 0> \
-		constexpr decltype(auto) exp(ga::clifford::clifford_expression<ExpressionType> const &arg) { \
+		template<class... ElementTypes, typename std::enable_if<!ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<ElementTypes...> >::value, int>::type = 0> \
+		constexpr decltype(auto) exp(ga::clifford::clifford_expression<ElementTypes...> const &arg) { \
 			return ga::clifford::exp(arg, space); \
 		} \
 		\

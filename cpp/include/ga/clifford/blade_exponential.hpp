@@ -5,18 +5,18 @@ namespace ga {
 
 	namespace clifford {
 
-		template<class Type, class MetricSpaceType, typename std::enable_if<!is_clifford_expression<Type>::value, int>::type = 0>
+		template<class Type, class MetricSpaceType>
 		constexpr decltype(auto) exp(Type const &arg, metric_space<MetricSpaceType> const &) {
 			return exp(arg);
 		}
 
-		template<class ExpressionType, class MetricSpaceType, typename std::enable_if<detail::may_cast_to_native<ExpressionType>::value, int>::type = 0>
-		constexpr decltype(auto) exp(clifford_expression<ExpressionType> const &arg, metric_space<MetricSpaceType> const &) {
+		template<class... ElementTypes, class MetricSpaceType, typename std::enable_if<detail::may_cast_to_native<clifford_expression<ElementTypes...> >::value, int>::type = 0>
+		constexpr decltype(auto) exp(clifford_expression<ElementTypes...> const &arg, metric_space<MetricSpaceType> const &) {
 			return exp(arg);
 		}
 
-		template<class ExpressionType, class MetricSpaceType, typename std::enable_if<!detail::may_cast_to_native<ExpressionType>::value, int>::type = 0>
-		decltype(auto) exp(clifford_expression<ExpressionType> const &arg, metric_space<MetricSpaceType> const &mtr) {
+		template<class... ElementTypes, class MetricSpaceType, typename std::enable_if<!detail::may_cast_to_native<clifford_expression<ElementTypes...> >::value, int>::type = 0>
+		decltype(auto) exp(clifford_expression<ElementTypes...> const &arg, metric_space<MetricSpaceType> const &mtr) {
 			typedef decltype(sqrt(abs(scp(arg, arg, mtr)))) alpha_t;
 			typedef typename std::common_type<decltype(cosh(alpha_t())), decltype(cos(alpha_t()))>::type scalar_t;
 			//TODO lazy

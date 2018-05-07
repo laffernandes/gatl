@@ -25,7 +25,7 @@ namespace ga {
 			};
 
 			template<default_bitset_t PossibleGrades, default_bitset_t DynamicPossibleGrades>
-			struct _eval_dynamic_possible_grades<expression_list<>, PossibleGrades, DynamicPossibleGrades> {
+			struct _eval_dynamic_possible_grades<clifford_expression<>, PossibleGrades, DynamicPossibleGrades> {
 				constexpr static default_bitset_t value = DynamicPossibleGrades;
 			};
 
@@ -65,12 +65,12 @@ namespace ga {
 			};
 
 			template<class Type, class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) eval_clifford_expression(expression_list<ElementType, OtherElementTypes...> const &arg) {
+			constexpr decltype(auto) eval_clifford_expression(clifford_expression<ElementType, OtherElementTypes...> const &arg) {
 				return eval_clifford_expression<Type>(arg.next()) + _eval_clifford_expression_element<_eval_dynamic_possible_grades<typename begin_type<Type>::type, ElementType::basis_blade_type::possible_grades(), ElementType::basis_blade_type::compile_time_defined() ? default_bitset_t(0) : ElementType::basis_blade_type::possible_grades()>::value>::bind(arg.element());
 			}
 
 			template<class Type>
-			constexpr decltype(auto) eval_clifford_expression(expression_list<> const &) {
+			constexpr decltype(auto) eval_clifford_expression(clifford_expression<> const &) {
 				return make_empty_clifford_expression();
 			}
 
@@ -92,9 +92,9 @@ namespace ga {
 
 		using lazy::eval;
 
-		template<class ExpressionType>
-		constexpr decltype(auto) eval(clifford_expression<ExpressionType> const &arg) {
-			return std::conditional<std::is_same<ExpressionType, typename std::remove_const<typename std::remove_reference<decltype(detail::_eval_clifford_expression::bind(arg()))>::type>::type>::value, detail::_eval_identity, detail::_eval_clifford_expression>::type::bind(arg());
+		template<class... ElementTypes>
+		constexpr decltype(auto) eval(clifford_expression<ElementTypes...> const &arg) {
+			return std::conditional<std::is_same<clifford_expression<ElementTypes...>, typename std::remove_const<typename std::remove_reference<decltype(detail::_eval_clifford_expression::bind(arg))>::type>::type>::value, detail::_eval_identity, detail::_eval_clifford_expression>::type::bind(arg);
 		}
 
 	}

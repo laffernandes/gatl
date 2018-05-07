@@ -113,16 +113,14 @@ namespace ga {
 #include "ga/clifford/clifford_expression.hpp"
 #include "ga/clifford/clifford_expression_insert.hpp"
 #include "ga/clifford/clifford_expression_iterators.hpp"
-#include "ga/clifford/clifford_expression_native.hpp"
 
 #include "ga/clifford/copy.hpp"
 
-#include "ga/clifford/expression_list.hpp"
-#include "ga/clifford/expression_list_insert.hpp"
-#include "ga/clifford/expression_list_iterators.hpp"
-
 #include "ga/clifford/component.hpp"
 #include "ga/clifford/components.hpp"
+
+#include "ga/clifford/clifford_expression_native.hpp"
+
 #include "ga/clifford/element_ordering.hpp"
 #include "ga/clifford/element_unary_minus.hpp"
 #include "ga/clifford/element_graded_unary_minus.hpp"
@@ -134,7 +132,6 @@ namespace ga {
 #include "ga/clifford/element_deduce_grade.hpp"
 
 #include "ga/clifford/cast_to_variable.hpp"
-#include "ga/clifford/expression_list_native.hpp"
 
 #include "ga/clifford/unary_minus.hpp"
 #include "ga/clifford/unary_plus.hpp"

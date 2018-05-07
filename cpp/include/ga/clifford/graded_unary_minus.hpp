@@ -8,12 +8,12 @@ namespace ga {
 		namespace detail {
 
 			template<class ElementType, class... OtherElementTypes, class SignChangeIfGradeFunc>
-			constexpr decltype(auto) graded_unary_minus(expression_list<ElementType, OtherElementTypes...> const &arg, SignChangeIfGradeFunc const &change) {
+			constexpr decltype(auto) graded_unary_minus(clifford_expression<ElementType, OtherElementTypes...> const &arg, SignChangeIfGradeFunc const &change) {
 				return insert(graded_unary_minus(arg.next(), change), graded_unary_minus_element(arg.element(), change));
 			}
 
 			template<class SignChangeIfGradeFunc>
-			constexpr static decltype(auto) graded_unary_minus(expression_list<> const &, SignChangeIfGradeFunc const &) {
+			constexpr static decltype(auto) graded_unary_minus(clifford_expression<> const &, SignChangeIfGradeFunc const &) {
 				return make_empty_clifford_expression();
 			}
 

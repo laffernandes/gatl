@@ -7,14 +7,14 @@ namespace ga {
 
 		namespace detail {
 
-			template<class ExpressionType>
-			constexpr decltype(auto) begin(clifford_expression<ExpressionType> &arg) {
-				return begin(arg());
+			template<class... ElementTypes>
+			constexpr decltype(auto) begin(clifford_expression<ElementTypes...> &arg) {
+				return arg;
 			}
 
-			template<class ExpressionType>
-			constexpr decltype(auto) begin(clifford_expression<ExpressionType> const &arg) {
-				return begin(arg());
+			template<class... ElementTypes>
+			constexpr decltype(auto) begin(clifford_expression<ElementTypes...> const &arg) {
+				return arg;
 			}
 
 			template<class ExpressionType>
@@ -22,18 +22,14 @@ namespace ga {
 				return make_simple_clifford_expression(make_component(arg(), cbasis_blade<0>()));
 			}
 
-			template<class ValueType, typename std::enable_if<!(is_lazy_expression<ValueType>::value || is_clifford_expression<ValueType>::value), int>::type = 0>
+			template<class ValueType, typename std::enable_if<!is_lazy_expression<ValueType>::value, int>::type = 0>
 			constexpr decltype(auto) begin(ValueType const &arg) {
-				return begin(val(arg));
+				return make_simple_clifford_expression(make_component(val(arg), cbasis_blade<0>()));
 			}
 
 			template<class Type>
 			struct begin_type {
 				typedef typename std::remove_const<typename std::remove_reference<decltype(begin(Type()))>::type>::type type;
-			};
-
-			template<class ExpressionType>
-			struct begin_type<clifford_expression<ExpressionType> > : begin_type<ExpressionType> {
 			};
 
 			template<class ExpressionType>

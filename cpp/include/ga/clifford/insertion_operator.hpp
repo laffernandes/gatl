@@ -72,20 +72,20 @@ namespace ga {
 			}
 
 			template<class ElementType, class... OtherElementTypes>
-			void write(std::ostream &os, expression_list<ElementType, OtherElementTypes...> const &rhs, bool &first) {
+			void write(std::ostream &os, clifford_expression<ElementType, OtherElementTypes...> const &rhs, bool &first) {
 				write_element(os, rhs.element(), first);
 				write(os, rhs.next(), first);
 			}
 
-			inline void write(std::ostream &, expression_list<> const &, bool const) {
+			inline void write(std::ostream &, clifford_expression<> const &, bool const) {
 			}
 
 		}
 
 		using lazy::operator<<;
 
-		template<class RightExpressionType>
-		std::ostream & operator<<(std::ostream &os, clifford_expression<RightExpressionType> const &rhs) {
+		template<class... RightElementTypes>
+		std::ostream & operator<<(std::ostream &os, clifford_expression<RightElementTypes...> const &rhs) {
 			bool first = true;
 			detail::write(os, detail::begin(rhs), first);
 

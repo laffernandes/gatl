@@ -63,10 +63,7 @@
     <ClInclude Include="..\..\include\ga\clifford\euclidean_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\eval.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\copy.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\expression_list.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\expression_list_insert.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\expression_list_iterators.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\expression_list_native.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\general_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\grade.hpp" />

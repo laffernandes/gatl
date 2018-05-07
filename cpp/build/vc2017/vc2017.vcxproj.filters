@@ -249,9 +249,6 @@
     <ClInclude Include="..\..\include\ga\lazy\power.hpp">
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\expression_list.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\expression_list_insert.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
@@ -261,13 +258,7 @@
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression_insert.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\expression_list_iterators.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression_native.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\expression_list_native.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\copy.hpp">
