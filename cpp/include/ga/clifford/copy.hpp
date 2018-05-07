@@ -8,7 +8,7 @@ namespace ga {
 		namespace detail {
 
 			template<class InputItrType, class OutputItrType>
-			constexpr void copy(InputItrType const &in, OutputItrType const &out) {
+			constexpr void copy(InputItrType const &in, OutputItrType &out) {
 				element(out) = element(in);
 				copy(next(in), next(out));
 			}
