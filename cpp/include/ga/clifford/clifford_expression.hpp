@@ -36,6 +36,9 @@ namespace ga {
 
 			constexpr decltype(auto) make_empty_clifford_expression();
 
+			template<class... ElementTypes>
+			class expression_list;
+
 		}
 
 	}

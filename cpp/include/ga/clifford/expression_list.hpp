@@ -185,9 +185,6 @@ namespace ga {
 				static_assert(!std::is_same<typename element_type::coefficient_type, constant<0> >::value, "Zeros are not alowed here!");
 			};
 
-			template<class... ElementTypes>
-			class expression_list;
-
 			template<class ElementType, class... OtherElementTypes>
 			class expression_list<ElementType, OtherElementTypes...> final :
 				public clifford_expression<expression_list<ElementType, OtherElementTypes...> >,
@@ -209,7 +206,7 @@ namespace ga {
 
 				template<class OtherExpressionType>
 				constexpr expression_list(clifford_expression<OtherExpressionType> const &other) {
-					copy(obegin(other()), obegin(*this));
+					copy(begin(other()), begin(*this));
 				}
 
 				constexpr expression_list(element_type const &element, OtherElementTypes const &... args) :
@@ -225,7 +222,7 @@ namespace ga {
 
 				template<class OtherExpressionType>
 				constexpr expression_list & operator=(clifford_expression<OtherExpressionType> const &other) {
-					copy(obegin(other()), obegin(*this));
+					copy(begin(other()), begin(*this));
 					return *this;
 				}
 

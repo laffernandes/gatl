@@ -101,13 +101,13 @@ namespace ga {
 				return grade_result<constant<-1> >();
 			}
 
-			template<class ItrType, class ToleranceType>
-			constexpr decltype(auto) deduce_grade(ItrType const &arg, ToleranceType const &tol) {
-				return deduce_grade_look_left(deduce_grade(next(arg), tol), element(arg), tol);
+			template<class ElementType, class... OtherElementTypes, class ToleranceType>
+			constexpr decltype(auto) deduce_grade(expression_list<ElementType, OtherElementTypes...> const &arg, ToleranceType const &tol) {
+				return deduce_grade_look_left(deduce_grade(arg.next(), tol), arg.element(), tol);
 			}
 
 			template<class ToleranceType>
-			constexpr grade_result<constant<-2> > deduce_grade(itr_end const &, ToleranceType const &) {
+			constexpr grade_result<constant<-2> > deduce_grade(expression_list<> const &, ToleranceType const &) {
 				return grade_result<constant<-2> >();
 			}
 

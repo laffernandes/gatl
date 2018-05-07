@@ -663,10 +663,8 @@ int main() {
 	std::cout << std::endl;
 
 	auto itr = ga::clifford::detail::begin(p);
-	auto oitr = ga::clifford::detail::obegin(p);
 
 	std::cout << "sizeof(itr) = " << sizeof(decltype(itr)) << std::endl;
-	std::cout << "sizeof(oitr) = " << sizeof(decltype(oitr)) << std::endl;
 	std::cout << std::endl;
 
 	auto r = gp(p, e3);

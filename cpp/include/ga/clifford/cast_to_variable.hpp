@@ -15,13 +15,13 @@ namespace ga {
 			template<id_t ExtraId, id_t Id, id_t... SubIds, class CoefficientType, default_bitset_t PossibleGrades>
 			constexpr decltype(auto) cast_element_to_var(components<CoefficientType, PossibleGrades> const &arg) = delete; //TODO lazy
 
-			template<id_t ExtraId, id_t Id, id_t... SubIds, class ItrType>
-			constexpr decltype(auto) cast_clifford_to_var(ItrType const &itr) {
-				return insert(cast_clifford_to_var<ExtraId + 1, Id, SubIds...>(next(itr)), cast_element_to_var<ExtraId, Id, SubIds...>(element(itr)));
+			template<id_t ExtraId, id_t Id, id_t... SubIds, class ElementType, class... OtherElementTypes>
+			constexpr decltype(auto) cast_clifford_to_var(expression_list<ElementType, OtherElementTypes...> const &itr) {
+				return insert(cast_clifford_to_var<ExtraId + 1, Id, SubIds...>(itr.next()), cast_element_to_var<ExtraId, Id, SubIds...>(itr.element()));
 			}
 
 			template<id_t ExtraId, id_t Id, id_t... SubIds>
-			constexpr decltype(auto) cast_clifford_to_var(itr_end const &) {
+			constexpr decltype(auto) cast_clifford_to_var(expression_list<> const &) {
 				return make_empty_clifford_expression();
 			}
 

@@ -234,12 +234,6 @@
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree_insert.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\expression_traits.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
@@ -267,16 +261,10 @@
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression_insert.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree_iterators.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\expression_list_iterators.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression_native.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree_native.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\expression_list_native.hpp">
@@ -286,9 +274,6 @@
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\general_metric_space.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\lazy_expression_iterator.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\conformal_metric_space.hpp">

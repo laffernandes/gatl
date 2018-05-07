@@ -67,10 +67,6 @@
     <ClInclude Include="..\..\include\ga\clifford\expression_list_insert.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\expression_list_iterators.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\expression_list_native.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree_insert.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree_iterators.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\expression_tree_native.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\general_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\grade.hpp" />
@@ -81,7 +77,6 @@
     <ClInclude Include="..\..\include\ga\clifford\left_contraction.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression_native.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\lazy_expression_iterator.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\orthogonal_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\outer_product.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\pseudoscalar.hpp" />

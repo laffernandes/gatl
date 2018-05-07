@@ -41,12 +41,12 @@ namespace ga {
 		namespace detail {
 
 			template<class Type, typename std::enable_if<may_cast_to_native<Type>::value, int>::type = 0>
-			constexpr decltype(auto) try_to_cast_to_native(Type const &arg) {
+			constexpr decltype(auto) try_cast_to_native(Type const &arg) {
 				return native(arg);
 			}
 
 			template<class Type, typename std::enable_if<!may_cast_to_native<Type>::value, int>::type = 0>
-			constexpr Type try_to_cast_to_native(Type const &arg) {
+			constexpr Type try_cast_to_native(Type const &arg) {
 				return arg;
 			}
 

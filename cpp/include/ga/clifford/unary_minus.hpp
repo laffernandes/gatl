@@ -7,12 +7,12 @@ namespace ga {
 
 		namespace detail {
 
-			template<class ItrType>
-			constexpr decltype(auto) unary_minus(ItrType const &arg) {
-				return insert(unary_minus(next(arg)), unary_minus_element(element(arg)));
+			template<class ElementType, class... OtherElementTypes>
+			constexpr decltype(auto) unary_minus(expression_list<ElementType, OtherElementTypes...> const &arg) {
+				return insert(unary_minus(arg.next()), unary_minus_element(arg.element()));
 			}
 
-			constexpr decltype(auto) unary_minus(itr_end const &) {
+			constexpr decltype(auto) unary_minus(expression_list<> const &) {
 				return make_empty_clifford_expression();
 			}
 

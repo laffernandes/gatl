@@ -7,13 +7,13 @@ namespace ga {
 
 		namespace detail {
 
-			template<class ItrType, class KeepIfGradeFunc>
-			constexpr decltype(auto) keep_grade(ItrType const &arg, KeepIfGradeFunc const &keep) {
-				return insert(keep_grade(next(arg), keep), keep_if_grade_element(element(arg), keep));
+			template<class ElementType, class... OtherElementTypes, class KeepIfGradeFunc>
+			constexpr decltype(auto) keep_grade(expression_list<ElementType, OtherElementTypes...> const &arg, KeepIfGradeFunc const &keep) {
+				return insert(keep_grade(arg.next(), keep), keep_if_grade_element(arg.element(), keep));
 			}
 
 			template<class KeepIfGradeFunc>
-			constexpr static decltype(auto) keep_grade(itr_end const &, KeepIfGradeFunc const &) {
+			constexpr static decltype(auto) keep_grade(expression_list<> const &, KeepIfGradeFunc const &) {
 				return make_empty_clifford_expression();
 			}
 
@@ -26,7 +26,7 @@ namespace ga {
 
 		template<class Type, grade_t K>
 		constexpr decltype(auto) take_grade(Type const &arg, constant<K> const &k) {
-			return detail::try_to_cast_to_native(detail::keep_grade(detail::begin(arg), detail::keep_if_grade_func<constant<K> >()));
+			return detail::try_cast_to_native(detail::keep_grade(detail::begin(arg), detail::keep_if_grade_func<constant<K> >()));
 		}
 
 	}

@@ -15,10 +15,6 @@
 	#define GA_MAX_BASIS_VECTOR_INDEX 63
 #endif // GA_MAX_BASIS_VECTOR_INDEX
 
-#if !defined(GA_USE_CLIFFORD_EXPRESSION_LIST) && !defined(GA_USE_CLIFFORD_EXPRESSION_TREE)
-	#define GA_USE_CLIFFORD_EXPRESSION_LIST
-#endif // !GA_USE_CLIFFORD_EXPRESSION_LIST && !GA_USE_CLIFFORD_EXPRESSION_TREE
-
 #include "ga/compile_time_ordering.hpp"
 #include "ga/expression_traits.hpp"
 #include "ga/default_tolerance.hpp"
@@ -121,15 +117,9 @@ namespace ga {
 
 #include "ga/clifford/copy.hpp"
 
-#if defined(GA_USE_CLIFFORD_EXPRESSION_LIST)
-	#include "ga/clifford/expression_list.hpp"
-	#include "ga/clifford/expression_list_insert.hpp"
-	#include "ga/clifford/expression_list_iterators.hpp"
-#elif defined(GA_USE_CLIFFORD_EXPRESSION_TREE)
-	#include "ga/clifford/expression_tree.hpp"
-	#include "ga/clifford/expression_tree_insert.hpp"
-	#include "ga/clifford/expression_tree_iterators.hpp"
-#endif // GA_USE_CLIFFORD_EXPRESSION_LIST || GA_USE_CLIFFORD_EXPRESSION_TREE
+#include "ga/clifford/expression_list.hpp"
+#include "ga/clifford/expression_list_insert.hpp"
+#include "ga/clifford/expression_list_iterators.hpp"
 
 #include "ga/clifford/component.hpp"
 #include "ga/clifford/components.hpp"
@@ -144,13 +134,7 @@ namespace ga {
 #include "ga/clifford/element_deduce_grade.hpp"
 
 #include "ga/clifford/cast_to_variable.hpp"
-#include "ga/clifford/lazy_expression_iterator.hpp"
-
-#if defined(GA_USE_CLIFFORD_EXPRESSION_LIST)
-	#include "ga/clifford/expression_list_native.hpp"
-#elif defined(GA_USE_CLIFFORD_EXPRESSION_TREE)
-	#include "ga/clifford/expression_tree_native.hpp"
-#endif // GA_USE_CLIFFORD_EXPRESSION_LIST || GA_USE_CLIFFORD_EXPRESSION_TREE
+#include "ga/clifford/expression_list_native.hpp"
 
 #include "ga/clifford/unary_minus.hpp"
 #include "ga/clifford/unary_plus.hpp"

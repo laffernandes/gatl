@@ -7,25 +7,25 @@ namespace ga {
 
 		namespace detail {
 
-			template<class InputItrType, class OutputItrType, typename std::enable_if<eq<typename element_type<InputItrType>::type, typename element_type<OutputItrType>::type>::value, int>::type = 0>
-			inline void copy(InputItrType const &in, OutputItrType &out) {
-				element(out) = element(in);
-				copy(next(in), next(out));
+			template<class InputElementType, class... InputOtherElementTypes, class OutputElementType, class... OutputOtherElementTypes, typename std::enable_if<eq<InputElementType, OutputElementType>::value, int>::type = 0>
+			inline void copy(expression_list<InputElementType, InputOtherElementTypes...> const &in, expression_list<OutputElementType, OutputOtherElementTypes...> &out) {
+				out.element() = in.element();
+				copy(in.next(), out.next());
 			}
 
-			template<class InputItrType, class OutputItrType, typename std::enable_if<lt<typename element_type<OutputItrType>::type, typename element_type<InputItrType>::type>::value, int>::type = 0>
-			inline void copy(InputItrType const &in, OutputItrType &out) {
-				element(out) = make_component(constant<0>(), element(out).basis_blade());
-				copy(in, next(out));
+			template<class InputElementType, class... InputOtherElementTypes, class OutputElementType, class... OutputOtherElementTypes, typename std::enable_if<lt<OutputElementType, InputElementType>::value, int>::type = 0>
+			inline void copy(expression_list<InputElementType, InputOtherElementTypes...> const &in, expression_list<OutputElementType, OutputOtherElementTypes...> &out) {
+				out.element() = make_component(constant<0>(), out.element().basis_blade());
+				copy(in, out.next());
 			}
 
-			template<class OutputItrType>
-			inline void copy(itr_end const &in, OutputItrType &out) {
-				element(out) = make_component(constant<0>(), element(out).basis_blade());
-				copy(in, next(out));
+			template<class OutputElementType, class... OutputOtherElementTypes>
+			inline void copy(expression_list<> const &in, expression_list<OutputElementType, OutputOtherElementTypes...> &out) {
+				out.element() = make_component(constant<0>(), out.element().basis_blade());
+				copy(in, out.next());
 			}
 
-			inline void copy(itr_end const &, itr_end const &) {
+			inline void copy(expression_list<> const &, expression_list<> const &) {
 			}
 
 		}

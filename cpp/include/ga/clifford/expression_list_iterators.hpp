@@ -7,62 +7,14 @@ namespace ga {
 
 		namespace detail {
 
-			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) begin(expression_list<ElementType, OtherElementTypes...> &arg) {
+			template<class... ElementTypes>
+			constexpr decltype(auto) begin(expression_list<ElementTypes...> &arg) {
 				return arg;
 			}
 
-			constexpr decltype(auto) begin(expression_list<> &) {
-				return itr_end();
-			}
-
-			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) next(expression_list<ElementType, OtherElementTypes...> &arg) {
-				return arg.next();
-			}
-
-			template<class ElementType>
-			constexpr decltype(auto) next(expression_list<ElementType> &) {
-				return itr_end();
-			}
-
-			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) element(expression_list<ElementType, OtherElementTypes...> &arg) {
-				return arg.element();
-			}
-
-			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) begin(expression_list<ElementType, OtherElementTypes...> const &arg) {
+			template<class... ElementTypes>
+			constexpr decltype(auto) begin(expression_list<ElementTypes...> const &arg) {
 				return arg;
-			}
-
-			constexpr decltype(auto) begin(expression_list<> const &) {
-				return itr_end();
-			}
-
-			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) next(expression_list<ElementType, OtherElementTypes...> const &arg) {
-				return arg.next();
-			}
-
-			template<class ElementType>
-			constexpr decltype(auto) next(expression_list<ElementType> const &) {
-				return itr_end();
-			}
-
-			template<class ElementType, class... OtherElementTypes>
-			constexpr decltype(auto) element(expression_list<ElementType, OtherElementTypes...> const &arg) {
-				return arg.element();
-			}
-
-			template<class... ElementTypes>
-			constexpr decltype(auto) obegin(expression_list<ElementTypes...> &arg) {
-				return begin(arg);
-			}
-
-			template<class... ElementTypes>
-			constexpr decltype(auto) obegin(expression_list<ElementTypes...> const &arg) {
-				return begin(arg);
 			}
 
 		}

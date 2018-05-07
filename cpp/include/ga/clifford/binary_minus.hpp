@@ -7,32 +7,32 @@ namespace ga {
 
 		namespace detail {
 
-			template<class LeftItrType, class RightItrType, typename std::enable_if<eq<typename element_type<LeftItrType>::type, typename element_type<RightItrType>::type>::value, int>::type = 0>
-			constexpr decltype(auto) binary_minus(LeftItrType const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(next(lhs), next(rhs)), binary_minus_element(element(lhs), element(rhs)));
+			template<class LeftElementType, class... LeftOtherElementTypes, class RightElementType, class... RightOtherElementTypes, typename std::enable_if<eq<LeftElementType, RightElementType>::value, int>::type = 0>
+			constexpr decltype(auto) binary_minus(expression_list<LeftElementType, LeftOtherElementTypes...> const &lhs, expression_list<RightElementType, RightOtherElementTypes...> const &rhs) {
+				return insert(binary_minus(lhs.next(), rhs.next()), binary_minus_element(lhs.element(), rhs.element()));
 			}
 
-			template<class LeftItrType, class RightItrType, typename std::enable_if<lt<typename element_type<LeftItrType>::type, typename element_type<RightItrType>::type>::value, int>::type = 0>
-			constexpr decltype(auto) binary_minus(LeftItrType const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(next(lhs), rhs), element(lhs));
+			template<class LeftElementType, class... LeftOtherElementTypes, class RightElementType, class... RightOtherElementTypes, typename std::enable_if<lt<LeftElementType, RightElementType>::value, int>::type = 0>
+			constexpr decltype(auto) binary_minus(expression_list<LeftElementType, LeftOtherElementTypes...> const &lhs, expression_list<RightElementType, RightOtherElementTypes...> const &rhs) {
+				return insert(binary_minus(lhs.next(), rhs), lhs.element());
 			}
 
-			template<class LeftItrType>
-			constexpr decltype(auto) binary_minus(LeftItrType const &lhs, itr_end const &rhs) {
-				return insert(binary_minus(next(lhs), rhs), element(lhs));
+			template<class LeftElementType, class... LeftOtherElementTypes>
+			constexpr decltype(auto) binary_minus(expression_list<LeftElementType, LeftOtherElementTypes...> const &lhs, expression_list<> const &rhs) {
+				return insert(binary_minus(lhs.next(), rhs), lhs.element());
 			}
 
-			template<class LeftItrType, class RightItrType, typename std::enable_if<lt<typename element_type<RightItrType>::type, typename element_type<LeftItrType>::type>::value, int>::type = 0>
-			constexpr decltype(auto) binary_minus(LeftItrType const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(lhs, next(rhs)), unary_minus_element(element(rhs)));
+			template<class LeftElementType, class... LeftOtherElementTypes, class RightElementType, class... RightOtherElementTypes, typename std::enable_if<lt<RightElementType, LeftElementType>::value, int>::type = 0>
+			constexpr decltype(auto) binary_minus(expression_list<LeftElementType, LeftOtherElementTypes...> const &lhs, expression_list<RightElementType, RightOtherElementTypes...> const &rhs) {
+				return insert(binary_minus(lhs, rhs.next()), unary_minus_element(rhs.element()));
 			}
 
-			template<class RightItrType>
-			constexpr decltype(auto) binary_minus(itr_end const &lhs, RightItrType const &rhs) {
-				return insert(binary_minus(lhs, next(rhs)), unary_minus_element(element(rhs)));
+			template<class RightElementType, class... RightOtherElementTypes>
+			constexpr decltype(auto) binary_minus(expression_list<> const &lhs, expression_list<RightElementType, RightOtherElementTypes...> const &rhs) {
+				return insert(binary_minus(lhs, rhs.next()), unary_minus_element(rhs.element()));
 			}
 
-			constexpr decltype(auto) binary_minus(itr_end const &, itr_end const &) {
+			constexpr decltype(auto) binary_minus(expression_list<> const &, expression_list<> const &) {
 				return make_empty_clifford_expression();
 			}
 
@@ -42,27 +42,27 @@ namespace ga {
 
 		template<class LeftExpressionType, class RightExpressionType>
 		constexpr decltype(auto) operator-(clifford_expression<LeftExpressionType> const &lhs, clifford_expression<RightExpressionType> const &rhs) {
-			return detail::try_to_cast_to_native(detail::binary_minus(detail::obegin(lhs()), detail::obegin(rhs())));
+			return detail::try_cast_to_native(detail::binary_minus(detail::begin(lhs()), detail::begin(rhs())));
 		}
 
 		template<class LeftExpressionType, class RightExpressionType>
 		constexpr decltype(auto) operator-(clifford_expression<LeftExpressionType> const &lhs, lazy_expression<RightExpressionType> const &rhs) {
-			return detail::try_to_cast_to_native(detail::binary_minus(detail::obegin(lhs()), detail::obegin(rhs)));
+			return detail::try_cast_to_native(detail::binary_minus(detail::begin(lhs()), detail::begin(rhs)));
 		}
 
 		template<class LeftExpressionType, class RightExpressionType>
 		constexpr decltype(auto) operator-(lazy_expression<LeftExpressionType> const &lhs, clifford_expression<RightExpressionType> const &rhs) {
-			return detail::try_to_cast_to_native(detail::binary_minus(detail::obegin(lhs), detail::obegin(rhs())));
+			return detail::try_cast_to_native(detail::binary_minus(detail::begin(lhs), detail::begin(rhs())));
 		}
 
 		template<class LeftExpressionType, class RightType, typename std::enable_if<!(is_lazy_expression<RightType>::value || is_clifford_expression<RightType>::value), int>::type = 0>
 		constexpr decltype(auto) operator-(clifford_expression<LeftExpressionType> const &lhs, RightType const &rhs) {
-			return detail::try_to_cast_to_native(detail::binary_minus(detail::obegin(lhs()), detail::obegin(val(rhs))));
+			return detail::try_cast_to_native(detail::binary_minus(detail::begin(lhs()), detail::begin(val(rhs))));
 		}
 
 		template<class LeftType, class RightExpressionType, typename std::enable_if<!(is_lazy_expression<LeftType>::value || is_clifford_expression<LeftType>::value), int>::type = 0>
 		constexpr decltype(auto) operator-(LeftType const &lhs, clifford_expression<RightExpressionType> const &rhs) {
-			return detail::try_to_cast_to_native(detail::binary_minus(detail::obegin(val(lhs)), detail::obegin(rhs())));
+			return detail::try_cast_to_native(detail::binary_minus(detail::begin(val(lhs)), detail::begin(rhs())));
 		}
 
 	}
