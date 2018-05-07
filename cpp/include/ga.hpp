@@ -76,7 +76,9 @@ namespace ga {
 
 #include "ga/lazy/exponentiation.hpp"
 #include "ga/lazy/multiplication.hpp"
+#include "ga/lazy/division.hpp"
 #include "ga/lazy/addition.hpp"
+#include "ga/lazy/subtraction.hpp"
 
 #include "ga/lazy/math.hpp"
 #include "ga/lazy/arithmetic_operators.hpp"
