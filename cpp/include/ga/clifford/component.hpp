@@ -220,16 +220,16 @@ namespace ga {
 
 			template<class BasisBladeType>
 			constexpr decltype(auto) make_simple_clifford_expression(component<constant<0>, BasisBladeType> const &) {
-				return make_empty_clifford_expression();
+				return clifford_expression<>();
 			}
 
 			template<class CoefficientType>
 			constexpr decltype(auto) make_simple_clifford_expression(component<CoefficientType, dbasis_blade<default_bitset_t(0)> > const &) {
-				return make_empty_clifford_expression();
+				return clifford_expression<>();
 			}
 
 			constexpr decltype(auto) make_simple_clifford_expression(component<constant<0>, dbasis_blade<default_bitset_t(0)> > const &) {
-				return make_empty_clifford_expression();
+				return clifford_expression<>();
 			}
 
 		}

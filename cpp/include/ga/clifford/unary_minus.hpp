@@ -12,8 +12,14 @@ namespace ga {
 				return insert(unary_minus(arg.next()), unary_minus_element(arg.element()));
 			}
 
+			//TODO INSERIDO POR CAUSA DE BUG PÓS ATUALIZAÇÃO DO VISUAL STUDIO
+			template<class ElementType>
+			constexpr decltype(auto) unary_minus(clifford_expression<ElementType> const &arg) {
+				return make_simple_clifford_expression(unary_minus_element(arg.element()));
+			}
+
 			constexpr decltype(auto) unary_minus(clifford_expression<> const &) {
-				return make_empty_clifford_expression();
+				return clifford_expression<>();
 			}
 
 		}

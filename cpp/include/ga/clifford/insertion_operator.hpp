@@ -77,6 +77,12 @@ namespace ga {
 				write(os, rhs.next(), first);
 			}
 
+			//TODO INSERIDO POR CAUSA DE BUG PÓS ATUALIZAÇÃO DO VISUAL STUDIO
+			template<class ElementType>
+			void write(std::ostream &os, clifford_expression<ElementType> const &rhs, bool &first) {
+				write_element(os, rhs.element(), first);
+			}
+
 			inline void write(std::ostream &, clifford_expression<> const &, bool const) {
 			}
 

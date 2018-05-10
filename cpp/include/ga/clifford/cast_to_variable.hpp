@@ -22,7 +22,7 @@ namespace ga {
 
 			template<id_t ExtraId, id_t Id, id_t... SubIds>
 			constexpr decltype(auto) cast_clifford_to_var(clifford_expression<> const &) {
-				return make_empty_clifford_expression();
+				return clifford_expression<>();
 			}
 
 		}

@@ -74,16 +74,16 @@ namespace ga {
 
 			template<default_bitset_t PossibleGrades>
 			constexpr decltype(auto) make_simple_clifford_expression(components<constant<0>, PossibleGrades> const &) {
-				return make_empty_clifford_expression();
+				return clifford_expression<>();
 			}
 
 			template<class CoefficientType>
 			constexpr decltype(auto) make_simple_clifford_expression(components<CoefficientType, default_bitset_t(0) > const &) {
-				return make_empty_clifford_expression();
+				return clifford_expression<>();
 			}
 
 			constexpr decltype(auto) make_simple_clifford_expression(components<constant<0>, default_bitset_t(0) > const &) {
-				return make_empty_clifford_expression();
+				return clifford_expression<>();
 			}
 
 		}

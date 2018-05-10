@@ -7,6 +7,11 @@ namespace ga {
 
 		namespace detail {
 
+			template<class LeftArgumentType, class RightArgumentType>
+			inline void write_add(std::ostream &os, detail::add<LeftArgumentType, RightArgumentType> const &rhs) {
+				os << rhs.left() << " + " << rhs.right();
+			}
+
 			template<class LeftArgumentType, class... RightArgumentTypes>
 			inline void write_add(std::ostream &os, detail::add<LeftArgumentType, RightArgumentTypes...> const &rhs) {
 				os << rhs.left() << " + ";
@@ -14,19 +19,14 @@ namespace ga {
 			}
 
 			template<class LeftArgumentType, class RightArgumentType>
-			inline void write_add(std::ostream &os, detail::add<LeftArgumentType, RightArgumentType> const &rhs) {
-				os << rhs.left() << " + " << rhs.right();
+			inline void write_mul(std::ostream &os, detail::mul<LeftArgumentType, RightArgumentType> const &rhs) {
+				os << rhs.left() << " * " << rhs.right();
 			}
 
 			template<class LeftArgumentType, class... RightArgumentTypes>
 			inline void write_mul(std::ostream &os, detail::mul<LeftArgumentType, RightArgumentTypes...> const &rhs) {
 				os << rhs.left() << " * ";
 				detail::write_mul(os, rhs.right());
-			}
-
-			template<class LeftArgumentType, class RightArgumentType>
-			inline void write_mul(std::ostream &os, detail::mul<LeftArgumentType, RightArgumentType> const &rhs) {
-				os << rhs.left() << " * " << rhs.right();
 			}
 
 			template<id_t Id, id_t SubId, id_t... OtherSubIds>

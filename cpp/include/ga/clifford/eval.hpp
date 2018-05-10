@@ -69,9 +69,15 @@ namespace ga {
 				return eval_clifford_expression<Type>(arg.next()) + _eval_clifford_expression_element<_eval_dynamic_possible_grades<typename begin_type<Type>::type, ElementType::basis_blade_type::possible_grades(), ElementType::basis_blade_type::compile_time_defined() ? default_bitset_t(0) : ElementType::basis_blade_type::possible_grades()>::value>::bind(arg.element());
 			}
 
+			//TODO INSERIDO POR CAUSA DE BUG PÓS ATUALIZAÇÃO DO VISUAL STUDIO
+			template<class Type, class ElementType>
+			constexpr decltype(auto) eval_clifford_expression(clifford_expression<ElementType> const &arg) {
+				return _eval_clifford_expression_element<_eval_dynamic_possible_grades<typename begin_type<Type>::type, ElementType::basis_blade_type::possible_grades(), ElementType::basis_blade_type::compile_time_defined() ? default_bitset_t(0) : ElementType::basis_blade_type::possible_grades()>::value>::bind(arg.element());
+			}
+
 			template<class Type>
 			constexpr decltype(auto) eval_clifford_expression(clifford_expression<> const &) {
-				return make_empty_clifford_expression();
+				return clifford_expression<>();
 			}
 
 			struct _eval_clifford_expression {

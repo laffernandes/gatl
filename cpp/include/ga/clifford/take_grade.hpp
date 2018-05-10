@@ -14,7 +14,7 @@ namespace ga {
 
 			template<class KeepIfGradeFunc>
 			constexpr static decltype(auto) keep_grade(clifford_expression<> const &, KeepIfGradeFunc const &) {
-				return make_empty_clifford_expression();
+				return clifford_expression<>();
 			}
 
 		}

@@ -249,10 +249,6 @@ namespace ga {
 				return clifford_expression<ElementType>(element);
 			}
 
-			constexpr decltype(auto) make_empty_clifford_expression() {
-				return clifford_expression<>();
-			}
-
 		}
 
 	}

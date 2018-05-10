@@ -22,6 +22,9 @@
     <Filter Include="Header Files\ga\lazy">
       <UniqueIdentifier>{9292fa48-90f3-4f53-8296-f6615815a057}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ga\future">
+      <UniqueIdentifier>{91a984ed-0ff4-43df-97f6-c98fb5290500}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\ga.hpp">
@@ -305,6 +308,39 @@
     </ClInclude>
     <ClInclude Include="..\..\include\ga\lazy\division.hpp">
       <Filter>Header Files\ga\lazy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\expression.hpp">
+      <Filter>Header Files\ga\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\type_traits_extension.hpp">
+      <Filter>Header Files\ga\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\exponentiation.hpp">
+      <Filter>Header Files\ga\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\addition.hpp">
+      <Filter>Header Files\ga\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\relational_operators.hpp">
+      <Filter>Header Files\ga\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\constexpr.hpp">
+      <Filter>Header Files\ga\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\product.hpp">
+      <Filter>Header Files\ga\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\make_component.hpp">
+      <Filter>Header Files\ga\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\possible_grades.hpp">
+      <Filter>Header Files\ga\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\expression_traits_declaration.hpp">
+      <Filter>Header Files\ga\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\future\expression_tests.hpp">
+      <Filter>Header Files\ga\future</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

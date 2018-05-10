@@ -93,6 +93,17 @@
     <ClInclude Include="..\..\include\ga\compile_time_ordering.hpp" />
     <ClInclude Include="..\..\include\ga\default_tolerance.hpp" />
     <ClInclude Include="..\..\include\ga\expression_traits.hpp" />
+    <ClInclude Include="..\..\include\ga\future\addition.hpp" />
+    <ClInclude Include="..\..\include\ga\future\expression_tests.hpp" />
+    <ClInclude Include="..\..\include\ga\future\expression_traits_declaration.hpp" />
+    <ClInclude Include="..\..\include\ga\future\expression.hpp" />
+    <ClInclude Include="..\..\include\ga\future\constexpr.hpp" />
+    <ClInclude Include="..\..\include\ga\future\exponentiation.hpp" />
+    <ClInclude Include="..\..\include\ga\future\make_component.hpp" />
+    <ClInclude Include="..\..\include\ga\future\possible_grades.hpp" />
+    <ClInclude Include="..\..\include\ga\future\product.hpp" />
+    <ClInclude Include="..\..\include\ga\future\relational_operators.hpp" />
+    <ClInclude Include="..\..\include\ga\future\type_traits_extension.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\add.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\addition.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\arithmetic_operators.hpp" />
@@ -205,6 +216,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -241,6 +253,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

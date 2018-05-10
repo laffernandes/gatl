@@ -600,6 +600,8 @@ int main() {
 		std::cout << std::endl;
 	}
 
+	bool kk = future::detail::id_cmp<2, 2>::lt_v<2, 2>;
+
 	return EXIT_SUCCESS;
 }
 /*/

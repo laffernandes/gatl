@@ -171,6 +171,26 @@ namespace ga {
 #include "ga/clifford/pseudoscalar.hpp"
 #include "ga/clifford/basis_vector.hpp"
 
+namespace future {
+
+	using ga::default_bitset_t;
+	using ga::default_integral_t;
+	using ga::id_t;
+
+}
+
+#include "ga/future/type_traits_extension.hpp"
+#include "ga/future/expression_traits_declaration.hpp"
+#include "ga/future/expression.hpp"
+#include "ga/future/constexpr.hpp"
+#include "ga/future/relational_operators.hpp"
+#include "ga/future/addition.hpp"
+#include "ga/future/product.hpp"
+#include "ga/future/exponentiation.hpp"
+#include "ga/future/possible_grades.hpp"
+#include "ga/future/make_component.hpp"
+#include "ga/future/expression_tests.hpp"
+
 namespace ga {
 
 	using namespace lazy;
