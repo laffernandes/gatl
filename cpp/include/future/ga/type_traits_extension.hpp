@@ -1,7 +1,7 @@
-#ifndef __GA_TYPE_TRAITS_EXTENSION_HPP__
-#define __GA_TYPE_TRAITS_EXTENSION_HPP__
+#ifndef __FUTURE_GA_TYPE_TRAITS_EXTENSION_HPP__
+#define __FUTURE_GA_TYPE_TRAITS_EXTENSION_HPP__
 
-namespace future {
+namespace ga {
 
 	namespace detail {
 
@@ -25,4 +25,4 @@ namespace future {
 
 }
 
-#endif // __GA_TYPE_TRAITS_EXTENSION_HPP__
+#endif // __FUTURE_GA_TYPE_TRAITS_EXTENSION_HPP__

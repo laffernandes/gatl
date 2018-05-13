@@ -1,13 +1,9 @@
-#ifndef __GA_FUTURE_EXPRESSION_TRAITS_DECLARATION_HPP__
-#define __GA_FUTURE_EXPRESSION_TRAITS_DECLARATION_HPP__
+#ifndef __FUTURE_GA_EXPRESSION_TRAITS_DECLARATION_HPP__
+#define __FUTURE_GA_EXPRESSION_TRAITS_DECLARATION_HPP__
 
-namespace future {
+namespace ga {
 
 	namespace detail {
-
-		// Relational operator for Id's.
-		template<id_t... LeftId>
-		struct id_cmp;
 
 		// Relational operators.
 		template<class LeftType, class RightType>
@@ -47,25 +43,25 @@ namespace future {
 		constexpr bool ge_v = ge<LeftType, RightType>::value;
 
 		// Addition operation.
-		template<class LeftType, class RightType, class Enable = void>
+		template<class LeftExpression, class RightExpression, class Enable = void>
 		struct addition;
 
-		template<class LeftType, class RightType>
-		using addition_t = typename addition<LeftType, RightType>::type;
+		template<class LeftExpression, class RightExpression>
+		using addition_t = typename addition<LeftExpression, RightExpression>::type;
 
 		// Product operation.
-		template<class LeftType, class RightType, class Mapping, class Enable = void>
+		template<class LeftExpression, class RightExpression, class Mapping, class Enable = void>
 		struct product;
 
-		template<class LeftType, class RightType, class Mapping>
-		using product_t = typename product<LeftType, RightType, Mapping>::type;
+		template<class LeftExpression, class RightExpression, class Mapping>
+		using product_t = typename product<LeftExpression, RightExpression, Mapping>::type;
 
 		// Exponentiation operation.
-		template<class LeftType, class RightType, class Enable = void>
+		template<class LeftExpression, class RightExpression, class Enable = void>
 		struct exponentiation;
 
-		template<class LeftType, class RightType>
-		using exponentiation_t = typename exponentiation<LeftType, RightType>::type;
+		template<class LeftExpression, class RightExpression>
+		using exponentiation_t = typename exponentiation<LeftExpression, RightExpression>::type;
 
 		// Make component function.
 		template<class Coefficient, class BasisBlade, class Enable = void>
@@ -74,22 +70,29 @@ namespace future {
 		template<class Coefficient, class BasisBlade>
 		using make_component_t = typename make_component<Coefficient, BasisBlade>::type;
 
-		// Possible grades of a given component.
-		template<class Component>
-		struct possible_grades;
-
-		template<class Component>
-		constexpr default_bitset_t possible_grades_v = possible_grades<Component>::value;
-
 		// Returns whether the given expression is compile-time defined.
-		template<class Type>
+		template<class Expression>
 		struct is_constant_expression;
 
-		template<class Type>
-		constexpr bool is_constant_expression_v = is_constant_expression<Type>::value;
+		template<class Expression>
+		constexpr bool is_constant_expression_v = is_constant_expression<Expression>::value;
+
+		// Returns whether the given expression is scalar.
+		template<class Expression>
+		struct is_scalar_expression;
+
+		template<class Expression>
+		constexpr bool is_scalar_expression_v = is_scalar_expression<Expression>::value;
+
+		// Returns the possible grades of a given basis blade.
+		template<class BasisBlade>
+		struct possible_grades;
+
+		template<class BasisBlade>
+		constexpr default_bitset_t possible_grades_v = possible_grades<BasisBlade>::value;
 
 	}
 
 }
 
-#endif // __GA_FUTURE_EXPRESSION_TRAITS_DECLARATION_HPP__
+#endif // __FUTURE_GA_EXPRESSION_TRAITS_DECLARATION_HPP__

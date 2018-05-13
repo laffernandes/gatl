@@ -236,7 +236,7 @@ namespace ga {
 
 			template<class LeftCoefficientType, default_bitset_t LeftBasisBlade, class RightCoefficientType, default_bitset_t RightBasisBlade, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>
 			constexpr decltype(auto) graded_product_element(component<LeftCoefficientType, cbasis_blade<LeftBasisBlade> > const &lhs, component<RightCoefficientType, cbasis_blade<RightBasisBlade> > const &rhs, metric_space<orthogonal_metric_space<OrthogonalMetricSpaceType> > const &mtr, KeepIfGradesFunc const &keep) {
-				return make_simple_clifford_expression(std::conditional<KeepIfGradesFunc::template eval<LeftBasisBlade, RightBasisBlade, LeftBasisBlade ^ RightBasisBlade>::value, _orthogonal_graded_product_component_eval, _graded_product_element_make_zero>::type::bind(lhs, rhs, mtr, keep));
+				return make_simple_clifford_expression(std::conditional<KeepIfGradesFunc::template eval<_basis_blade_grade<cbasis_blade<LeftBasisBlade> >::value, _basis_blade_grade<cbasis_blade<RightBasisBlade> >::value, _basis_blade_grade<cbasis_blade<LeftBasisBlade ^ RightBasisBlade> >::value>::value, _orthogonal_graded_product_component_eval, _graded_product_element_make_zero>::type::bind(lhs, rhs, mtr, keep));
 			}
 
 			template<class LeftCoefficientType, class LeftBasisBladeType, class RightCoefficientType, class RightBasisBlade, class OrthogonalMetricSpaceType, class KeepIfGradesFunc>

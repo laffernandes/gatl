@@ -22,8 +22,11 @@
     <Filter Include="Header Files\ga\lazy">
       <UniqueIdentifier>{9292fa48-90f3-4f53-8296-f6615815a057}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ga\future">
+    <Filter Include="Header Files\future">
       <UniqueIdentifier>{91a984ed-0ff4-43df-97f6-c98fb5290500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\future\ga">
+      <UniqueIdentifier>{52e27f3d-79e1-4a6c-a079-73819527bf6f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -252,9 +255,6 @@
     <ClInclude Include="..\..\include\ga\lazy\power.hpp">
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford\expression_list_insert.hpp">
-      <Filter>Header Files\ga\clifford</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\clifford\clifford_expression_iterators.hpp">
       <Filter>Header Files\ga\clifford</Filter>
     </ClInclude>
@@ -309,42 +309,114 @@
     <ClInclude Include="..\..\include\ga\lazy\division.hpp">
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\expression.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga\addition.hpp">
+      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\type_traits_extension.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga\constexpr.hpp">
+      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\exponentiation.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga\exponentiation.hpp">
+      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\addition.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga\expression.hpp">
+      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\relational_operators.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga\make_component.hpp">
+      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\constexpr.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga\product.hpp">
+      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\product.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga\relational_operators.hpp">
+      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\make_component.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga\type_traits_extension.hpp">
+      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\possible_grades.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga.hpp">
+      <Filter>Header Files\future</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\expression_traits_declaration.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga\declarations.hpp">
+      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\future\expression_tests.hpp">
-      <Filter>Header Files\ga\future</Filter>
+    <ClInclude Include="..\..\include\future\ga\expression_traits.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\mapping.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\signed_metric_space.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\metric_space.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\basis_vector.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\clifford_expression.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\constant.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\arithmetic_operators.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\scalar.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\eval.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\geometric_product.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\inverse_geometric_product.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\outer_product.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\left_contraction.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\right_contraction.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\scalar_product.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\versor_inverse.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\lazy_arguments.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\lazy_context.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\orthogonal_metric_mapping.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\general_metric_mapping.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\reverse_norm.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\dualization.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\pseudoscalar.hpp">
+      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\sandbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\future_sandbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

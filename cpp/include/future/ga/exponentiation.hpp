@@ -1,32 +1,27 @@
-#ifndef __GA_FUTURE_EXPONENTIATION_HPP__
-#define __GA_FUTURE_EXPONENTIATION_HPP__
+#ifndef __FUTURE_GA_EXPONENTIATION_HPP__
+#define __FUTURE_GA_EXPONENTIATION_HPP__
 
-namespace future {
+namespace ga {
 
 	namespace detail {
 
-		// Specialization of exponentiation<mul<...>, RightType> (distributive property over multiplication).
-		template<class LeftArgument, class... LeftNextArguments, class RightType>
-		struct exponentiation<mul<LeftArgument, LeftNextArguments...>, RightType, std::enable_if_t<!is_any_v<RightType, constant<0>, constant<1> > > > {
-			typedef product_t<exponentiation_t<LeftArgument, RightType>, exponentiation_t<mul<LeftNextArguments...>, RightType>, real_mapping> type; // (A * B)^{C} = A^{C} * B^{C}
+		// Specialization of exponentiation<mul<...>, RightExpression> (distributive property over multiplication).
+		template<class LeftArgument, class... LeftNextArguments, class RightExpression>
+		struct exponentiation<mul<LeftArgument, LeftNextArguments...>, RightExpression, std::enable_if_t<!is_any_v<RightExpression, constant<0>, constant<1> > > > {
+			typedef product_t<exponentiation_t<LeftArgument, RightExpression>, exponentiation_t<mul_t<LeftNextArguments...>, RightExpression>, real_mapping> type; // (A * B)^{C} = A^{C} * B^{C}
 		};
 
-		template<class RightType>
-		struct exponentiation<mul<>, RightType, std::enable_if_t<!is_any_v<RightType, constant<0>, constant<1> > > > {
-			typedef constant<1> type; // end of recursion
+		// Specializations of exponentiation<LeftExpression, RightExpression> (simplify or bind operations).
+		template<class LeftExpression, class RightExpression>
+		struct exponentiation<LeftExpression, RightExpression> {
+			typedef power_t<LeftExpression, RightExpression> type; // default (bind)
 		};
 
-		// Specializations of exponentiation<LeftType, RightType> (simplify or bind operations).
-		template<class LeftType, class RightType>
-		struct exponentiation<LeftType, RightType> {
-			typedef power<LeftType, RightType> type; // default (bind)
-		};
-
-		template<class Type, class Enable = void>
+		template<class Expression, class Enable = void>
 		struct constant_sign;
 
-		template<class Type>
-		constexpr default_integral_t constant_sign_v = constant_sign<Type>::value;
+		template<class Expression>
+		constexpr default_integral_t constant_sign_v = constant_sign<Expression>::value;
 
 		template<default_integral_t Value>
 		struct constant_sign<constant<Value> > {
@@ -34,8 +29,8 @@ namespace future {
 		};
 
 		template<class Argument, class... NextArguments>
-		struct constant_sign<mul<Argument, NextArguments...>, std::enable_if_t<is_constant_expression_v<mul<Argument, NextArguments...> > > > {
-			constexpr static default_integral_t value = constant_sign_v<Argument> * constant_sign_v<mul<NextArguments...> >;
+		struct constant_sign<mul<Argument, NextArguments...>, std::enable_if_t<is_constant_expression_v<mul_t<Argument, NextArguments...> > > > {
+			constexpr static default_integral_t value = constant_sign_v<Argument> * constant_sign_v<mul_t<NextArguments...> >;
 		};
 
 		template<class LeftArgument, class RightArgument>
@@ -43,14 +38,14 @@ namespace future {
 			constexpr static default_integral_t value = constant_sign_v<LeftArgument>;
 		};
 
-		template<class RightType>
-		struct exponentiation<constant<0>, RightType, std::enable_if_t<is_constant_expression_v<RightType> > > {
-			static_assert(constant_sign_v<RightType> > 0, "The value of pow(0, N) is undefined for N <= 0.");
+		template<class RightExpression>
+		struct exponentiation<constant<0>, RightExpression, std::enable_if_t<is_constant_expression_v<RightExpression> > > {
+			static_assert(constant_sign_v<RightExpression> > 0, "The value of pow(0, N) is undefined for N <= 0.");
 			typedef constant<0> type; // 0^{X} = 0, for X > 0 (simplify)
 		};
 
-		template<class RightType>
-		struct exponentiation<constant<1>, RightType> {
+		template<class RightExpression>
+		struct exponentiation<constant<1>, RightExpression> {
 			typedef constant<1> type; // 1^{X} = 1 (simplify)
 		};
 
@@ -64,14 +59,14 @@ namespace future {
 			typedef constant<-1> type; // (-1)^{K} = -1, if K is even (simplify)
 		};
 
-		template<class LeftType>
-		struct exponentiation<LeftType, constant<0>, std::enable_if_t<!is_any_v<LeftType, constant<0>, constant<1>, constant<-1> > > > {
+		template<class LeftExpression>
+		struct exponentiation<LeftExpression, constant<0>, std::enable_if_t<!is_any_v<LeftExpression, constant<0>, constant<1>, constant<-1> > > > {
 			typedef constant<1> type; // X^{0} = 1 (simplify)
 		};
 
-		template<class LeftType>
-		struct exponentiation<LeftType, constant<1>, std::enable_if_t<!is_any_v<LeftType, constant<0>, constant<1>, constant<-1> > > > {
-			typedef LeftType type; // X^{1} = X (simplify)
+		template<class LeftExpression>
+		struct exponentiation<LeftExpression, constant<1>, std::enable_if_t<!is_any_v<LeftExpression, constant<0>, constant<1>, constant<-1> > > > {
+			typedef LeftExpression type; // X^{1} = X (simplify)
 		};
 
 		template<default_integral_t Value>
@@ -114,16 +109,16 @@ namespace future {
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
 		struct exponentiation<constant<LeftValue>, constant<RightValue>, std::enable_if_t<(LeftValue < -1 || 1 < LeftValue) && (RightValue < 0)> > {
-			typedef power<constant<ipow(LeftValue, -RightValue)>, constant<-1> > type; // X^{Y} = simpler (simplify and bind)
+			typedef power_t<constant<ipow(LeftValue, -RightValue)>, constant<-1> > type; // X^{Y} = simpler (simplify and bind)
 		};
 
-		template<class LeftLeftArgument, class LeftRightArgument, class RightType>
-		struct exponentiation<power<LeftLeftArgument, LeftRightArgument>, RightType, std::enable_if_t<!is_any_v<RightType, constant<0>, constant<1> > > > {
-			typedef exponentiation_t<LeftLeftArgument, product_t<LeftRightArgument, RightType, real_mapping> > type; // (A^{B})^{C} = A^{B * C} (simplify)
+		template<class LeftLeftArgument, class LeftRightArgument, class RightExpression>
+		struct exponentiation<power<LeftLeftArgument, LeftRightArgument>, RightExpression, std::enable_if_t<!is_any_v<RightExpression, constant<0>, constant<1> > > > {
+			typedef exponentiation_t<LeftLeftArgument, product_t<LeftRightArgument, RightExpression, real_mapping> > type; // (A^{B})^{C} = A^{B * C} (simplify)
 		};
 
 	}
 
 }
 
-#endif // __GA_FUTURE_EXPONENTIATION_HPP__
+#endif // __FUTURE_GA_EXPONENTIATION_HPP__

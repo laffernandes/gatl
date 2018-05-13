@@ -1,7 +1,7 @@
-#ifndef __GA_FUTURE_MAKE_COMPONENT_HPP__
-#define __GA_FUTURE_MAKE_COMPONENT_HPP__
+#ifndef __FUTURE_GA_MAKE_COMPONENT_HPP__
+#define __FUTURE_GA_MAKE_COMPONENT_HPP__
 
-namespace future {
+namespace ga {
 
 	namespace detail {
 
@@ -30,4 +30,4 @@ namespace future {
 
 }
 
-#endif // __GA_FUTURE_MAKE_COMPONENT_HPP__
+#endif // __FUTURE_GA_MAKE_COMPONENT_HPP__

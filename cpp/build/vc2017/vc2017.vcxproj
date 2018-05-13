@@ -19,6 +19,40 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\future\ga.hpp" />
+    <ClInclude Include="..\..\include\future\ga\addition.hpp" />
+    <ClInclude Include="..\..\include\future\ga\dualization.hpp" />
+    <ClInclude Include="..\..\include\future\ga\general_metric_mapping.hpp" />
+    <ClInclude Include="..\..\include\future\ga\lazy_arguments.hpp" />
+    <ClInclude Include="..\..\include\future\ga\arithmetic_operators.hpp" />
+    <ClInclude Include="..\..\include\future\ga\basis_vector.hpp" />
+    <ClInclude Include="..\..\include\future\ga\clifford_expression.hpp" />
+    <ClInclude Include="..\..\include\future\ga\constant.hpp" />
+    <ClInclude Include="..\..\include\future\ga\constexpr.hpp" />
+    <ClInclude Include="..\..\include\future\ga\eval.hpp" />
+    <ClInclude Include="..\..\include\future\ga\exponentiation.hpp" />
+    <ClInclude Include="..\..\include\future\ga\expression.hpp" />
+    <ClInclude Include="..\..\include\future\ga\expression_traits.hpp" />
+    <ClInclude Include="..\..\include\future\ga\declarations.hpp" />
+    <ClInclude Include="..\..\include\future\ga\geometric_product.hpp" />
+    <ClInclude Include="..\..\include\future\ga\inverse_geometric_product.hpp" />
+    <ClInclude Include="..\..\include\future\ga\lazy_context.hpp" />
+    <ClInclude Include="..\..\include\future\ga\left_contraction.hpp" />
+    <ClInclude Include="..\..\include\future\ga\make_component.hpp" />
+    <ClInclude Include="..\..\include\future\ga\mapping.hpp" />
+    <ClInclude Include="..\..\include\future\ga\metric_space.hpp" />
+    <ClInclude Include="..\..\include\future\ga\orthogonal_metric_mapping.hpp" />
+    <ClInclude Include="..\..\include\future\ga\outer_product.hpp" />
+    <ClInclude Include="..\..\include\future\ga\product.hpp" />
+    <ClInclude Include="..\..\include\future\ga\pseudoscalar.hpp" />
+    <ClInclude Include="..\..\include\future\ga\relational_operators.hpp" />
+    <ClInclude Include="..\..\include\future\ga\reverse_norm.hpp" />
+    <ClInclude Include="..\..\include\future\ga\right_contraction.hpp" />
+    <ClInclude Include="..\..\include\future\ga\scalar_product.hpp" />
+    <ClInclude Include="..\..\include\future\ga\signed_metric_space.hpp" />
+    <ClInclude Include="..\..\include\future\ga\type_traits_extension.hpp" />
+    <ClInclude Include="..\..\include\future\ga\scalar.hpp" />
+    <ClInclude Include="..\..\include\future\ga\versor_inverse.hpp" />
     <ClInclude Include="..\..\include\ga.hpp" />
     <ClInclude Include="..\..\include\ga1c.hpp" />
     <ClInclude Include="..\..\include\ga1m.hpp" />
@@ -63,7 +97,6 @@
     <ClInclude Include="..\..\include\ga\clifford\euclidean_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\eval.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\copy.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\expression_list_insert.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\general_metric_space.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\clifford\grade.hpp" />
@@ -93,17 +126,6 @@
     <ClInclude Include="..\..\include\ga\compile_time_ordering.hpp" />
     <ClInclude Include="..\..\include\ga\default_tolerance.hpp" />
     <ClInclude Include="..\..\include\ga\expression_traits.hpp" />
-    <ClInclude Include="..\..\include\ga\future\addition.hpp" />
-    <ClInclude Include="..\..\include\ga\future\expression_tests.hpp" />
-    <ClInclude Include="..\..\include\ga\future\expression_traits_declaration.hpp" />
-    <ClInclude Include="..\..\include\ga\future\expression.hpp" />
-    <ClInclude Include="..\..\include\ga\future\constexpr.hpp" />
-    <ClInclude Include="..\..\include\ga\future\exponentiation.hpp" />
-    <ClInclude Include="..\..\include\ga\future\make_component.hpp" />
-    <ClInclude Include="..\..\include\ga\future\possible_grades.hpp" />
-    <ClInclude Include="..\..\include\ga\future\product.hpp" />
-    <ClInclude Include="..\..\include\ga\future\relational_operators.hpp" />
-    <ClInclude Include="..\..\include\ga\future\type_traits_extension.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\add.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\addition.hpp" />
     <ClInclude Include="..\..\include\ga\lazy\arithmetic_operators.hpp" />
@@ -126,7 +148,11 @@
     <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\test\sandbox.cpp" />
+    <ClCompile Include="..\..\test\future_sandbox.cpp" />
+    <ClCompile Include="..\..\test\sandbox.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
