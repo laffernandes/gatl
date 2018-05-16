@@ -321,13 +321,7 @@
     <ClInclude Include="..\..\include\future\ga\expression.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\future\ga\make_component.hpp">
-      <Filter>Header Files\future\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\future\ga\product.hpp">
-      <Filter>Header Files\future\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\future\ga\relational_operators.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\future\ga\type_traits_extension.hpp">
@@ -409,6 +403,9 @@
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\future\ga\pseudoscalar.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\expression_relational_operators.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
   </ItemGroup>

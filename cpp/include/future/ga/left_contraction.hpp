@@ -51,13 +51,13 @@ namespace ga {
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class MetricSpaceType>
 	constexpr decltype(auto) lcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &mtr) {
 		typedef detail::lazy_arguments<LeftExpression, RightExpression> lazy;
-		return detail::eval<detail::product_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1>, detail::bind_metric_space_mapping_t<MetricSpaceType, detail::lcont_mapping> > >(lhs, rhs);
+		return detail::eval<detail::product_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1>, detail::metric_space_mapping_t<MetricSpaceType, detail::lcont_mapping> > >(lhs, rhs);
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression> > >
 	constexpr decltype(auto) lcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
 		typedef detail::lazy_arguments<LeftExpression, RightExpression> lazy;
-		return detail::eval<detail::product_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1>, detail::bind_metric_space_mapping_t<detail::real_metric_space, detail::lcont_mapping> > >(lhs, rhs);
+		return detail::eval<detail::product_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1>, detail::metric_space_mapping_t<detail::real_metric_space, detail::lcont_mapping> > >(lhs, rhs);
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightType, class MetricSpaceType>

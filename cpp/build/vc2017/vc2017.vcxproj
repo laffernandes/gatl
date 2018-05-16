@@ -38,14 +38,13 @@
     <ClInclude Include="..\..\include\future\ga\inverse_geometric_product.hpp" />
     <ClInclude Include="..\..\include\future\ga\lazy_context.hpp" />
     <ClInclude Include="..\..\include\future\ga\left_contraction.hpp" />
-    <ClInclude Include="..\..\include\future\ga\make_component.hpp" />
     <ClInclude Include="..\..\include\future\ga\mapping.hpp" />
     <ClInclude Include="..\..\include\future\ga\metric_space.hpp" />
     <ClInclude Include="..\..\include\future\ga\orthogonal_metric_mapping.hpp" />
     <ClInclude Include="..\..\include\future\ga\outer_product.hpp" />
     <ClInclude Include="..\..\include\future\ga\product.hpp" />
     <ClInclude Include="..\..\include\future\ga\pseudoscalar.hpp" />
-    <ClInclude Include="..\..\include\future\ga\relational_operators.hpp" />
+    <ClInclude Include="..\..\include\future\ga\expression_relational_operators.hpp" />
     <ClInclude Include="..\..\include\future\ga\reverse_norm.hpp" />
     <ClInclude Include="..\..\include\future\ga\right_contraction.hpp" />
     <ClInclude Include="..\..\include\future\ga\scalar_product.hpp" />

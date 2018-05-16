@@ -19,7 +19,7 @@ namespace ga {
 
 		// Returns the metric space mapping that fits the given arguments.
 		template<class MetricSpaceType, class GradedProduct>
-		struct bind_metric_space_mapping {
+		struct _metric_space_mapping_t {
 			typedef std::conditional_t<
 				is_orthogonal_metric_space_v<MetricSpaceType>,
 				orthogonal_metric_space_mapping<MetricSpaceType, GradedProduct>,
@@ -32,7 +32,7 @@ namespace ga {
 		};
 		
 		template<class MetricSpace, class GradedProduct>
-		using bind_metric_space_mapping_t = typename bind_metric_space_mapping<MetricSpace, GradedProduct>::type;
+		using metric_space_mapping_t = typename _metric_space_mapping_t<MetricSpace, GradedProduct>::type;
 
 	}
 

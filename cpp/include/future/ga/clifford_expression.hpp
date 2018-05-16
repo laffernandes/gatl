@@ -5,106 +5,96 @@ namespace ga {
 
 	namespace detail {
 
-		// Returns the number of coefficients stored for the given expression.
+		// Returns the number of values stored by the given expression.
 		template<class... Expressions>
-		struct count_stored_coefficients;
+		struct count_stored_values;
 
 		template<class... Expressions>
-		constexpr std::size_t count_stored_coefficients_v = count_stored_coefficients<Expressions...>::value;
+		constexpr std::size_t count_stored_values_v = count_stored_values<Expressions...>::value;
 
 		template<class Expression, class... NextExpressions>
-		struct count_stored_coefficients<Expression, NextExpressions...> {
-			constexpr static std::size_t value = count_stored_coefficients_v<Expression> + count_stored_coefficients_v<NextExpressions...>; // recursion
+		struct count_stored_values<Expression, NextExpressions...> {
+			constexpr static std::size_t value = count_stored_values_v<Expression> + count_stored_values_v<NextExpressions...>; // recursion
 		};
 
 		template<>
-		struct count_stored_coefficients<> {
+		struct count_stored_values<> {
 			constexpr static std::size_t value = 0; // end of recursion
 		};
 
-		template<default_integral_t Value>
-		struct count_stored_coefficients<constant<Value> > {
-			constexpr static std::size_t value = 0;
-		};
-
-		template<class LazyCoefficient>
-		struct count_stored_coefficients<value<LazyCoefficient> > {
-			constexpr static std::size_t value = 0;
+		template<class Expression>
+		struct count_stored_values<Expression> {
+			constexpr static std::size_t value = 0; // default
 		};
 
 		template<>
-		struct count_stored_coefficients<value<stored> > {
+		struct count_stored_values<stored_value> {
 			constexpr static std::size_t value = 1;
 		};
 
-		template<name_t Name, class... Arguments>
-		struct count_stored_coefficients<function<Name, Arguments...> > {
-			constexpr static std::size_t value = count_stored_coefficients_v<Arguments...>;
+		template<default_bitset_t PossibleGrades, class LazyBitset>
+		struct count_stored_values<dynamic_basis_blade<PossibleGrades, LazyBitset> > {
+			constexpr static std::size_t value = count_stored_values_v<LazyBitset>;
 		};
 
 		template<class Coefficient, class BasisBlade>
-		struct count_stored_coefficients<component<Coefficient, BasisBlade> > {
-			constexpr static std::size_t value = 0;
+		struct count_stored_values<component<Coefficient, BasisBlade> > {
+			constexpr static std::size_t value = count_stored_values_v<Coefficient> + count_stored_values_v<BasisBlade>;
 		};
 
-		template<class Coefficient, default_bitset_t BasisVectors>
-		struct count_stored_coefficients<component<Coefficient, constant_basis_blade<BasisVectors> > > {
-			constexpr static std::size_t value = count_stored_coefficients_v<Coefficient>;
+		template<name_t Name, class... Arguments>
+		struct count_stored_values<function<Name, Arguments...> > {
+			constexpr static std::size_t value = count_stored_values_v<Arguments...>;
 		};
 
-		template<class Coefficient, default_bitset_t PossibleGrades, class LazyBasisVectors>
-		struct count_stored_coefficients<component<Coefficient, dynamic_basis_blade<PossibleGrades, LazyBasisVectors> > > {
-			constexpr static std::size_t value = count_stored_coefficients_v<Coefficient>;
-		};
-
-		// Returns the number of basis blades stored for the given expression.
+		// Returns the number of bitsets stored by the given expression.
 		template<class... Expressions>
-		struct count_stored_basis_blades;
+		struct count_stored_bitsets;
 
 		template<class... Expressions>
-		constexpr std::size_t count_stored_basis_blades_v = count_stored_basis_blades<Expressions...>::value;
+		constexpr std::size_t count_stored_bitsets_v = count_stored_bitsets<Expressions...>::value;
 
 		template<class Expression, class... NextExpressions>
-		struct count_stored_basis_blades<Expression, NextExpressions...> {
-			constexpr static std::size_t value = count_stored_basis_blades_v<Expression> + count_stored_basis_blades_v<NextExpressions...>; // recursion
+		struct count_stored_bitsets<Expression, NextExpressions...> {
+			constexpr static std::size_t value = count_stored_bitsets_v<Expression> + count_stored_bitsets_v<NextExpressions...>; // recursion
 		};
 
 		template<>
-		struct count_stored_basis_blades<> {
+		struct count_stored_bitsets<> {
 			constexpr static std::size_t value = 0; // end of recursion
 		};
 
-		template<default_integral_t Value>
-		struct count_stored_basis_blades<constant<Value> > {
-			constexpr static std::size_t value = 0;
+		template<class Expression>
+		struct count_stored_bitsets<Expression> {
+			constexpr static std::size_t value = 0; // default
 		};
 
-		template<class LazyCoefficient>
-		struct count_stored_basis_blades<value<LazyCoefficient> > {
-			constexpr static std::size_t value = 0;
+		template<>
+		struct count_stored_bitsets<stored_bitset> {
+			constexpr static std::size_t value = 1;
 		};
 
-		template<name_t Name, class... Arguments>
-		struct count_stored_basis_blades<function<Name, Arguments...> > {
-			constexpr static std::size_t value = 0;
+		template<default_bitset_t PossibleGrades, class LazyBitset>
+		struct count_stored_bitsets<dynamic_basis_blade<PossibleGrades, LazyBitset> > {
+			constexpr static std::size_t value = count_stored_bitsets_v<LazyBitset>;
 		};
 
 		template<class Coefficient, class BasisBlade>
-		struct count_stored_basis_blades<component<Coefficient, BasisBlade> > {
-			constexpr static std::size_t value = 0;
+		struct count_stored_bitsets<component<Coefficient, BasisBlade> > {
+			constexpr static std::size_t value = count_stored_bitsets_v<Coefficient> + count_stored_bitsets_v<BasisBlade>;
 		};
 
-		template<class Coefficient, default_bitset_t PossibleGrades>
-		struct count_stored_basis_blades<component<Coefficient, dynamic_basis_blade<PossibleGrades, stored> > > {
-			constexpr static std::size_t value = 1;
+		template<name_t Name, class... Arguments>
+		struct count_stored_bitsets<function<Name, Arguments...> > {
+			constexpr static std::size_t value = count_stored_bitsets_v<Arguments...>;
 		};
 
 		// Sequential collection of stored data entries.
-		template<class DataEntryType, std::size_t Size>
+		template<class EntryType, std::size_t Size>
 		class sequential_storage {
 		public:
 
-			typedef DataEntryType data_entry_type;
+			typedef EntryType entry_type;
 
 			constexpr sequential_storage() = default;
 			constexpr sequential_storage(sequential_storage const &) = default;
@@ -121,22 +111,22 @@ namespace ga {
 
 		private:
 
-			std::array<data_entry_type, Size> data_;
+			std::array<entry_type, Size> data_;
 		};
 
 		// Superclass for ga::clifford_expression<CoefficientType, Expression>.
-		template<class CoefficientType, class Expression, std::size_t StoredCoefficients = count_stored_coefficients_v<Expression>, std::size_t StoredBasisBlades = count_stored_basis_blades_v<Expression>, bool AssociativeStorageOfComponents = false /*TODO Not supported yet (associative storage).*/>
+		template<class CoefficientType, class Expression, std::size_t StoredValues = count_stored_values_v<Expression>, std::size_t StoredBitsets = count_stored_bitsets_v<Expression>, std::size_t StoredMaps = 0 /*TODO Not supported yet (associative storage).*/>
 		class _super_clifford_expression;
 
 		template<class CoefficientType, class Expression>
-		class _super_clifford_expression<CoefficientType, Expression, 0, 0, false> {
+		class _super_clifford_expression<CoefficientType, Expression, 0, 0, 0> {
 		public:
 
 			typedef CoefficientType coefficient_type;
-			typedef default_bitset_t basis_blade_type;
+			typedef default_bitset_t bitset_type;
 
-			typedef sequential_storage<coefficient_type, 0> coefficient_storage_type;
-			typedef sequential_storage<basis_blade_type, 0> basis_blade_storage_type;
+			typedef sequential_storage<coefficient_type, 0> value_storage_type;
+			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
 
 			constexpr _super_clifford_expression() = default;
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
@@ -146,22 +136,22 @@ namespace ga {
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 		};
 
-		template<class CoefficientType, class Expression, std::size_t StoredCoefficients>
-		class _super_clifford_expression<CoefficientType, Expression, StoredCoefficients, 0, false> {
+		template<class CoefficientType, class Expression, std::size_t StoredValues>
+		class _super_clifford_expression<CoefficientType, Expression, StoredValues, 0, 0> {
 		public:
 
 			typedef CoefficientType coefficient_type;
-			typedef default_bitset_t basis_blade_type;
+			typedef default_bitset_t bitset_type;
 
-			typedef sequential_storage<coefficient_type, StoredCoefficients> coefficient_storage_type;
-			typedef sequential_storage<basis_blade_type, 0> basis_blade_storage_type;
+			typedef sequential_storage<coefficient_type, StoredValues> value_storage_type;
+			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
 
 			constexpr _super_clifford_expression() = default;
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(coefficient_storage_type &&coefficients) :
-				coefficients_(std::move(coefficients)) {
+			constexpr _super_clifford_expression(value_storage_type &&values) :
+				values_(std::move(values)) {
 			}
 
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
@@ -169,25 +159,25 @@ namespace ga {
 
 		protected:
 
-			coefficient_storage_type coefficients_;
+			value_storage_type values_;
 		};
 
-		template<class CoefficientType, class Expression, std::size_t StoredBasisBlades>
-		class _super_clifford_expression<CoefficientType, Expression, 0, StoredBasisBlades, false> {
+		template<class CoefficientType, class Expression, std::size_t StoredBitsets>
+		class _super_clifford_expression<CoefficientType, Expression, 0, StoredBitsets, 0> {
 		public:
 
 			typedef CoefficientType coefficient_type;
-			typedef default_bitset_t basis_blade_type;
+			typedef default_bitset_t bitset_type;
 
-			typedef sequential_storage<coefficient_type, 0> coefficient_storage_type;
-			typedef sequential_storage<basis_blade_type, StoredBasisBlades> basis_blade_storage_type;
+			typedef sequential_storage<coefficient_type, 0> value_storage_type;
+			typedef sequential_storage<bitset_type, StoredBitsets> bitset_storage_type;
 
 			constexpr _super_clifford_expression() = default;
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(basis_blade_storage_type &&basis_blades) :
-				basis_blades_(std::move(basis_blades)) {
+			constexpr _super_clifford_expression(bitset_storage_type &&bitsets) :
+				bitsets_(std::move(bitsets)) {
 			}
 
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
@@ -195,26 +185,26 @@ namespace ga {
 
 		protected:
 
-			basis_blade_storage_type basis_blades_;
+			bitset_storage_type bitsets_;
 		};
 
-		template<class CoefficientType, class Expression, std::size_t StoredCoefficients, std::size_t StoredBasisBlades>
-		class _super_clifford_expression<CoefficientType, Expression, StoredCoefficients, StoredBasisBlades, false> {
+		template<class CoefficientType, class Expression, std::size_t StoredValues, std::size_t StoredBitsets>
+		class _super_clifford_expression<CoefficientType, Expression, StoredValues, StoredBitsets, 0> {
 		public:
 
 			typedef CoefficientType coefficient_type;
-			typedef default_bitset_t basis_blade_type;
+			typedef default_bitset_t bitset_type;
 
-			typedef sequential_storage<coefficient_type, StoredCoefficients> coefficient_storage_type;
-			typedef sequential_storage<basis_blade_type, StoredBasisBlades> basis_blade_storage_type;
+			typedef sequential_storage<coefficient_type, StoredValues> value_storage_type;
+			typedef sequential_storage<bitset_type, StoredBitsets> bitset_storage_type;
 
 			constexpr _super_clifford_expression() = default;
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(coefficient_storage_type &&coefficients, basis_blade_storage_type &&basis_blades) :
-				coefficients_(std::move(coefficients)),
-				basis_blades_(std::move(basis_blades)) {
+			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets) :
+				values_(std::move(values)),
+				bitsets_(std::move(bitsets)) {
 			}
 
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
@@ -222,8 +212,8 @@ namespace ga {
 
 		protected:
 
-			coefficient_storage_type coefficients_;
-			basis_blade_storage_type basis_blades_;
+			value_storage_type values_;
+			bitset_storage_type bitsets_;
 		};
 
 	}
@@ -238,10 +228,10 @@ namespace ga {
 	public:
 
 		using typename super::coefficient_type;
-		using typename super::basis_blade_type;
+		using typename super::bitset_type;
 
-		using typename super::coefficient_storage_type;
-		using typename super::basis_blade_storage_type;
+		using typename super::value_storage_type;
+		using typename super::bitset_storage_type;
 
 		typedef Expression expression_type;
 
@@ -260,10 +250,8 @@ namespace ga {
 		constexpr clifford_expression & operator=(clifford_expression const &) = default;
 		constexpr clifford_expression & operator=(clifford_expression &&) = default;
 
-		template<class = std::enable_if_t<std::is_same_v<Expression, detail::value<detail::stored> > > >
-		constexpr operator coefficient_type() const {
-			return super::coefficients_.front();
-		}
+		template<class = std::enable_if_t<detail::is_scalar_expression_v<clifford_expression> > >
+		constexpr operator coefficient_type() const = delete; //TODO Not supported yet (native scalar casting)
 	};
 
 	// Returns whether the given type is a clifford expression.
@@ -280,7 +268,7 @@ namespace ga {
 	template<class Type>
 	constexpr bool is_clifford_expression_v = is_clifford_expression<Type>::value;
 
-	// Helper function to build a sequential storage of coefficients or basis blades.
+	// Helper function to build a sequential storage of values or basis blades.
 	template<class... Args>
 	constexpr decltype(auto) make_sequential_storage(Args &&... args) {
 		return detail::sequential_storage<std::common_type_t<Args...>, sizeof...(args)>(std::move(args)...);

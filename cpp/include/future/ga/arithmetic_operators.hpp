@@ -27,13 +27,13 @@ namespace ga {
 	template<class RightCoefficientType, class RightExpression>
 	constexpr decltype(auto) operator-(clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
 		typedef detail::lazy_arguments<RightExpression> lazy;
-		return detail::eval<detail::product_t<detail::constant<-1>, lazy::argument_expression_t<0>, detail::real_mapping> >(rhs);
+		return detail::eval<detail::product_t<detail::constant_value<-1>, lazy::argument_expression_t<0>, detail::real_mapping> >(rhs);
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression>
 	constexpr decltype(auto) operator-(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
 		typedef detail::lazy_arguments<LeftExpression, RightExpression> lazy;
-		return detail::eval<detail::addition_t<lazy::argument_expression_t<0>, detail::product_t<detail::constant<-1>, lazy::argument_expression_t<1>, detail::real_mapping> > >(lhs, rhs);
+		return detail::eval<detail::addition_t<lazy::argument_expression_t<0>, detail::product_t<detail::constant_value<-1>, lazy::argument_expression_t<1>, detail::real_mapping> > >(lhs, rhs);
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightType>

@@ -23,8 +23,6 @@ namespace future {
 		static_assert(std::is_integral_v<decltype((GA_MAX_BASIS_VECTOR_INDEX))> && 1 <= (GA_MAX_BASIS_VECTOR_INDEX) && (GA_MAX_BASIS_VECTOR_INDEX) <= 63, "GA_MAX_BASIS_VECTOR_INDEX must be an integer value between 1 and 63, inclusive.");
 
 		typedef std::int32_t default_integral_t;
-		typedef std::int32_t id_t;
-
 		typedef std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 8, std::uint8_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 16, std::uint16_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 32, std::uint32_t, std::uint64_t> > > default_bitset_t;
 
 		typedef std::int32_t grade_t;
@@ -42,6 +40,7 @@ namespace future {
 
 	#include "ga/expression.hpp"
 	#include "ga/expression_traits.hpp"
+	#include "ga/expression_relational_operators.hpp"
 
 	#include "ga/metric_space.hpp"
 	#include "ga/signed_metric_space.hpp"
@@ -50,8 +49,6 @@ namespace future {
 	#include "ga/orthogonal_metric_mapping.hpp"
 	#include "ga/general_metric_mapping.hpp"
 
-	#include "ga/make_component.hpp"
-	#include "ga/relational_operators.hpp"
 	#include "ga/addition.hpp"
 	#include "ga/product.hpp"
 	#include "ga/exponentiation.hpp"
@@ -92,5 +89,6 @@ namespace future {
 //TODO exp
 //TODO eval
 //TODO Lidar com components<>
+//TODO Como lidar com a avaliação parcial da lazy expression?
 
 #endif // __FUTURE_GA_HPP__

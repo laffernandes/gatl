@@ -5,72 +5,66 @@ namespace ga {
 
 	namespace detail {
 
-		// Specializations of is_constant_expression<Expression>.
-		template<default_integral_t Value>
-		struct is_constant_expression<constant<Value> > {
+		// Returns whether the given expressions are compile-time defined.
+		template<class... Expressions>
+		struct is_constant_expression;
+
+		template<class... Expressions>
+		constexpr bool is_constant_expression_v = is_constant_expression<Expressions...>::value;
+
+		template<class Expression, class... NextExpressions>
+		struct is_constant_expression<Expression, NextExpressions...> {
+			constexpr static bool value = is_constant_expression_v<Expression> && is_constant_expression_v<NextExpressions...>; // recursion
+		};
+
+		template<>
+		struct is_constant_expression<> {
 			constexpr static bool value = true; // end of recursion
 		};
 
-		template<class LazyCoefficient>
-		struct is_constant_expression<value<LazyCoefficient> > {
-			constexpr static bool value = false; // end of recursion
+		template<class Expression>
+		struct is_constant_expression<Expression> {
+			constexpr static bool value = false; // default
+		};
+
+		template<default_integral_t Value>
+		struct is_constant_expression<constant_value<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<default_bitset_t Bitset>
+		struct is_constant_expression<constant_bitset<Bitset> > {
+			constexpr static bool value = true;
+		};
+
+		template<default_bitset_t Bitset>
+		struct is_constant_expression<constant_basis_blade<Bitset> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Coefficient, class BasisBlade>
+		struct is_constant_expression<component<Coefficient, BasisBlade> > {
+			constexpr static bool value = is_constant_expression_v<Coefficient> && is_constant_expression_v<BasisBlade>;
 		};
 
 		template<name_t Name, class... Arguments>
 		struct is_constant_expression<function<Name, Arguments...> > {
-			constexpr static bool value = is_constant_expression_v<_arguments_list<Arguments...> >; // recursive
+			constexpr static bool value = is_constant_expression_v<Arguments...>;
 		};
 
-		template<class Coefficient, default_bitset_t BasisVectors>
-		struct is_constant_expression<component<Coefficient, constant_basis_blade<BasisVectors> > > {
-			constexpr static bool value = is_constant_expression_v<Coefficient>; // recursive
+		// Returns whether the given expression is scalar.
+		template<class Expression>
+		struct is_scalar_expression {
+			constexpr static bool value = false; // default
 		};
 
-		template<class Coefficient, default_bitset_t PossibleGrades, class LazyBasisVectors>
-		struct is_constant_expression<component<Coefficient, dynamic_basis_blade<PossibleGrades, LazyBasisVectors> > > {
-			constexpr static bool value = false; // end of recursion
+		template<class Coefficient>
+		struct is_scalar_expression<component<Coefficient, constant_basis_blade<default_bitset_t(0)> > > {
+			constexpr static bool value = true;
 		};
 
-		template<class Argument, class... NextArguments>
-		struct is_constant_expression<_arguments_list<Argument, NextArguments...> > {
-			constexpr static bool value = is_constant_expression_v<Argument> && is_constant_expression_v<_arguments_list<NextArguments...> >; // recursive
-		};
-
-		template<>
-		struct is_constant_expression<_arguments_list<> > {
-			constexpr static bool value = true; // end of recursion
-		};
-
-		// Specializations of is_scalar_expression<Expression>.
-		template<default_integral_t Value>
-		struct is_scalar_expression<constant<Value> > {
-			constexpr static bool value = true; // end of recursion
-		};
-
-		template<class LazyCoefficient>
-		struct is_scalar_expression<value<LazyCoefficient> > {
-			constexpr static bool value = true; // end of recursion
-		};
-
-		template<name_t Name, class... Arguments>
-		struct is_scalar_expression<function<Name, Arguments...> > {
-			constexpr static bool value = true; // end of recursion
-		};
-
-		template<class Coefficient, class BasisBlade>
-		struct is_scalar_expression<component<Coefficient, BasisBlade> > {
-			constexpr static bool value = false; // end of recursion
-		};
-
-		template<class Argument, class... NextArguments>
-		struct is_scalar_expression<_arguments_list<Argument, NextArguments...> > {
-			constexpr static bool value = is_scalar_expression_v<Argument> && is_scalar_expression_v<_arguments_list<NextArguments...> >; // recursive
-		};
-
-		template<>
-		struct is_scalar_expression<_arguments_list<> > {
-			constexpr static bool value = true; // end of recursion
-		};
+		template<class Expression>
+		constexpr bool is_scalar_expression_v = is_scalar_expression<Expression>::value;
 
 		// Specializations of possible_grades<BasisBlade>.
 		template<default_bitset_t BasisVectors>
@@ -78,8 +72,8 @@ namespace ga {
 			constexpr static default_bitset_t value = default_bitset_t(1) << ones(BasisVectors);
 		};
 
-		template<default_bitset_t PossibleGrades, class LazyBasisVectors>
-		struct possible_grades<dynamic_basis_blade<PossibleGrades, LazyBasisVectors> > {
+		template<default_bitset_t PossibleGrades, class LazyBitset>
+		struct possible_grades<dynamic_basis_blade<PossibleGrades, LazyBitset> > {
 			constexpr static default_bitset_t value = PossibleGrades;
 		};
 
@@ -89,12 +83,12 @@ namespace ga {
 
 		template<default_bitset_t BasisVectors>
 		struct basis_vectors<constant_basis_blade<BasisVectors> > {
-			typedef lazy_constant_bitset<BasisVectors> type;
+			typedef constant_bitset<BasisVectors> type;
 		};
 
-		template<default_bitset_t PossibleGrades, class LazyBasisVectors>
-		struct basis_vectors<dynamic_basis_blade<PossibleGrades, LazyBasisVectors> > {
-			typedef LazyBasisVectors type;
+		template<default_bitset_t PossibleGrades, class LazyBitset>
+		struct basis_vectors<dynamic_basis_blade<PossibleGrades, LazyBitset> > {
+			typedef LazyBitset type;
 		};
 
 		template<class BasisBlade>

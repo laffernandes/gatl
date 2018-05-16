@@ -10,10 +10,10 @@ namespace ga {
 			return arg >= 0 ? arg : -arg;
 		}
 
-		// Returns the smallest value.
+		// Returns the greater value.
 		template<class Type>
-		constexpr Type smallest(Type const &lhs, Type const &rhs) {
-			return lhs < rhs ? lhs : rhs;
+		constexpr Type greater(Type const &lhs, Type const &rhs) {
+			return lhs >= rhs ? lhs : rhs;
 		}
 
 		// Returns the greatest common divisor of two integer values.

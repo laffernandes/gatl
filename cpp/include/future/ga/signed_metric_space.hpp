@@ -22,7 +22,7 @@ namespace ga {
 
 		template<class LazyBasisVectorsBitset>
 		struct lazy_metric_factor {
-			typedef detail::lazy_if_else_t<detail::lazy_eq_t<detail::lazy_bitwise_and_t<detail::lazy_ones_t<detail::lazy_bitwise_and_t<LazyBasisVectorsBitset, detail::lazy_constant_bitset<negative> > >, detail::constant<1> >, detail::constant<0> >, detail::constant<1>, detail::constant<-1> > type;
+			typedef detail::lazy_if_else_t<detail::lazy_eq_t<detail::lazy_bitwise_and_t<detail::lazy_ones_t<detail::lazy_bitwise_and_t<LazyBasisVectorsBitset, detail::constant_bitset<negative> > >, detail::constant_value<1> >, detail::constant_value<0> >, detail::constant_value<1>, detail::constant_value<-1> > type;
 		};
 
 		static_assert((P + Q) <= GA_MAX_BASIS_VECTOR_INDEX, "ga::signed_metric_space<P, Q> is ill-defined. It is expectated (P + Q) <= GA_MAX_BASIS_VECTOR_INDEX.");
@@ -45,7 +45,7 @@ namespace ga {
 	namespace detail {
 		
 		// Helper for metric space of real numbers (it is used with scalar expressions).
-		using real_metric_space = signed_metric_space<0, 0>;
+		using real_metric_space = signed_metric_space<GA_MAX_BASIS_VECTOR_INDEX, 0>;
 
 	}
 

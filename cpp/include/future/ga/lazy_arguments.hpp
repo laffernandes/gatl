@@ -5,113 +5,99 @@ namespace ga {
 
 	namespace detail {
 	
-		// Returns the smallest ID found in the given expressions.
+		// Returns the greater ID found in the given expressions.
 		template<class... Expressions>
-		struct smallest_base_id;
+		struct greater_id;
 
 		template<class... Expressions>
-		constexpr id_t smallest_base_id_v = smallest_base_id<Expressions...>::value;
+		constexpr id_t greater_id_v = greater_id<Expressions...>::value;
 
 		template<class Expression, class... NextExpressions>
-		struct smallest_base_id<Expression, NextExpressions...> {
-			constexpr static id_t value = smallest(smallest_base_id_v<Expression>, smallest_base_id_v<NextExpressions...>); // recursion
+		struct greater_id<Expression, NextExpressions...> {
+			constexpr static id_t value = greater(greater_id_v<Expression>, greater_id_v<NextExpressions...>); // recursion
 		};
 
 		template<>
-		struct smallest_base_id<> {
+		struct greater_id<> {
 			constexpr static id_t value = 0; // end of recursion
 		};
 
-		template<default_integral_t Value>
-		struct smallest_base_id<constant<Value> > {
-			constexpr static id_t value = 0;
+		template<class Expression>
+		struct greater_id<Expression> {
+			constexpr static id_t value = 0; // default
 		};
 
-		template<class LazyCoefficient>
-		struct smallest_base_id<value<LazyCoefficient> > {
-			constexpr static id_t value = smallest_base_id_v<LazyCoefficient>;
+		template<id_t Id, std::size_t Index>
+		struct greater_id<get_value<Id, Index> > {
+			constexpr static id_t value = Id;
 		};
 
-		template<name_t Name, class... Arguments>
-		struct smallest_base_id<function<Name, Arguments...> > {
-			constexpr static id_t value = smallest_base_id_v<Arguments...>;
+		template<id_t Id, std::size_t Index>
+		struct greater_id<get_bitset<Id, Index> > {
+			constexpr static id_t value = Id;
+		};
+
+		template<default_bitset_t PossibleGrades, class LazyBitset>
+		struct greater_id<dynamic_basis_blade<PossibleGrades, LazyBitset> > {
+			constexpr static id_t value = greater_id_v<LazyBitset>;
 		};
 
 		template<class Coefficient, class BasisBlade>
-		struct smallest_base_id<component<Coefficient, BasisBlade> > {
-			constexpr static id_t value = smallest(smallest_base_id_v<Coefficient>, smallest_base_id_v<BasisBlade>);
+		struct greater_id<component<Coefficient, BasisBlade> > {
+			constexpr static id_t value = greater(greater_id_v<Coefficient>, greater_id_v<BasisBlade>);
 		};
 
-		template<default_bitset_t BasisVectors>
-		struct smallest_base_id<constant_basis_blade<BasisVectors> > {
-			constexpr static id_t value = 0;
+		template<name_t Name, class... Arguments>
+		struct greater_id<function<Name, Arguments...> > {
+			constexpr static id_t value = greater_id_v<Arguments...>;
 		};
 
-		template<default_bitset_t PossibleGrades, class LazyBasisVectors>
-		struct smallest_base_id<dynamic_basis_blade<PossibleGrades, LazyBasisVectors> > {
-			constexpr static id_t value = smallest_base_id_v<LazyBasisVectors>;
-		};
-
-		template<>
-		struct smallest_base_id<stored> {
-			constexpr static id_t value = 0;
-		};
-
-		template<default_bitset_t Bitset>
-		struct smallest_base_id<lazy_constant_bitset<Bitset> > {
-			constexpr static id_t value = 0;
-		};
-
-		template<id_t Id, std::size_t Index>
-		struct smallest_base_id<lazy_get_coefficient<Id, Index> > {
-			constexpr static id_t value = Id;
-		};
-
-		template<id_t Id, std::size_t Index>
-		struct smallest_base_id<lazy_get_basis_vectors<Id, Index> > {
-			constexpr static id_t value = Id;
-		};
-
-		// Produces an expression where value<stored> and dynamic_basis_blade<PossibleGrades, stored> changes to value<lazy_get_coefficient<Id, Index> > and dynamic_basis_blade<PossibleGrades, lazy_get_basis_vectors<Id, Index> >, respectively.
-		template<class Expression, id_t Id, std::size_t BaseCoefficientIndex, std::size_t BaseBasisBladeIndex>
+		// Produces an expression where stored_value and stored_bitset changes to get_value<Id, Index> and get_bitset<Id, Index>, respectively.
+		template<class Expression, id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
 		struct tag_variables;
 
-		template<class Expression, id_t Id, std::size_t BaseCoefficientIndex, std::size_t BaseBasisBladeIndex>
-		using tag_variables_t = typename tag_variables<Expression, Id, BaseCoefficientIndex, BaseBasisBladeIndex>::type;
+		template<class Expression, id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
+		using tag_variables_t = typename tag_variables<Expression, Id, BaseValueIndex, BaseBitsetIndex>::type;
 
-		template<class Expression, id_t Id, std::size_t BaseCoefficientIndex, std::size_t BaseBasisBladeIndex>
+		template<class Expression, id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
 		struct tag_variables {
 			typedef Expression type; // default
 		};
 
-		template<id_t Id, std::size_t BaseCoefficientIndex, std::size_t BaseBasisBladeIndex>
-		struct tag_variables<value<stored>, Id, BaseCoefficientIndex, BaseBasisBladeIndex> {
-			typedef value<lazy_get_coefficient<Id, BaseCoefficientIndex> > type;
+		template<id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
+		struct tag_variables<stored_value, Id, BaseValueIndex, BaseBitsetIndex> {
+			typedef get_value<Id, BaseValueIndex> type;
 		};
 
-		template<default_bitset_t PossibleGrades, id_t Id, std::size_t BaseCoefficientIndex, std::size_t BaseBasisBladeIndex>
-		struct tag_variables<dynamic_basis_blade<PossibleGrades, stored>, Id, BaseCoefficientIndex, BaseBasisBladeIndex> {
-			typedef dynamic_basis_blade<PossibleGrades, lazy_get_basis_vectors<Id, BaseBasisBladeIndex> > type;
+		template<id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
+		struct tag_variables<stored_bitset, Id, BaseValueIndex, BaseBitsetIndex> {
+			typedef get_bitset<Id, BaseBitsetIndex> type;
 		};
 
-		template<name_t Name, class... Arguments, id_t Id, std::size_t BaseCoefficientIndex, std::size_t BaseBasisBladeIndex>
-		struct tag_variables<function<Name, Arguments...>, Id, BaseCoefficientIndex, BaseBasisBladeIndex> {
+		template<default_bitset_t PossibleGrades, class LazyBitset, id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
+		struct tag_variables<dynamic_basis_blade<PossibleGrades, LazyBitset>, Id, BaseValueIndex, BaseBitsetIndex> {
+			typedef dynamic_basis_blade<PossibleGrades, tag_variables_t<LazyBitset, Id, BaseValueIndex, BaseBitsetIndex> > type;
+		};
+
+		template<class Coefficient, class BasisBlade, id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
+		struct tag_variables<component<Coefficient, BasisBlade>, Id, BaseValueIndex, BaseBitsetIndex> {
+			typedef component<tag_variables_t<Coefficient, Id, BaseValueIndex, BaseBitsetIndex>, tag_variables_t<BasisBlade, Id, BaseValueIndex + count_stored_values_v<Coefficient>, BaseBitsetIndex + count_stored_bitsets_v<Coefficient> > > type;
+		};
+
+		template<name_t Name, class... Arguments, id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
+		struct tag_variables<function<Name, Arguments...>, Id, BaseValueIndex, BaseBitsetIndex> {
 		private:
 
-			constexpr static std::size_t stored_coefficients_count = count_stored_coefficients_v<Arguments...>;
-			constexpr static std::size_t stored_basis_blades_count = count_stored_basis_blades_v<Arguments...>;
+			constexpr static std::size_t stored_values_count = count_stored_values_v<Arguments...>;
+			constexpr static std::size_t stored_bitsets_count = count_stored_bitsets_v<Arguments...>;
 
 		public:
 
-			typedef function<Name, tag_variables_t<Arguments, Id, BaseCoefficientIndex + (stored_coefficients_count - count_stored_coefficients_v<Arguments>), BaseBasisBladeIndex + (stored_basis_blades_count - count_stored_basis_blades<Arguments>)>...> type;
+			//TODO Isso não funcionará
+			typedef function<Name, tag_variables_t<Arguments, Id, BaseValueIndex + (stored_values_count - count_stored_values_v<Arguments>), BaseBitsetIndex + (stored_bitsets_count - count_stored_bitsets<Arguments>)>...> type;
 		};
 
-		template<class Coefficient, class BasisBlade, id_t Id, std::size_t BaseCoefficientIndex, std::size_t BaseBasisBladeIndex>
-		struct tag_variables<component<Coefficient, BasisBlade>, Id, BaseCoefficientIndex, BaseBasisBladeIndex> {
-			typedef component<tag_variables_t<Coefficient, Id, BaseCoefficientIndex, 0>, tag_variables_t<BasisBlade, Id, 0, BaseBasisBladeIndex> > type;
-		};
-
-		// Produces an expression where value<Id, lazy_get_coefficient<Id, Index> > and dynamic_basis_blade<PossibleGrades, lazy_get_basis_vectors<Id, Index> > changes to, respectively, value<stored> and dynamic_basis_blade<PossibleGrades, stored> for a given Id.
+		// Produces an expression where get_value<Id, Index> and get_bitset<Id, Index> changes to, respectively, stored_value and stored for a given Id.
 		template<class Expression, id_t Id>
 		struct untag_variables;
 
@@ -124,13 +110,23 @@ namespace ga {
 		};
 
 		template<id_t Id, std::size_t Index>
-		struct untag_variables<value<lazy_get_coefficient<Id, Index> >, Id> {
-			typedef value<stored> type;
+		struct untag_variables<get_value<Id, Index>, Id> {
+			typedef stored_value type;
 		};
 
-		template<default_bitset_t PossibleGrades, id_t Id, std::size_t Index>
-		struct untag_variables<dynamic_basis_blade<PossibleGrades, lazy_get_basis_vectors<Id, Index> >, Id> {
-			typedef dynamic_basis_blade<PossibleGrades, stored> type;
+		template<id_t Id, std::size_t Index>
+		struct untag_variables<get_bitset<Id, Index>, Id> {
+			typedef stored_bitset type;
+		};
+
+		template<default_bitset_t PossibleGrades, class LazyBitset, id_t Id>
+		struct untag_variables<dynamic_basis_blade<PossibleGrades, LazyBitset>, Id> {
+			typedef dynamic_basis_blade<PossibleGrades, untag_variables_t<LazyBitset, Id> > type;
+		};
+
+		template<class Coefficient, class BasisBlade, id_t Id>
+		struct untag_variables<component<Coefficient, BasisBlade>, Id> {
+			typedef component_t<untag_variables_t<Coefficient, Id>, untag_variables_t<BasisBlade, Id> > type;
 		};
 
 		template<name_t Name, class... Arguments, id_t Id>
@@ -138,17 +134,12 @@ namespace ga {
 			typedef function<Name, untag_variables_t<Arguments, Id>...> type;
 		};
 
-		template<class Coefficient, class BasisBlade, id_t Id>
-		struct untag_variables<component<Coefficient, BasisBlade>, Id> {
-			typedef make_component_t<untag_variables_t<Coefficient, Id>, untag_variables_t<BasisBlade, Id> > type;
-		};
-
 		// Helper structure to define expressions for arguments.
 		template<class FirstInputExpression, class... OtherInputExpressions>
 		struct lazy_arguments {
 		private:
 
-			typedef smallest_base_id<FirstInputExpression, OtherInputExpressions...> base_id;
+			typedef greater_id<FirstInputExpression, OtherInputExpressions...> base_id;
 
 			template<std::size_t Index, class Expression, class... NextExpressions>
 			struct argument_expression {
@@ -157,17 +148,17 @@ namespace ga {
 
 			template<class Expression, class... NextExpressions>
 			struct argument_expression<0, Expression, NextExpressions...> {
-				typedef tag_variables_t<Expression, base_id::value - id_t(sizeof...(NextExpressions) + 1), 0, 0> type;
+				typedef tag_variables_t<Expression, base_id::value + id_t(sizeof...(OtherInputExpressions) - sizeof...(NextExpressions) + 1), 0, 0> type;
 			};
 
 			template<class LazyExpression, class Expression, class... NextExpressions>
 			struct result_expression {
-				typedef untag_variables_t<typename result_expression<LazyExpression, NextExpressions...>::type, base_id::value - id_t(sizeof...(NextExpressions) + 1)> type;
+				typedef untag_variables_t<typename result_expression<LazyExpression, NextExpressions...>::type, base_id::value + id_t(sizeof...(OtherInputExpressions) - sizeof...(NextExpressions) + 1)> type;
 			};
 
 			template<class LazyExpression, class Expression>
 			struct result_expression<LazyExpression, Expression> {
-				typedef untag_variables_t<LazyExpression, base_id::value - 1> type;
+				typedef untag_variables_t<LazyExpression, base_id::value + 1> type;
 			};
 
 		public:

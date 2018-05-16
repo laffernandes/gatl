@@ -10,7 +10,7 @@ namespace ga {
 
 			template<class LeftLazyGrade, class RightLazyGrade, class ResultLazyGrade>
 			struct lazy_are_valid_grades {
-				typedef lazy_eq_t<ResultLazyGrade, constant<0> > type;
+				typedef lazy_eq_t<ResultLazyGrade, constant_value<0> > type;
 			};
 
 			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades, ndims_t VectorSpaceDimension>
@@ -24,13 +24,13 @@ namespace ga {
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class MetricSpaceType>
 	constexpr decltype(auto) scp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &mtr) {
 		typedef detail::lazy_arguments<LeftExpression, RightExpression> lazy;
-		return detail::eval<detail::product_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1>, detail::bind_metric_space_mapping_t<MetricSpaceType, detail::scp_mapping> > >(lhs, rhs);
+		return detail::eval<detail::product_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1>, detail::metric_space_mapping_t<MetricSpaceType, detail::scp_mapping> > >(lhs, rhs);
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression> > >
 	constexpr decltype(auto) scp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
 		typedef detail::lazy_arguments<LeftExpression, RightExpression> lazy;
-		return detail::eval<detail::product_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1>, detail::bind_metric_space_mapping_t<detail::real_metric_space, detail::scp_mapping> > >(lhs, rhs);
+		return detail::eval<detail::product_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1>, detail::metric_space_mapping_t<detail::real_metric_space, detail::scp_mapping> > >(lhs, rhs);
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightType, class MetricSpaceType>
