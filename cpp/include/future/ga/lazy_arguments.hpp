@@ -37,9 +37,9 @@ namespace ga {
 			constexpr static id_t value = Id;
 		};
 
-		template<default_bitset_t PossibleGrades, class LazyBitset>
-		struct greater_id<dynamic_basis_blade<PossibleGrades, LazyBitset> > {
-			constexpr static id_t value = greater_id_v<LazyBitset>;
+		template<default_bitset_t PossibleGrades, class Bitset>
+		struct greater_id<dynamic_basis_blade<PossibleGrades, Bitset> > {
+			constexpr static id_t value = greater_id_v<Bitset>;
 		};
 
 		template<class Coefficient, class BasisBlade>
@@ -74,9 +74,9 @@ namespace ga {
 			typedef get_bitset<Id, BaseBitsetIndex> type;
 		};
 
-		template<default_bitset_t PossibleGrades, class LazyBitset, id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
-		struct tag_variables<dynamic_basis_blade<PossibleGrades, LazyBitset>, Id, BaseValueIndex, BaseBitsetIndex> {
-			typedef dynamic_basis_blade<PossibleGrades, tag_variables_t<LazyBitset, Id, BaseValueIndex, BaseBitsetIndex> > type;
+		template<default_bitset_t PossibleGrades, class Bitset, id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
+		struct tag_variables<dynamic_basis_blade<PossibleGrades, Bitset>, Id, BaseValueIndex, BaseBitsetIndex> {
+			typedef dynamic_basis_blade<PossibleGrades, tag_variables_t<Bitset, Id, BaseValueIndex, BaseBitsetIndex> > type;
 		};
 
 		template<class Coefficient, class BasisBlade, id_t Id, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex>
@@ -94,7 +94,7 @@ namespace ga {
 		public:
 
 			//TODO Isso não funcionará
-			typedef function<Name, tag_variables_t<Arguments, Id, BaseValueIndex + (stored_values_count - count_stored_values_v<Arguments>), BaseBitsetIndex + (stored_bitsets_count - count_stored_bitsets<Arguments>)>...> type;
+			typedef function<Name, tag_variables_t<Arguments, Id, BaseValueIndex + (stored_values_count - count_stored_values_v<Arguments>), BaseBitsetIndex + (stored_bitsets_count - count_stored_bitsets_v<Arguments>)>...> type;
 		};
 
 		// Produces an expression where get_value<Id, Index> and get_bitset<Id, Index> changes to, respectively, stored_value and stored for a given Id.
@@ -119,9 +119,9 @@ namespace ga {
 			typedef stored_bitset type;
 		};
 
-		template<default_bitset_t PossibleGrades, class LazyBitset, id_t Id>
-		struct untag_variables<dynamic_basis_blade<PossibleGrades, LazyBitset>, Id> {
-			typedef dynamic_basis_blade<PossibleGrades, untag_variables_t<LazyBitset, Id> > type;
+		template<default_bitset_t PossibleGrades, class Bitset, id_t Id>
+		struct untag_variables<dynamic_basis_blade<PossibleGrades, Bitset>, Id> {
+			typedef dynamic_basis_blade<PossibleGrades, untag_variables_t<Bitset, Id> > type;
 		};
 
 		template<class Coefficient, class BasisBlade, id_t Id>
@@ -151,14 +151,14 @@ namespace ga {
 				typedef tag_variables_t<Expression, base_id::value + id_t(sizeof...(OtherInputExpressions) - sizeof...(NextExpressions) + 1), 0, 0> type;
 			};
 
-			template<class LazyExpression, class Expression, class... NextExpressions>
+			template<class TaggedExpression, class Expression, class... NextExpressions>
 			struct result_expression {
-				typedef untag_variables_t<typename result_expression<LazyExpression, NextExpressions...>::type, base_id::value + id_t(sizeof...(OtherInputExpressions) - sizeof...(NextExpressions) + 1)> type;
+				typedef untag_variables_t<typename result_expression<TaggedExpression, NextExpressions...>::type, base_id::value + id_t(sizeof...(OtherInputExpressions) - sizeof...(NextExpressions) + 1)> type;
 			};
 
-			template<class LazyExpression, class Expression>
-			struct result_expression<LazyExpression, Expression> {
-				typedef untag_variables_t<LazyExpression, base_id::value + 1> type;
+			template<class TaggedExpression, class Expression>
+			struct result_expression<TaggedExpression, Expression> {
+				typedef untag_variables_t<TaggedExpression, base_id::value + 1> type;
 			};
 
 		public:
@@ -166,8 +166,8 @@ namespace ga {
 			template<std::size_t Index>
 			using argument_expression_t = typename argument_expression<Index, FirstInputExpression, OtherInputExpressions...>::type;
 
-			template<class LazyExpression>
-			using result_expression_t = typename result_expression<LazyExpression, FirstInputExpression, OtherInputExpressions...>::type;
+			template<class Expression>
+			using result_expression_t = typename result_expression<Expression, FirstInputExpression, OtherInputExpressions...>::type;
 		};
 
 	}

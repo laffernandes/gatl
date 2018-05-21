@@ -7,7 +7,9 @@ namespace ga {
 
 		// Relational operators.
 		template<class LeftType, class RightType>
-		struct lt;
+		struct lt {
+			constexpr static bool value = false;
+		};
 
 		template<class LeftType, class RightType>
 		constexpr bool lt_v = lt<LeftType, RightType>::value;
@@ -210,19 +212,19 @@ namespace ga {
 			constexpr static bool value = possible_grades_v<constant_basis_blade<LeftBasisVectors> > < possible_grades_v<constant_basis_blade<RightBasisVectors> > || (possible_grades_v<constant_basis_blade<LeftBasisVectors> > == possible_grades_v<constant_basis_blade<RightBasisVectors> > && LeftBasisVectors < RightBasisVectors);
 		};
 
-		template<default_bitset_t LeftBasisVectors, default_bitset_t RightPossibleGrades, class RightLazyBitset>
-		struct lt<constant_basis_blade<LeftBasisVectors>, dynamic_basis_blade<RightPossibleGrades, RightLazyBitset> > {
+		template<default_bitset_t LeftBasisVectors, default_bitset_t RightPossibleGrades, class RightBitset>
+		struct lt<constant_basis_blade<LeftBasisVectors>, dynamic_basis_blade<RightPossibleGrades, RightBitset> > {
 			constexpr static bool value = possible_grades_v<constant_basis_blade<LeftBasisVectors> > <= RightPossibleGrades;
 		};
 
-		template<default_bitset_t LeftPossibleGrades, class LeftLazyBitset, default_bitset_t RightBasisVectors>
-		struct lt<dynamic_basis_blade<LeftPossibleGrades, LeftLazyBitset>, constant_basis_blade<RightBasisVectors> > {
+		template<default_bitset_t LeftPossibleGrades, class LeftBitset, default_bitset_t RightBasisVectors>
+		struct lt<dynamic_basis_blade<LeftPossibleGrades, LeftBitset>, constant_basis_blade<RightBasisVectors> > {
 			constexpr static bool value = LeftPossibleGrades < possible_grades_v<constant_basis_blade<RightBasisVectors> >;
 		};
 
-		template<default_bitset_t LeftPossibleGrades, class LeftLazyBitset, default_bitset_t RightPossibleGrades, class RightLazyBitset>
-		struct lt<dynamic_basis_blade<LeftPossibleGrades, LeftLazyBitset>, dynamic_basis_blade<RightPossibleGrades, RightLazyBitset> > {
-			constexpr static bool value = LeftPossibleGrades < RightPossibleGrades || (LeftPossibleGrades == RightPossibleGrades && lt_v<LeftLazyBitset, RightLazyBitset>);
+		template<default_bitset_t LeftPossibleGrades, class LeftBitset, default_bitset_t RightPossibleGrades, class RightBitset>
+		struct lt<dynamic_basis_blade<LeftPossibleGrades, LeftBitset>, dynamic_basis_blade<RightPossibleGrades, RightBitset> > {
+			constexpr static bool value = LeftPossibleGrades < RightPossibleGrades || (LeftPossibleGrades == RightPossibleGrades && lt_v<LeftBitset, RightBitset>);
 		};
 
 		// Specializations of lt<LeftType, RightType> with components.
@@ -258,7 +260,7 @@ namespace ga {
 
 		template<name_t LeftName, class... LeftArguments, name_t RightName, class... RightArguments>
 		struct lt<function<LeftName, LeftArguments...>, function<RightName, RightArguments...> > {
-			constexpr static bool value = LeftName < RightName || (LeftName == RighName && lt_v<_lt_arguments_list<LeftArguments...>, _lt_arguments_list<RightArguments...> >);
+			constexpr static bool value = LeftName < RightName || (LeftName == RightName && lt_v<_lt_arguments_list<LeftArguments...>, _lt_arguments_list<RightArguments...> >);
 		};
 
 	}

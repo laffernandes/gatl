@@ -20,9 +20,9 @@ namespace ga {
 
 	public:
 
-		template<class LazyBasisVectorsBitset>
-		struct lazy_metric_factor {
-			typedef detail::lazy_if_else_t<detail::lazy_eq_t<detail::lazy_bitwise_and_t<detail::lazy_ones_t<detail::lazy_bitwise_and_t<LazyBasisVectorsBitset, detail::constant_bitset<negative> > >, detail::constant_value<1> >, detail::constant_value<0> >, detail::constant_value<1>, detail::constant_value<-1> > type;
+		template<class BasisVectorsBitset>
+		struct metric_factor {
+			typedef detail::if_else_t<detail::equal_t<detail::bitwise_and_t<detail::count_one_bits_t<detail::bitwise_and_t<BasisVectorsBitset, detail::constant_bitset<negative> > >, detail::constant_value<1> >, detail::constant_value<0> >, detail::constant_value<1>, detail::constant_value<-1> > type;
 		};
 
 		static_assert((P + Q) <= GA_MAX_BASIS_VECTOR_INDEX, "ga::signed_metric_space<P, Q> is ill-defined. It is expectated (P + Q) <= GA_MAX_BASIS_VECTOR_INDEX.");

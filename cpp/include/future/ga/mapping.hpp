@@ -9,11 +9,11 @@ namespace ga {
 		struct real_mapping {
 		};
 
-		// Mapping for spaces with orthogonal metric (it is used with basis blades).
+		// Mapping for products assuming spaces with orthogonal metric.
 		template<class OrthogonalMetricSpace, class GradedProduct>
 		struct orthogonal_metric_space_mapping;
 
-		// Mapping for spaces with general (non-orthogonal) metric (it is used with basis blades).
+		// Mapping for productes assuming spaces with general (non-orthogonal) metric.
 		template<class GeneralMetricSpace, class GradedProduct>
 		struct general_metric_space_mapping;
 

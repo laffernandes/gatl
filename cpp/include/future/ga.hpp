@@ -53,6 +53,8 @@ namespace future {
 	#include "ga/product.hpp"
 	#include "ga/exponentiation.hpp"
 
+	#include "ga/graded_unary_minus.hpp"
+
 	#include "ga/clifford_expression.hpp"
 
 	#include "ga/lazy_arguments.hpp"
@@ -64,26 +66,29 @@ namespace future {
 	#include "ga/basis_vector.hpp"
 	#include "ga/pseudoscalar.hpp"
 
+	#include "ga/conjugation.hpp"
+	#include "ga/involution.hpp"
+	#include "ga/reversion.hpp"
+
 	#include "ga/geometric_product.hpp"
 	#include "ga/left_contraction.hpp"
 	#include "ga/outer_product.hpp"
 	#include "ga/right_contraction.hpp"
 	#include "ga/scalar_product.hpp"
 
+	#include "ga/arithmetic_operators.hpp"
+	#include "ga/insertion_operator.hpp"
+
 	#include "ga/reverse_norm.hpp"
+	#include "ga/versor_inverse.hpp"
 	#include "ga/inverse_geometric_product.hpp"
 	#include "ga/dualization.hpp"
-
-	#include "ga/arithmetic_operators.hpp"
+	#include "ga/take_grade.hpp"
 
 }
 
-//TODO take_grade
 //TODO simplificar pseudoscalar
 //TODO math
-//TODO reversion
-//TODO involution
-//TODO conjugation
 //TODO grade
 //TODO conformal_metric_space
 //TODO exp

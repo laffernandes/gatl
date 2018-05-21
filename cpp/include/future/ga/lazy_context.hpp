@@ -31,9 +31,9 @@ namespace ga {
 			return clifford_expression<typename std::remove_const_t<std::remove_reference_t<std::tuple_element_t<Index, arguments_type> > >::coefficient_type, lazy_arguments_type::argument_expression_t<Index> >();
 		}
 
-		template<class LazyCoefficientType, class LazyExpressionType>
-		constexpr decltype(auto) eval(clifford_expression<LazyCoefficientType, LazyExpressionType> const &) const {
-			return detail::eval<LazyExpressionType>(arguments_);
+		template<class CoefficientType, class ExpressionType>
+		constexpr decltype(auto) eval(clifford_expression<CoefficientType, ExpressionType> const &) const {
+			return detail::eval<ExpressionType>(arguments_);
 		}
 
 	private:

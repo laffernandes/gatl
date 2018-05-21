@@ -72,10 +72,34 @@ namespace ga {
 			constexpr static default_bitset_t value = default_bitset_t(1) << ones(BasisVectors);
 		};
 
-		template<default_bitset_t PossibleGrades, class LazyBitset>
-		struct possible_grades<dynamic_basis_blade<PossibleGrades, LazyBitset> > {
+		template<default_bitset_t PossibleGrades, class Bitset>
+		struct possible_grades<dynamic_basis_blade<PossibleGrades, Bitset> > {
 			constexpr static default_bitset_t value = PossibleGrades;
 		};
+
+		// Returns the coefficient of a given component.
+		template<class Component>
+		struct coefficient;
+
+		template<class Coefficient, class BasisBlade>
+		struct coefficient<component<Coefficient, BasisBlade> > {
+			typedef Coefficient type;
+		};
+
+		template<class Component>
+		using coefficient_t = typename coefficient<Component>::type;
+
+		// Returns the basis blade of a given component.
+		template<class Component>
+		struct basis_blade;
+
+		template<class Coefficient, class BasisBlade>
+		struct basis_blade<component<Coefficient, BasisBlade> > {
+			typedef BasisBlade type;
+		};
+
+		template<class Component>
+		using basis_blade_t = typename basis_blade<Component>::type;
 
 		// Returns the basis vectors of a given basis blade.
 		template<class BasisBlade>
@@ -86,9 +110,9 @@ namespace ga {
 			typedef constant_bitset<BasisVectors> type;
 		};
 
-		template<default_bitset_t PossibleGrades, class LazyBitset>
-		struct basis_vectors<dynamic_basis_blade<PossibleGrades, LazyBitset> > {
-			typedef LazyBitset type;
+		template<default_bitset_t PossibleGrades, class Bitset>
+		struct basis_vectors<dynamic_basis_blade<PossibleGrades, Bitset> > {
+			typedef Bitset type;
 		};
 
 		template<class BasisBlade>

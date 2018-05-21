@@ -408,6 +408,72 @@
     <ClInclude Include="..\..\include\future\ga\expression_relational_operators.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\insertion_operator.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga1c.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga1e.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga1h.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga1m.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga2c.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga2e.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga2h.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga2m.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga3c.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga3e.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga3h.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga3m.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga4e.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga4h.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga5e.hpp">
+      <Filter>Header Files\future</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\macro_for_algebra_overload.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\take_grade.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\conjugation.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\involution.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\reversion.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\graded_unary_minus.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\sandbox.cpp">

@@ -45,8 +45,8 @@ namespace ga {
 
 		public:
 
-			template<class LeftLazyGrade, class RightLazyGrade, class ResultLazyGrade>
-			struct lazy_are_valid_grades {
+			template<class LeftGrade, class RightGrade, class ResultGrade>
+			struct are_valid_grades {
 				typedef std::true_type type;
 			};
 
@@ -71,32 +71,32 @@ namespace ga {
 		return detail::eval<detail::product_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1>, detail::metric_space_mapping_t<detail::real_metric_space, detail::gp_mapping> > >(lhs, rhs);
 	}
 
-	template<class LeftCoefficientType, class LeftExpression, class RightType, class MetricSpaceType>
+	template<class LeftCoefficientType, class LeftExpression, class RightType, class MetricSpaceType, class = std::enable_if_t<!is_clifford_expression_v<RightType> > >
 	constexpr decltype(auto) gp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &) {
 		return gp(lhs, scalar(rhs));
 	}
 
-	template<class LeftCoefficientType, class LeftExpression, class RightType>
+	template<class LeftCoefficientType, class LeftExpression, class RightType, class = std::enable_if_t<!is_clifford_expression_v<RightType> > >
 	constexpr decltype(auto) gp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs) {
 		return gp(lhs, scalar(rhs));
 	}
 
-	template<class LeftType, class RightCoefficientType, class RightExpression, class MetricSpaceType>
+	template<class LeftType, class RightCoefficientType, class RightExpression, class MetricSpaceType, class = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
 	constexpr decltype(auto) gp(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &) {
 		return gp(scalar(lhs), rhs);
 	}
 
-	template<class LeftType, class RightCoefficientType, class RightExpression>
+	template<class LeftType, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
 	constexpr decltype(auto) gp(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
 		return gp(scalar(lhs), rhs);
 	}
 
-	template<class LeftType, class RightType, class MetricSpaceType>
+	template<class LeftType, class RightType, class MetricSpaceType, class = std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>)> >
 	constexpr decltype(auto) gp(LeftType const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &) {
 		return gp(scalar(lhs), scalar(rhs));
 	}
 
-	template<class LeftType, class RightType>
+	template<class LeftType, class RightType, class = std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>)> >
 	constexpr decltype(auto) gp(LeftType const &lhs, RightType const &rhs) {
 		return gp(scalar(lhs), scalar(rhs));
 	}

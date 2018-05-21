@@ -32,9 +32,9 @@ namespace ga {
 			constexpr static std::size_t value = 1;
 		};
 
-		template<default_bitset_t PossibleGrades, class LazyBitset>
-		struct count_stored_values<dynamic_basis_blade<PossibleGrades, LazyBitset> > {
-			constexpr static std::size_t value = count_stored_values_v<LazyBitset>;
+		template<default_bitset_t PossibleGrades, class Bitset>
+		struct count_stored_values<dynamic_basis_blade<PossibleGrades, Bitset> > {
+			constexpr static std::size_t value = count_stored_values_v<Bitset>;
 		};
 
 		template<class Coefficient, class BasisBlade>
@@ -74,9 +74,9 @@ namespace ga {
 			constexpr static std::size_t value = 1;
 		};
 
-		template<default_bitset_t PossibleGrades, class LazyBitset>
-		struct count_stored_bitsets<dynamic_basis_blade<PossibleGrades, LazyBitset> > {
-			constexpr static std::size_t value = count_stored_bitsets_v<LazyBitset>;
+		template<default_bitset_t PossibleGrades, class Bitset>
+		struct count_stored_bitsets<dynamic_basis_blade<PossibleGrades, Bitset> > {
+			constexpr static std::size_t value = count_stored_bitsets_v<Bitset>;
 		};
 
 		template<class Coefficient, class BasisBlade>
@@ -102,16 +102,40 @@ namespace ga {
 
 			template<class... Args>
 			constexpr sequential_storage(Args &&... args) :
-				data_{ std::move(args)... } {
+				entries_{ std::move(args)... } {
 				static_assert(sizeof...(args) == Size, "The number of arguments must be equal to the number of stored data entries.");
 			}
 
 			constexpr sequential_storage & operator=(sequential_storage const &) = default;
 			constexpr sequential_storage & operator=(sequential_storage &&) = default;
 
+			constexpr decltype(auto) begin() {
+				return entries_.begin();
+			}
+
+			constexpr decltype(auto) begin() const {
+				return entries_.begin();
+			}
+
+			constexpr decltype(auto) end() {
+				return entries_.end();
+			}
+
+			constexpr decltype(auto) end() const {
+				return entries_.end();
+			}
+
+			constexpr decltype(auto) cbegin() const {
+				return entries_.cbegin();
+			}
+
+			constexpr decltype(auto) cend() const {
+				return entries_.cend();
+			}
+
 		private:
 
-			std::array<entry_type, Size> data_;
+			std::array<entry_type, Size> entries_;
 		};
 
 		// Superclass for ga::clifford_expression<CoefficientType, Expression>.
@@ -134,6 +158,14 @@ namespace ga {
 
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
+
+			constexpr value_storage_type values() const {
+				return value_storage_type();
+			}
+
+			constexpr bitset_storage_type bitsets() const {
+				return bitset_storage_type();
+			}
 		};
 
 		template<class CoefficientType, class Expression, std::size_t StoredValues>
@@ -157,7 +189,19 @@ namespace ga {
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-		protected:
+			constexpr value_storage_type & values() {
+				return values_;
+			}
+
+			constexpr value_storage_type const & values() const {
+				return values_;
+			}
+
+			constexpr bitset_storage_type bitsets() const {
+				return bitset_storage_type();
+			}
+
+		private:
 
 			value_storage_type values_;
 		};
@@ -183,7 +227,19 @@ namespace ga {
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-		protected:
+			constexpr value_storage_type values() const {
+				return value_storage_type();
+			}
+
+			constexpr bitset_storage_type & bitsets() {
+				return bitsets_;
+			}
+
+			constexpr bitset_storage_type const & bitsets() const {
+				return bitsets_;
+			}
+
+		private:
 
 			bitset_storage_type bitsets_;
 		};
@@ -210,7 +266,23 @@ namespace ga {
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-		protected:
+			constexpr value_storage_type & values() {
+				return values_;
+			}
+
+			constexpr value_storage_type const & values() const {
+				return values_;
+			}
+
+			constexpr bitset_storage_type & bitsets() {
+				return bitsets_;
+			}
+
+			constexpr bitset_storage_type const & bitsets() const {
+				return bitsets_;
+			}
+
+		private:
 
 			value_storage_type values_;
 			bitset_storage_type bitsets_;
@@ -252,6 +324,9 @@ namespace ga {
 
 		template<class = std::enable_if_t<detail::is_scalar_expression_v<clifford_expression> > >
 		constexpr operator coefficient_type() const = delete; //TODO Not supported yet (native scalar casting)
+
+		using super::values;
+		using super::bitsets;
 	};
 
 	// Returns whether the given type is a clifford expression.

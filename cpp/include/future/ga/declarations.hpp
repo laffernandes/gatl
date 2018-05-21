@@ -5,19 +5,19 @@ namespace ga {
 
 	namespace detail {
 
-		// Addition operation.
-		template<class LeftExpression, class RightExpression, class Enable = void>
-		struct addition;
-
-		template<class LeftExpression, class RightExpression>
-		using addition_t = typename addition<LeftExpression, RightExpression>::type;
-
 		// Product operation.
 		template<class LeftExpression, class RightExpression, class Mapping, class Enable = void>
 		struct product;
 
 		template<class LeftExpression, class RightExpression, class Mapping>
 		using product_t = typename product<LeftExpression, RightExpression, Mapping>::type;
+
+		// Addition operation.
+		template<class LeftExpression, class RightExpression, class Enable = void>
+		struct addition;
+
+		template<class LeftExpression, class RightExpression>
+		using addition_t = typename addition<LeftExpression, RightExpression>::type;
 
 		// Exponentiation operation.
 		template<class LeftExpression, class RightExpression, class Enable = void>

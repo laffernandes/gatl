@@ -5,7 +5,7 @@ namespace ga {
 
 	namespace detail {
 
-		// The implementation of mapping for spaces with general (non-orthogonal) metric (it is used with basis blades).
+		// The implementation of mapping for products assuming spaces with general (non-orthogonal) metric.
 		template<class GeneralMetricSpace, class GradedProduct>
 		struct general_metric_space_mapping {
 
