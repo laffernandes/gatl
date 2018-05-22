@@ -12,7 +12,7 @@ namespace ga {
 	template<class CoefficientType, class Expression, class = std::enable_if_t<detail::is_scalar_expression_v<Expression> > >
 	constexpr decltype(auto) inv(clifford_expression<CoefficientType, Expression> const &arg) {
 		typedef detail::lazy_arguments<Expression> lazy;
-		return detail::eval<detail::component_t<detail::exponentiation_t<detail::coefficient_t<lazy::argument_expression_t<0> >, detail::constant_value<-1> >, detail::constant_basis_blade<default_bitset_t(0)> > >(arg);
+		return detail::eval<detail::component_t<detail::power_t<detail::coefficient_t<lazy::argument_expression_t<0> >, detail::constant_value<-1> >, detail::constant_basis_blade<default_bitset_t(0)> > >(arg);
 	}
 
 	template<class Type, class MetricSpaceType, class = std::enable_if_t<!is_clifford_expression_v<Type> > >

@@ -95,30 +95,17 @@ namespace ga {
 		struct component {
 		};
 
-		template<class Coefficient, class BasisBlade, class Enable = void>
-		struct _component_t {
-			typedef component<Coefficient, BasisBlade> type;
-		};
+		template<class Coefficient, class BasisBlade>
+		struct _component;
 
 		template<class Coefficient, class BasisBlade>
-		struct _component_t<Coefficient, BasisBlade, std::enable_if_t<possible_grades_v<BasisBlade> == default_bitset_t(0)> > {
-			typedef component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> > type; // A * 0 = 0 (simplify)
-		};
-
-		template<class BasisBlade>
-		struct _component_t<constant_value<0>, BasisBlade, std::enable_if_t<possible_grades_v<BasisBlade> != default_bitset_t(0)> > {
-			typedef component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> > type; // 0 * Ei = 0 (simplify)
-		};
-
-		template<class Coefficient, class BasisBlade>
-		struct _component_t<Coefficient, BasisBlade, std::enable_if_t<possible_grades_v<BasisBlade> == default_bitset_t(1) && !std::is_same_v<Coefficient, constant_value<0> > > > {
-			typedef component<Coefficient, constant_basis_blade<default_bitset_t(0)> > type; // A * 1 = A (simplify)
-		};
-
-		template<class Coefficient, class BasisBlade>
-		using component_t = typename _component_t<Coefficient, BasisBlade>::type;
+		using component_t = typename _component<Coefficient, BasisBlade>::type;
 
 		//TODO Simplificar para pseudoscalar
+
+		// A set of basis blades multiplied by real-valued expressions.
+		struct components {
+		};
 
 		// A real-valued function of a bitset function.
 		template<name_t Name, class... Arguments>
@@ -134,12 +121,6 @@ namespace ga {
 			//TODO static_assert(le_v<left_type, typename right_type::left_type>, "The arguments do not respect the expected ordering for lazy expressions.");
 		};
 
-		template<class... Arguments>
-		using add = function<name_t::add, Arguments...>;
-
-		template<class... Arguments>
-		using add_t = typename function<name_t::add, Arguments...>::type;
-
 		template<class Argument>
 		struct function<name_t::add, Argument> {
 			typedef Argument type; // simplify
@@ -150,20 +131,11 @@ namespace ga {
 			typedef constant_value<0> type; // simplify
 		};
 
-		template<class LeftArgument>
-		struct function<name_t::add, LeftArgument, constant_value<0> > {
-			typedef LeftArgument type; // simplify
-		};
+		template<class... Arguments>
+		using add = function<name_t::add, Arguments...>;
 
-		template<class... RightArguments>
-		struct function<name_t::add, constant_value<0>, RightArguments...> {
-			typedef add_t<RightArguments...> type; // simplify
-		};
-
-		template<>
-		struct function<name_t::add, constant_value<0>, constant_value<0> > {
-			typedef constant_value<0> type; // simplify
-		};
+		template<class... Arguments>
+		using add_t = typename function<name_t::add, Arguments...>::type;
 
 		// Multiplication of real-valued expressions.
 		template<class... Arguments>
@@ -176,12 +148,6 @@ namespace ga {
 			//TODO static_assert(le_v<left_type, typename right_type::left_type>, "The arguments do not respect the expected ordering for lazy expressions.");
 		};
 
-		template<class... Arguments>
-		using mul = function<name_t::mul, Arguments...>;
-
-		template<class... Arguments>
-		using mul_t = typename function<name_t::mul, Arguments...>::type;
-
 		template<class Argument>
 		struct function<name_t::mul, Argument> {
 			typedef Argument type; // simplify
@@ -192,45 +158,11 @@ namespace ga {
 			typedef constant_value<0> type; // simplify
 		};
 
-		template<class LeftArgument>
-		struct function<name_t::mul, LeftArgument, constant_value<0> > {
-			typedef constant_value<0> type; // simplify
-		};
+		template<class... Arguments>
+		using mul = function<name_t::mul, Arguments...>;
 
-		template<class... RightArguments>
-		struct function<name_t::mul, constant_value<0>, RightArguments...> {
-			typedef constant_value<0> type; // simplify
-		};
-
-		template<>
-		struct function<name_t::mul, constant_value<0>, constant_value<0> > {
-			typedef constant_value<0> type; // simplify
-		};
-
-		template<class LeftArgument>
-		struct function<name_t::mul, LeftArgument, constant_value<1> > {
-			typedef LeftArgument type; // simplify
-		};
-
-		template<class... RightArguments>
-		struct function<name_t::mul, constant_value<1>, RightArguments...> {
-			typedef mul_t<RightArguments...> type; // simplify
-		};
-
-		template<>
-		struct function<name_t::mul, constant_value<1>, constant_value<1> > {
-			typedef constant_value<1> type; // simplify
-		};
-
-		template<>
-		struct function<name_t::mul, constant_value<0>, constant_value<1> > {
-			typedef constant_value<0> type; // simplify
-		};
-
-		template<>
-		struct function<name_t::mul, constant_value<1>, constant_value<0> > {
-			typedef constant_value<0> type; // simplify
-		};
+		template<class... Arguments>
+		using mul_t = typename function<name_t::mul, Arguments...>::type;
 
 		// Exponentiation of real-valued expressions.
 		template<class LeftArgument, class RightArgument>
@@ -246,7 +178,10 @@ namespace ga {
 		using power = function<name_t::power, LeftArgument, RightArgument>;
 
 		template<class LeftArgument, class RightArgument>
-		using power_t = typename function<name_t::power, LeftArgument, RightArgument>::type;
+		struct _power;
+
+		template<class LeftArgument, class RightArgument>
+		using power_t = typename _power<LeftArgument, RightArgument>::type;
 
 		// Lazy computation of the sign induced by the canonical reordering of basis vectors in bilinear products.
 		template<class LeftBitset, class RightBitset>
@@ -268,32 +203,35 @@ namespace ga {
 		};
 
 		template<class LeftBitset, class RightBitset, class Enable = void>
-		struct _reordering_sign_t {
+		struct _reordering_sign {
 			typedef function<name_t::reordering_sign, LeftBitset, RightBitset> type;
 		};
 
 		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
-		struct _reordering_sign_t<constant_bitset<LeftBitset>, constant_bitset<RightBitset>, std::enable_if_t<LeftBitset != 0 && RightBitset != 0> > {
+		struct _reordering_sign<constant_bitset<LeftBitset>, constant_bitset<RightBitset>, std::enable_if_t<LeftBitset != 0 && RightBitset != 0> > {
 			typedef constant_value<((swaps_count((LeftBitset >> 1), RightBitset) & 1) != 0) ? -1 : 1> type; // simplify
 		};
 
 		template<class LeftBitset>
-		struct _reordering_sign_t<LeftBitset, constant_bitset<default_bitset_t(0)> > {
+		struct _reordering_sign<LeftBitset, constant_bitset<default_bitset_t(0)> > {
 			typedef constant_value<1> type; // simplify
 		};
 
 		template<class RightBitset>
-		struct _reordering_sign_t<constant_bitset<default_bitset_t(0)>, RightBitset> {
+		struct _reordering_sign<constant_bitset<default_bitset_t(0)>, RightBitset> {
 			typedef constant_value<1> type; // simplify
 		};
 
 		template<>
-		struct _reordering_sign_t<constant_bitset<default_bitset_t(0)>, constant_bitset<default_bitset_t(0)> > {
+		struct _reordering_sign<constant_bitset<default_bitset_t(0)>, constant_bitset<default_bitset_t(0)> > {
 			typedef constant_value<1> type; // simplify
 		};
 
 		template<class LeftBitset, class RightBitset>
-		using reordering_sign_t = typename _reordering_sign_t<LeftBitset, RightBitset>::type;
+		using reordering_sign = function<name_t::reordering_sign, LeftBitset, RightBitset>;
+
+		template<class LeftBitset, class RightBitset>
+		using reordering_sign_t = typename _reordering_sign<LeftBitset, RightBitset>::type;
 
 		// Lazy computation of the number of 1 bits in the given lazy bitset.
 		template<class Bitset>
@@ -306,13 +244,21 @@ namespace ga {
 			}
 		};
 
+		template<class Bitset>
+		struct _count_one_bits {
+			typedef function<name_t::count_one_bits, Bitset> type;
+		};
+
 		template<default_bitset_t Bitset>
-		struct function<name_t::count_one_bits, constant_bitset<Bitset> > {
+		struct _count_one_bits<constant_bitset<Bitset> > {
 			typedef constant_value<ones(Bitset)> type; // simplify
 		};
 
 		template<class Bitset>
-		using count_one_bits_t = typename function<name_t::count_one_bits, Bitset>::type;
+		using count_one_bits = function<name_t::count_one_bits, Bitset>;
+
+		template<class Bitset>
+		using count_one_bits_t = typename _count_one_bits<Bitset>::type;
 
 		// Lazy bitwise LEFT SHIFT operations.
 		template<class LeftType, class RightType>
@@ -326,47 +272,50 @@ namespace ga {
 		};
 
 		template<class LeftType, class RightType, class Enable = void>
-		struct _bitwise_left_shift_t {
+		struct _bitwise_left_shift {
 			typedef function<name_t::bitwise_left_shift, LeftType, RightType> type;
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
-		struct _bitwise_left_shift_t<constant_value<LeftValue>, constant_value<RightValue>, std::enable_if_t<LeftValue != 0 && RightValue != 0> > {
+		struct _bitwise_left_shift<constant_value<LeftValue>, constant_value<RightValue>, std::enable_if_t<LeftValue != 0 && RightValue != 0> > {
 			typedef constant_value<(LeftValue << RightValue)> type; // simplify
 		};
 
 		template<default_bitset_t LeftBitset, default_integral_t RightValue>
-		struct _bitwise_left_shift_t<constant_bitset<LeftBitset>, constant_value<RightValue>, std::enable_if_t<LeftBitset != default_bitset_t(0) && RightValue != 0> > {
+		struct _bitwise_left_shift<constant_bitset<LeftBitset>, constant_value<RightValue>, std::enable_if_t<LeftBitset != default_bitset_t(0) && RightValue != 0> > {
 			typedef constant_bitset<(LeftBitset << RightValue)> type; // simplify
 		};
 
 		template<class RightType>
-		struct _bitwise_left_shift_t<constant_value<0>, RightType> {
+		struct _bitwise_left_shift<constant_value<0>, RightType> {
 			typedef constant_value<0> type; // simplify
 		};
 
 		template<class RightType>
-		struct _bitwise_left_shift_t<constant_bitset<default_bitset_t(0)>, RightType> {
+		struct _bitwise_left_shift<constant_bitset<default_bitset_t(0)>, RightType> {
 			typedef constant_bitset<default_bitset_t(0)> type; // simplify
 		};
 
 		template<>
-		struct _bitwise_left_shift_t<constant_value<0>, constant_value<0> > {
+		struct _bitwise_left_shift<constant_value<0>, constant_value<0> > {
 			typedef constant_value<0> type; // simplify
 		};
 
 		template<>
-		struct _bitwise_left_shift_t<constant_bitset<default_bitset_t(0)>, constant_value<0> > {
+		struct _bitwise_left_shift<constant_bitset<default_bitset_t(0)>, constant_value<0> > {
 			typedef constant_bitset<default_bitset_t(0)> type; // simplify
 		};
 
 		template<class LeftType>
-		struct _bitwise_left_shift_t<LeftType, constant_value<0> > {
+		struct _bitwise_left_shift<LeftType, constant_value<0> > {
 			typedef LeftType type; // simplify
 		};
 
 		template<class LeftType, class RightType>
-		using bitwise_left_shift_t = typename _bitwise_left_shift_t<LeftType, RightType>::type;
+		using bitwise_left_shift = function<name_t::bitwise_left_shift, LeftType, RightType>;
+
+		template<class LeftType, class RightType>
+		using bitwise_left_shift_t = typename _bitwise_left_shift<LeftType, RightType>::type;
 
 		// Lazy bitwise AND operations.
 		template<class LeftType, class RightType>
@@ -380,52 +329,55 @@ namespace ga {
 		};
 
 		template<class LeftType, class RightType, class Enable = void>
-		struct _bitwise_and_t {
+		struct _bitwise_and {
 			typedef function<name_t::bitwise_and, LeftType, RightType> type;
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
-		struct _bitwise_and_t<constant_value<LeftValue>, constant_value<RightValue>, std::enable_if_t<LeftValue != 0 && RightValue != 0> > {
+		struct _bitwise_and<constant_value<LeftValue>, constant_value<RightValue>, std::enable_if_t<LeftValue != 0 && RightValue != 0> > {
 			typedef constant_value<LeftValue & RightValue> type; // simplify
 		};
 
 		template<class LeftType>
-		struct _bitwise_and_t<LeftType, constant_value<0> > {
+		struct _bitwise_and<LeftType, constant_value<0> > {
 			typedef constant_value<0> type; // simplify
 		};
 
 		template<class RightType>
-		struct _bitwise_and_t<constant_value<0>, RightType> {
+		struct _bitwise_and<constant_value<0>, RightType> {
 			typedef constant_value<0> type; // simplify
 		};
 
 		template<>
-		struct _bitwise_and_t<constant_value<0>, constant_value<0> > {
+		struct _bitwise_and<constant_value<0>, constant_value<0> > {
 			typedef constant_value<0> type; // simplify
 		};
 
 		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
-		struct _bitwise_and_t<constant_bitset<LeftBitset>, constant_bitset<RightBitset>, std::enable_if_t<LeftBitset != default_bitset_t(0) && RightBitset != default_bitset_t(0)> > {
+		struct _bitwise_and<constant_bitset<LeftBitset>, constant_bitset<RightBitset>, std::enable_if_t<LeftBitset != default_bitset_t(0) && RightBitset != default_bitset_t(0)> > {
 			typedef constant_bitset<LeftBitset & RightBitset> type; // simplify
 		};
 
 		template<class LeftType>
-		struct _bitwise_and_t<LeftType, constant_bitset<default_bitset_t(0)> > {
+		struct _bitwise_and<LeftType, constant_bitset<default_bitset_t(0)> > {
 			typedef constant_bitset<default_bitset_t(0)> type; // simplify
 		};
 
 		template<class RightType>
-		struct _bitwise_and_t<constant_bitset<default_bitset_t(0)>, RightType> {
+		struct _bitwise_and<constant_bitset<default_bitset_t(0)>, RightType> {
 			typedef constant_bitset<default_bitset_t(0)> type; // simplify
 		};
 
 		template<>
-		struct _bitwise_and_t<constant_bitset<default_bitset_t(0)>, constant_bitset<default_bitset_t(0)> > {
+		struct _bitwise_and<constant_bitset<default_bitset_t(0)>, constant_bitset<default_bitset_t(0)> > {
 			typedef constant_bitset<default_bitset_t(0)> type; // simplify
 		};
 
 		template<class LeftType, class RightType>
-		using bitwise_and_t = typename _bitwise_and_t<LeftType, RightType>::type;
+		using bitwise_and = function<name_t::bitwise_and, LeftType, RightType>;
+
+		template<class LeftType, class RightType>
+		using bitwise_and_t = typename _bitwise_and<LeftType, RightType>::type;
 
 		// Lazy bitwise XOR operations.
 		template<class LeftType, class RightType>
@@ -439,52 +391,55 @@ namespace ga {
 		};
 
 		template<class LeftType, class RightType, class Enable = void>
-		struct _bitwise_xor_t {
+		struct _bitwise_xor {
 			typedef function<name_t::bitwise_xor, LeftType, RightType> type;
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
-		struct _bitwise_xor_t<constant_value<LeftValue>, constant_value<RightValue>, std::enable_if_t<LeftValue != 0 && RightValue != 0> > {
+		struct _bitwise_xor<constant_value<LeftValue>, constant_value<RightValue>, std::enable_if_t<LeftValue != 0 && RightValue != 0> > {
 			typedef constant_value<LeftValue ^ RightValue> type; // simplify
 		};
 
 		template<class LeftType>
-		struct _bitwise_xor_t<LeftType, constant_value<0> > {
+		struct _bitwise_xor<LeftType, constant_value<0> > {
 			typedef constant_value<0> type; // simplify
 		};
 
 		template<class RightType>
-		struct _bitwise_xor_t<constant_value<0>, RightType> {
+		struct _bitwise_xor<constant_value<0>, RightType> {
 			typedef constant_value<0> type; // simplify
 		};
 
 		template<>
-		struct _bitwise_xor_t<constant_value<0>, constant_value<0> > {
+		struct _bitwise_xor<constant_value<0>, constant_value<0> > {
 			typedef constant_value<0> type; // simplify
 		};
 
 		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
-		struct _bitwise_xor_t<constant_bitset<LeftBitset>, constant_bitset<RightBitset>, std::enable_if_t<LeftBitset != default_bitset_t(0) && RightBitset != default_bitset_t(0)> > {
+		struct _bitwise_xor<constant_bitset<LeftBitset>, constant_bitset<RightBitset>, std::enable_if_t<LeftBitset != default_bitset_t(0) && RightBitset != default_bitset_t(0)> > {
 			typedef constant_bitset<LeftBitset ^ RightBitset> type; // simplify
 		};
 
 		template<class LeftType>
-		struct _bitwise_xor_t<LeftType, constant_bitset<default_bitset_t(0)> > {
+		struct _bitwise_xor<LeftType, constant_bitset<default_bitset_t(0)> > {
 			typedef constant_bitset<default_bitset_t(0)> type; // simplify
 		};
 
 		template<class RightType>
-		struct _bitwise_xor_t<constant_bitset<default_bitset_t(0)>, RightType> {
+		struct _bitwise_xor<constant_bitset<default_bitset_t(0)>, RightType> {
 			typedef constant_bitset<default_bitset_t(0)> type; // simplify
 		};
 
 		template<>
-		struct _bitwise_xor_t<constant_bitset<default_bitset_t(0)>, constant_bitset<default_bitset_t(0)> > {
+		struct _bitwise_xor<constant_bitset<default_bitset_t(0)>, constant_bitset<default_bitset_t(0)> > {
 			typedef constant_bitset<default_bitset_t(0)> type; // simplify
 		};
 
 		template<class LeftType, class RightType>
-		using bitwise_xor_t = typename _bitwise_xor_t<LeftType, RightType>::type;
+		using bitwise_xor = function<name_t::bitwise_xor, LeftType, RightType>;
+
+		template<class LeftType, class RightType>
+		using bitwise_xor_t = typename _bitwise_xor<LeftType, RightType>::type;
 
 		// Lazy bitwise EQUAL operation.
 		template<class LeftType, class RightType>
@@ -498,27 +453,30 @@ namespace ga {
 		};
 
 		template<class LeftType, class RightType, class Enable = void>
-		struct _equal_t {
+		struct _equal {
 			typedef function<name_t::equal, LeftType, RightType> type;
 		};
 
 		template<class CommonType>
-		struct _equal_t<CommonType, CommonType> {
+		struct _equal<CommonType, CommonType> {
 			typedef std::true_type type; // simplify
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
-		struct _equal_t<constant_value<LeftValue>, constant_value<RightValue>, std::enable_if_t<LeftValue != RightValue> > {
+		struct _equal<constant_value<LeftValue>, constant_value<RightValue>, std::enable_if_t<LeftValue != RightValue> > {
 			typedef std::false_type type; // simplify
 		};
 
 		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
-		struct _equal_t<constant_bitset<LeftBitset>, constant_bitset<RightBitset>, std::enable_if_t<LeftBitset != RightBitset> > {
+		struct _equal<constant_bitset<LeftBitset>, constant_bitset<RightBitset>, std::enable_if_t<LeftBitset != RightBitset> > {
 			typedef std::false_type type; // simplify
 		};
 
 		template<class LeftType, class RightType>
-		using equal_t = typename _equal_t<LeftType, RightType>::type;
+		using equal = function<name_t::equal, LeftType, RightType>;
+
+		template<class LeftType, class RightType>
+		using equal_t = typename _equal<LeftType, RightType>::type;
 
 		// Lazy ternary conditional operation.
 		template<class Test, class TrueResult, class FalseResult>
@@ -532,28 +490,31 @@ namespace ga {
 		};
 
 		template<class Test, class TrueResult, class FalseResult, class Enable = void>
-		struct _if_else_t {
+		struct _if_else {
 			typedef function<name_t::if_else, Test, TrueResult, FalseResult> type;
 		};
 
 		template<class Test, class CommonResult>
-		struct _if_else_t<Test, CommonResult, CommonResult> {
+		struct _if_else<Test, CommonResult, CommonResult> {
 			typedef CommonResult type; // simplify
 		};
 
 
 		template<class TrueResult, class FalseResult>
-		struct _if_else_t<std::true_type, TrueResult, FalseResult, std::enable_if_t<!std::is_same_v<TrueResult, FalseResult> > > {
+		struct _if_else<std::true_type, TrueResult, FalseResult, std::enable_if_t<!std::is_same_v<TrueResult, FalseResult> > > {
 			typedef TrueResult type; // simplify
 		};
 
 		template<class TrueResult, class FalseResult>
-		struct _if_else_t<std::false_type, TrueResult, FalseResult, std::enable_if_t<!std::is_same_v<TrueResult, FalseResult> > > {
+		struct _if_else<std::false_type, TrueResult, FalseResult, std::enable_if_t<!std::is_same_v<TrueResult, FalseResult> > > {
 			typedef FalseResult type; // simplify
 		};
 
 		template<class Test, class TrueResult, class FalseResult>
-		using if_else_t = typename _if_else_t<Test, TrueResult, FalseResult>::type;
+		using if_else = function<name_t::if_else, Test, TrueResult, FalseResult>;
+
+		template<class Test, class TrueResult, class FalseResult>
+		using if_else_t = typename _if_else<Test, TrueResult, FalseResult>::type;
 
 	}
 

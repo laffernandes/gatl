@@ -1,6 +1,7 @@
-/**/
+/**
 #include <future/ga.hpp>
 #include <future/ga3e.hpp>
+#include <future/ga3h.hpp>
 #include <future/ga3m.hpp>
 
 using namespace future::ga;
@@ -296,74 +297,6 @@ void test_sign_change_operations() {
 }
 
 template<class MetricSpaceType>
-void test_metric(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
-	std::cout << "--- test_metric(" << name << ")" << std::endl;
-	//std::cout << "M(0, 0) = " << mtr.metric_entry(0, 0) << std::endl; // Must raise a runtime error for all metric spaces.
-	std::cout << "M(1, 1) = " << mtr.metric_entry(1, 1) << std::endl;
-	std::cout << "M(2, 2) = " << mtr.metric_entry(2, 2) << std::endl;
-	std::cout << "M(3, 3) = " << mtr.metric_entry(3, 3) << std::endl;
-	std::cout << "M(4, 4) = " << mtr.metric_entry(4, 4) << std::endl;
-	std::cout << "M(5, 5) = " << mtr.metric_entry(5, 5) << std::endl;
-	std::cout << "M(6, 6) = " << mtr.metric_entry(6, 6) << std::endl;
-	std::cout << "M(7, 7) = " << mtr.metric_entry(7, 7) << std::endl;
-	//std::cout << "M(8, 8) = " << mtr.metric_entry(8, 8) << std::endl; // Must raise a runtime error for all metric spaces.
-	std::cout << std::endl;
-
-	std::cout << "M(6, 5) = " << mtr.metric_entry(6, 5) << std::endl;
-	std::cout << std::endl;
-
-	//std::cout << "M(<0>, <0>)" << metric_space<MetricSpaceType>::cmetric_entry<0, 0>::value << std::endl; // Must raise a compiler error for signed_metric_space.
-	std::cout << "M(<1>, <1>) = " << metric_space<MetricSpaceType>::cmetric_entry<1, 1>::value << std::endl;
-	std::cout << "M(<2>, <2>) = " << metric_space<MetricSpaceType>::cmetric_entry<2, 2>::value << std::endl;
-	std::cout << "M(<3>, <3>) = " << metric_space<MetricSpaceType>::cmetric_entry<3, 3>::value << std::endl;
-	std::cout << "M(<4>, <4>) = " << metric_space<MetricSpaceType>::cmetric_entry<4, 4>::value << std::endl;
-	std::cout << "M(<5>, <5>) = " << metric_space<MetricSpaceType>::cmetric_entry<5, 5>::value << std::endl;
-	std::cout << "M(<6>, <6>) = " << metric_space<MetricSpaceType>::cmetric_entry<6, 6>::value << std::endl;
-	std::cout << "M(<7>, <7>) = " << metric_space<MetricSpaceType>::cmetric_entry<7, 7>::value << std::endl;
-	//std::cout << "M(<8>, <8>) = " << metric_space<MetricSpaceType>::cmetric_entry<8, 8>::value << std::endl; // Must raise a compiler error for signed_metric_space.
-	std::cout << std::endl;
-
-	std::cout << "M(<6>, <5>) = " << metric_space<MetricSpaceType>::cmetric_entry<6, 5>::value << std::endl;
-	std::cout << std::endl;
-
-	{
-		auto e1 = e(c<1>);
-		auto e2 = e(c<2>);
-		auto e3 = e(c<3>);
-		auto e4 = e(c<4>);
-		auto e5 = e(c<5>);
-		auto e6 = e(c<6>);
-		auto e7 = e(c<7>);
-		auto e8 = e(c<8>);
-
-		std::cout << "metric_factor<e1^e2>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e1, e2, mtr))::element_type::basis_blade_type::get()>::value << std::endl;
-		std::cout << "metric_factor<e3^e5>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e3, e5, mtr))::element_type::basis_blade_type::get()>::value << std::endl;
-		std::cout << "metric_factor<e5^e6>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(e5, e6, mtr))::element_type::basis_blade_type::get()>::value << std::endl;
-		std::cout << "metric_factor<e5^e6^e7>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(op(op(e5, e6, mtr), e7, mtr))::element_type::basis_blade_type::get()>::value << std::endl;
-		//std::cout << "metric_factor<e5^e6^e7^e8>::value = " << metric_space<MetricSpaceType>::cmetric_factor<decltype(e5^e6^e7^e8)::element_type::basis_blade_type::get()>::value << std::endl; // Must raise a compiler error for signed_metric_space.
-		std::cout << std::endl;
-	}
-
-	{
-		auto e1 = e(c<1>);
-		auto e2 = e(c<2>);
-		auto e3 = e(c<3>);
-		auto e4 = e(c<4>);
-		auto e5 = e(c<5>);
-		auto e6 = e(c<6>);
-		auto e7 = e(c<7>);
-		auto e8 = e(c<8>);
-
-		std::cout << "metric_factor(e1^e2) = " << mtr.metric_factor(op(e1, e2, mtr).element().basis_blade().get()) << std::endl;
-		std::cout << "metric_factor(e3^e5) = " << mtr.metric_factor(op(e3, e5, mtr).element().basis_blade().get()) << std::endl;
-		std::cout << "metric_factor(e5^e6) = " << mtr.metric_factor(op(e5, e6, mtr).element().basis_blade().get()) << std::endl;
-		std::cout << "metric_factor(e5^e6^e7) = " << mtr.metric_factor(op(op(e5, e6, mtr), e7, mtr).element().basis_blade().get()) << std::endl;
-		//std::cout << "metric_factor(e5^e6^e7^e8) = " << mtr.metric_factor((e5^e6^e7^e8).element().basis_blade().get()) << std::endl; // Must raise a runtime error for signed_metric_space.
-		std::cout << std::endl;
-	}
-}
-
-template<class MetricSpaceType>
 void test_pseudoscalar(metric_space<MetricSpaceType> const &spc, std::string const &name) {
 	std::cout << "--- test_pseudoscalar(" << name << ")" << std::endl;
 	std::cout << "I = " << pseudoscalar(spc) << std::endl;
@@ -405,9 +338,10 @@ void test_simplification() {
 	std::cout << (C + (B + A)) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << (10.0 * (var<1>(5.0) + var<2>(3.0))) << std::endl;
-	std::cout << (10.0 * c<0>) << std::endl;
-	std::cout << (c<0> * 10.0) << std::endl;
+	auto const lazy = make_lazy_context(scalar(10.0), scalar(5.0), scalar(3.0));
+	std::cout << lazy.eval(lazy.argument<0>() * (lazy.argument<1>() + lazy.argument<2>())) << std::endl;
+	std::cout << lazy.eval(lazy.argument<0>() * c<0>) << std::endl;
+	std::cout << lazy.eval(c<0> * lazy.argument<0>()) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -454,26 +388,25 @@ void test_variable() {
 
 	std::cout << "--- test_variable()" << std::endl;
 
+	auto const lazy = make_lazy_context(scalar(5.0), scalar(3.0), scalar(10.0), scalar(-7.0));
+
 	addition(5.0, 3.0);
-	addition(var1(5.0), var2(3.0));
+	addition(lazy.argument<0>(), lazy.argument<1>());
 
 	subtraction(5.0);
-	subtraction(var1(5.0));
+	subtraction(lazy.argument<0>());
 
 	product(5.0, 3.0);
-	product(var1(5.0), var2(3.0));
+	product(lazy.argument<0>(), lazy.argument<1>());
 
 	span_line(10.0, 5.0, -7.0);
-	span_line(var1(10.0), var2(5.0), var3(-7.0));
+	span_line(lazy.argument<2>(), lazy.argument<0>(), lazy.argument<3>());
 }
 
 int main() {
 	test_make_constant();
 
 	test_make_scalarc();
-
-	test_metric(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
-	test_metric(signed_metric_space<3, 4>(), "signed<3, 4>");
 
 	test_make_e();
 	test_make_ec();
@@ -540,8 +473,9 @@ int main() {
 		auto copy_out = 0. + 0. * ga3e::e1 + 0. * (ga3e::e1^ga3e::e2) + 10. * ga3e::e2;
 		std::cout << "out = " << copy_out << std::endl;
 
-		copy_out = copy_in;
-		std::cout << "out = " << copy_out << std::endl;
+		//TODO Implementar
+		//copy_out = copy_in;
+		//std::cout << "out = " << copy_out << std::endl;
 
 		std::cout << std::endl;
 	}
@@ -552,12 +486,10 @@ int main() {
 #include <future/ga.hpp>
 
 int main() {
-	typedef future::ga::detail::constant_value<1> Coefficient;
-	typedef future::ga::detail::constant_basis_blade<1> BasisBlade;
-	typedef future::ga::detail::constant_value<-1> LeftExpression;
-	typedef future::ga::detail::component<future::ga::detail::constant_value<1>, future::ga::detail::constant_basis_blade<2> > RightExpression;
+	using namespace future::ga;
 
-	typedef future::ga::detail::addition<future::ga::detail::component<Coefficient, BasisBlade>, future::ga::detail::function<future::ga::detail::name_t::mul, LeftExpression, RightExpression>, void> x;
+	auto v1 = c<5> * e(1) + c<5> * e(2);
+	auto s1 = scp(v1, v1, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 
 	return EXIT_SUCCESS;
 }

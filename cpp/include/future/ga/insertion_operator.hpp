@@ -190,13 +190,120 @@ namespace ga {
 				first = false;
 			}
 		};
+
+		template<class LeftBitset, class RightBitset>
+		struct write<reordering_sign<LeftBitset, RightBitset> > {
+			template<class ValueCItr, class BitsetCItr>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, bool &first) {
+				bool local_first = true;
+				os << "reordering_sign(";
+				write<LeftBitset>::run(os, value_citr, bitset_citr, local_first);
+				os << ", ";
+				local_first = true;
+				write<RightBitset>::run(os, value_citr, bitset_citr, local_first);
+				os << ")";
+				first = false;
+			}
+		};
 	
+		template<class Bitset>
+		struct write<count_one_bits<Bitset> > {
+			template<class ValueCItr, class BitsetCItr>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, bool &first) {
+				bool local_first = true;
+				os << "count_one_bits(";
+				write<Bitset>::run(os, value_citr, bitset_citr, local_first);
+				os << ")";
+				first = false;
+			}
+		};
+
+		template<class LeftType, class RightType>
+		struct write<bitwise_left_shift<LeftType, RightType> > {
+			template<class ValueCItr, class BitsetCItr>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, bool &first) {
+				bool local_first = true;
+				os << "(";
+				write<LeftType>::run(os, value_citr, bitset_citr, local_first);
+				os << " LSHIFTb ";
+				local_first = true;
+				write<RightType>::run(os, value_citr, bitset_citr, local_first);
+				os << ")";
+				first = false;
+			}
+		};
+
+		template<class LeftType, class RightType>
+		struct write<bitwise_and<LeftType, RightType> > {
+			template<class ValueCItr, class BitsetCItr>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, bool &first) {
+				bool local_first = true;
+				os << "(";
+				write<LeftType>::run(os, value_citr, bitset_citr, local_first);
+				os << " ANDb ";
+				local_first = true;
+				write<RightType>::run(os, value_citr, bitset_citr, local_first);
+				os << ")";
+				first = false;
+			}
+		};
+
+		template<class LeftType, class RightType>
+		struct write<bitwise_xor<LeftType, RightType> > {
+			template<class ValueCItr, class BitsetCItr>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, bool &first) {
+				bool local_first = true;
+				os << "(";
+				write<LeftType>::run(os, value_citr, bitset_citr, local_first);
+				os << " XORb ";
+				local_first = true;
+				write<RightType>::run(os, value_citr, bitset_citr, local_first);
+				os << ")";
+				first = false;
+			}
+		};
+
+		template<class LeftType, class RightType>
+		struct write<equal<LeftType, RightType> > {
+			template<class ValueCItr, class BitsetCItr>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, bool &first) {
+				bool local_first = true;
+				os << "(";
+				write<LeftType>::run(os, value_citr, bitset_citr, local_first);
+				os << " == ";
+				local_first = true;
+				write<RightType>::run(os, value_citr, bitset_citr, local_first);
+				os << ")";
+				first = false;
+			}
+		};
+
+		template<class Test, class TrueResult, class FalseResult>
+		struct write<if_else<Test, TrueResult, FalseResult> > {
+			template<class ValueCItr, class BitsetCItr>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, bool &first) {
+				bool local_first = true;
+				os << "(";
+				write<Test>::run(os, value_citr, bitset_citr, local_first);
+				os << " ? ";
+				local_first = true;
+				write<TrueResult>::run(os, value_citr, bitset_citr, local_first);
+				os << " : ";
+				local_first = true;
+				write<FalseResult>::run(os, value_citr, bitset_citr, local_first);
+				os << ")";
+				first = false;
+			}
+		};
+
 	}
 
 	template<class RightCoefficientType, class RightExpression>
 	std::ostream & operator<<(std::ostream &os, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
 		bool first = true;
-		detail::write<RightExpression>::run(os, rhs.values().cbegin(), rhs.bitsets().cbegin(), first);
+		auto value_citr = rhs.values().cbegin();
+		auto bitset_citr = rhs.bitsets().cbegin();
+		detail::write<RightExpression>::run(os, value_citr, bitset_citr, first);
 
 		if (first) {
 			os << constant<0>();

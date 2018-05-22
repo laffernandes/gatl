@@ -36,11 +36,8 @@ namespace future {
 	
 	#include "ga/constexpr.hpp"
 
-	#include "ga/declarations.hpp"
-
 	#include "ga/expression.hpp"
 	#include "ga/expression_traits.hpp"
-	#include "ga/expression_relational_operators.hpp"
 
 	#include "ga/metric_space.hpp"
 	#include "ga/signed_metric_space.hpp"
@@ -49,9 +46,11 @@ namespace future {
 	#include "ga/orthogonal_metric_mapping.hpp"
 	#include "ga/general_metric_mapping.hpp"
 
-	#include "ga/addition.hpp"
-	#include "ga/product.hpp"
-	#include "ga/exponentiation.hpp"
+	#include "ga/expression_component.hpp"
+	#include "ga/expression_relational_operators.hpp"
+	#include "ga/expression_addition.hpp"
+	#include "ga/expression_product.hpp"
+	#include "ga/expression_power.hpp"
 
 	#include "ga/graded_unary_minus.hpp"
 

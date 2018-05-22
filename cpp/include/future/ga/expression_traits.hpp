@@ -66,7 +66,24 @@ namespace ga {
 		template<class Expression>
 		constexpr bool is_scalar_expression_v = is_scalar_expression<Expression>::value;
 
-		// Specializations of possible_grades<BasisBlade>.
+		// Returns whether the given expression is a function with the given name.
+		template<name_t Name, class Expression>
+		struct is_function {
+			constexpr static bool value = false;
+		};
+
+		template<name_t Name, class... Arguments>
+		struct is_function<Name, function<Name, Arguments...> > {
+			constexpr static bool value = true;
+		};
+
+		template<name_t Name, class Expression>
+		constexpr bool is_function_v = is_function<Name, Expression>::value;
+
+		// Returns the possible grades of a given basis blade.
+		template<class BasisBlade>
+		struct possible_grades;
+
 		template<default_bitset_t BasisVectors>
 		struct possible_grades<constant_basis_blade<BasisVectors> > {
 			constexpr static default_bitset_t value = default_bitset_t(1) << ones(BasisVectors);
@@ -76,6 +93,9 @@ namespace ga {
 		struct possible_grades<dynamic_basis_blade<PossibleGrades, Bitset> > {
 			constexpr static default_bitset_t value = PossibleGrades;
 		};
+
+		template<class BasisBlade>
+		constexpr default_bitset_t possible_grades_v = possible_grades<BasisBlade>::value;
 
 		// Returns the coefficient of a given component.
 		template<class Component>
@@ -117,6 +137,20 @@ namespace ga {
 
 		template<class BasisBlade>
 		using basis_vectors_t = typename basis_vectors<BasisBlade>::type;
+
+		// Product operation.
+		template<class LeftExpression, class RightExpression, class Mapping>
+		struct _product;
+
+		template<class LeftExpression, class RightExpression, class Mapping>
+		using product_t = typename _product<LeftExpression, RightExpression, Mapping>::type;
+
+		// Addition operation.
+		template<class LeftExpression, class RightExpression>
+		struct _addition;
+
+		template<class LeftExpression, class RightExpression>
+		using addition_t = typename _addition<LeftExpression, RightExpression>::type;
 
 	}
 

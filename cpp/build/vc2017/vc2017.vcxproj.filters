@@ -309,19 +309,10 @@
     <ClInclude Include="..\..\include\ga\lazy\division.hpp">
       <Filter>Header Files\ga\lazy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\future\ga\addition.hpp">
-      <Filter>Header Files\future\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\future\ga\constexpr.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\future\ga\exponentiation.hpp">
-      <Filter>Header Files\future\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\future\ga\expression.hpp">
-      <Filter>Header Files\future\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\future\ga\product.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\future\ga\type_traits_extension.hpp">
@@ -329,9 +320,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\future\ga.hpp">
       <Filter>Header Files\future</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\future\ga\declarations.hpp">
-      <Filter>Header Files\future\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\future\ga\expression_traits.hpp">
       <Filter>Header Files\future\ga</Filter>
@@ -472,6 +460,18 @@
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\future\ga\graded_unary_minus.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\expression_power.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\expression_product.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\expression_addition.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\expression_component.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
   </ItemGroup>
