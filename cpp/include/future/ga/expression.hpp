@@ -48,6 +48,17 @@ namespace ga {
 			}
 		};
 
+		// Lazy getter for values stored in a map.
+		template<id_t Id, std::size_t Index>
+		struct get_map_values {
+			typedef get_map_values type;
+
+			template<class... Arguments>
+			inline decltype(auto) operator()(Arguments const &... args) const {
+				return 0; //TODO Implementar
+			}
+		};
+
 		// A value stored by the current clifford_expression<...>.
 		struct stored_value {
 			typedef stored_value type;
@@ -75,6 +86,17 @@ namespace ga {
 			}
 		};
 
+		// Lazy getter for bisets stored in a map.
+		template<id_t Id, std::size_t Index>
+		struct get_map_bitsets {
+			typedef get_map_bitsets type;
+
+			template<class... Arguments>
+			inline default_bitset_t operator()(Arguments const &... args) const {
+				return 0; //TODO Implementar
+			}
+		};
+
 		// A bitset stored by the current clifford_expression<...>.
 		struct stored_bitset {
 			typedef stored_value type;
@@ -90,6 +112,12 @@ namespace ga {
 		struct dynamic_basis_blade {
 		};
 
+		template<default_bitset_t PossibleGrades, class Bitset>
+		struct _dynamic_basis_blade;
+
+		template<default_bitset_t PossibleGrades, class Bitset>
+		using dynamic_basis_blade_t = typename _dynamic_basis_blade<PossibleGrades, Bitset>::type;
+
 		// A basis blade multiplied by some real-valued expression (the coefficient).
 		template<class Coefficient, class BasisBlade>
 		struct component {
@@ -101,24 +129,21 @@ namespace ga {
 		template<class Coefficient, class BasisBlade>
 		using component_t = typename _component<Coefficient, BasisBlade>::type;
 
-		//TODO Simplificar para pseudoscalar
-
-		// A set of basis blades multiplied by real-valued expressions.
-		struct components {
+		// A associative set of basis blades multiplied by real-valued expressions stored in the current clifford_expression<...>.
+		template<default_bitset_t PossibleGrades>
+		struct stored_components_map {
 		};
 
 		// A real-valued function of a bitset function.
 		template<name_t Name, class... Arguments>
 		struct function;
 
-		// Addition of real-valued expressions and/or multivector components.
+		// Addition of real-valued expressions and/or multivector entries.
 		template<class... Arguments>
 		struct function<name_t::add, Arguments...> {
 			typedef function type;
 
 			static_assert(!is_any_v<constant_value<0>, Arguments...>, "The argument ga::detail::constant_value<0> is invalid.");
-			//TODO static_assert(!is_lazy_add_v<left_type>, "The left-hand side argument cannot be a ga::lazy::add<...> expression.");
-			//TODO static_assert(le_v<left_type, typename right_type::left_type>, "The arguments do not respect the expected ordering for lazy expressions.");
 		};
 
 		template<class Argument>
@@ -144,8 +169,6 @@ namespace ga {
 
 			static_assert(!is_any_v<constant_value<0>, Arguments...>, "The argument ga::detail::constant_value<0> is invalid.");
 			static_assert(!is_any_v<constant_value<1>, Arguments...>, "The argument ga::detail::constant_value<1> is invalid.");
-			//TODO static_assert(!is_lazy_mul_v<left_type>, "The left-hand side argument cannot be a ga::lazy::mul<...> expression.");
-			//TODO static_assert(le_v<left_type, typename right_type::left_type>, "The arguments do not respect the expected ordering for lazy expressions.");
 		};
 
 		template<class Argument>
@@ -402,12 +425,12 @@ namespace ga {
 
 		template<class LeftType>
 		struct _bitwise_xor<LeftType, constant_value<0> > {
-			typedef constant_value<0> type; // simplify
+			typedef LeftType type; // simplify
 		};
 
 		template<class RightType>
 		struct _bitwise_xor<constant_value<0>, RightType> {
-			typedef constant_value<0> type; // simplify
+			typedef RightType type; // simplify
 		};
 
 		template<>
@@ -422,12 +445,12 @@ namespace ga {
 
 		template<class LeftType>
 		struct _bitwise_xor<LeftType, constant_bitset<default_bitset_t(0)> > {
-			typedef constant_bitset<default_bitset_t(0)> type; // simplify
+			typedef LeftType type; // simplify
 		};
 
 		template<class RightType>
 		struct _bitwise_xor<constant_bitset<default_bitset_t(0)>, RightType> {
-			typedef constant_bitset<default_bitset_t(0)> type; // simplify
+			typedef RightType type; // simplify
 		};
 
 		template<>

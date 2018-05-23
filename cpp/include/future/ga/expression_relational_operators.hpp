@@ -70,6 +70,16 @@ namespace ga {
 			constexpr static bool value = false;
 		};
 
+		template<default_integral_t LeftValue, id_t RightId, std::size_t RightIndex>
+		struct lt<constant_value<LeftValue>, get_map_values<RightId, RightIndex> > {
+			constexpr static bool value = true;
+		};
+
+		template<id_t LeftId, std::size_t LeftIndex, default_integral_t RightValue>
+		struct lt<get_map_values<LeftId, LeftIndex>, constant_value<RightValue> > {
+			constexpr static bool value = false;
+		};
+
 		template<default_integral_t LeftValue>
 		struct lt<constant_value<LeftValue>, stored_value> {
 			constexpr static bool value = true;
@@ -95,6 +105,16 @@ namespace ga {
 			constexpr static bool value = LeftId < RightId || (LeftId == RightId && LeftIndex < RightIndex);
 		};
 
+		template<id_t LeftId, std::size_t LeftIndex, id_t RightId, std::size_t RightIndex>
+		struct lt<get_value<LeftId, LeftIndex>, get_map_values<RightId, RightIndex> > {
+			constexpr static bool value = LeftId <= RightId;
+		};
+
+		template<id_t LeftId, std::size_t LeftIndex, id_t RightId, std::size_t RightIndex>
+		struct lt<get_map_values<LeftId, LeftIndex>, get_value<RightId, RightIndex> > {
+			constexpr static bool value = LeftId < RightId;
+		};
+
 		template<id_t LeftId, std::size_t LeftIndex>
 		struct lt<get_value<LeftId, LeftIndex>, stored_value> {
 			constexpr static bool value = true;
@@ -113,6 +133,31 @@ namespace ga {
 		template<name_t LeftName, class LeftArgument, class... LeftNextArguments, id_t RightId, std::size_t RightIndex>
 		struct lt<function<LeftName, LeftArgument, LeftNextArguments...>, get_value<RightId, RightIndex> > {
 			constexpr static bool value = lt_v<LeftArgument, get_value<RightId, RightIndex> >;
+		};
+
+		template<id_t LeftId, std::size_t LeftIndex, id_t RightId, std::size_t RightIndex>
+		struct lt<get_map_values<LeftId, LeftIndex>, get_map_values<RightId, RightIndex> > {
+			constexpr static bool value = LeftId < RightId || (LeftId == RightId && LeftIndex < RightIndex);
+		};
+
+		template<id_t LeftId, std::size_t LeftIndex>
+		struct lt<get_map_values<LeftId, LeftIndex>, stored_value> {
+			constexpr static bool value = true;
+		};
+
+		template<id_t RightId, std::size_t RightIndex>
+		struct lt<stored_value, get_map_values<RightId, RightIndex> > {
+			constexpr static bool value = false;
+		};
+
+		template<id_t LeftId, std::size_t LeftIndex, name_t RightName, class RightArgument, class... RightNextArguments>
+		struct lt<get_map_values<LeftId, LeftIndex>, function<RightName, RightArgument, RightNextArguments...> > {
+			constexpr static bool value = le_v<get_map_values<LeftId, LeftIndex>, RightArgument>;
+		};
+
+		template<name_t LeftName, class LeftArgument, class... LeftNextArguments, id_t RightId, std::size_t RightIndex>
+		struct lt<function<LeftName, LeftArgument, LeftNextArguments...>, get_map_values<RightId, RightIndex> > {
+			constexpr static bool value = lt_v<LeftArgument, get_map_values<RightId, RightIndex> >;
 		};
 
 		template<>
@@ -146,6 +191,16 @@ namespace ga {
 			constexpr static bool value = false;
 		};
 
+		template<default_bitset_t LeftBitset, id_t RightId, std::size_t RightIndex>
+		struct lt<constant_bitset<LeftBitset>, get_map_bitsets<RightId, RightIndex> > {
+			constexpr static bool value = true;
+		};
+
+		template<id_t LeftId, std::size_t LeftIndex, default_bitset_t RightBitset>
+		struct lt<get_map_bitsets<LeftId, LeftIndex>, constant_bitset<RightBitset> > {
+			constexpr static bool value = false;
+		};
+
 		template<default_bitset_t LeftBitset>
 		struct lt<constant_bitset<LeftBitset>, stored_bitset> {
 			constexpr static bool value = true;
@@ -171,6 +226,16 @@ namespace ga {
 			constexpr static bool value = LeftId < RightId || (LeftId == RightId && LeftIndex < RightIndex);
 		};
 
+		template<id_t LeftId, std::size_t LeftIndex, id_t RightId, std::size_t RightIndex>
+		struct lt<get_bitset<LeftId, LeftIndex>, get_map_bitsets<RightId, RightIndex> > {
+			constexpr static bool value = LeftId <= RightId;
+		};
+
+		template<id_t LeftId, std::size_t LeftIndex, id_t RightId, std::size_t RightIndex>
+		struct lt<get_map_bitsets<LeftId, LeftIndex>, get_bitset<RightId, RightIndex> > {
+			constexpr static bool value = LeftId < RightId;
+		};
+
 		template<id_t LeftId, std::size_t LeftIndex>
 		struct lt<get_bitset<LeftId, LeftIndex>, stored_bitset> {
 			constexpr static bool value = true;
@@ -189,6 +254,31 @@ namespace ga {
 		template<name_t LeftName, class LeftArgument, class... LeftNextArguments, id_t RightId, std::size_t RightIndex>
 		struct lt<function<LeftName, LeftArgument, LeftNextArguments...>, get_bitset<RightId, RightIndex> > {
 			constexpr static bool value = lt_v<LeftArgument, get_bitset<RightId, RightIndex> >;
+		};
+
+		template<id_t LeftId, std::size_t LeftIndex, id_t RightId, std::size_t RightIndex>
+		struct lt<get_map_bitsets<LeftId, LeftIndex>, get_map_bitsets<RightId, RightIndex> > {
+			constexpr static bool value = LeftId < RightId || (LeftId == RightId && LeftIndex < RightIndex);
+		};
+
+		template<id_t LeftId, std::size_t LeftIndex>
+		struct lt<get_map_bitsets<LeftId, LeftIndex>, stored_bitset> {
+			constexpr static bool value = true;
+		};
+
+		template<id_t RightId, std::size_t RightIndex>
+		struct lt<stored_bitset, get_map_bitsets<RightId, RightIndex> > {
+			constexpr static bool value = false;
+		};
+
+		template<id_t LeftId, std::size_t LeftIndex, name_t RightName, class RightArgument, class... RightNextArguments>
+		struct lt<get_map_bitsets<LeftId, LeftIndex>, function<RightName, RightArgument, RightNextArguments...> > {
+			constexpr static bool value = le_v<get_map_bitsets<LeftId, LeftIndex>, RightArgument>;
+		};
+
+		template<name_t LeftName, class LeftArgument, class... LeftNextArguments, id_t RightId, std::size_t RightIndex>
+		struct lt<function<LeftName, LeftArgument, LeftNextArguments...>, get_map_bitsets<RightId, RightIndex> > {
+			constexpr static bool value = lt_v<LeftArgument, get_map_bitsets<RightId, RightIndex> >;
 		};
 
 		template<>
@@ -231,6 +321,21 @@ namespace ga {
 		template<class LeftCoefficient, class LeftBasisBlade, class RightCoefficient, class RightBasisBlade>
 		struct lt<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade> > {
 			constexpr static bool value = lt_v<LeftBasisBlade, RightBasisBlade> || (eq_v<LeftBasisBlade, RightBasisBlade> && lt_v<LeftCoefficient, RightCoefficient>);
+		};
+
+		template<class LeftCoefficient, class LeftBasisBlade, default_bitset_t RightPossibleGrades>
+		struct lt<component<LeftCoefficient, LeftBasisBlade>, stored_components_map<RightPossibleGrades> > {
+			constexpr static bool value = possible_grades_v<LeftBasisBlade> <= RightPossibleGrades;
+		};
+
+		template<default_bitset_t LeftPossibleGrades, class RightCoefficient, class RightBasisBlade>
+		struct lt<stored_components_map<LeftPossibleGrades>, component<RightCoefficient, RightBasisBlade> > {
+			constexpr static bool value = LeftPossibleGrades < possible_grades_v<RightBasisBlade>;
+		};
+
+		template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
+		struct lt<stored_components_map<LeftPossibleGrades>, stored_components_map<RightPossibleGrades> > {
+			constexpr static bool value = LeftPossibleGrades < RightPossibleGrades;
 		};
 
 		// Specializations of lt<LeftType, RightType> with functions.

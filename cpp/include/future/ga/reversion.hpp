@@ -5,8 +5,8 @@ namespace ga {
 
 	template<class CoefficientType, class Expression>
 	constexpr decltype(auto) reversion(clifford_expression<CoefficientType, Expression> const &arg) {
-		typedef detail::lazy_arguments<Expression> lazy;
-		return detail::eval<detail::graded_unary_minus_t<lazy::argument_expression_t<0>, (default_bitset_t)0xCCCCCCCCCCCCCCCCull> >(arg);
+		auto lazy = make_lazy_context(arg);
+		return lazy.eval(clifford_expression<CoefficientType, detail::graded_unary_minus_t<decltype(lazy)::argument_expression_t<0>, (default_bitset_t)0xCCCCCCCCCCCCCCCCull> >());
 	}
 
 	template<class Type>

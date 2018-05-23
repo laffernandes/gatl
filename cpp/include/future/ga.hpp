@@ -25,6 +25,9 @@ namespace future {
 		typedef std::int32_t default_integral_t;
 		typedef std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 8, std::uint8_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 16, std::uint16_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 32, std::uint32_t, std::uint64_t> > > default_bitset_t;
 
+		template<class CoefficientType>
+		using default_associative_t = std::map<default_bitset_t, CoefficientType>;
+
 		typedef std::int32_t grade_t;
 
 		typedef std::uint32_t index_t;
@@ -46,18 +49,16 @@ namespace future {
 	#include "ga/orthogonal_metric_mapping.hpp"
 	#include "ga/general_metric_mapping.hpp"
 
+	#include "ga/expression_dynamic_basis_blade.hpp"
 	#include "ga/expression_component.hpp"
 	#include "ga/expression_relational_operators.hpp"
 	#include "ga/expression_addition.hpp"
 	#include "ga/expression_product.hpp"
 	#include "ga/expression_power.hpp"
-
-	#include "ga/graded_unary_minus.hpp"
+	#include "ga/expression_graded_unary_minus.hpp"
 
 	#include "ga/clifford_expression.hpp"
 
-	#include "ga/lazy_arguments.hpp"
-	#include "ga/eval.hpp"
 	#include "ga/lazy_context.hpp"
 
 	#include "ga/constant.hpp"
@@ -86,13 +87,9 @@ namespace future {
 
 }
 
-//TODO simplificar pseudoscalar
 //TODO math
+//TODO exp
 //TODO grade
 //TODO conformal_metric_space
-//TODO exp
-//TODO eval
-//TODO Lidar com components<>
-//TODO Como lidar com a avaliação parcial da lazy expression?
 
 #endif // __FUTURE_GA_HPP__

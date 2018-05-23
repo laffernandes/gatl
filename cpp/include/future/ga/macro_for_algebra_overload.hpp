@@ -82,16 +82,12 @@
 			return undual(arg, pseudoscalar(space), space); \
 		} \
 		\
-	}
-
-//TODO Rever
-/*
-		\
-		template<class... ElementTypes, typename std::enable_if<!detail::may_cast_to_native<clifford_expression<ElementTypes...> >::value, int>::type = 0> \
-		constexpr decltype(auto) exp(clifford_expression<ElementTypes...> const &arg) { \
+		template<class CoefficientType, class Expression, class = std::enable_if_t<!detail::is_scalar_expression_v<Expression> > \
+		constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg) { \
 			return exp(arg, space); \
 		} \
-*/
+		\
+	}
 
 #define GA_CONFORMAL_ALGEBRA_OVERLOAD(NAMESPACE_MNEMONIC, N) \
 	namespace NAMESPACE_MNEMONIC { \
@@ -170,14 +166,11 @@
 			return undual(arg, pseudoscalar(space), space); \
 		} \
 		\
-	}
-
-//TODO Rever
-/*
-		template<class... ElementTypes, typename std::enable_if<!detail::may_cast_to_native<clifford_expression<ElementTypes...> >::value, int>::type = 0> \
-		constexpr decltype(auto) exp(clifford_expression<ElementTypes...> const &arg) { \
+		template<class CoefficientType, class Expression, class = std::enable_if_t<!detail::is_scalar_expression_v<Expression> > \
+		constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg) { \
 			return exp(arg, space); \
 		} \
-*/
+		\
+	}
 
 #endif // __FUTURE_GA_MACRO_FOR_ALGEBRA_OVERLOAD_HPP__

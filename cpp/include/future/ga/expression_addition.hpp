@@ -174,7 +174,35 @@ namespace ga {
 
 		template<class LeftCoefficient, class CommonBasisBlade, class RightCoefficient>
 		struct _addition<component<LeftCoefficient, CommonBasisBlade>, component<RightCoefficient, CommonBasisBlade> > {
-			typedef component_t<addition_t<LeftCoefficient, RightCoefficient>, CommonBasisBlade> type; // A * Ei + B * Ei = (A + B) * Ei (simplify)
+			typedef component_t<addition_t<LeftCoefficient, RightCoefficient>, CommonBasisBlade> type;
+		};
+
+		template<class LeftCoefficient, class LeftBasisBlade, default_bitset_t RightPossibleGrades>
+		struct _addition<component<LeftCoefficient, LeftBasisBlade>, stored_components_map<RightPossibleGrades> > {
+			typedef std::conditional_t<
+				possible_grades_v<LeftBasisBlade> <= RightPossibleGrades,
+				add_t<component<LeftCoefficient, LeftBasisBlade>, stored_components_map<RightPossibleGrades> >,
+				add_t<stored_components_map<RightPossibleGrades>, component<LeftCoefficient, LeftBasisBlade> >
+			> type;
+		};
+
+		template<default_bitset_t LeftPossibleGrades, class RightCoefficient, class RightBasisBlade>
+		struct _addition<stored_components_map<LeftPossibleGrades>, component<RightCoefficient, RightBasisBlade> > {
+			typedef std::conditional_t<
+				LeftPossibleGrades < possible_grades_v<RightBasisBlade>,
+				add_t<stored_components_map<LeftPossibleGrades>, component<RightCoefficient, RightBasisBlade> >,
+				add_t<component<RightCoefficient, RightBasisBlade>, stored_components_map<LeftPossibleGrades> >
+			> type;
+		};
+
+		template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
+		struct _addition<stored_components_map<LeftPossibleGrades>, stored_components_map<RightPossibleGrades> > {
+			typedef std::conditional_t<
+				LeftPossibleGrades < RightPossibleGrades,
+				add_t<stored_components_map<LeftPossibleGrades>, stored_components_map<RightPossibleGrades> >,
+				add_t<stored_components_map<RightPossibleGrades>, stored_components_map<LeftPossibleGrades> >
+			> type;
+			static_assert(LeftPossibleGrades != RightPossibleGrades, "The Expression of future::ga::clifford_expression<CoefficientType, Expression> should not have two future::ga::detail::stored_components_map<PossibleGrades> with the same set of possible grades.");
 		};
 
 		template<class RightCoefficient, class RightBasisBlade>
@@ -182,9 +210,19 @@ namespace ga {
 			typedef component<RightCoefficient, RightBasisBlade> type; // 0 * 1 + A * Ej = A * Ej (simplify)
 		};
 
+		template<default_bitset_t RightPossibleGrades>
+		struct _addition<component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> >, stored_components_map<RightPossibleGrades> > {
+			typedef stored_components_map<RightPossibleGrades> type; // 0 * 1 + A * Ej = A * Ej (simplify)
+		};
+
 		template<class LeftCoefficient, class LeftBasisBlade>
 		struct _addition<component<LeftCoefficient, LeftBasisBlade>, component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> > > {
 			typedef component<LeftCoefficient, LeftBasisBlade> type; // A * Ei + 0 * 1 = A * Ei (simplify)
+		};
+
+		template<default_bitset_t LeftPossibleGrades>
+		struct _addition<stored_components_map<LeftPossibleGrades>, component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> > > {
+			typedef stored_components_map<LeftPossibleGrades> type; // A * Ei + 0 * 1 = A * Ei (simplify)
 		};
 
 		template<>

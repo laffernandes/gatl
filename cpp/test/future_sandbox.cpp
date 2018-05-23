@@ -488,7 +488,12 @@ int main() {
 int main() {
 	using namespace future::ga;
 
-	auto v1 = c<5> * e(1) + c<5> * e(2);
+	auto xxx = detail::gp_mapping::possible_grades_result<1, 2, GA_MAX_BASIS_VECTOR_INDEX>::value;
+	
+	auto a = c<5> * e(1);
+	auto b = c<5> * e(2);
+
+	auto v1 = a + b;
 	auto s1 = scp(v1, v1, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 
 	return EXIT_SUCCESS;

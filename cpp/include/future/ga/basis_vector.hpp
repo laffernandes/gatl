@@ -11,7 +11,7 @@ namespace ga {
 
 	constexpr decltype(auto) e(index_t const index) {
 		assert(index > 0);
-		return clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::dynamic_basis_blade<default_bitset_t(2), detail::stored_bitset> > >(make_sequential_storage(default_bitset_t(default_bitset_t(1) << (index - 1))));
+		return clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::dynamic_basis_blade_t<default_bitset_t(2), detail::stored_bitset> > >(make_sequential_storage(default_bitset_t(default_bitset_t(1) << (index - 1))));
 	}
 
 }

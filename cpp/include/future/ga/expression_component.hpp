@@ -14,13 +14,13 @@ namespace ga {
 
 			typedef std::conditional_t<
 				possible_grades == default_bitset_t(0),
-				constant_value<0>,
+				constant_value<0>, // impossible basis blade
 				Coefficient
 			> coefficient;
 			
 			typedef std::conditional_t<
-				std::is_same_v<Coefficient, constant_value<0> > || possible_grades == default_bitset_t(0) || possible_grades == default_bitset_t(1),
-				constant_basis_blade<default_bitset_t(0)>,
+				std::is_same_v<Coefficient, constant_value<0> > || possible_grades == default_bitset_t(0),
+				constant_basis_blade<default_bitset_t(0)>,  // impossible basis blade or zero
 				BasisBlade
 			> basis_blade;
 

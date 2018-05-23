@@ -8,7 +8,7 @@ namespace ga {
 		// The implementation of mapping for products assuming spaces with orthogonal metric.
 		template<class LeftBasisBlade, class RightBasisBlade, default_bitset_t PossibleGradesResult>
 		struct _orthogonal_metric_deduce_basis_blade {
-			typedef dynamic_basis_blade<PossibleGradesResult, bitwise_xor_t<basis_vectors_t<LeftBasisBlade>, basis_vectors_t<RightBasisBlade> > > type;
+			typedef dynamic_basis_blade_t<PossibleGradesResult, bitwise_xor_t<basis_vectors_t<LeftBasisBlade>, basis_vectors_t<RightBasisBlade> > > type;
 		};
 		
 		template<default_bitset_t LeftBasisVectors, default_bitset_t RightBasisVectors, default_bitset_t PossibleGradesResult>
@@ -33,7 +33,13 @@ namespace ga {
 			struct multiply {
 			private:
 
-				typedef typename _orthogonal_metric_deduce_basis_blade<LeftBasisBlade, RightBasisBlade, GradedProduct::template possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade>, OrthogonalMetricSpace::vector_space_dimensions>::value>::type candidate_basis_blade;
+				typedef typename _orthogonal_metric_deduce_basis_blade<LeftBasisBlade, RightBasisBlade, GradedProduct::template possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade>, OrthogonalMetricSpace::vector_space_dimensions>::value>::type pre_candidate_basis_blade;
+
+				typedef std::conditional_t<
+					possible_grades_v<pre_candidate_basis_blade> == (default_bitset_t(1) << OrthogonalMetricSpace::vector_space_dimensions),
+					constant_basis_blade<OrthogonalMetricSpace::basis_vectors>, // pseudoscalar
+					pre_candidate_basis_blade // something else
+				> candidate_basis_blade;
 
 				typedef basis_vectors_t<LeftBasisBlade> left_basis_vectors;
 				typedef basis_vectors_t<RightBasisBlade> right_basis_vectors;
@@ -57,7 +63,7 @@ namespace ga {
 					std::conditional_t<
 						std::is_same_v<test_type, std::false_type>,
 						constant_basis_blade<default_bitset_t(0)>,
-						dynamic_basis_blade<
+						dynamic_basis_blade_t<
 							possible_grades_v<candidate_basis_blade>,
 							if_else_t<
 								test_type,

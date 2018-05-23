@@ -10,8 +10,8 @@ namespace ga {
 
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression>
 	constexpr decltype(auto) operator+(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		typedef detail::lazy_arguments<LeftExpression, RightExpression> lazy;
-		return detail::eval<detail::addition_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1> > >(lhs, rhs);
+		auto lazy = make_lazy_context(lhs, rhs);
+		return lazy.eval(clifford_expression<std::common_type_t<LeftCoefficientType, RightCoefficientType>, detail::addition_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1> > >());
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightType>
@@ -26,14 +26,13 @@ namespace ga {
 
 	template<class RightCoefficientType, class RightExpression>
 	constexpr decltype(auto) operator-(clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		typedef detail::lazy_arguments<RightExpression> lazy;
-		return detail::eval<detail::product_t<detail::component<detail::constant_value<-1>, detail::constant_basis_blade<default_bitset_t(0)> >, lazy::argument_expression_t<0>, detail::metric_space_mapping_t<detail::real_metric_space, detail::gp_mapping> > >(rhs);
+		return gp(c<-1>, rhs);
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression>
 	constexpr decltype(auto) operator-(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		typedef detail::lazy_arguments<LeftExpression, RightExpression> lazy;
-		return detail::eval<detail::addition_t<lazy::argument_expression_t<0>, detail::product_t<detail::component<detail::constant_value<-1>, detail::constant_basis_blade<default_bitset_t(0)> >, lazy::argument_expression_t<1>, detail::metric_space_mapping_t<detail::real_metric_space, detail::gp_mapping> > > >(lhs, rhs);
+		auto const lazy = make_lazy_context(lhs, rhs);
+		return lazy.eval(lazy.argument<0>() + gp(c<-1>, lazy.argument<1>()));
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightType>

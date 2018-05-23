@@ -34,7 +34,7 @@ namespace ga {
 				0 <= GradeValue && GradeValue <= GA_MAX_BASIS_VECTOR_INDEX && (PossibleGrades & (default_bitset_t(1) << GradeValue)) != default_bitset_t(0),
 				if_else_t<
 					equal_t<count_one_bits_t<Bitset>, constant_value<GradeValue> >,
-					component<Coefficient, dynamic_basis_blade<(default_bitset_t(1) << GradeValue), Bitset> >,
+					component<Coefficient, dynamic_basis_blade_t<(default_bitset_t(1) << GradeValue), Bitset> >,
 					component_t<constant_value<0>, constant_basis_blade<default_bitset_t(0)> >
 				>,
 				component_t<constant_value<0>, constant_basis_blade<default_bitset_t(0)> >
@@ -54,8 +54,8 @@ namespace ga {
 
 	template<class CoefficientType, class Expression, grade_t K>
 	constexpr decltype(auto) take_grade(clifford_expression<CoefficientType, Expression> const &arg, constant<K> const &k) {
-		typedef detail::lazy_arguments<Expression, typename constant<K>::expression_type> lazy;
-		return detail::eval<detail::keep_grade_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1> > >(arg, k);
+		auto lazy = make_lazy_context(arg, k);
+		return lazy.eval(clifford_expression<CoefficientType, detail::keep_grade_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1> > >());
 	}
 
 	template<class Type, grade_t K>
@@ -65,8 +65,8 @@ namespace ga {
 
 	template<class CoefficientType, class Expression>
 	constexpr decltype(auto) take_grade(clifford_expression<CoefficientType, Expression> const &arg, grade_t const k) {
-		typedef detail::lazy_arguments<Expression, typename decltype(scalar(grade_t()))::expression_type> lazy;
-		return detail::eval<detail::keep_grade_t<lazy::argument_expression_t<0>, lazy::argument_expression_t<1> > >(arg, scalar(k));
+		auto lazy = make_lazy_context(arg, scalar(k));
+		return lazy.eval(clifford_expression<CoefficientType, detail::keep_grade_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1> > >());
 	}
 
 	template<class Type>

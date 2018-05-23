@@ -1,10 +1,11 @@
-#ifndef __FUTURE_GA_GRADED_UNARY_MINUS_HPP__
-#define __FUTURE_GA_GRADED_UNARY_MINUS_HPP__
+#ifndef __FUTURE_GA_EXPRESSION_GRADED_UNARY_MINUS_HPP__
+#define __FUTURE_GA_EXPRESSION_GRADED_UNARY_MINUS_HPP__
 
 namespace ga {
 
 	namespace detail {
 
+		// Graded-based unary minus operation.
 		template<class Expression, default_bitset_t SignChangePattern>
 		struct graded_unary_minus;
 
@@ -45,4 +46,4 @@ namespace ga {
 
 }
 
-#endif // __FUTURE_GA_GRADED_UNARY_MINUS_HPP__
+#endif // __FUTURE_GA_EXPRESSION_GRADED_UNARY_MINUS_HPP__

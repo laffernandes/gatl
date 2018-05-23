@@ -45,7 +45,7 @@ namespace ga {
 	namespace detail {
 		
 		// Helper for metric space of real numbers (it is used with scalar expressions).
-		using real_metric_space = signed_metric_space<GA_MAX_BASIS_VECTOR_INDEX, 0>;
+		typedef signed_metric_space<GA_MAX_BASIS_VECTOR_INDEX, 0> real_metric_space;
 
 	}
 
