@@ -1,8 +1,8 @@
 #ifndef __FUTURE_GA2C_HPP__
 #define __FUTURE_GA2C_HPP__
 
-#include "ga.hpp"
-#include "ga/macro_for_algebra_overload.hpp"
+#include <ga.hpp>
+#include <ga/macro_for_algebra_overload.hpp>
 
 GA_CONFORMAL_ALGEBRA_OVERLOAD(ga2c, 2)
 

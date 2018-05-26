@@ -5,9 +5,9 @@ namespace ga {
 
 	namespace detail {
 
-		// Specializations of _component<Coefficient, BasisBlade>.
+		// Specializations of component<Coefficient, BasisBlade>.
 		template<class Coefficient, class BasisBlade>
-		struct _component {
+		struct component {
 		private:
 
 			constexpr static default_bitset_t possible_grades = possible_grades_v<BasisBlade>;

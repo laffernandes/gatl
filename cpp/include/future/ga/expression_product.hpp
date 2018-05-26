@@ -47,7 +47,7 @@ namespace ga {
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
 		struct _product_level5<power<constant_value<LeftValue>, constant_value<-1> >, power<constant_value<RightValue>, constant_value<-1> > > {
-			typedef power_t<constant_value<LeftValue * RightValue>(), constant_value<-1>()> type; // A^{-1} * B^{-1} = (A * B)^{-1}, end of recursion (simplify)
+			typedef power_t<constant_value<LeftValue * RightValue>, constant_value<-1> > type; // A^{-1} * B^{-1} = (A * B)^{-1}, end of recursion (simplify)
 		};
 
 		// Specializations of _product_level4<LeftExpression, RightExpression> with some patterns to simplify (simplify).
@@ -58,7 +58,7 @@ namespace ga {
 
 		template<class CommonExpression>
 		struct _product_level4<CommonExpression, CommonExpression> {
-			typedef power_t<CommonExpression, constant_value<2>()> type; // A * A = A^{2}, end of recursion (simplify)
+			typedef power_t<CommonExpression, constant_value<2> > type; // A * A = A^{2}, end of recursion (simplify)
 		};
 
 		template<class CommonArgument, class LeftRightArgument>

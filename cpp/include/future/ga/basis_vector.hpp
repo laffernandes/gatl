@@ -3,8 +3,8 @@
 
 namespace ga {
 
-	template<index_t Index>
-	constexpr decltype(auto) e(constant<Index> const &) {
+	template<class IndexType, default_integral_t Index, class = std::enable_if_t<std::is_constructible_v<index_t, IndexType> > >
+	constexpr decltype(auto) e(constant<IndexType, Index> const &) {
 		static_assert(Index > 0, "Basis vector index out of bounds. It is expected a positive value.");
 		return clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::constant_basis_blade<default_bitset_t(default_bitset_t(1) << (Index - 1))> > >();
 	}

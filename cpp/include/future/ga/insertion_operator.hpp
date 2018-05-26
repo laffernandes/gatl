@@ -36,20 +36,20 @@ namespace ga {
 			}
 		};
 
-		template<id_t Id, std::size_t Index>
-		struct write<get_value<Id, Index> > {
+		template<tag_t Tag, std::size_t Index>
+		struct write<get_value<Tag, Index> > {
 			template<class ValueCItr, class BitsetCItr, class MapCIts>
 			inline static void run(std::ostream &os, ValueCItr &, BitsetCItr &, MapCIts &, bool &first) {
-				os << "{Id: " << Id << ", ValueIndex: " << Index << "}";
+				os << "{Tag: " << Tag << ", ValueIndex: " << Index << "}";
 				first = false;
 			}
 		};
 
-		template<id_t Id, std::size_t Index>
-		struct write<get_map_values<Id, Index> > {
+		template<tag_t Tag, std::size_t Index>
+		struct write<get_map_values<Tag, Index> > {
 			template<class ValueCItr, class BitsetCItr, class MapCIts>
 			inline static void run(std::ostream &os, ValueCItr &, BitsetCItr &, MapCIts &, bool &first) {
-				os << "[{Id: " << Id << ", MapValuesIndex: " << Index << "}]";
+				os << "[{Tag: " << Tag << ", MapValuesIndex: " << Index << "}]";
 				first = false;
 			}
 		};
@@ -74,31 +74,39 @@ namespace ga {
 			}
 		};
 
+		template<>
+		struct write<stored_map_values> {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &, MapCIts &, bool &first) {
+				//TODO Implementar
+			}
+		};
+
 		template<default_bitset_t Bitset>
 		struct write<constant_bitset<Bitset> > {
 			template<class ValueCItr, class BitsetCItr, class MapCIts>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &, MapCIts &, bool &first) {
 				os << "<";
 				write_basis_blade(os, Bitset);
-				os >> ">";
+				os << ">";
 				first = false;
 			}
 		};
 
-		template<id_t Id, std::size_t Index>
-		struct write<get_bitset<Id, Index> > {
+		template<tag_t Tag, std::size_t Index>
+		struct write<get_bitset<Tag, Index> > {
 			template<class ValueCItr, class BitsetCItr, class MapCIts>
 			inline static void run(std::ostream &os, ValueCItr &, BitsetCItr &, MapCIts &, bool &first) {
-				os << "{Id: " << Id << ", BitsetIndex: " << Index << "}";
+				os << "{Tag: " << Tag << ", BitsetIndex: " << Index << "}";
 				first = false;
 			}
 		};
 
-		template<id_t Id, std::size_t Index>
-		struct write<get_map_bitsets<Id, Index> > {
+		template<tag_t Tag, std::size_t Index>
+		struct write<get_map_bitsets<Tag, Index> > {
 			template<class ValueCItr, class BitsetCItr, class MapCIts>
 			inline static void run(std::ostream &os, ValueCItr &, BitsetCItr &, MapCIts &, bool &first) {
-				os << "[{Id: " << Id << ", MapBitsetsIndex: " << Index << "}]";
+				os << "[{Tag: " << Tag << ", MapBitsetsIndex: " << Index << "}]";
 				first = false;
 			}
 		};
@@ -110,6 +118,14 @@ namespace ga {
 				write_basis_blade(os, *bitset_citr);
 				++bitset_citr;
 				first = false;
+			}
+		};
+
+		template<>
+		struct write<stored_map_bitsets> {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &, BitsetCItr &bitset_citr, MapCIts &, bool &first) {
+				//TODO Implementar
 			}
 		};
 
@@ -135,8 +151,8 @@ namespace ga {
 		struct write<component<Coefficient, BasisBlade> > {
 			template<class ValueCItr, class BitsetCItr, class MapCIts>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, bool &first) {
-				os << "(";
 				bool local_first = true;
+				os << "(";
 				write<Coefficient>::run(os, value_citr, bitset_citr, map_citr, local_first);
 				os << ") * ";
 				write<BasisBlade>::run(os, value_citr, bitset_citr, map_citr, first);
@@ -145,7 +161,7 @@ namespace ga {
 		};
 
 		template<default_bitset_t PossibleGrades>
-		struct write<stored_components_map<PossibleGrades> > {
+		struct write<component<stored_map_values, dynamic_basis_blade<PossibleGrades, stored_map_bitsets> > > {
 			template<class ValueCItr, class BitsetCItr, class MapCIts>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, bool &first) {
 				os << "[";
@@ -165,7 +181,7 @@ namespace ga {
 							os << "(" << curr.second << ")";
 						}
 						os << " * ";
-						write_basis_blade(os, curr.first)
+						write_basis_blade(os, curr.first);
 					}
 				}
 				else {
@@ -358,7 +374,7 @@ namespace ga {
 		detail::write<RightExpression>::run(os, value_citr, bitset_citr, map_citr, first);
 
 		if (first) {
-			os << constant<0>();
+			os << c<0>;
 		}
 
 		return os;

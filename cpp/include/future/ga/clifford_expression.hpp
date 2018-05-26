@@ -111,6 +111,16 @@ namespace ga {
 			constexpr static std::size_t value = 0; // default
 		};
 
+		template<>
+		struct count_stored_maps<stored_map_values> {
+			constexpr static std::size_t value = 1; //TODO Isso está errado
+		};
+
+		template<>
+		struct count_stored_maps<stored_map_bitsets> {
+			constexpr static std::size_t value = 1; //TODO Isso está errado
+		};
+
 		template<default_bitset_t PossibleGrades, class Bitset>
 		struct count_stored_maps<dynamic_basis_blade<PossibleGrades, Bitset> > {
 			constexpr static std::size_t value = count_stored_maps_v<Bitset>;
@@ -119,11 +129,6 @@ namespace ga {
 		template<class Coefficient, class BasisBlade>
 		struct count_stored_maps<component<Coefficient, BasisBlade> > {
 			constexpr static std::size_t value = count_stored_maps_v<Coefficient> + count_stored_maps_v<BasisBlade>;
-		};
-
-		template<default_bitset_t PossibleGrades>
-		struct count_stored_maps<stored_components_map<PossibleGrades> > {
-			constexpr static std::size_t value = 1;
 		};
 
 		template<name_t Name, class... Arguments>
@@ -180,16 +185,16 @@ namespace ga {
 			std::array<entry_type, Size> entries_;
 		};
 
-		// Superclass for ga::clifford_expression<CoefficientType, Expression>.
-		template<class CoefficientType, class Expression, std::size_t StoredValues = count_stored_values_v<Expression>, std::size_t StoredBitsets = count_stored_bitsets_v<Expression>, std::size_t StoredMaps = count_stored_maps_v<Expression> >
+		// Superclass for ga::clifford_expression<ValueType, Expression>.
+		template<class ValueType, class Expression, std::size_t StoredValues = count_stored_values_v<Expression>, std::size_t StoredBitsets = count_stored_bitsets_v<Expression>, std::size_t StoredMaps = count_stored_maps_v<Expression> >
 		class _super_clifford_expression {
 		public:
 
-			typedef CoefficientType coefficient_type;
+			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
-			typedef default_associative_t<coefficient_type> map_type;
+			typedef default_associative_t<value_type> map_type;
 
-			typedef sequential_storage<coefficient_type, StoredValues> value_storage_type;
+			typedef sequential_storage<value_type, StoredValues> value_storage_type;
 			typedef sequential_storage<bitset_type, StoredBitsets> bitset_storage_type;
 			typedef sequential_storage<map_type, StoredMaps> map_storage_type;
 
@@ -237,15 +242,15 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class CoefficientType, class Expression, std::size_t StoredBitsets, std::size_t StoredMaps>
-		class _super_clifford_expression<CoefficientType, Expression, 0, StoredBitsets, StoredMaps> {
+		template<class ValueType, class Expression, std::size_t StoredBitsets, std::size_t StoredMaps>
+		class _super_clifford_expression<ValueType, Expression, 0, StoredBitsets, StoredMaps> {
 		public:
 
-			typedef CoefficientType coefficient_type;
+			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
-			typedef default_associative_t<coefficient_type> map_type;
+			typedef default_associative_t<value_type> map_type;
 
-			typedef sequential_storage<coefficient_type, 0> value_storage_type;
+			typedef sequential_storage<value_type, 0> value_storage_type;
 			typedef sequential_storage<bitset_type, StoredBitsets> bitset_storage_type;
 			typedef sequential_storage<map_type, StoredMaps> map_storage_type;
 
@@ -287,15 +292,15 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class CoefficientType, class Expression, std::size_t StoredValues, std::size_t StoredMaps>
-		class _super_clifford_expression<CoefficientType, Expression, StoredValues, 0, StoredMaps> {
+		template<class ValueType, class Expression, std::size_t StoredValues, std::size_t StoredMaps>
+		class _super_clifford_expression<ValueType, Expression, StoredValues, 0, StoredMaps> {
 		public:
 
-			typedef CoefficientType coefficient_type;
+			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
-			typedef default_associative_t<coefficient_type> map_type;
+			typedef default_associative_t<value_type> map_type;
 
-			typedef sequential_storage<coefficient_type, StoredValues> value_storage_type;
+			typedef sequential_storage<value_type, StoredValues> value_storage_type;
 			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
 			typedef sequential_storage<map_type, StoredMaps> map_storage_type;
 
@@ -337,15 +342,15 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class CoefficientType, class Expression, std::size_t StoredMaps>
-		class _super_clifford_expression<CoefficientType, Expression, 0, 0, StoredMaps> {
+		template<class ValueType, class Expression, std::size_t StoredMaps>
+		class _super_clifford_expression<ValueType, Expression, 0, 0, StoredMaps> {
 		public:
 
-			typedef CoefficientType coefficient_type;
+			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
-			typedef default_associative_t<coefficient_type> map_type;
+			typedef default_associative_t<value_type> map_type;
 
-			typedef sequential_storage<coefficient_type, 0> value_storage_type;
+			typedef sequential_storage<value_type, 0> value_storage_type;
 			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
 			typedef sequential_storage<map_type, StoredMaps> map_storage_type;
 
@@ -381,15 +386,15 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class CoefficientType, class Expression, std::size_t StoredValues, std::size_t StoredBitsets>
-		class _super_clifford_expression<CoefficientType, Expression, StoredValues, StoredBitsets, 0> {
+		template<class ValueType, class Expression, std::size_t StoredValues, std::size_t StoredBitsets>
+		class _super_clifford_expression<ValueType, Expression, StoredValues, StoredBitsets, 0> {
 		public:
 
-			typedef CoefficientType coefficient_type;
+			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
-			typedef default_associative_t<coefficient_type> map_type;
+			typedef default_associative_t<value_type> map_type;
 
-			typedef sequential_storage<coefficient_type, StoredValues> value_storage_type;
+			typedef sequential_storage<value_type, StoredValues> value_storage_type;
 			typedef sequential_storage<bitset_type, StoredBitsets> bitset_storage_type;
 			typedef sequential_storage<map_type, 0> map_storage_type;
 
@@ -431,15 +436,15 @@ namespace ga {
 			bitset_storage_type bitsets_;
 		};
 
-		template<class CoefficientType, class Expression, std::size_t StoredBitsets>
-		class _super_clifford_expression<CoefficientType, Expression, 0, StoredBitsets, 0> {
+		template<class ValueType, class Expression, std::size_t StoredBitsets>
+		class _super_clifford_expression<ValueType, Expression, 0, StoredBitsets, 0> {
 		public:
 
-			typedef CoefficientType coefficient_type;
+			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
-			typedef default_associative_t<coefficient_type> map_type;
+			typedef default_associative_t<value_type> map_type;
 
-			typedef sequential_storage<coefficient_type, 0> value_storage_type;
+			typedef sequential_storage<value_type, 0> value_storage_type;
 			typedef sequential_storage<bitset_type, StoredBitsets> bitset_storage_type;
 			typedef sequential_storage<map_type, 0> map_storage_type;
 
@@ -475,15 +480,15 @@ namespace ga {
 			bitset_storage_type bitsets_;
 		};
 
-		template<class CoefficientType, class Expression, std::size_t StoredValues>
-		class _super_clifford_expression<CoefficientType, Expression, StoredValues, 0, 0> {
+		template<class ValueType, class Expression, std::size_t StoredValues>
+		class _super_clifford_expression<ValueType, Expression, StoredValues, 0, 0> {
 		public:
 
-			typedef CoefficientType coefficient_type;
+			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
-			typedef default_associative_t<coefficient_type> map_type;
+			typedef default_associative_t<value_type> map_type;
 
-			typedef sequential_storage<coefficient_type, StoredValues> value_storage_type;
+			typedef sequential_storage<value_type, StoredValues> value_storage_type;
 			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
 			typedef sequential_storage<map_type, 0> map_storage_type;
 
@@ -519,15 +524,15 @@ namespace ga {
 			value_storage_type values_;
 		};
 
-		template<class CoefficientType, class Expression>
-		class _super_clifford_expression<CoefficientType, Expression, 0, 0, 0> {
+		template<class ValueType, class Expression>
+		class _super_clifford_expression<ValueType, Expression, 0, 0, 0> {
 		public:
 
-			typedef CoefficientType coefficient_type;
+			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
-			typedef default_associative_t<coefficient_type> map_type;
+			typedef default_associative_t<value_type> map_type;
 
-			typedef sequential_storage<coefficient_type, 0> value_storage_type;
+			typedef sequential_storage<value_type, 0> value_storage_type;
 			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
 			typedef sequential_storage<map_type, 0> map_storage_type;
 
@@ -556,22 +561,24 @@ namespace ga {
 
 	// Clifford expression.
 	template<class CoefficientType, class Expression>
-	class clifford_expression final : private detail::_super_clifford_expression<CoefficientType, Expression> {
+	class clifford_expression final :
+		private detail::_super_clifford_expression<CoefficientType, Expression> {
 	private:
 
 		typedef detail::_super_clifford_expression<CoefficientType, Expression> super;
 
 	public:
 
-		using typename super::coefficient_type;
+		typedef CoefficientType coefficient_type;
+		typedef Expression expression_type;
+		
+		using typename super::value_type;
 		using typename super::bitset_type;
 		using typename super::map_type;
 
 		using typename super::value_storage_type;
 		using typename super::bitset_storage_type;
 		using typename super::map_storage_type;
-
-		typedef Expression expression_type;
 
 		constexpr clifford_expression() = default;
 		constexpr clifford_expression(clifford_expression const &) = default;
@@ -587,9 +594,6 @@ namespace ga {
 
 		constexpr clifford_expression & operator=(clifford_expression const &) = default;
 		constexpr clifford_expression & operator=(clifford_expression &&) = default;
-
-		template<class = std::enable_if_t<detail::is_scalar_expression_v<clifford_expression> > >
-		constexpr operator coefficient_type() const = delete; //TODO Not supported yet (native scalar casting)
 
 		using super::values;
 		using super::bitsets;
@@ -610,11 +614,13 @@ namespace ga {
 	template<class Type>
 	constexpr bool is_clifford_expression_v = is_clifford_expression<Type>::value;
 
-	// Helper function to build a sequential storage of values or basis blades.
+	// Helper function to build a sequential storage of values, bitsets or maps.
 	template<class... Args>
 	constexpr decltype(auto) make_sequential_storage(Args &&... args) {
 		return detail::sequential_storage<std::common_type_t<Args...>, sizeof...(args)>(std::move(args)...);
 	}
+
+	//TODO Not supported yet (native scalar casting)
 
 }
 

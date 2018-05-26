@@ -5,9 +5,9 @@ namespace ga {
 
 	namespace detail {
 
-		// Specialization of _addition_level3<LeftExpression, RightExpression> with simple bind or sort-and-bind patterns.
+		// Specialization of _addition_level5<LeftExpression, RightExpression> with simple bind or sort-and-bind patterns.
 		template<class LeftExpression, class RightExpression>
-		struct _addition_level4 {
+		struct _addition_level5 {
 			typedef std::conditional_t<
 				lt_v<LeftExpression, RightExpression>,
 				add_t<LeftExpression, RightExpression>, // bind
@@ -15,76 +15,82 @@ namespace ga {
 			> type;
 		};
 		
-		// Specializations of addition<LeftExpression, RightExpression> with at least one constant argument (simplify).
+		// Specializations of _addition_level5<LeftExpression, RightExpression> with at least one constant argument (simplify).
 		template<default_integral_t LeftValue, default_integral_t RightValue>
-		struct _addition_level4<constant_value<LeftValue>, constant_value<RightValue> > {
+		struct _addition_level5<constant_value<LeftValue>, constant_value<RightValue> > {
 			typedef constant_value<LeftValue + RightValue> type; // A + B = C (simplify)
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
-		struct _addition_level4<constant_value<LeftValue>, power<constant_value<RightValue>, constant_value<-1> > > {
+		struct _addition_level5<constant_value<LeftValue>, power<constant_value<RightValue>, constant_value<-1> > > {
 			typedef product_t<constant_value<LeftValue * RightValue + 1>, power_t<constant_value<RightValue>, constant_value<-1> >, real_mapping> type; // A + 1 / B = (A * B + 1) / B (simplify)
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
-		struct _addition_level4<power<constant_value<LeftValue>, constant_value<-1> >, constant_value<RightValue> > {
+		struct _addition_level5<power<constant_value<LeftValue>, constant_value<-1> >, constant_value<RightValue> > {
 			typedef product_t<constant_value<1 + RightValue * LeftValue>, power_t<constant_value<LeftValue>, constant_value<-1> >, real_mapping> type; // 1 / A + B = (1 + B * A) / A (simplify)
 		};
 
 		template<default_integral_t LeftLeftValue, default_integral_t LeftRightValue, default_integral_t RightValue>
-		struct _addition_level4<mul<constant_value<LeftLeftValue>, power<constant_value<LeftRightValue>, constant_value<-1> > >, power<constant_value<RightValue>, constant_value<-1> > > {
+		struct _addition_level5<mul<constant_value<LeftLeftValue>, power<constant_value<LeftRightValue>, constant_value<-1> > >, power<constant_value<RightValue>, constant_value<-1> > > {
 			typedef product_t<constant_value<LeftLeftValue * RightValue + LeftRightValue>, power_t<constant_value<LeftRightValue * RightValue>, constant_value<-1> >, real_mapping> type; // A / B + 1 / C = (A * C + B) / (B * C) (simplify)
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightLeftValue, default_integral_t RightRightValue>
-		struct _addition_level4<power<constant_value<LeftValue>, constant_value<-1> >, mul<constant_value<RightLeftValue>, power<constant_value<RightRightValue>, constant_value<-1> > > > {
+		struct _addition_level5<power<constant_value<LeftValue>, constant_value<-1> >, mul<constant_value<RightLeftValue>, power<constant_value<RightRightValue>, constant_value<-1> > > > {
 			typedef product_t<constant_value<RightRightValue + LeftValue * RightLeftValue>, power_t<constant_value<LeftValue * RightRightValue>, constant_value<-1> >, real_mapping> type; // 1 / C + A / B = (B + C * A) / (C * B) (simplify)
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
-		struct _addition_level4<power<constant_value<LeftValue>, constant_value<-1> >, power<constant_value<RightValue>, constant_value<-1> > > {
+		struct _addition_level5<power<constant_value<LeftValue>, constant_value<-1> >, power<constant_value<RightValue>, constant_value<-1> > > {
 			typedef product_t<constant_value<RightValue + LeftValue>, power_t<constant_value<LeftValue * RightValue>, constant_value<-1> >, real_mapping> type; // 1 / B + 1 / C = (C + B) / (B * C) (simplify)
 		};
 
 		template<default_integral_t LeftLeftValue, default_integral_t LeftRightValue, default_integral_t RightLeftValue, default_integral_t RightRightValue>
-		struct _addition_level4<mul<constant_value<LeftLeftValue>, power<constant_value<LeftRightValue>, constant_value<-1> > >, mul<constant_value<RightLeftValue>, power<constant_value<RightRightValue>, constant_value<-1> > > > {
+		struct _addition_level5<mul<constant_value<LeftLeftValue>, power<constant_value<LeftRightValue>, constant_value<-1> > >, mul<constant_value<RightLeftValue>, power<constant_value<RightRightValue>, constant_value<-1> > > > {
 			typedef product_t<constant_value<LeftLeftValue * RightRightValue + LeftRightValue * RightLeftValue>, power_t<constant_value<LeftRightValue * RightRightValue>, constant_value<-1> >, real_mapping> type; // A / B + C / D = (A * D + B * C) / (B * D) (simplify)
 		};
 
-		// Specializations of _addition_level3<LeftExpression, RightExpression> with some patterns to simplify (simplify).
+		// Specializations of _addition_level4<LeftExpression, RightExpression> with some patterns to simplify (simplify).
 		template<class LeftExpression, class RightExpression, class Enable = void>
-		struct _addition_level3 {
-			typedef typename _addition_level4<LeftExpression, RightExpression>::type type;
+		struct _addition_level4 {
+			typedef typename _addition_level5<LeftExpression, RightExpression>::type type;
 		};
 
 		template<class LeftLeftArgument, class CommonArgument>
-		struct _addition_level3<mul<LeftLeftArgument, CommonArgument>, CommonArgument, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, constant_value<1> >, add_t<LeftLeftArgument, constant_value<1> >, add_t<constant_value<1>, LeftLeftArgument> > > > {
+		struct _addition_level4<mul<LeftLeftArgument, CommonArgument>, CommonArgument, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, constant_value<1> >, add_t<LeftLeftArgument, constant_value<1> >, add_t<constant_value<1>, LeftLeftArgument> > > > {
 			typedef product_t<addition_t<LeftLeftArgument, constant_value<1> >, CommonArgument, real_mapping> type; // (P * A) + A = (P + 1) * A (simplify)
 		};
 
 		template<class LeftLeftArgument, class... CommonArguments>
-		struct _addition_level3<mul<LeftLeftArgument, CommonArguments...>, mul<CommonArguments...>, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, constant_value<1> >, add_t<LeftLeftArgument, constant_value<1> >, add_t<constant_value<1>, LeftLeftArgument > > > > {
+		struct _addition_level4<mul<LeftLeftArgument, CommonArguments...>, mul<CommonArguments...>, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, constant_value<1> >, add_t<LeftLeftArgument, constant_value<1> >, add_t<constant_value<1>, LeftLeftArgument > > > > {
 			typedef product_t<addition_t<LeftLeftArgument, constant_value<1> >, mul_t<CommonArguments...>, real_mapping> type; // (P * A * ...) + (A * ...) = (P + 1) * (A * ...) (simplify)
 		};
 
 		template<class CommonArgument, class RightLeftArgument>
-		struct _addition_level3<CommonArgument, mul<RightLeftArgument, CommonArgument>, std::enable_if_t<!is_any_v<addition_t<constant_value<1>, RightLeftArgument>, add_t<constant_value<1>, RightLeftArgument>, add_t<RightLeftArgument, constant_value<1> > > > > {
+		struct _addition_level4<CommonArgument, mul<RightLeftArgument, CommonArgument>, std::enable_if_t<!is_any_v<addition_t<constant_value<1>, RightLeftArgument>, add_t<constant_value<1>, RightLeftArgument>, add_t<RightLeftArgument, constant_value<1> > > > > {
 			typedef product_t<addition_t<constant_value<1>, RightLeftArgument>, CommonArgument, real_mapping> type; // A + (P * A) = (1 + P) * A (simplify)
 		};
 
 		template<class... CommonArguments, class RightLeftArgument>
-		struct _addition_level3<mul<CommonArguments...>, mul<RightLeftArgument, CommonArguments...>, std::enable_if_t<!is_any_v<addition_t<constant_value<1>, RightLeftArgument>, add_t<constant_value<1>, RightLeftArgument>, add_t<RightLeftArgument, constant_value<1> > > > > {
+		struct _addition_level4<mul<CommonArguments...>, mul<RightLeftArgument, CommonArguments...>, std::enable_if_t<!is_any_v<addition_t<constant_value<1>, RightLeftArgument>, add_t<constant_value<1>, RightLeftArgument>, add_t<RightLeftArgument, constant_value<1> > > > > {
 			typedef product_t<addition_t<constant_value<1>, RightLeftArgument>, mul_t<CommonArguments...>, real_mapping> type; // A * ... + (P * A * ...) = (1 + P) * (A * ...) (simplify)
 		};
 
 		template<class LeftLeftArgument, class CommmonArgument, class RightLeftArgument>
-		struct _addition_level3<mul<LeftLeftArgument, CommmonArgument>, mul<RightLeftArgument, CommmonArgument>, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, RightLeftArgument>, add_t<LeftLeftArgument, RightLeftArgument>, add_t<RightLeftArgument, LeftLeftArgument> > > > {
+		struct _addition_level4<mul<LeftLeftArgument, CommmonArgument>, mul<RightLeftArgument, CommmonArgument>, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, RightLeftArgument>, add_t<LeftLeftArgument, RightLeftArgument>, add_t<RightLeftArgument, LeftLeftArgument> > > > {
 			typedef product_t<addition_t<LeftLeftArgument, RightLeftArgument>, CommmonArgument, real_mapping> type; // (P * A) + (Q * A) = (P + Q) * A (simplify)
 		};
 
 		template<class LeftLeftArgument, class... CommonArguments, class RightLeftArgument>
-		struct _addition_level3<mul<LeftLeftArgument, CommonArguments...>, mul<RightLeftArgument, CommonArguments...>, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, RightLeftArgument>, add_t<LeftLeftArgument, RightLeftArgument>, add_t<RightLeftArgument, LeftLeftArgument> > > > {
+		struct _addition_level4<mul<LeftLeftArgument, CommonArguments...>, mul<RightLeftArgument, CommonArguments...>, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, RightLeftArgument>, add_t<LeftLeftArgument, RightLeftArgument>, add_t<RightLeftArgument, LeftLeftArgument> > > > {
 			typedef product_t<addition_t<LeftLeftArgument, RightLeftArgument>, mul_t<CommonArguments...>, real_mapping> type; // (P * A * ...) + (Q * A * ...) = (P + Q) * (A * ...) (simplify)
+		};
+
+		// Specialization of _addition_level3<LeftExpression, RightExpression>.
+		template<class LeftExpression, class RightExpression>
+		struct _addition_level3 {
+			typedef typename _addition_level4<LeftExpression, RightExpression>::type type;
 		};
 
 		template<class CommonExpression>
@@ -163,71 +169,64 @@ namespace ga {
 			typedef typename _addition_level1<LeftExpression, RightExpression>::type type;
 		};
 
-		template<class LeftCoefficient, class LeftBasisBlade, class RightCoefficient, class RightBasisBlade>
-		struct _addition<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade> > {
+		template<class LeftCoefficient, default_integral_t LeftBasisVectors, class RightCoefficient, default_integral_t RightBasisVectors>
+		struct _addition<component<LeftCoefficient, constant_basis_blade<LeftBasisVectors> >, component<RightCoefficient, constant_basis_blade<RightBasisVectors> > > {
 			typedef std::conditional_t<
-				lt_v<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade> >,
-				add_t<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade> >, // bind
-				add_t<component<RightCoefficient, RightBasisBlade>, component<LeftCoefficient, LeftBasisBlade> > // sort and bind
+				std::is_same_v<LeftCoefficient, constant_value<0> >,
+				component<RightCoefficient, constant_basis_blade<RightBasisVectors> >, // 0 * 1 + A * Ej = A * Ej (simplify)
+				std::conditional_t<
+					std::is_same_v<RightCoefficient, constant_value<0> >,
+					component<LeftCoefficient, constant_basis_blade<LeftBasisVectors> >, // A * Ei + 0 * 1 = A * Ei (simplify)
+					std::conditional_t<
+						LeftBasisVectors == RightBasisVectors,
+						component_t<addition_t<LeftCoefficient, RightCoefficient>, constant_basis_blade<LeftBasisVectors> >, // A * Ei + B * Ei = (A + B) * Ei (simplify)
+						std::conditional_t<
+							lt_v<component<LeftCoefficient, constant_basis_blade<LeftBasisVectors> >, component<RightCoefficient, constant_basis_blade<RightBasisVectors> > >,
+							add_t<component<LeftCoefficient, constant_basis_blade<LeftBasisVectors> >, component<RightCoefficient, constant_basis_blade<RightBasisVectors> > >, // bind
+							add_t<component<RightCoefficient, constant_basis_blade<RightBasisVectors> >, component<LeftCoefficient, constant_basis_blade<LeftBasisVectors> > > // sort and bind
+						>
+					>
+				>
 			> type;
 		};
 
-		template<class LeftCoefficient, class CommonBasisBlade, class RightCoefficient>
-		struct _addition<component<LeftCoefficient, CommonBasisBlade>, component<RightCoefficient, CommonBasisBlade> > {
-			typedef component_t<addition_t<LeftCoefficient, RightCoefficient>, CommonBasisBlade> type;
-		};
-
-		template<class LeftCoefficient, class LeftBasisBlade, default_bitset_t RightPossibleGrades>
-		struct _addition<component<LeftCoefficient, LeftBasisBlade>, stored_components_map<RightPossibleGrades> > {
+		template<class LeftCoefficient, default_integral_t LeftBasisVectors, class RightCoefficient, default_bitset_t RightPossibleGrades, class RightBitset>
+		struct _addition<component<LeftCoefficient, constant_basis_blade<LeftBasisVectors> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > > {
 			typedef std::conditional_t<
-				possible_grades_v<LeftBasisBlade> <= RightPossibleGrades,
-				add_t<component<LeftCoefficient, LeftBasisBlade>, stored_components_map<RightPossibleGrades> >,
-				add_t<stored_components_map<RightPossibleGrades>, component<LeftCoefficient, LeftBasisBlade> >
+				std::is_same_v<LeftCoefficient, constant_value<0> >,
+				component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> >, // 0 * 1 + A * Ej = A * Ej (simplify)
+				std::conditional_t<
+					lt_v<component<LeftCoefficient, constant_basis_blade<LeftBasisVectors> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > >,
+					add_t<component<LeftCoefficient, constant_basis_blade<LeftBasisVectors> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > >, // bind
+					add_t<component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> >, component<LeftCoefficient, constant_basis_blade<LeftBasisVectors> > > // sort and bind
+				>
 			> type;
 		};
 
-		template<default_bitset_t LeftPossibleGrades, class RightCoefficient, class RightBasisBlade>
-		struct _addition<stored_components_map<LeftPossibleGrades>, component<RightCoefficient, RightBasisBlade> > {
+		template<class LeftCoefficient, default_bitset_t LeftPossibleGrades, class LeftBitset, class RightCoefficient, default_integral_t RightBasisVectors>
+		struct _addition<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, constant_basis_blade<RightBasisVectors> > > {
 			typedef std::conditional_t<
-				LeftPossibleGrades < possible_grades_v<RightBasisBlade>,
-				add_t<stored_components_map<LeftPossibleGrades>, component<RightCoefficient, RightBasisBlade> >,
-				add_t<component<RightCoefficient, RightBasisBlade>, stored_components_map<LeftPossibleGrades> >
+				std::is_same_v<RightCoefficient, constant_value<0> >,
+				component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, // A * Ei + 0 * 1 = A * Ei (simplify)
+				std::conditional_t<
+					lt_v<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, constant_basis_blade<RightBasisVectors> > >,
+					add_t<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, constant_basis_blade<RightBasisVectors> > >, // bind
+					add_t<component<RightCoefficient, constant_basis_blade<RightBasisVectors> >, component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> > > // sort and bind
+				>
 			> type;
 		};
 
-		template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
-		struct _addition<stored_components_map<LeftPossibleGrades>, stored_components_map<RightPossibleGrades> > {
+		template<class LeftCoefficient, default_bitset_t LeftPossibleGrades, class LeftBitset, class RightCoefficient, default_bitset_t RightPossibleGrades, class RightBitset>
+		struct _addition<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > > {
 			typedef std::conditional_t<
-				LeftPossibleGrades < RightPossibleGrades,
-				add_t<stored_components_map<LeftPossibleGrades>, stored_components_map<RightPossibleGrades> >,
-				add_t<stored_components_map<RightPossibleGrades>, stored_components_map<LeftPossibleGrades> >
+				LeftPossibleGrades == RightPossibleGrades && can_be_stored_v<LeftCoefficient> && can_be_stored_v<LeftBitset> && can_be_stored_v<RightCoefficient> && can_be_stored_v<RightBitset>,
+				component_t<stored_map_values, dynamic_basis_blade_t<LeftPossibleGrades, stored_map_values> >,
+				std::conditional_t<
+					lt_v<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > >,
+					add_t<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > >, // bind
+					add_t<component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> >, component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> > > // sort and bind
+				>
 			> type;
-			static_assert(LeftPossibleGrades != RightPossibleGrades, "The Expression of future::ga::clifford_expression<CoefficientType, Expression> should not have two future::ga::detail::stored_components_map<PossibleGrades> with the same set of possible grades.");
-		};
-
-		template<class RightCoefficient, class RightBasisBlade>
-		struct _addition<component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> >, component<RightCoefficient, RightBasisBlade> > {
-			typedef component<RightCoefficient, RightBasisBlade> type; // 0 * 1 + A * Ej = A * Ej (simplify)
-		};
-
-		template<default_bitset_t RightPossibleGrades>
-		struct _addition<component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> >, stored_components_map<RightPossibleGrades> > {
-			typedef stored_components_map<RightPossibleGrades> type; // 0 * 1 + A * Ej = A * Ej (simplify)
-		};
-
-		template<class LeftCoefficient, class LeftBasisBlade>
-		struct _addition<component<LeftCoefficient, LeftBasisBlade>, component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> > > {
-			typedef component<LeftCoefficient, LeftBasisBlade> type; // A * Ei + 0 * 1 = A * Ei (simplify)
-		};
-
-		template<default_bitset_t LeftPossibleGrades>
-		struct _addition<stored_components_map<LeftPossibleGrades>, component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> > > {
-			typedef stored_components_map<LeftPossibleGrades> type; // A * Ei + 0 * 1 = A * Ei (simplify)
-		};
-
-		template<>
-		struct _addition<component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> >, component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> > > {
-			typedef component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> > type; // 0 * 1 + 0 * 1 = 0 * 1 (simplify)
 		};
 
 	}

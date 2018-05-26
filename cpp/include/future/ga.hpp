@@ -25,8 +25,8 @@ namespace future {
 		typedef std::int32_t default_integral_t;
 		typedef std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 8, std::uint8_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 16, std::uint16_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 32, std::uint32_t, std::uint64_t> > > default_bitset_t;
 
-		template<class CoefficientType>
-		using default_associative_t = std::map<default_bitset_t, CoefficientType>;
+		template<class ValueType>
+		using default_associative_t = std::map<default_bitset_t, ValueType>;
 
 		typedef std::int32_t grade_t;
 
@@ -61,8 +61,8 @@ namespace future {
 
 	#include "ga/lazy_context.hpp"
 
-	#include "ga/constant.hpp"
 	#include "ga/scalar.hpp"
+	#include "ga/constant.hpp"
 	#include "ga/basis_vector.hpp"
 	#include "ga/pseudoscalar.hpp"
 
@@ -76,6 +76,7 @@ namespace future {
 	#include "ga/right_contraction.hpp"
 	#include "ga/scalar_product.hpp"
 
+	#include "ga/math.hpp"
 	#include "ga/arithmetic_operators.hpp"
 	#include "ga/insertion_operator.hpp"
 
@@ -87,7 +88,6 @@ namespace future {
 
 }
 
-//TODO math
 //TODO exp
 //TODO grade
 //TODO conformal_metric_space

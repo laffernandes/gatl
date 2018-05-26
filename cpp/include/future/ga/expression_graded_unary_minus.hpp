@@ -34,10 +34,13 @@ namespace ga {
 			typedef std::conditional_t<
 				(PossibleGrades & SignChangePattern) == default_bitset_t(0),
 				component<Coefficient, dynamic_basis_blade<PossibleGrades, Bitset> >,
-				if_else_t<
-					equal_t<bitwise_and_t<constant_bitset<SignChangePattern>, bitwise_left_shift_t<constant_bitset<default_bitset_t(1)>, count_one_bits_t<Bitset> > >, constant_bitset<default_bitset_t(0)> >,
-					component<Coefficient, dynamic_basis_blade<PossibleGrades, Bitset> >,
-					component_t<product_t<constant_value<-1>, Coefficient, real_mapping>, dynamic_basis_blade<PossibleGrades, Bitset> >
+				component_t<
+					if_else_t<
+						equal_t<bitwise_and_t<constant_bitset<SignChangePattern>, bitwise_left_shift_t<constant_bitset<default_bitset_t(1)>, count_one_bits_t<Bitset> > >, constant_bitset<default_bitset_t(0)> >,
+						Coefficient,
+						product_t<constant_value<-1>, Coefficient, real_mapping>
+					>,
+					dynamic_basis_blade<PossibleGrades, Bitset>
 				>
 			> type;
 		};

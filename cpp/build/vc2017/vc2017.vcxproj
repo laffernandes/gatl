@@ -57,6 +57,7 @@
     <ClInclude Include="..\..\include\future\ga\left_contraction.hpp" />
     <ClInclude Include="..\..\include\future\ga\macro_for_algebra_overload.hpp" />
     <ClInclude Include="..\..\include\future\ga\mapping.hpp" />
+    <ClInclude Include="..\..\include\future\ga\math.hpp" />
     <ClInclude Include="..\..\include\future\ga\metric_space.hpp" />
     <ClInclude Include="..\..\include\future\ga\orthogonal_metric_mapping.hpp" />
     <ClInclude Include="..\..\include\future\ga\outer_product.hpp" />
@@ -168,7 +169,10 @@
     <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\test\future_sandbox.cpp" />
+    <ClCompile Include="..\..\test\future_sandbox.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\test\sandbox.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -261,7 +265,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/future;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
@@ -298,7 +302,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/future;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>

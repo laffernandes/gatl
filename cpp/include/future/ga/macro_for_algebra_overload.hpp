@@ -12,58 +12,58 @@
 			return pseudoscalar(space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) gp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return gp(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) lcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return lcont(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) op(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return op(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression > \
 		constexpr decltype(auto) operator^(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return op(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) rcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return rcont(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) scp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return scp(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) igp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return igp(lhs, rhs, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) inv(Type const &arg) { \
+		template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) inv(clifford_expression<CoefficientType, Expression> const &arg) { \
 			return inv(arg, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) rnorm_sqr(Type const &arg) { \
+		template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) rnorm_sqr(clifford_expression<CoefficientType, Expression> const &arg) { \
 			return rnorm_sqr(arg, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) rnorm(Type const &arg) { \
+		template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) rnorm(clifford_expression<CoefficientType, Expression> const &arg) { \
 			return rnorm(arg, space); \
 		} \
 		\
-		template<class Type, class PseudoscalarType> \
-		constexpr decltype(auto) dual(Type const &arg, PseudoscalarType const &pseudoscalar) { \
+		template<class CoefficientType, class Expression, class PseudoscalarType, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		constexpr decltype(auto) dual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
 			return dual(arg, pseudoscalar, space); \
 		} \
 		\
@@ -72,8 +72,8 @@
 			return dual(arg, pseudoscalar(space), space); \
 		} \
 		\
-		template<class Type, class PseudoscalarType> \
-		constexpr decltype(auto) undual(Type const &arg, PseudoscalarType const &pseudoscalar) { \
+		template<class CoefficientType, class Expression, class PseudoscalarType, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		constexpr decltype(auto) undual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
 			return undual(arg, pseudoscalar, space); \
 		} \
 		\
@@ -82,7 +82,7 @@
 			return undual(arg, pseudoscalar(space), space); \
 		} \
 		\
-		template<class CoefficientType, class Expression, class = std::enable_if_t<!detail::is_scalar_expression_v<Expression> > \
+		template<class CoefficientType, class Expression> \
 		constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg) { \
 			return exp(arg, space); \
 		} \
@@ -100,54 +100,53 @@
 			return pseudoscalar(space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) gp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return gp(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) lcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return lcont(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) op(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return op(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) rcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return rcont(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) scp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return scp(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!(detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression>)> > \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 		constexpr decltype(auto) igp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 			return igp(lhs, rhs, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) inv(Type const &arg) { \
+				template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) inv(clifford_expression<CoefficientType, Expression> const &arg) { \
 			return inv(arg, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) rnorm_sqr(Type const &arg) { \
+		template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) rnorm_sqr(clifford_expression<CoefficientType, Expression> const &arg) { \
 			return rnorm_sqr(arg, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) rnorm(Type const &arg) { \
+		template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) rnorm(clifford_expression<CoefficientType, Expression> const &arg) { \
 			return rnorm(arg, space); \
 		} \
 		\
-		\
-		template<class Type, class PseudoscalarType> \
-		constexpr decltype(auto) dual(Type const &arg, PseudoscalarType const &pseudoscalar) { \
+		template<class CoefficientType, class Expression, class PseudoscalarType, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		constexpr decltype(auto) dual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
 			return dual(arg, pseudoscalar, space); \
 		} \
 		\
@@ -156,8 +155,8 @@
 			return dual(arg, pseudoscalar(space), space); \
 		} \
 		\
-		template<class Type, class PseudoscalarType> \
-		constexpr decltype(auto) undual(Type const &arg, PseudoscalarType const &pseudoscalar) { \
+		template<class CoefficientType, class Expression, class PseudoscalarType, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		constexpr decltype(auto) undual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
 			return undual(arg, pseudoscalar, space); \
 		} \
 		\
@@ -166,7 +165,7 @@
 			return undual(arg, pseudoscalar(space), space); \
 		} \
 		\
-		template<class CoefficientType, class Expression, class = std::enable_if_t<!detail::is_scalar_expression_v<Expression> > \
+		template<class CoefficientType, class Expression> \
 		constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg) { \
 			return exp(arg, space); \
 		} \

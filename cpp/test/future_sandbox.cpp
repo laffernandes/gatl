@@ -1,8 +1,8 @@
-/**
-#include <future/ga.hpp>
-#include <future/ga3e.hpp>
-#include <future/ga3h.hpp>
-#include <future/ga3m.hpp>
+/**/
+#include <ga.hpp>
+#include <ga3e.hpp>
+#include <ga3h.hpp>
+#include <ga3m.hpp>
 
 using namespace future::ga;
 
@@ -483,18 +483,21 @@ int main() {
 	return EXIT_SUCCESS;
 }
 /*/
-#include <future/ga.hpp>
+#include <ga.hpp>
 
 int main() {
 	using namespace future::ga;
 
-	auto xxx = detail::gp_mapping::possible_grades_result<1, 2, GA_MAX_BASIS_VECTOR_INDEX>::value;
-	
 	auto a = c<5> * e(1);
 	auto b = c<5> * e(2);
 
 	auto v1 = a + b;
 	auto s1 = scp(v1, v1, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+
+	auto const lazy = make_lazy_context(clifford_expression<default_integral_t, detail::function<detail::name_t::add, detail::component<detail::constant_value<-1>, detail::constant_basis_blade<8>>, detail::component<detail::constant_value<1>, detail::constant_basis_blade<16>>>>(), c<2>);
+	auto arg0 =lazy.argument<0>();
+	auto arg1 = inv(lazy.argument<1>());
+	//return lazy.eval(gp(lazy.argument<0>(), inv(lazy.argument<1>())));
 
 	return EXIT_SUCCESS;
 }

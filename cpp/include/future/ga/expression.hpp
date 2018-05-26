@@ -5,11 +5,11 @@ namespace ga {
 
 	namespace detail {
 
-		// Index of variables/arguments.
-		typedef std::uint16_t id_t;
+		// Tag of variables/arguments.
+		typedef std::uint16_t tag_t;
 
 		// The name of implemented functions.
-		enum class name_t : std::int8_t {
+		enum class name_t : std::uint8_t {
 			reordering_sign,
 			count_one_bits,
 			
@@ -38,7 +38,7 @@ namespace ga {
 		};
 
 		// Lazy getter for stored values.
-		template<id_t Id, std::size_t Index>
+		template<tag_t Tag, std::size_t Index>
 		struct get_value {
 			typedef get_value type;
 
@@ -49,7 +49,7 @@ namespace ga {
 		};
 
 		// Lazy getter for values stored in a map.
-		template<id_t Id, std::size_t Index>
+		template<tag_t Tag, std::size_t Index>
 		struct get_map_values {
 			typedef get_map_values type;
 
@@ -64,6 +64,11 @@ namespace ga {
 			typedef stored_value type;
 		};
 
+		// A collection of values stored in a map by the current clifford_expression<...>.
+		struct stored_map_values {
+			typedef stored_map_values type;
+		};
+
 		// Bitset defined in compilation time.
 		template<default_bitset_t Bitset>
 		struct constant_bitset {
@@ -76,7 +81,7 @@ namespace ga {
 		};
 
 		// Lazy getter for stored bitsets.
-		template<id_t Id, std::size_t Index>
+		template<tag_t Tag, std::size_t Index>
 		struct get_bitset {
 			typedef get_bitset type;
 
@@ -87,7 +92,7 @@ namespace ga {
 		};
 
 		// Lazy getter for bisets stored in a map.
-		template<id_t Id, std::size_t Index>
+		template<tag_t Tag, std::size_t Index>
 		struct get_map_bitsets {
 			typedef get_map_bitsets type;
 
@@ -102,6 +107,11 @@ namespace ga {
 			typedef stored_value type;
 		};
 
+		// A collection of bitsets stored in a map by the current clifford_expression<...>.
+		struct stored_map_bitsets {
+			typedef stored_map_bitsets type;
+		};
+
 		// Basis blade defined in compilation time.
 		template<default_bitset_t BasisVectors>
 		struct constant_basis_blade {
@@ -109,30 +119,17 @@ namespace ga {
 
 		// Basis blade defined in runtime.
 		template<default_bitset_t PossibleGrades, class Bitset>
-		struct dynamic_basis_blade {
-		};
+		struct dynamic_basis_blade;
 
 		template<default_bitset_t PossibleGrades, class Bitset>
-		struct _dynamic_basis_blade;
+		using dynamic_basis_blade_t = typename dynamic_basis_blade<PossibleGrades, Bitset>::type;
 
-		template<default_bitset_t PossibleGrades, class Bitset>
-		using dynamic_basis_blade_t = typename _dynamic_basis_blade<PossibleGrades, Bitset>::type;
-
-		// A basis blade multiplied by some real-valued expression (the coefficient).
+		// A set of basis blades multiplied by some real-valued expression (the coefficient).
 		template<class Coefficient, class BasisBlade>
-		struct component {
-		};
+		struct component;
 
 		template<class Coefficient, class BasisBlade>
-		struct _component;
-
-		template<class Coefficient, class BasisBlade>
-		using component_t = typename _component<Coefficient, BasisBlade>::type;
-
-		// A associative set of basis blades multiplied by real-valued expressions stored in the current clifford_expression<...>.
-		template<default_bitset_t PossibleGrades>
-		struct stored_components_map {
-		};
+		using component_t = typename component<Coefficient, BasisBlade>::type;
 
 		// A real-valued function of a bitset function.
 		template<name_t Name, class... Arguments>
@@ -226,7 +223,7 @@ namespace ga {
 		};
 
 		template<class LeftBitset, class RightBitset, class Enable = void>
-		struct _reordering_sign {
+		struct _reordering_sign { //TODO Como remover?
 			typedef function<name_t::reordering_sign, LeftBitset, RightBitset> type;
 		};
 
@@ -267,13 +264,8 @@ namespace ga {
 			}
 		};
 
-		template<class Bitset>
-		struct _count_one_bits {
-			typedef function<name_t::count_one_bits, Bitset> type;
-		};
-
 		template<default_bitset_t Bitset>
-		struct _count_one_bits<constant_bitset<Bitset> > {
+		struct function<name_t::count_one_bits, constant_bitset<Bitset> > {
 			typedef constant_value<ones(Bitset)> type; // simplify
 		};
 
@@ -281,7 +273,7 @@ namespace ga {
 		using count_one_bits = function<name_t::count_one_bits, Bitset>;
 
 		template<class Bitset>
-		using count_one_bits_t = typename _count_one_bits<Bitset>::type;
+		using count_one_bits_t = typename count_one_bits<Bitset>::type;
 
 		// Lazy bitwise LEFT SHIFT operations.
 		template<class LeftType, class RightType>
@@ -295,7 +287,7 @@ namespace ga {
 		};
 
 		template<class LeftType, class RightType, class Enable = void>
-		struct _bitwise_left_shift {
+		struct _bitwise_left_shift { //TODO Como remover?
 			typedef function<name_t::bitwise_left_shift, LeftType, RightType> type;
 		};
 
@@ -352,7 +344,7 @@ namespace ga {
 		};
 
 		template<class LeftType, class RightType, class Enable = void>
-		struct _bitwise_and {
+		struct _bitwise_and { //TODO Como remover?
 			typedef function<name_t::bitwise_and, LeftType, RightType> type;
 		};
 
@@ -414,7 +406,7 @@ namespace ga {
 		};
 
 		template<class LeftType, class RightType, class Enable = void>
-		struct _bitwise_xor {
+		struct _bitwise_xor { //TODO Como remover?
 			typedef function<name_t::bitwise_xor, LeftType, RightType> type;
 		};
 
@@ -476,7 +468,7 @@ namespace ga {
 		};
 
 		template<class LeftType, class RightType, class Enable = void>
-		struct _equal {
+		struct _equal { //TODO Como remover?
 			typedef function<name_t::equal, LeftType, RightType> type;
 		};
 
@@ -512,24 +504,21 @@ namespace ga {
 			}
 		};
 
-		template<class Test, class TrueResult, class FalseResult, class Enable = void>
-		struct _if_else {
-			typedef function<name_t::if_else, Test, TrueResult, FalseResult> type;
-		};
-
+		//TODO Deve simplificar apenas se não houver nada armazenado no resultado
+		/*
 		template<class Test, class CommonResult>
-		struct _if_else<Test, CommonResult, CommonResult> {
+		struct _if_else<Test, CommonResult, CommonResult, std::enable_if_t<!has_stored_entries_v<CommonResult> > > {
 			typedef CommonResult type; // simplify
 		};
-
+		*/
 
 		template<class TrueResult, class FalseResult>
-		struct _if_else<std::true_type, TrueResult, FalseResult, std::enable_if_t<!std::is_same_v<TrueResult, FalseResult> > > {
+		struct function<name_t::if_else, std::true_type, TrueResult, FalseResult > {
 			typedef TrueResult type; // simplify
 		};
 
 		template<class TrueResult, class FalseResult>
-		struct _if_else<std::false_type, TrueResult, FalseResult, std::enable_if_t<!std::is_same_v<TrueResult, FalseResult> > > {
+		struct function<name_t::if_else, std::false_type, TrueResult, FalseResult > {
 			typedef FalseResult type; // simplify
 		};
 
@@ -537,7 +526,7 @@ namespace ga {
 		using if_else = function<name_t::if_else, Test, TrueResult, FalseResult>;
 
 		template<class Test, class TrueResult, class FalseResult>
-		using if_else_t = typename _if_else<Test, TrueResult, FalseResult>::type;
+		using if_else_t = typename if_else<Test, TrueResult, FalseResult>::type;
 
 	}
 

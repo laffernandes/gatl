@@ -3,11 +3,11 @@
 
 namespace ga {
 
-	template<default_integral_t Value>
-	using constant = clifford_expression<default_integral_t, detail::component<detail::constant_value<Value>, detail::constant_basis_blade<default_bitset_t(0)> > >;
+	template<class CoefficientType, default_integral_t Value>
+	using constant = scalar_clifford_expression<CoefficientType, detail::constant_value<Value> >;
 
-	template<default_integral_t Value>
-	constexpr auto c = constant<Value>();
+	template<default_integral_t Value, class CoefficientType = default_integral_t>
+	constexpr auto c = constant<CoefficientType, Value>();
 
 }
 

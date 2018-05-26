@@ -57,22 +57,7 @@ namespace ga {
 					constant_value<0>
 				> coefficient_type;
 
-				typedef std::conditional_t<
-					std::is_same_v<test_type, std::true_type>,
-					candidate_basis_blade,
-					std::conditional_t<
-						std::is_same_v<test_type, std::false_type>,
-						constant_basis_blade<default_bitset_t(0)>,
-						dynamic_basis_blade_t<
-							possible_grades_v<candidate_basis_blade>,
-							if_else_t<
-								test_type,
-								basis_vectors_t<candidate_basis_blade>,
-								constant_bitset<default_bitset_t(0)>
-							>
-						>
-					>
-				> basis_blade_type;
+				typedef candidate_basis_blade basis_blade_type;
 			};
 		};
 

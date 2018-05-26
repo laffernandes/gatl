@@ -459,9 +459,6 @@
     <ClInclude Include="..\..\include\future\ga\expression_addition.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\future\ga\expression_component.hpp">
-      <Filter>Header Files\future\ga</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\future\ga\lazy_context.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
@@ -469,6 +466,12 @@
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\future\ga\expression_dynamic_basis_blade.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\math.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\expression_component.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
   </ItemGroup>

@@ -45,49 +45,69 @@ namespace ga {
 		return scalar(lhs) - rhs;
 	}
 
-	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression>
-	constexpr decltype(auto) operator*(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		return gp(lhs, rhs);
+	template<class LeftCoefficientType, class LeftCoefficient, class RightCoefficientType, class RightExpression>
+	constexpr decltype(auto) operator*(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
+		return gp(lhs, rhs, detail::real_metric_space());
 	}
 
-	template<class LeftCoefficientType, class LeftExpression, class RightType>
+	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightCoefficient>
+	constexpr decltype(auto) operator*(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
+		return gp(lhs, rhs, detail::real_metric_space());
+	}
+
+	template<class LeftCoefficientType, class LeftCoefficient, class RightCoefficientType, class RightCoefficient>
+	constexpr decltype(auto) operator*(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
+		return gp(lhs, rhs, detail::real_metric_space());
+	}
+
+	template<class LeftCoefficientType, class LeftExpression, class RightType, class = std::enable_if_t<!is_clifford_expression_v<RightType> > >
 	constexpr decltype(auto) operator*(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs) {
-		return gp(lhs, rhs);
+		return gp(lhs, scalar(rhs), detail::real_metric_space());
 	}
 
-	template<class LeftType, class RightCoefficientType, class RightExpression>
+	template<class LeftType, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
 	constexpr decltype(auto) operator*(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		return gp(lhs, rhs);
+		return gp(scalar(lhs), rhs, detail::real_metric_space());
 	}
 
-	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression>
-	constexpr decltype(auto) operator/(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		return igp(lhs, rhs);
+	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightCoefficient>
+	constexpr decltype(auto) operator/(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
+		return igp(lhs, rhs, detail::real_metric_space());
 	}
 
-	template<class LeftCoefficientType, class LeftExpression, class RightType>
+	template<class LeftCoefficientType, class LeftExpression, class RightType, class = std::enable_if_t<!is_clifford_expression_v<RightType> > >
 	constexpr decltype(auto) operator/(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs) {
-		return igp(lhs, rhs);
+		return igp(lhs, scalar(rhs), detail::real_metric_space());
 	}
 
-	template<class LeftType, class RightCoefficientType, class RightExpression>
-	constexpr decltype(auto) operator/(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		return igp(lhs, rhs);
+	template<class LeftType, class RightCoefficientType, class RightCoefficient, class = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
+	constexpr decltype(auto) operator/(LeftType const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
+		return igp(scalar(lhs), rhs, detail::real_metric_space());
 	}
 
-	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression> > >
-	constexpr decltype(auto) operator^(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		return op(lhs, rhs);
+	template<class LeftCoefficientType, class LeftCoefficient, class RightCoefficientType, class RightExpression>
+	constexpr decltype(auto) operator^(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
+		return op(lhs, rhs, detail::real_metric_space());
 	}
 
-	template<class LeftCoefficientType, class LeftExpression, class RightType>
+	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightCoefficient>
+	constexpr decltype(auto) operator^(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
+		return op(lhs, rhs, detail::real_metric_space());
+	}
+
+	template<class LeftCoefficientType, class LeftCoefficient, class RightCoefficientType, class RightCoefficient>
+	constexpr decltype(auto) operator^(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
+		return op(lhs, rhs, detail::real_metric_space());
+	}
+
+	template<class LeftCoefficientType, class LeftExpression, class RightType, class = std::enable_if_t<!is_clifford_expression_v<RightType> > >
 	constexpr decltype(auto) operator^(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs) {
-		return op(lhs, rhs);
+		return op(lhs, scalar(rhs), detail::real_metric_space());
 	}
 
-	template<class LeftType, class RightCoefficientType, class RightExpression>
+	template<class LeftType, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
 	constexpr decltype(auto) operator^(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		return op(lhs, rhs);
+		return op(scalar(lhs), rhs, detail::real_metric_space());
 	}
 
 }

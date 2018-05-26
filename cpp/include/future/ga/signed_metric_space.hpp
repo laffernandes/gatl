@@ -22,7 +22,11 @@ namespace ga {
 
 		template<class BasisVectorsBitset>
 		struct metric_factor {
-			typedef detail::if_else_t<detail::equal_t<detail::bitwise_and_t<detail::count_one_bits_t<detail::bitwise_and_t<BasisVectorsBitset, detail::constant_bitset<negative> > >, detail::constant_value<1> >, detail::constant_value<0> >, detail::constant_value<1>, detail::constant_value<-1> > type;
+			typedef detail::if_else_t<
+				detail::equal_t<detail::bitwise_and_t<detail::count_one_bits_t<detail::bitwise_and_t<BasisVectorsBitset, detail::constant_bitset<negative> > >, detail::constant_value<1> >, detail::constant_value<0> >,
+				detail::constant_value<1>,
+				detail::constant_value<-1>
+			> type;
 		};
 
 		static_assert((P + Q) <= GA_MAX_BASIS_VECTOR_INDEX, "ga::signed_metric_space<P, Q> is ill-defined. It is expectated (P + Q) <= GA_MAX_BASIS_VECTOR_INDEX.");

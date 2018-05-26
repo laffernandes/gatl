@@ -5,6 +5,78 @@ namespace ga {
 
 	namespace detail {
 
+		// Returns whether the given expressions can be stored if necessary.
+		template<class... Expressions>
+		struct can_be_stored;
+
+		template<class... Expressions>
+		constexpr bool can_be_stored_v = can_be_stored<Expressions...>::value;
+
+		template<class Expression, class... NextExpressions>
+		struct can_be_stored<Expression, NextExpressions...> {
+			constexpr static bool value = can_be_stored_v<Expression> && can_be_stored_v<NextExpressions...>; // recursion
+		};
+
+		template<>
+		struct can_be_stored<> {
+			constexpr static bool value = true; // end of recursion
+		};
+
+		template<class Expression>
+		struct can_be_stored<Expression> {
+			constexpr static bool value = false; // default
+		};
+
+		template<default_integral_t Value>
+		struct can_be_stored<constant_value<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<>
+		struct can_be_stored<stored_value> {
+			constexpr static bool value = true;
+		};
+
+		template<>
+		struct can_be_stored<stored_map_values> {
+			constexpr static bool value = true;
+		};
+
+		template<default_bitset_t Bitset>
+		struct can_be_stored<constant_bitset<Bitset> > {
+			constexpr static bool value = true;
+		};
+
+		template<>
+		struct can_be_stored<stored_bitset> {
+			constexpr static bool value = true;
+		};
+
+		template<>
+		struct can_be_stored<stored_map_bitsets> {
+			constexpr static bool value = true;
+		};
+
+		template<default_bitset_t Bitset>
+		struct can_be_stored<constant_basis_blade<Bitset> > {
+			constexpr static bool value = true;
+		};
+
+		template<default_bitset_t PossibleGrades, class Bitset>
+		struct can_be_stored<dynamic_basis_blade<PossibleGrades, Bitset> > {
+			constexpr static bool value = can_be_stored_v<Bitset>;
+		};
+
+		template<class Coefficient, class BasisBlade>
+		struct can_be_stored<component<Coefficient, BasisBlade> > {
+			constexpr static bool value = can_be_stored_v<Coefficient> && can_be_stored_v<BasisBlade>;
+		};
+
+		template<name_t Name, class... Arguments>
+		struct can_be_stored<function<Name, Arguments...> > {
+			constexpr static bool value = can_be_stored_v<Arguments...>;
+		};
+		
 		// Returns whether the given expressions are compile-time defined.
 		template<class... Expressions>
 		struct is_constant_expression;
@@ -52,19 +124,62 @@ namespace ga {
 			constexpr static bool value = is_constant_expression_v<Arguments...>;
 		};
 
-		// Returns whether the given expression is scalar.
+		// Returns whether the given expression has stored entries.
+		template<class... Expressions>
+		struct has_stored_entries;
+
+		template<class... Expressions>
+		constexpr bool has_stored_entries_v = has_stored_entries<Expressions...>::value;
+
+		template<class Expression, class... NextExpressions>
+		struct has_stored_entries<Expression, NextExpressions...> {
+			constexpr static bool value = has_stored_entries_v<Expression> || has_stored_entries_v<NextExpressions...>; // recursion
+		};
+
+		template<>
+		struct has_stored_entries<> {
+			constexpr static bool value = false; // end of recursion
+		};
+
 		template<class Expression>
-		struct is_scalar_expression {
+		struct has_stored_entries<Expression> {
 			constexpr static bool value = false; // default
 		};
 
-		template<class Coefficient>
-		struct is_scalar_expression<component<Coefficient, constant_basis_blade<default_bitset_t(0)> > > {
+		template<>
+		struct has_stored_entries<stored_value> {
 			constexpr static bool value = true;
 		};
 
-		template<class Expression>
-		constexpr bool is_scalar_expression_v = is_scalar_expression<Expression>::value;
+		template<>
+		struct has_stored_entries<stored_map_values> {
+			constexpr static bool value = true;
+		};
+
+		template<>
+		struct has_stored_entries<stored_bitset> {
+			constexpr static bool value = true;
+		};
+
+		template<>
+		struct has_stored_entries<stored_map_bitsets> {
+			constexpr static bool value = true;
+		};
+
+		template<default_bitset_t PossibleGrades, class Bitset>
+		struct has_stored_entries<dynamic_basis_blade<PossibleGrades, Bitset> > {
+			constexpr static bool value = has_stored_entries_v<Bitset>;
+		};
+
+		template<class Coefficient, class BasisBlade>
+		struct has_stored_entries<component<Coefficient, BasisBlade> > {
+			constexpr static bool value = has_stored_entries_v<Coefficient> || has_stored_entries_v<BasisBlade>;
+		};
+
+		template<name_t Name, class... Arguments>
+		struct has_stored_entries<function<Name, Arguments...> > {
+			constexpr static bool value = has_stored_entries_v<Arguments...>;
+		};
 
 		// Returns whether the given expression is a function with the given name.
 		template<name_t Name, class Expression>
@@ -84,6 +199,9 @@ namespace ga {
 		template<class BasisBlade>
 		struct possible_grades;
 
+		template<class BasisBlade>
+		constexpr default_bitset_t possible_grades_v = possible_grades<BasisBlade>::value;
+
 		template<default_bitset_t BasisVectors>
 		struct possible_grades<constant_basis_blade<BasisVectors> > {
 			constexpr static default_bitset_t value = default_bitset_t(1) << ones(BasisVectors);
@@ -94,10 +212,7 @@ namespace ga {
 			constexpr static default_bitset_t value = PossibleGrades;
 		};
 
-		template<class BasisBlade>
-		constexpr default_bitset_t possible_grades_v = possible_grades<BasisBlade>::value;
-
-		// Returns the coefficient of a given component.
+		// Returns the coefficient of a given set of components.
 		template<class Component>
 		struct coefficient;
 
@@ -109,7 +224,7 @@ namespace ga {
 		template<class Component>
 		using coefficient_t = typename coefficient<Component>::type;
 
-		// Returns the basis blade of a given component.
+		// Returns the basis blade of a given components.
 		template<class Component>
 		struct basis_blade;
 

@@ -27,40 +27,49 @@ namespace ga {
 		return lazy.eval(clifford_expression<std::common_type_t<LeftCoefficientType, RightCoefficientType>, detail::product_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1>, detail::metric_space_mapping_t<MetricSpaceType, detail::scp_mapping> > >());
 	}
 
-	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression, class = std::enable_if_t<detail::is_scalar_expression_v<LeftExpression> || detail::is_scalar_expression_v<RightExpression> > >
-	constexpr decltype(auto) scp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		auto lazy = make_lazy_context(lhs, rhs);
-		return lazy.eval(clifford_expression<std::common_type_t<LeftCoefficientType, RightCoefficientType>, detail::product_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1>, detail::metric_space_mapping_t<detail::real_metric_space, detail::scp_mapping> > >());
+	template<class LeftCoefficientType, class LeftCoefficient, class RightCoefficientType, class RightExpression>
+	constexpr decltype(auto) scp(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
+		return scp(lhs, rhs, detail::real_metric_space());
+	}
+
+	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightCoefficient>
+	constexpr decltype(auto) scp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
+		return scp(lhs, rhs, detail::real_metric_space());
+	}
+
+	template<class LeftCoefficientType, class LeftCoefficient, class RightCoefficientType, class RightCoefficient>
+	constexpr decltype(auto) scp(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
+		return scp(lhs, rhs, detail::real_metric_space());
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightType, class MetricSpaceType, class = std::enable_if_t<!is_clifford_expression_v<RightType> > >
 	constexpr decltype(auto) scp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &) {
-		return scp(lhs, scalar(rhs));
+		return scp(lhs, scalar(rhs), detail::real_metric_space());
 	}
 
 	template<class LeftCoefficientType, class LeftExpression, class RightType, class = std::enable_if_t<!is_clifford_expression_v<RightType> > >
 	constexpr decltype(auto) scp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs) {
-		return scp(lhs, scalar(rhs));
+		return scp(lhs, scalar(rhs), detail::real_metric_space());
 	}
 
 	template<class LeftType, class RightCoefficientType, class RightExpression, class MetricSpaceType, class = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
 	constexpr decltype(auto) scp(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &) {
-		return scp(scalar(lhs), rhs);
+		return scp(scalar(lhs), rhs, detail::real_metric_space());
 	}
 
 	template<class LeftType, class RightCoefficientType, class RightExpression, class = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
 	constexpr decltype(auto) scp(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) {
-		return scp(scalar(lhs), rhs);
+		return scp(scalar(lhs), rhs, detail::real_metric_space());
 	}
 
 	template<class LeftType, class RightType, class MetricSpaceType, class = std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>)> >
 	constexpr decltype(auto) scp(LeftType const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &) {
-		return scp(scalar(lhs), scalar(rhs));
+		return scp(scalar(lhs), scalar(rhs), detail::real_metric_space());
 	}
 
 	template<class LeftType, class RightType, class = std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>)> >
 	constexpr decltype(auto) scp(LeftType const &lhs, RightType const &rhs) {
-		return scp(scalar(lhs), scalar(rhs));
+		return scp(scalar(lhs), scalar(rhs), detail::real_metric_space());
 	}
 
 }

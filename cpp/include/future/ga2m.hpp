@@ -1,8 +1,8 @@
 #ifndef __FUTURE_GA2M_HPP__
 #define __FUTURE_GA2M_HPP__
 
-#include "ga.hpp"
-#include "ga/macro_for_algebra_overload.hpp"
+#include <ga.hpp>
+#include <ga/macro_for_algebra_overload.hpp>
 
 GA_SIGNED_ALGEBRA_OVERLOAD(ga2m, 2 + 1, 1)
 
