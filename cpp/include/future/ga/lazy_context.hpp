@@ -3,8 +3,6 @@
 
 namespace ga {
 
-	//TODO Como lidar com a avaliação parcial da lazy expression?
-
 	namespace detail {
 	
 		// Returns the greater ID found in the given expressions.
@@ -82,18 +80,8 @@ namespace ga {
 		};
 
 		template<tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
-		struct tag_variables<stored_map_values, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
-			typedef get_map_values<Tag, BaseMapIndex> type; //TODO Esse índice não é consistente
-		};
-
-		template<tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
 		struct tag_variables<stored_bitset, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
-			typedef get_bitset<Tag, BaseBitsetIndex> type; //TODO Esse índice não é consistente
-		};
-
-		template<tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
-		struct tag_variables<stored_map_bitsets, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
-			typedef get_map_bitsets<Tag, BaseMapIndex> type;
+			typedef get_bitset<Tag, BaseBitsetIndex> type;
 		};
 
 		template<default_bitset_t PossibleGrades, class Bitset, tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
@@ -106,146 +94,458 @@ namespace ga {
 			typedef component_t<tag_variables_t<Coefficient, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex>, tag_variables_t<BasisBlade, Tag, BaseValueIndex + count_stored_values_v<Coefficient>, BaseBitsetIndex + count_stored_bitsets_v<Coefficient>, BaseMapIndex + count_stored_maps_v<Coefficient> > > type;
 		};
 
+		template<default_bitset_t PossibleGrades, tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
+		struct tag_variables<component<stored_map_values, dynamic_basis_blade<PossibleGrades, stored_map_bitsets> >, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
+			typedef component_t<get_map_values<Tag, BaseMapIndex>, dynamic_basis_blade<PossibleGrades, get_map_bitsets<Tag, BaseMapIndex> > > type;
+		};
+
+		template<tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex, class Function, class... Arguments>
+		struct _tag_variables_in_function;
+
+		template<tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex, name_t Name, class... FunctionArguments, class Argument, class... NextArguments>
+		struct _tag_variables_in_function<Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex, function<Name, FunctionArguments...>, Argument, NextArguments...> {
+			typedef typename _tag_variables_in_function<Tag, BaseValueIndex + count_stored_values_v<Argument>, BaseBitsetIndex + count_stored_bitsets_v<Argument>, BaseMapIndex + count_stored_maps_v<Argument>, function<Name, FunctionArguments..., tag_variables_t<Argument, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> >, NextArguments...>::type type;
+		};
+
+		template<tag_t Tag, std::size_t ValueIndexEnd, std::size_t BitsetIndexEnd, std::size_t MapIndexEnd, name_t Name, class... FunctionArguments>
+		struct _tag_variables_in_function<Tag, ValueIndexEnd, BitsetIndexEnd, MapIndexEnd, function<Name, FunctionArguments...> > {
+			typedef function<Name, FunctionArguments...> type;
+		};
+
 		template<name_t Name, class... Arguments, tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
 		struct tag_variables<function<Name, Arguments...>, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
-		private:
-
-			constexpr static std::size_t stored_values_count = count_stored_values_v<Arguments...>;
-			constexpr static std::size_t stored_bitsets_count = count_stored_bitsets_v<Arguments...>;
-			constexpr static std::size_t stored_maps_count = count_stored_maps_v<Arguments...>;
-
-		public:
-
-			//TODO Isso não funcionará
-			typedef function<Name, tag_variables_t<Arguments, Tag, BaseValueIndex + (stored_values_count - count_stored_values_v<Arguments>), BaseBitsetIndex + (stored_bitsets_count - count_stored_bitsets_v<Arguments>), BaseMapIndex + (stored_maps_count - count_stored_maps_v<Arguments>)>...> type;
+			typedef typename _tag_variables_in_function<Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex, function<Name>, Arguments...>::type type;
 		};
 
 		// Evaluates the given clifford_expression<...>.
 		template<tag_t LowerTag, tag_t UpperTag, class Expression>
-		struct eval_expression;
+		struct eval_expression {
+			typedef Expression type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &, BitsetItr &, MapIts &, std::tuple<InputTypes...> const &) {
+				// Do nothing (default).
+			}
+		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Expression>
 		using eval_expression_t = typename eval_expression<LowerTag, UpperTag, Expression>::type;
 
-		template<tag_t LowerTag, tag_t UpperTag, default_integral_t Value>
-		struct eval_expression<LowerTag, UpperTag, constant_value<Value> > {
-			typedef constant_value<Value> type;
-		};
-
 		template<tag_t LowerTag, tag_t UpperTag, tag_t Tag, std::size_t Index>
 		struct eval_expression<LowerTag, UpperTag, get_value<Tag, Index> > {
 			typedef std::conditional_t<(LowerTag <= Tag && Tag <= UpperTag), stored_value, get_value<Tag, Index> > type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if (LowerTag <= Tag && Tag <= UpperTag) {
+					*value_itr = get_value<Tag, Index>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, tag_t Tag, std::size_t Index>
 		struct eval_expression<LowerTag, UpperTag, get_map_values<Tag, Index> > {
 			typedef std::conditional_t<(LowerTag <= Tag && Tag <= UpperTag), stored_map_values, get_map_values<Tag, Index> > type;
-		};
 
-		template<tag_t LowerTag, tag_t UpperTag>
-		struct eval_expression<LowerTag, UpperTag, stored_value> {
-			typedef stored_value type;
-		};
-
-		template<tag_t LowerTag, tag_t UpperTag>
-		struct eval_expression<LowerTag, UpperTag, stored_map_values> {
-			typedef stored_map_values type;
-		};
-
-		template<tag_t LowerTag, tag_t UpperTag, default_bitset_t Bitset>
-		struct eval_expression<LowerTag, UpperTag, constant_bitset<Bitset> > {
-			typedef constant_bitset<Bitset> type;
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if (LowerTag <= Tag && Tag <= UpperTag) {
+					//TODO Not supported yet (map)
+				}
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, tag_t Tag, std::size_t Index>
 		struct eval_expression<LowerTag, UpperTag, get_bitset<Tag, Index> > {
 			typedef std::conditional_t<(LowerTag <= Tag && Tag <= UpperTag), stored_bitset, get_bitset<Tag, Index> > type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if (LowerTag <= Tag && Tag <= UpperTag) {
+					*bitset_itr = get_bitset<Tag, Index>::eval<LowerTag, UpperTag>(args);
+					std::advance(bitset_itr, 1);
+				}
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, tag_t Tag, std::size_t Index>
 		struct eval_expression<LowerTag, UpperTag, get_map_bitsets<Tag, Index> > {
 			typedef std::conditional_t<(LowerTag <= Tag && Tag <= UpperTag), stored_map_bitsets, get_map_bitsets<Tag, Index> > type;
-		};
 
-		template<tag_t LowerTag, tag_t UpperTag>
-		struct eval_expression<LowerTag, UpperTag, stored_bitset> {
-			typedef stored_bitset type;
-		};
-
-		template<tag_t LowerTag, tag_t UpperTag>
-		struct eval_expression<LowerTag, UpperTag, stored_map_bitsets> {
-			typedef stored_map_bitsets type;
-		};
-
-		template<tag_t LowerTag, tag_t UpperTag, default_bitset_t BasisVectors>
-		struct eval_expression<LowerTag, UpperTag, constant_basis_blade<BasisVectors> > {
-			typedef constant_basis_blade<BasisVectors> type;
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if (LowerTag <= Tag && Tag <= UpperTag) {
+					//TODO Not supported yet (map)
+				}
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, default_bitset_t PossibleGrades, class Bitset>
 		struct eval_expression<LowerTag, UpperTag, dynamic_basis_blade<PossibleGrades, Bitset> > {
 			typedef dynamic_basis_blade_t<PossibleGrades, eval_expression_t<LowerTag, UpperTag, Bitset> > type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				eval_expression<LowerTag, UpperTag, Bitset>::run(value_itr, bitset_itr, map_itr, args);
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Coefficient, class BasisBlade>
 		struct eval_expression<LowerTag, UpperTag, component<Coefficient, BasisBlade> > {
 			typedef component_t<eval_expression_t<LowerTag, UpperTag, Coefficient>, eval_expression_t<LowerTag, UpperTag, BasisBlade> > type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				eval_expression<LowerTag, UpperTag, Coefficient>::run(value_itr, bitset_itr, map_itr, args);
+				eval_expression<LowerTag, UpperTag, BasisBlade>::run(value_itr, bitset_itr, map_itr, args);
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Argument, class... NextArguments>
 		struct eval_expression<LowerTag, UpperTag, add<Argument, NextArguments...> > {
-			typedef addition_t<eval_expression_t<LowerTag, UpperTag, Argument>, eval_expression_t<LowerTag, UpperTag, add_t<NextArguments...> > > type;
+		private:
+
+			typedef eval_expression_t<LowerTag, UpperTag, Argument> argument;
+			typedef eval_expression_t<LowerTag, UpperTag, add_t<NextArguments...> > next_arguments;
+
+		public:
+
+			typedef std::conditional_t<
+				(std::is_same_v<argument, stored_value> && can_be_stored_v<next_arguments>) || (can_be_stored_v<argument> && std::is_same_v<next_arguments, stored_value>),
+				stored_value,
+				addition_t<argument, next_arguments>
+			> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if ((std::is_same_v<argument, stored_value> && can_be_stored_v<next_arguments>) || (can_be_stored_v<argument> && std::is_same_v<next_arguments, stored_value>)) {
+					*value_itr = add<Argument, NextArguments...>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+				else {
+					eval_expression<LowerTag, UpperTag, Argument>::run(value_itr, bitset_itr, map_itr, args);
+					eval_expression<LowerTag, UpperTag, add_t<NextArguments...> >::run(value_itr, bitset_itr, map_itr, args);
+				}
+			}
+		};
+
+		template<tag_t LowerTag, tag_t UpperTag, class Coefficient, class BasisBlade, class... NextComponents>
+		struct eval_expression<LowerTag, UpperTag, add<component<Coefficient, BasisBlade>, NextComponents...> > {
+		private:
+			//TODO Lidar com dois component<Coefficient, dynamic_basis_blade<PossibleGrades, Bitset> > com mesmo PossibleGrades
+
+			typedef eval_expression_t<LowerTag, UpperTag, Coefficient> coefficient;
+			typedef eval_expression_t<LowerTag, UpperTag, BasisBlade> basis_blade;
+			typedef eval_expression_t<LowerTag, UpperTag, add_t<NextComponents...> > next_components;
+
+		public:
+
+			typedef addition_t<component_t<coefficient, basis_blade>, next_components> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				eval_expression<LowerTag, UpperTag, Coefficient>::run(value_itr, bitset_itr, map_itr, args);
+				eval_expression<LowerTag, UpperTag, BasisBlade>::run(value_itr, bitset_itr, map_itr, args);
+				eval_expression<LowerTag, UpperTag, add_t<NextComponents...> >::run(value_itr, bitset_itr, map_itr, args);
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Argument, class... NextArguments>
 		struct eval_expression<LowerTag, UpperTag, mul<Argument, NextArguments...> > {
-			typedef product_t<eval_expression_t<LowerTag, UpperTag, Argument>, eval_expression_t<LowerTag, UpperTag, add_t<NextArguments...> >, real_mapping> type;
+		private:
+
+			typedef eval_expression_t<LowerTag, UpperTag, Argument> argument;
+			typedef eval_expression_t<LowerTag, UpperTag, mul_t<NextArguments...> > next_arguments;
+
+		public:
+
+			typedef std::conditional_t<
+				(std::is_same_v<argument, stored_value> && can_be_stored_v<next_arguments>) || (can_be_stored_v<argument> && std::is_same_v<next_arguments, stored_value>),
+				stored_value,
+				product_t<argument, next_arguments, real_mapping>
+			> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if ((std::is_same_v<argument, stored_value> && can_be_stored_v<next_arguments>) || (can_be_stored_v<argument> && std::is_same_v<next_arguments, stored_value>)) {
+					*value_itr = mul<Argument, NextArguments...>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+				else {
+					eval_expression<LowerTag, UpperTag, Argument>::run(value_itr, bitset_itr, map_itr, args);
+					eval_expression<LowerTag, UpperTag, mul_t<NextArguments...> >::run(value_itr, bitset_itr, map_itr, args);
+				}
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class LeftArgument, class RightArgument>
 		struct eval_expression<LowerTag, UpperTag, power<LeftArgument, RightArgument> > {
-			typedef power_t<eval_expression_t<LowerTag, UpperTag, LeftArgument>, eval_expression_t<LowerTag, UpperTag, RightArgument> > type;
+		private:
+
+			typedef eval_expression_t<LowerTag, UpperTag, LeftArgument> left_argument;
+			typedef eval_expression_t<LowerTag, UpperTag, RightArgument> right_argument;
+
+		public:
+
+			typedef std::conditional_t<
+				(std::is_same_v<left_argument, stored_value> && can_be_stored_v<right_argument>) || (can_be_stored_v<left_argument> && std::is_same_v<right_argument, stored_value>),
+				stored_value,
+				power_t<left_argument, right_argument>
+			> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if ((std::is_same_v<left_argument, stored_value> && can_be_stored_v<right_argument>) || (can_be_stored_v<left_argument> && std::is_same_v<right_argument, stored_value>)) {
+					*value_itr = power<LeftArgument, RightArgument>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+				else {
+					eval_expression<LowerTag, UpperTag, LeftArgument>::run(value_itr, bitset_itr, map_itr, args);
+					eval_expression<LowerTag, UpperTag, RightArgument>::run(value_itr, bitset_itr, map_itr, args);
+				}
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class LeftBitset, class RightBitset>
 		struct eval_expression<LowerTag, UpperTag, reordering_sign<LeftBitset, RightBitset> > {
-			typedef reordering_sign_t<eval_expression_t<LowerTag, UpperTag, LeftBitset>, eval_expression_t<LowerTag, UpperTag, RightBitset> > type;
+		private:
+
+			typedef eval_expression_t<LowerTag, UpperTag, LeftBitset> left_bitset;
+			typedef eval_expression_t<LowerTag, UpperTag, RightBitset> right_bitset;
+
+		public:
+
+			typedef std::conditional_t<
+				(std::is_same_v<left_bitset, stored_bitset> && can_be_stored_v<right_bitset>) || (can_be_stored_v<left_bitset> && std::is_same_v<right_bitset, stored_bitset>),
+				stored_value,
+				reordering_sign_t<left_bitset, right_bitset>
+			> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if ((std::is_same_v<left_bitset, stored_bitset> && can_be_stored_v<right_bitset>) || (can_be_stored_v<left_bitset> && std::is_same_v<right_bitset, stored_bitset>)) {
+					*value_itr = reordering_sign<LeftBitset, RightBitset>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+				else {
+					eval_expression<LowerTag, UpperTag, LeftBitset>::run(value_itr, bitset_itr, map_itr, args);
+					eval_expression<LowerTag, UpperTag, RightBitset>::run(value_itr, bitset_itr, map_itr, args);
+				}
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Bitset>
 		struct eval_expression<LowerTag, UpperTag, count_one_bits<Bitset> > {
-			typedef count_one_bits_t<eval_expression_t<LowerTag, UpperTag, Bitset> > type;
+		private:
+
+			typedef eval_expression_t<LowerTag, UpperTag, Bitset> bitset;
+
+		public:
+
+			typedef std::conditional_t<
+				std::is_same_v<bitset, stored_bitset>,
+				stored_value,
+				count_one_bits_t<bitset>
+			> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if (std::is_same_v<bitset, stored_bitset>) {
+					*value_itr = count_one_bits<Bitset>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+				else {
+					eval_expression<LowerTag, UpperTag, Bitset>::run(value_itr, bitset_itr, map_itr, args);
+				}
+			}
 		};
 
-		template<tag_t LowerTag, tag_t UpperTag, class LeftType, class RightType>
-		struct eval_expression<LowerTag, UpperTag, bitwise_left_shift<LeftType, RightType> > {
-			typedef bitwise_left_shift_t<eval_expression_t<LowerTag, UpperTag, LeftType>, eval_expression_t<LowerTag, UpperTag, RightType> > type;
+		template<tag_t LowerTag, tag_t UpperTag, class LeftType, class RightValue>
+		struct eval_expression<LowerTag, UpperTag, bitwise_left_shift<LeftType, RightValue> > {
+		private:
+
+			typedef eval_expression_t<LowerTag, UpperTag, LeftType> left_type;
+			typedef eval_expression_t<LowerTag, UpperTag, RightValue> right_value;
+
+		public:
+
+			typedef std::conditional_t<
+				(std::is_same_v<left_type, stored_value> && can_be_stored_v<right_value>) || (can_be_stored_v<left_type> && std::is_same_v<right_value, stored_value>),
+				stored_value,
+				std::conditional_t<
+					(std::is_same_v<left_type, stored_bitset> && can_be_stored_v<right_value>) || (can_be_stored_v<left_type> && std::is_same_v<right_value, stored_value>),
+					stored_bitset,
+					bitwise_left_shift_t<left_type, right_value>
+				>
+			> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if ((std::is_same_v<left_type, stored_value> && can_be_stored_v<right_value>) || (can_be_stored_v<left_type> && std::is_same_v<right_value, stored_value>)) {
+					*value_itr = bitwise_left_shift<LeftType, RightValue>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+				else {
+					if ((std::is_same_v<left_type, stored_bitset> && can_be_stored_v<right_value>) || (can_be_stored_v<left_type> && std::is_same_v<right_value, stored_value>)) {
+						*bitset_itr = bitwise_left_shift<LeftType, RightValue>::eval<LowerTag, UpperTag>(args);
+						std::advance(bitset_itr, 1);
+					}
+					else {
+						eval_expression<LowerTag, UpperTag, LeftType>::run(value_itr, bitset_itr, map_itr, args);
+						eval_expression<LowerTag, UpperTag, RightValue>::run(value_itr, bitset_itr, map_itr, args);
+					}
+				}
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class LeftType, class RightType>
 		struct eval_expression<LowerTag, UpperTag, bitwise_and<LeftType, RightType> > {
-			typedef bitwise_and_t<eval_expression_t<LowerTag, UpperTag, LeftType>, eval_expression_t<LowerTag, UpperTag, RightType> > type;
+		private:
+
+			typedef eval_expression_t<LowerTag, UpperTag, LeftType> left_type;
+			typedef eval_expression_t<LowerTag, UpperTag, RightType> right_type;
+
+		public:
+
+			typedef std::conditional_t<
+				(std::is_same_v<left_type, stored_value> && can_be_stored_v<right_type>) || (can_be_stored_v<left_type> && std::is_same_v<right_type, stored_value>),
+				stored_value,
+				std::conditional_t<
+					(std::is_same_v<left_type, stored_bitset> && can_be_stored_v<right_type>) || (can_be_stored_v<left_type> && std::is_same_v<right_type, stored_bitset>),
+					stored_bitset,
+					bitwise_and_t<left_type, right_type>
+				>
+			> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if ((std::is_same_v<left_type, stored_value> && can_be_stored_v<right_type>) || (can_be_stored_v<left_type> && std::is_same_v<right_type, stored_value>)) {
+					*value_itr = bitwise_and<LeftType, RightType>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+				else {
+					if ((std::is_same_v<left_type, stored_bitset> && can_be_stored_v<right_type>) || (can_be_stored_v<left_type> && std::is_same_v<right_type, stored_bitset>)) {
+						*bitset_itr = bitwise_and<LeftType, RightType>::eval<LowerTag, UpperTag>(args);
+						std::advance(bitset_itr, 1);
+					}
+					else {
+						eval_expression<LowerTag, UpperTag, LeftType>::run(value_itr, bitset_itr, map_itr, args);
+						eval_expression<LowerTag, UpperTag, RightType>::run(value_itr, bitset_itr, map_itr, args);
+					}
+				}
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class LeftType, class RightType>
 		struct eval_expression<LowerTag, UpperTag, bitwise_xor<LeftType, RightType> > {
-			typedef bitwise_xor_t<eval_expression_t<LowerTag, UpperTag, LeftType>, eval_expression_t<LowerTag, UpperTag, RightType> > type;
+		private:
+
+			typedef eval_expression_t<LowerTag, UpperTag, LeftType> left_type;
+			typedef eval_expression_t<LowerTag, UpperTag, RightType> right_type;
+
+		public:
+
+			typedef std::conditional_t<
+				(std::is_same_v<left_type, stored_value> && can_be_stored_v<right_type>) || (can_be_stored_v<left_type> && std::is_same_v<right_type, stored_value>),
+				stored_value,
+				std::conditional_t<
+					(std::is_same_v<left_type, stored_bitset> && can_be_stored_v<right_type>) || (can_be_stored_v<left_type> && std::is_same_v<right_type, stored_bitset>),
+					stored_bitset,
+					bitwise_xor_t<left_type, right_type>
+				>
+			> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if ((std::is_same_v<left_type, stored_value> && can_be_stored_v<right_type>) || (can_be_stored_v<left_type> && std::is_same_v<right_type, stored_value>)) {
+					*value_itr = bitwise_xor<LeftType, RightType>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+				else {
+					if ((std::is_same_v<left_type, stored_bitset> && can_be_stored_v<right_type>) || (can_be_stored_v<left_type> && std::is_same_v<right_type, stored_bitset>)) {
+						*bitset_itr = bitwise_xor<LeftType, RightType>::eval<LowerTag, UpperTag>(args);
+						std::advance(bitset_itr, 1);
+					}
+					else {
+						eval_expression<LowerTag, UpperTag, LeftType>::run(value_itr, bitset_itr, map_itr, args);
+						eval_expression<LowerTag, UpperTag, RightType>::run(value_itr, bitset_itr, map_itr, args);
+					}
+				}
+			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class LeftType, class RightType>
 		struct eval_expression<LowerTag, UpperTag, equal<LeftType, RightType> > {
-			typedef equal_t<eval_expression_t<LowerTag, UpperTag, LeftType>, eval_expression_t<LowerTag, UpperTag, RightType> > type;
+		public:
+
+			typedef eval_expression_t<LowerTag, UpperTag, LeftType> left_type;
+			typedef eval_expression_t<LowerTag, UpperTag, RightType> right_type;
+
+			typedef std::conditional_t<
+				(is_any_v<left_type, stored_value, stored_bitset> && can_be_stored_v<right_type>) || (can_be_stored_v<left_type> && is_any_v<right_type, stored_value, stored_bitset>),
+				stored_value,
+				equal_t<left_type, right_type>
+			> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if ((is_any_v<left_type, stored_value, stored_bitset> && can_be_stored_v<right_type>) || (can_be_stored_v<left_type> && is_any_v<right_type, stored_value, stored_bitset>)) {
+					*value_itr = equal<LeftType, RightType>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+				else {
+					eval_expression<LowerTag, UpperTag, LeftType>::run(value_itr, bitset_itr, map_itr, args);
+					eval_expression<LowerTag, UpperTag, RightType>::run(value_itr, bitset_itr, map_itr, args);
+				}
+			}
 		};
 
-		template<tag_t LowerTag, tag_t UpperTag, class Test, class TrueResult, class FalseResult>
-		struct eval_expression<LowerTag, UpperTag, if_else<Test, TrueResult, FalseResult> > {
-			typedef if_else_t<eval_expression_t<LowerTag, UpperTag, Test>, eval_expression_t<LowerTag, UpperTag, TrueResult>, eval_expression_t<LowerTag, UpperTag, FalseResult> > type;
+		template<tag_t LowerTag, tag_t UpperTag, class Test, class TrueValue, class FalseValue>
+		struct eval_expression<LowerTag, UpperTag, if_else<Test, TrueValue, FalseValue> > {
+		private:
+
+			typedef eval_expression_t<LowerTag, UpperTag, Test> test;
+			typedef eval_expression_t<LowerTag, UpperTag, TrueValue> true_value;
+			typedef eval_expression_t<LowerTag, UpperTag, FalseValue> false_value;
+
+		public:
+
+			typedef std::conditional_t<
+				can_be_stored_v<test, true_value, false_value>,
+				stored_value,
+				if_else_t<test, true_value, false_value>
+			> type;
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				if (can_be_stored_v<test, true_value, false_value>) {
+					*value_itr = if_else<Test, TrueValue, FalseValue>::eval<LowerTag, UpperTag>(args);
+					std::advance(value_itr, 1);
+				}
+				else {
+					eval_expression<LowerTag, UpperTag, Test>::run(value_itr, bitset_itr, map_itr, args);
+					eval_expression<LowerTag, UpperTag, TrueValue>::run(value_itr, bitset_itr, map_itr, args);
+					eval_expression<LowerTag, UpperTag, FalseValue>::run(value_itr, bitset_itr, map_itr, args);
+				}
+			}
 		};
 		
 		template<tag_t LowerTag, tag_t UpperTag, class CoefficientType, class Expression, class... InputTypes>
 		constexpr static decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &expression, std::tuple<InputTypes...> const &args) {
 			typedef clifford_expression<CoefficientType, eval_expression_t<LowerTag, UpperTag, Expression> > result_type;
-			return result_type(); //TODO Parei aqui!
+
+			typename result_type::value_storage_type values;
+			typename result_type::bitset_storage_type bitsets;
+			typename result_type::map_storage_type maps;
+
+			auto value_itr = values.begin();
+			auto bitset_itr = bitsets.begin();
+			auto map_itr = maps.begin();
+
+			eval_expression<LowerTag, UpperTag, Expression>::run(value_itr, bitset_itr, map_itr, args);
+
+			return result_type(std::move(values), std::move(bitsets), std::move(maps));
 		}
 
 		// Superclass for ga::lazy_context<InputTypes...>.

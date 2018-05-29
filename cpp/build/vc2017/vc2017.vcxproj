@@ -38,8 +38,6 @@
     <ClInclude Include="..\..\include\future\ga\expression_addition.hpp" />
     <ClInclude Include="..\..\include\future\ga\conjugation.hpp" />
     <ClInclude Include="..\..\include\future\ga\dualization.hpp" />
-    <ClInclude Include="..\..\include\future\ga\expression_component.hpp" />
-    <ClInclude Include="..\..\include\future\ga\expression_dynamic_basis_blade.hpp" />
     <ClInclude Include="..\..\include\future\ga\general_metric_mapping.hpp" />
     <ClInclude Include="..\..\include\future\ga\insertion_operator.hpp" />
     <ClInclude Include="..\..\include\future\ga\involution.hpp" />

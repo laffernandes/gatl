@@ -90,12 +90,15 @@ void test_op() {
 
 	std::cout << "e1^e2 = " << (e1 ^ e2) << std::endl;
 	std::cout << "e2^e1 = " << (e2 ^ e1) << std::endl;
+	std::cout << "e3^e3 = " << (e3 ^ e3) << std::endl;
 	std::cout << "e3^(e3 + e1^e2) = " << (e3 ^ (e3 + (e1 ^ e2))) << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "ei^ej = " << (ei ^ ej) << std::endl;
 	std::cout << "ej^ei = " << (ej ^ ei) << std::endl;
-	auto xyz = (ek ^ (ek + (ei ^ ej))); std::cout << "ek^(ek + ei^ej) = " << xyz << std::endl;
+	std::cout << "ek^ek = " << (ek ^ ek) << std::endl;
+	auto xyz = (ek ^ (ek + (ei ^ ej)));
+	std::cout << "ek^(ek + ei^ej) = " << xyz << std::endl;
 	std::cout << std::endl;
 
 	std::cout << "e1^ej = " << (e1 ^ ej) << std::endl;
@@ -106,12 +109,31 @@ void test_op() {
 
 template<class MetricSpaceType>
 void test_scp(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
+	/**/
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
 	auto ei = e(1);
 	auto ej = e(2);
 	auto ek = e(3);
+
+	auto eval = [&](auto const &arg) -> decltype(auto) {
+		return arg;
+	};
+	/*/
+	auto lazy = make_lazy_context(e(c<1>), e(c<2>), e(c<3>), e(1), e(2), e(3));
+	
+	auto e1 = lazy.argument<0>();
+	auto e2 = lazy.argument<1>();
+	auto e3 = lazy.argument<2>();
+	auto ei = lazy.argument<3>();
+	auto ej = lazy.argument<4>();
+	auto ek = lazy.argument<5>();
+	
+	auto eval = [&](auto const &arg) -> decltype(auto) {
+		return lazy.eval(arg);
+	};
+	/**/
 
 	auto e1e2 = op(e1, e2, mtr);
 	auto e1e3 = op(e1, e3, mtr);
@@ -121,19 +143,19 @@ void test_scp(metric_space<MetricSpaceType> const &mtr, std::string const &name)
 
 	std::cout << "--- test_scp(" << name << ")" << std::endl;
 
-	std::cout << "scp(e1, e1^e2) = " << scp(e1, e1e2, mtr) << std::endl;
-	std::cout << "scp(e1^e2, e1^e2) = " << scp(e1e2, e1e2, mtr) << std::endl;
-	std::cout << "scp(e1^e3, e1^e2) = " << scp(e1e3, e1e2, mtr) << std::endl;
+	std::cout << "scp(e1, e1^e2) = " << eval(scp(e1, e1e2, mtr)) << std::endl;
+	std::cout << "scp(e1^e2, e1^e2) = " << eval(scp(e1e2, e1e2, mtr)) << std::endl;
+	std::cout << "scp(e1^e3, e1^e2) = " << eval(scp(e1e3, e1e2, mtr)) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "scp(ei, ei^ej) = " << scp(ei, eiej, mtr) << std::endl;
-	std::cout << "scp(ei^ej, ei^ej) = " << scp(eiej, eiej, mtr) << std::endl;
-	std::cout << "scp(ei^ek, ei^ej) = " << scp(eiek, eiej, mtr) << std::endl;
+	std::cout << "scp(ei, ei^ej) = " << eval(scp(ei, eiej, mtr)) << std::endl;
+	std::cout << "scp(ei^ej, ei^ej) = " << eval(scp(eiej, eiej, mtr)) << std::endl; //TODO Dedução incorreta em lazy
+	std::cout << "scp(ei^ek, ei^ej) = " << eval(scp(eiek, eiej, mtr)) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "scp(e1, e1^ej) = " << scp(e1, e1ej, mtr) << std::endl;
-	std::cout << "scp(e1^ej, e1^ej) = " << scp(e1ej, e1ej, mtr) << std::endl;
-	std::cout << "scp(e1^e3, e1^ej) = " << scp(e1e3, e1ej, mtr) << std::endl;
+	std::cout << "scp(e1, e1^ej) = " << eval(scp(e1, e1ej, mtr)) << std::endl;
+	std::cout << "scp(e1^ej, e1^ej) = " << eval(scp(e1ej, e1ej, mtr)) << std::endl;
+	std::cout << "scp(e1^e3, e1^ej) = " << eval(scp(e1e3, e1ej, mtr)) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -346,61 +368,63 @@ void test_simplification() {
 }
 
 void test_variable() {
-	auto addition = [](auto const &x, auto const &y) {
+	auto addition = [](auto const &x, auto const &y, auto eval) {
 		auto r = x + x + y;
 
-		std::cout << "r = " << r << std::endl;
+		std::cout << "r = " << eval(r) << std::endl;
 		std::cout << std::endl;
 	};
 
-	auto subtraction = [](auto const &x) {
+	auto subtraction = [](auto const &x, auto eval) {
 		auto r = x - x;
 
-		std::cout << "r = " << r << std::endl;
+		std::cout << "r = " << eval(r) << std::endl;
 		std::cout << std::endl;
 	};
 
-	auto product = [](auto const &x, auto const &y) {
+	auto product = [](auto const &x, auto const &y, auto eval) {
 		using namespace ga3h;
 
 		auto p = ep + x * e1 + y * e3;
 		auto d = x * e1 + y * e2;
 		auto r = p ^ d;
 
-		std::cout << "p = " << p << std::endl;
-		std::cout << "d = " << d << std::endl;
-		std::cout << "r = " << r << std::endl;
+		std::cout << "p = " << eval(p) << std::endl;
+		std::cout << "d = " << eval(d) << std::endl;
+		std::cout << "r = " << eval(r) << std::endl;
 		std::cout << std::endl;
 	};
 
-	auto span_line = [](auto const &x, auto const &y, auto const &z) {
+	auto span_line = [](auto const &x, auto const &y, auto const &z, auto eval) {
 		using namespace ga3h;
 
 		auto p = ep + x * e1 + y * e2 + z * e3;
 		auto d = x * e1 + y * e2 + z * e3;
 		auto r = p ^ d;
 
-		std::cout << "p = " << p << std::endl;
-		std::cout << "d = " << d << std::endl;
-		std::cout << "r = " << r << std::endl;
+		std::cout << "p = " << eval(p) << std::endl;
+		std::cout << "d = " << eval(d) << std::endl;
+		std::cout << "r = " << eval(r) << std::endl;
 		std::cout << std::endl;
 	};
 
 	std::cout << "--- test_variable()" << std::endl;
 
 	auto const lazy = make_lazy_context(scalar(5.0), scalar(3.0), scalar(10.0), scalar(-7.0));
+	auto eval = [&](auto const &arg) -> decltype(auto) { return arg; };
+	auto lazy_eval = [&](auto const &arg) -> decltype(auto) { return lazy.eval(arg); };
 
-	addition(5.0, 3.0);
-	addition(lazy.argument<0>(), lazy.argument<1>());
+	addition(5.0, 3.0, eval);
+	addition(lazy.argument<0>(), lazy.argument<1>(), lazy_eval);
 
-	subtraction(5.0);
-	subtraction(lazy.argument<0>());
+	subtraction(5.0, eval);
+	subtraction(lazy.argument<0>(), lazy_eval);
 
-	product(5.0, 3.0);
-	product(lazy.argument<0>(), lazy.argument<1>());
+	product(5.0, 3.0, eval);
+	product(lazy.argument<0>(), lazy.argument<1>(), lazy_eval);
 
-	span_line(10.0, 5.0, -7.0);
-	span_line(lazy.argument<2>(), lazy.argument<0>(), lazy.argument<3>());
+	span_line(10.0, 5.0, -7.0, eval);
+	span_line(lazy.argument<2>(), lazy.argument<0>(), lazy.argument<3>(), lazy_eval);
 }
 
 int main() {
@@ -488,16 +512,17 @@ int main() {
 int main() {
 	using namespace future::ga;
 
-	auto a = c<5> * e(1);
-	auto b = c<5> * e(2);
+	typedef detail::dynamic_basis_blade<2, detail::get_bitset<1, 0> > BasisBlade;
+	typedef detail::get_value<2, 0> Grade;
+	typedef detail::basis_vectors_t<BasisBlade> BasisVectors;
+	typedef detail::count_one_bits_t<BasisVectors > OneBits;
+	typedef detail::equal_t<OneBits, Grade> Equal;
 
-	auto v1 = a + b;
-	auto s1 = scp(v1, v1, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
-
-	auto const lazy = make_lazy_context(clifford_expression<default_integral_t, detail::function<detail::name_t::add, detail::component<detail::constant_value<-1>, detail::constant_basis_blade<8>>, detail::component<detail::constant_value<1>, detail::constant_basis_blade<16>>>>(), c<2>);
-	auto arg0 =lazy.argument<0>();
-	auto arg1 = inv(lazy.argument<1>());
-	//return lazy.eval(gp(lazy.argument<0>(), inv(lazy.argument<1>())));
+	BasisBlade a;
+	Grade b;
+	BasisVectors c;
+	OneBits d;
+	Equal e;
 
 	return EXIT_SUCCESS;
 }

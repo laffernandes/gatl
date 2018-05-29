@@ -6,24 +6,14 @@ namespace ga {
 	namespace detail {
 
 		// The implementation of mapping for products assuming spaces with orthogonal metric.
-		template<class LeftBasisBlade, class RightBasisBlade, default_bitset_t PossibleGradesResult>
+		template<default_bitset_t PossibleGrades, class BasisVectors>
 		struct _orthogonal_metric_deduce_basis_blade {
-			typedef dynamic_basis_blade_t<PossibleGradesResult, bitwise_xor_t<basis_vectors_t<LeftBasisBlade>, basis_vectors_t<RightBasisBlade> > > type;
+			typedef dynamic_basis_blade_t<PossibleGrades, BasisVectors> type;
 		};
 		
-		template<default_bitset_t LeftBasisVectors, default_bitset_t RightBasisVectors, default_bitset_t PossibleGradesResult>
-		struct _orthogonal_metric_deduce_basis_blade<constant_basis_blade<LeftBasisVectors>, constant_basis_blade<RightBasisVectors>, PossibleGradesResult> {
-			typedef constant_basis_blade<LeftBasisVectors ^ RightBasisVectors> type;
-		};
-
-		template<class LeftBasisBlade, class RightBasisBlade>
-		struct _orthogonal_metric_deduce_basis_blade<LeftBasisBlade, RightBasisBlade, default_bitset_t(0)> {
-			typedef constant_basis_blade<default_bitset_t(0)> type;
-		};
-
-		template<default_bitset_t LeftBasisVectors, default_bitset_t RightBasisVectors>
-		struct _orthogonal_metric_deduce_basis_blade<constant_basis_blade<LeftBasisVectors>, constant_basis_blade<RightBasisVectors>, default_bitset_t(0)> {
-			typedef constant_basis_blade<default_bitset_t(0)> type;
+		template<default_bitset_t PossibleGrades, default_bitset_t BasisVectors>
+		struct _orthogonal_metric_deduce_basis_blade<PossibleGrades, constant_bitset<BasisVectors> > {
+			typedef constant_basis_blade<BasisVectors> type;
 		};
 
 		template<class OrthogonalMetricSpace, class GradedProduct>
@@ -33,21 +23,27 @@ namespace ga {
 			struct multiply {
 			private:
 
-				typedef typename _orthogonal_metric_deduce_basis_blade<LeftBasisBlade, RightBasisBlade, GradedProduct::template possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade>, OrthogonalMetricSpace::vector_space_dimensions>::value>::type pre_candidate_basis_blade;
-
-				typedef std::conditional_t<
-					possible_grades_v<pre_candidate_basis_blade> == (default_bitset_t(1) << OrthogonalMetricSpace::vector_space_dimensions),
-					constant_basis_blade<OrthogonalMetricSpace::basis_vectors>, // pseudoscalar
-					pre_candidate_basis_blade // something else
-				> candidate_basis_blade;
+				constexpr static default_bitset_t result_possible_grades = GradedProduct::template possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade>, OrthogonalMetricSpace::vector_space_dimensions>::value;
 
 				typedef basis_vectors_t<LeftBasisBlade> left_basis_vectors;
 				typedef basis_vectors_t<RightBasisBlade> right_basis_vectors;
 
-				typedef basis_vectors_t<candidate_basis_blade> candidate_basis_vectors;
 				typedef bitwise_and_t<left_basis_vectors, right_basis_vectors> common_basis_vectors;
+				typedef bitwise_xor_t<left_basis_vectors, right_basis_vectors> result_basis_vectors;
 
-				typedef typename GradedProduct::template are_valid_grades<count_one_bits_t<left_basis_vectors>, count_one_bits_t<right_basis_vectors>, count_one_bits_t<candidate_basis_vectors> >::type test_type;
+				typedef std::conditional_t<
+					result_possible_grades == (default_bitset_t(1) << OrthogonalMetricSpace::vector_space_dimensions),
+					constant_basis_blade<OrthogonalMetricSpace::basis_vectors>, // pseudoscalar
+					typename _orthogonal_metric_deduce_basis_blade<result_possible_grades, result_basis_vectors>::type // something else
+				> candidate_basis_blade;
+
+				typedef std::conditional_t<
+					result_possible_grades != default_bitset_t(0),
+					typename GradedProduct::template are_valid_grades<count_one_bits_t<left_basis_vectors>, count_one_bits_t<right_basis_vectors>, count_one_bits_t<result_basis_vectors> >::type,
+					std::false_type
+				> test_type;
+
+				//TODO reordering_sign_t poderia ser otimizado em função do possible_grades_t caso left_basis_vectors == right_basis_vectors
 
 			public:
 

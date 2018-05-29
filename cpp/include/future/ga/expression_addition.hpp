@@ -219,13 +219,9 @@ namespace ga {
 		template<class LeftCoefficient, default_bitset_t LeftPossibleGrades, class LeftBitset, class RightCoefficient, default_bitset_t RightPossibleGrades, class RightBitset>
 		struct _addition<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > > {
 			typedef std::conditional_t<
-				LeftPossibleGrades == RightPossibleGrades && can_be_stored_v<LeftCoefficient> && can_be_stored_v<LeftBitset> && can_be_stored_v<RightCoefficient> && can_be_stored_v<RightBitset>,
-				component_t<stored_map_values, dynamic_basis_blade_t<LeftPossibleGrades, stored_map_values> >,
-				std::conditional_t<
-					lt_v<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > >,
-					add_t<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > >, // bind
-					add_t<component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> >, component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> > > // sort and bind
-				>
+				lt_v<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > >,
+				add_t<component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> >, component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> > >, // bind
+				add_t<component<RightCoefficient, dynamic_basis_blade<RightPossibleGrades, RightBitset> >, component<LeftCoefficient, dynamic_basis_blade<LeftPossibleGrades, LeftBitset> > > // sort and bind
 			> type;
 		};
 

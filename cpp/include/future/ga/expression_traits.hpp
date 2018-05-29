@@ -77,13 +77,7 @@ namespace ga {
 			constexpr static bool value = can_be_stored_v<Arguments...>;
 		};
 		
-		// Returns whether the given expressions are compile-time defined.
-		template<class... Expressions>
-		struct is_constant_expression;
-
-		template<class... Expressions>
-		constexpr bool is_constant_expression_v = is_constant_expression<Expressions...>::value;
-
+		// Specializations of is_constant_expression<Expressions...>.
 		template<class Expression, class... NextExpressions>
 		struct is_constant_expression<Expression, NextExpressions...> {
 			constexpr static bool value = is_constant_expression_v<Expression> && is_constant_expression_v<NextExpressions...>; // recursion
@@ -124,13 +118,7 @@ namespace ga {
 			constexpr static bool value = is_constant_expression_v<Arguments...>;
 		};
 
-		// Returns whether the given expression has stored entries.
-		template<class... Expressions>
-		struct has_stored_entries;
-
-		template<class... Expressions>
-		constexpr bool has_stored_entries_v = has_stored_entries<Expressions...>::value;
-
+		// Specializations of has_stored_entries<Expressions...>.
 		template<class Expression, class... NextExpressions>
 		struct has_stored_entries<Expression, NextExpressions...> {
 			constexpr static bool value = has_stored_entries_v<Expression> || has_stored_entries_v<NextExpressions...>; // recursion
@@ -195,13 +183,7 @@ namespace ga {
 		template<name_t Name, class Expression>
 		constexpr bool is_function_v = is_function<Name, Expression>::value;
 
-		// Returns the possible grades of a given basis blade.
-		template<class BasisBlade>
-		struct possible_grades;
-
-		template<class BasisBlade>
-		constexpr default_bitset_t possible_grades_v = possible_grades<BasisBlade>::value;
-
+		// Specializations of possible_grades<BasisVectors>.
 		template<default_bitset_t BasisVectors>
 		struct possible_grades<constant_basis_blade<BasisVectors> > {
 			constexpr static default_bitset_t value = default_bitset_t(1) << ones(BasisVectors);

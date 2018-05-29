@@ -25,8 +25,11 @@ namespace future {
 		typedef std::int32_t default_integral_t;
 		typedef std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 8, std::uint8_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 16, std::uint16_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 32, std::uint32_t, std::uint64_t> > > default_bitset_t;
 
+		template<class EntryType, std::size_t Size>
+		using default_sequence_container_t = std::array<EntryType, Size>;
+		
 		template<class ValueType>
-		using default_associative_t = std::map<default_bitset_t, ValueType>;
+		using default_associative_container_t = std::map<default_bitset_t, ValueType>;
 
 		typedef std::int32_t grade_t;
 
@@ -49,8 +52,6 @@ namespace future {
 	#include "ga/orthogonal_metric_mapping.hpp"
 	#include "ga/general_metric_mapping.hpp"
 
-	#include "ga/expression_dynamic_basis_blade.hpp"
-	#include "ga/expression_component.hpp"
 	#include "ga/expression_relational_operators.hpp"
 	#include "ga/expression_addition.hpp"
 	#include "ga/expression_product.hpp"
