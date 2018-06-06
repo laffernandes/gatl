@@ -76,7 +76,7 @@ namespace ga {
 		struct can_be_stored<function<Name, Arguments...> > {
 			constexpr static bool value = can_be_stored_v<Arguments...>;
 		};
-		
+
 		// Specializations of is_constant_expression<Expressions...>.
 		template<class Expression, class... NextExpressions>
 		struct is_constant_expression<Expression, NextExpressions...> {
@@ -117,6 +117,20 @@ namespace ga {
 		struct is_constant_expression<function<Name, Arguments...> > {
 			constexpr static bool value = is_constant_expression_v<Arguments...>;
 		};
+
+		// Returns whether the given expression is a scalar component.
+		template<class Expression>
+		struct is_scalar_component {
+			constexpr static bool value = false;
+		};
+
+		template<class Coefficient>
+		struct is_scalar_component<component<Coefficient, constant_basis_blade<default_bitset_t(0)> > > {
+			constexpr static bool value = true;
+		};
+
+		template<class Expression>
+		constexpr bool is_scalar_component_v = is_scalar_component<Expression>::value;
 
 		// Specializations of has_stored_entries<Expressions...>.
 		template<class Expression, class... NextExpressions>

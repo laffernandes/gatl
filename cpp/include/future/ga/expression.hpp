@@ -276,7 +276,20 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return pow(LeftArgument::eval<LowerTag, UpperTag>(args), RightArgument::eval<LowerTag, UpperTag>(args)); //TODO Aplicar padrões para otimização
+				/*
+				if (std::is_same_v<RightArgument, constant_value<-1> >) {
+					return 1 / LeftArgument::eval<LowerTag, UpperTag>(args);
+				}
+				else if (std::is_same_v<RightArgument, power_t<constant_value<2>, constant_value<-1> > >) {
+					return sqrt(LeftArgument::eval<LowerTag, UpperTag>(args));
+				}
+				else if (std::is_same_v<RightArgument, power_t<constant_value<3>, constant_value<-1> > >) {
+					return cbrt(LeftArgument::eval<LowerTag, UpperTag>(args));
+				}
+				else {
+				*/
+					return pow(LeftArgument::eval<LowerTag, UpperTag>(args), RightArgument::eval<LowerTag, UpperTag>(args));
+				//}
 			}
 
 			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
@@ -350,23 +363,18 @@ namespace ga {
 		using count_one_bits_t = typename count_one_bits<Bitset>::type;
 
 		// Lazy bitwise LEFT SHIFT operations.
-		template<class LeftType, class RightValue>
-		struct function<name_t::bitwise_left_shift, LeftType, RightValue> {
+		template<class LeftBitset, class RightValue>
+		struct function<name_t::bitwise_left_shift, LeftBitset, RightValue> {
 			typedef std::conditional_t<
-				std::is_same_v<LeftType, constant_value<0> > || std::is_same_v<LeftType, constant_bitset<default_bitset_t(0)> > || std::is_same_v<RightValue, constant_value<0> >,
-				LeftType, // simplify
+				std::is_same_v<LeftBitset, constant_bitset<default_bitset_t(0)> > || std::is_same_v<RightValue, constant_value<0> >,
+				LeftBitset, // simplify
 				function // default
 			> type;
 
 			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return LeftType::eval<LowerTag, UpperTag>(args) << RightValue::eval<LowerTag, UpperTag>(args);
+				return LeftBitset::eval<LowerTag, UpperTag>(args) << RightValue::eval<LowerTag, UpperTag>(args);
 			}
-		};
-
-		template<default_integral_t LeftValue, default_integral_t RightValue>
-		struct function<name_t::bitwise_left_shift, constant_value<LeftValue>, constant_value<RightValue> > {
-			typedef constant_value<(LeftValue << RightValue)> type; // simplify
 		};
 
 		template<default_bitset_t LeftBitset, default_integral_t RightValue>
@@ -374,11 +382,11 @@ namespace ga {
 			typedef constant_bitset<(LeftBitset << RightValue)> type; // simplify
 		};
 
-		template<class LeftType, class RightValue>
-		using bitwise_left_shift = function<name_t::bitwise_left_shift, LeftType, RightValue>;
+		template<class LeftBitset, class RightValue>
+		using bitwise_left_shift = function<name_t::bitwise_left_shift, LeftBitset, RightValue>;
 
-		template<class LeftType, class RightValue>
-		using bitwise_left_shift_t = typename bitwise_left_shift<LeftType, RightValue>::type;
+		template<class LeftBitset, class RightValue>
+		using bitwise_left_shift_t = typename bitwise_left_shift<LeftBitset, RightValue>::type;
 
 		// Lazy bitwise AND operations.
 		template<class LeftType, class RightType>

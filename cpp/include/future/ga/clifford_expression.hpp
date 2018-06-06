@@ -610,6 +610,11 @@ namespace ga {
 		constexpr clifford_expression & operator=(clifford_expression const &) = default;
 		constexpr clifford_expression & operator=(clifford_expression &&) = default;
 
+		template<class = std::enable_if_t<detail::is_scalar_component_t<Expression> && detail::can_be_stored_v<Expression> > >
+		constexpr operator coefficient_type() const {
+			return 0; //TODO Implementar
+		}
+
 		using super::values;
 		using super::bitsets;
 		using super::maps;
