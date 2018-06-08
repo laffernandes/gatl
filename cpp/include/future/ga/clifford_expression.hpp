@@ -571,6 +571,26 @@ namespace ga {
 			}
 
 		};
+		
+		// Cast scalar expressions to native value.
+		template<class Expression, bool IsConstant = is_constant_expression_v<Expression> >
+		struct _clifford_expression_to_native;
+		
+		template<class Expression>
+		struct _clifford_expression_to_native<Expression, true> {
+			template<class ValueCItr>
+			constexpr static decltype(auto) eval(ValueCItr const &) {
+				return Expression::eval<0, 0>(std::tuple<>());
+			}
+		};
+
+		template<class Expression>
+		struct _clifford_expression_to_native<Expression, false> {
+			template<class ValueCItr>
+			constexpr static decltype(auto) eval(ValueCItr const &value_itr) {
+				return *value_itr;
+			}
+		};
 
 	}
 
@@ -610,9 +630,9 @@ namespace ga {
 		constexpr clifford_expression & operator=(clifford_expression const &) = default;
 		constexpr clifford_expression & operator=(clifford_expression &&) = default;
 
-		template<class = std::enable_if_t<detail::is_scalar_component_t<Expression> && detail::can_be_stored_v<Expression> > >
+		template<class = std::enable_if_t<detail::is_scalar_component_v<Expression> && detail::can_be_stored_v<Expression> > >
 		constexpr operator coefficient_type() const {
-			return 0; //TODO Implementar
+			return detail::_clifford_expression_to_native<Expression>::eval(super::values().cbegin());
 		}
 
 		using super::values;
@@ -639,8 +659,6 @@ namespace ga {
 	constexpr decltype(auto) make_sequential_storage(Args &&... args) {
 		return detail::sequential_storage<std::common_type_t<Args...>, sizeof...(args)>(std::move(args)...);
 	}
-
-	//TODO Not supported yet (native scalar casting)
 
 }
 

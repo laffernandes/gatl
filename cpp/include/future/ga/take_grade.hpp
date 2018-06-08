@@ -61,7 +61,7 @@ namespace ga {
 	template<class CoefficientType, class Expression, class GradeType, default_integral_t K, class = std::enable_if_t<std::is_constructible_v<grade_t, GradeType> > >
 	constexpr decltype(auto) take_grade(clifford_expression<CoefficientType, Expression> const &arg, constant<GradeType, K> const &k) {
 		auto lazy = make_lazy_context(arg, k);
-		return lazy.eval(clifford_expression<CoefficientType, detail::keep_grade_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1> > >());
+		return lazy.eval(clifford_expression<default_integral_t, detail::keep_grade_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1> > >());
 	}
 
 	template<class Type, class GradeType, default_integral_t K, class = std::enable_if_t<std::is_constructible_v<grade_t, GradeType> > >
@@ -72,7 +72,7 @@ namespace ga {
 	template<class CoefficientType, class Expression>
 	constexpr decltype(auto) take_grade(clifford_expression<CoefficientType, Expression> const &arg, grade_t const k) {
 		auto lazy = make_lazy_context(arg, scalar(k));
-		return lazy.eval(clifford_expression<CoefficientType, detail::keep_grade_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1> > >());
+		return lazy.eval(clifford_expression<default_integral_t, detail::keep_grade_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1> > >());
 	}
 
 	template<class Type>

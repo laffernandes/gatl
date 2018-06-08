@@ -117,13 +117,55 @@ namespace ga {
 			typedef typename _tag_variables_in_function<Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex, function<Name>, Arguments...>::type type;
 		};
 
-		// Evaluates the given clifford_expression<...>.
+		// Evaluates the given (or the collection of) clifford_expression<...>.
 		template<tag_t LowerTag, tag_t UpperTag, class Expression>
-		struct eval_expression;
+		struct eval_clifford_expression;
+
+		template<tag_t LowerTag, tag_t UpperTag, class Expression, class... InputTypes>
+		using eval_coefficient_t = typename eval_clifford_expression<LowerTag, UpperTag, Expression>::template coefficient_type<InputTypes...>::type;
+
+		template<tag_t LowerTag, tag_t UpperTag, class Expression>
+		using eval_expression_t = typename eval_clifford_expression<LowerTag, UpperTag, Expression>::expression_type;
+
+		template<tag_t LowerTag, tag_t UpperTag, class Expression, class... NextExpressions>
+		struct eval_clifford_expressions {
+			template<class... InputTypes>
+			struct coefficient_type {
+				typedef std::common_type_t<typename eval_clifford_expression<LowerTag, UpperTag, Expression>::template coefficient_type<InputTypes...>::type, typename eval_clifford_expressions<LowerTag, UpperTag, NextExpressions...>::template coefficient_type<InputTypes...>::type> type;
+			};
+
+			// expression_type is not defined here.
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				eval_clifford_expression<LowerTag, UpperTag, Expression>::run(value_itr, bitset_itr, map_itr, args);
+				eval_clifford_expressions<LowerTag, UpperTag, NextExpressions...>::run(value_itr, bitset_itr, map_itr, args);
+			}
+		};
+
+		template<tag_t LowerTag, tag_t UpperTag, class Expression>
+		struct eval_clifford_expressions<LowerTag, UpperTag, Expression> {
+			template<class... InputTypes>
+			struct coefficient_type {
+				typedef typename eval_clifford_expression<LowerTag, UpperTag, Expression>::template coefficient_type<InputTypes...>::type type;
+			};
+
+			// expression_type is not defined here.
+
+			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
+			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+				eval_clifford_expression<LowerTag, UpperTag, Expression>::run(value_itr, bitset_itr, map_itr, args);
+			}
+		};
 
 		template<class Expression>
-		struct _eval_expression_do_nothing {
-			typedef Expression type;
+		struct _eval_clifford_expression_do_nothing {
+			template<class... InputTypes>
+			struct coefficient_type {
+				typedef default_integral_t type;
+			};
+
+			typedef Expression expression_type;
 
 			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
 			constexpr static void run(ValueItr const &, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &) {
@@ -131,36 +173,29 @@ namespace ga {
 			}
 		};
 
-		template<tag_t LowerTag, tag_t UpperTag, class Expression, class... NextExpressions>
-		struct _eval_expressions {
+		template<tag_t LowerTag, tag_t UpperTag, class ExpressionType, class... Expressions>
+		struct _eval_clifford_expression_move {
+			template<class... InputTypes>
+			struct coefficient_type {
+				typedef typename eval_clifford_expressions<LowerTag, UpperTag, Expressions...>::template coefficient_type<InputTypes...>::type type;
+			};
+
+			typedef ExpressionType expression_type;
+
 			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
 			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
-				eval_expression<LowerTag, UpperTag, Expression>::run(value_itr, bitset_itr, map_itr, args);
-				_eval_expressions<LowerTag, UpperTag, NextExpressions...>::run(value_itr, bitset_itr, map_itr, args);
+				eval_clifford_expressions<LowerTag, UpperTag, Expressions...>::run(value_itr, bitset_itr, map_itr, args);
 			}
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Expression>
-		struct _eval_expressions<LowerTag, UpperTag, Expression> {
-			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
-			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
-				eval_expression<LowerTag, UpperTag, Expression>::run(value_itr, bitset_itr, map_itr, args);
-			}
-		};
+		struct _eval_clifford_expression_store_value {
+			template<class... InputTypes>
+			struct coefficient_type {
+				typedef decltype(Expression::eval<LowerTag, UpperTag>(std::declval<std::tuple<InputTypes...> >())) type;
+			};
 
-		template<tag_t LowerTag, tag_t UpperTag, class Type, class... Expressions>
-		struct _eval_expression_move {
-			typedef Type type;
-
-			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
-			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
-				_eval_expressions<LowerTag, UpperTag, Expressions...>::run(value_itr, bitset_itr, map_itr, args);
-			}
-		};
-
-		template<tag_t LowerTag, tag_t UpperTag, class Expression>
-		struct _eval_expression_store_value {
-			typedef stored_value type;
+			typedef stored_value expression_type;
 
 			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
 			constexpr static void run(ValueItr &value_itr, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &args) {
@@ -170,8 +205,13 @@ namespace ga {
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Expression>
-		struct _eval_expression_store_map_values {
-			typedef stored_map_values type;
+		struct _eval_clifford_expression_store_map_values {
+			template<class... InputTypes>
+			struct coefficient_type {
+				typedef nullptr_t type; //TODO Not supported yet (map)
+			};
+
+			typedef stored_map_values expression_type;
 
 			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
 			constexpr static void run(ValueItr const &, BitsetItr const &, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
@@ -180,8 +220,13 @@ namespace ga {
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Expression>
-		struct _eval_expression_store_bitset {
-			typedef stored_bitset type;
+		struct _eval_clifford_expression_store_bitset {
+			template<class... InputTypes>
+			struct coefficient_type {
+				typedef default_integral_t type;
+			};
+
+			typedef stored_bitset expression_type;
 
 			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
 			constexpr static void run(ValueItr const &, BitsetItr &bitset_itr, MapIts const &, std::tuple<InputTypes...> const &args) {
@@ -191,8 +236,13 @@ namespace ga {
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Expression>
-		struct _eval_expression_store_map_bitsets {
-			typedef stored_map_bitsets type;
+		struct _eval_clifford_expression_store_map_bitsets {
+			template<class... InputTypes>
+			struct coefficient_type {
+				typedef nullptr_t type; //TODO Not supported yet (map)
+			};
+
+			typedef stored_map_bitsets expression_type;
 
 			template<class ValueItr, class BitsetItr, class MapIts, class... InputTypes>
 			constexpr static void run(ValueItr const &, BitsetItr const &, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
@@ -201,146 +251,143 @@ namespace ga {
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Expression>
-		struct eval_expression : _eval_expression_do_nothing<Expression> {
+		struct eval_clifford_expression : _eval_clifford_expression_do_nothing<Expression> {
 		};
 
-		template<tag_t LowerTag, tag_t UpperTag, class Expression>
-		using eval_expression_t = typename eval_expression<LowerTag, UpperTag, Expression>::type;
-
 		template<tag_t LowerTag, tag_t UpperTag, tag_t Tag, std::size_t Index>
-		struct eval_expression<LowerTag, UpperTag, get_value<Tag, Index> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, get_value<Tag, Index> > :
 			std::conditional_t<
 				(LowerTag <= Tag && Tag <= UpperTag),
-				_eval_expression_store_value<LowerTag, UpperTag, get_value<Tag, Index> >,
-				_eval_expression_do_nothing<get_value<Tag, Index> >
+				_eval_clifford_expression_store_value<LowerTag, UpperTag, get_value<Tag, Index> >,
+				_eval_clifford_expression_do_nothing<get_value<Tag, Index> >
 			> {
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, tag_t Tag, std::size_t Index>
-		struct eval_expression<LowerTag, UpperTag, get_map_values<Tag, Index> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, get_map_values<Tag, Index> > :
 			std::conditional_t<
 				(LowerTag <= Tag && Tag <= UpperTag),
-				_eval_expression_store_map_values<LowerTag, UpperTag, get_map_values<Tag, Index> >,
-				_eval_expression_do_nothing<get_map_values<Tag, Index> >
+				_eval_clifford_expression_store_map_values<LowerTag, UpperTag, get_map_values<Tag, Index> >,
+				_eval_clifford_expression_do_nothing<get_map_values<Tag, Index> >
 			> {
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, tag_t Tag, std::size_t Index>
-		struct eval_expression<LowerTag, UpperTag, get_bitset<Tag, Index> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, get_bitset<Tag, Index> > :
 			std::conditional_t<
 				(LowerTag <= Tag && Tag <= UpperTag),
-				_eval_expression_store_bitset<LowerTag, UpperTag, get_bitset<Tag, Index> >,
-				_eval_expression_do_nothing<get_bitset<Tag, Index> >
+				_eval_clifford_expression_store_bitset<LowerTag, UpperTag, get_bitset<Tag, Index> >,
+				_eval_clifford_expression_do_nothing<get_bitset<Tag, Index> >
 			> {
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, tag_t Tag, std::size_t Index>
-		struct eval_expression<LowerTag, UpperTag, get_map_bitsets<Tag, Index> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, get_map_bitsets<Tag, Index> > :
 			std::conditional_t<
 				(LowerTag <= Tag && Tag <= UpperTag),
-				_eval_expression_store_map_bitsets<LowerTag, UpperTag, get_map_bitsets<Tag, Index> >,
-				_eval_expression_do_nothing<get_map_bitsets<Tag, Index> >
+				_eval_clifford_expression_store_map_bitsets<LowerTag, UpperTag, get_map_bitsets<Tag, Index> >,
+				_eval_clifford_expression_do_nothing<get_map_bitsets<Tag, Index> >
 			> {
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, default_bitset_t PossibleGrades, class Bitset>
-		struct eval_expression<LowerTag, UpperTag, dynamic_basis_blade<PossibleGrades, Bitset> > :
-			_eval_expression_move<LowerTag, UpperTag, dynamic_basis_blade_t<PossibleGrades, eval_expression_t<LowerTag, UpperTag, Bitset> >, Bitset> {
+		struct eval_clifford_expression<LowerTag, UpperTag, dynamic_basis_blade<PossibleGrades, Bitset> > :
+			_eval_clifford_expression_move<LowerTag, UpperTag, dynamic_basis_blade_t<PossibleGrades, eval_expression_t<LowerTag, UpperTag, Bitset> >, Bitset> {
 		};
 
 		template<tag_t LowerTag, tag_t UpperTag, class Coefficient, class BasisBlade>
-		struct eval_expression<LowerTag, UpperTag, component<Coefficient, BasisBlade> > :
-			_eval_expression_move<LowerTag, UpperTag, component_t<eval_expression_t<LowerTag, UpperTag, Coefficient>, eval_expression_t<LowerTag, UpperTag, BasisBlade> >, Coefficient, BasisBlade> {
+		struct eval_clifford_expression<LowerTag, UpperTag, component<Coefficient, BasisBlade> > :
+			_eval_clifford_expression_move<LowerTag, UpperTag, component_t<eval_expression_t<LowerTag, UpperTag, Coefficient>, eval_expression_t<LowerTag, UpperTag, BasisBlade> >, Coefficient, BasisBlade> {
 		};
 
 		//TODO Considerar map
 		template<tag_t LowerTag, tag_t UpperTag, name_t Name, class Argument>
-		struct eval_expression<LowerTag, UpperTag, function<Name, Argument> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, function<Name, Argument> > :
 			std::conditional_t<
 				std::is_same_v<eval_expression_t<LowerTag, UpperTag, Argument>, stored_value>,
-				_eval_expression_store_value<LowerTag, UpperTag, function<Name, Argument> >,
+				_eval_clifford_expression_store_value<LowerTag, UpperTag, function<Name, Argument> >,
 				std::conditional_t<
 					std::is_same_v<eval_expression_t<LowerTag, UpperTag, Argument>, stored_bitset>,
-					_eval_expression_store_bitset<LowerTag, UpperTag, function<Name, Argument> >,
-					_eval_expression_move<LowerTag, UpperTag, typename function<Name, eval_expression_t<LowerTag, UpperTag, Argument> >::type, Argument>
+					_eval_clifford_expression_store_bitset<LowerTag, UpperTag, function<Name, Argument> >,
+					_eval_clifford_expression_move<LowerTag, UpperTag, typename function<Name, eval_expression_t<LowerTag, UpperTag, Argument> >::type, Argument>
 				>
 			> {
 		};
 
 		//TODO Considerar map
 		template<tag_t LowerTag, tag_t UpperTag, name_t Name, class LeftArgument, class RightArgument>
-		struct eval_expression<LowerTag, UpperTag, function<Name, LeftArgument, RightArgument> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, function<Name, LeftArgument, RightArgument> > :
 			std::conditional_t<
 				(std::is_same_v<eval_expression_t<LowerTag, UpperTag, LeftArgument>, stored_value> && can_be_stored_v<eval_expression_t<LowerTag, UpperTag, RightArgument> >) || (can_be_stored_v<eval_expression_t<LowerTag, UpperTag, LeftArgument> > && std::is_same_v<eval_expression_t<LowerTag, UpperTag, RightArgument>, stored_value>),
-				_eval_expression_store_value<LowerTag, UpperTag, function<Name, LeftArgument, RightArgument> >,
+				_eval_clifford_expression_store_value<LowerTag, UpperTag, function<Name, LeftArgument, RightArgument> >,
 				std::conditional_t<
 					(std::is_same_v<eval_expression_t<LowerTag, UpperTag, LeftArgument>, stored_bitset> && can_be_stored_v<eval_expression_t<LowerTag, UpperTag, RightArgument> >) || (can_be_stored_v<eval_expression_t<LowerTag, UpperTag, LeftArgument> > && std::is_same_v<eval_expression_t<LowerTag, UpperTag, RightArgument>, stored_bitset>),
-					_eval_expression_store_bitset<LowerTag, UpperTag, function<Name, LeftArgument, RightArgument> >,
-					_eval_expression_move<LowerTag, UpperTag, typename function<Name, eval_expression_t<LowerTag, UpperTag, LeftArgument>, eval_expression_t<LowerTag, UpperTag, RightArgument> >::type, LeftArgument, RightArgument>
+					_eval_clifford_expression_store_bitset<LowerTag, UpperTag, function<Name, LeftArgument, RightArgument> >,
+					_eval_clifford_expression_move<LowerTag, UpperTag, typename function<Name, eval_expression_t<LowerTag, UpperTag, LeftArgument>, eval_expression_t<LowerTag, UpperTag, RightArgument> >::type, LeftArgument, RightArgument>
 				>
 			> {
 		};
 
 		//TODO Considerar map
 		template<tag_t LowerTag, tag_t UpperTag, class Argument, class... NextArguments>
-		struct eval_expression<LowerTag, UpperTag, add<Argument, NextArguments...> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, add<Argument, NextArguments...> > :
 			std::conditional_t<
 				(std::is_same_v<eval_expression_t<LowerTag, UpperTag, Argument>, stored_value> && can_be_stored_v<eval_expression_t<LowerTag, UpperTag, add_t<NextArguments...> > >) || (can_be_stored_v<eval_expression_t<LowerTag, UpperTag, Argument> > && std::is_same_v<eval_expression_t<LowerTag, UpperTag, add_t<NextArguments...> >, stored_value>),
-				_eval_expression_store_value<LowerTag, UpperTag, add<Argument, NextArguments...> >,
-				_eval_expression_move<LowerTag, UpperTag, addition_t<eval_expression_t<LowerTag, UpperTag, Argument>, eval_expression_t<LowerTag, UpperTag, add_t<NextArguments...> > >, Argument, add_t<NextArguments...> >
+				_eval_clifford_expression_store_value<LowerTag, UpperTag, add<Argument, NextArguments...> >,
+				_eval_clifford_expression_move<LowerTag, UpperTag, addition_t<eval_expression_t<LowerTag, UpperTag, Argument>, eval_expression_t<LowerTag, UpperTag, add_t<NextArguments...> > >, Argument, add_t<NextArguments...> >
 			> {
 		};
 
 		//TODO Considerar map
 		//TODO Lidar com dois component<Coefficient, dynamic_basis_blade<PossibleGrades, Bitset> > com mesmo PossibleGrades
 		template<tag_t LowerTag, tag_t UpperTag, class Coefficient, class BasisBlade, class... NextComponents>
-		struct eval_expression<LowerTag, UpperTag, add<component<Coefficient, BasisBlade>, NextComponents...> > :
-			_eval_expression_move<LowerTag, UpperTag, addition_t<component_t<eval_expression_t<LowerTag, UpperTag, Coefficient>, eval_expression_t<LowerTag, UpperTag, BasisBlade> >, eval_expression_t<LowerTag, UpperTag, add_t<NextComponents...> > >, Coefficient, BasisBlade, add_t<NextComponents...> > {
+		struct eval_clifford_expression<LowerTag, UpperTag, add<component<Coefficient, BasisBlade>, NextComponents...> > :
+			_eval_clifford_expression_move<LowerTag, UpperTag, addition_t<component_t<eval_expression_t<LowerTag, UpperTag, Coefficient>, eval_expression_t<LowerTag, UpperTag, BasisBlade> >, eval_expression_t<LowerTag, UpperTag, add_t<NextComponents...> > >, Coefficient, BasisBlade, add_t<NextComponents...> > {
 		};
 
 		//TODO Considerar map
 		template<tag_t LowerTag, tag_t UpperTag, class Argument, class... NextArguments>
-		struct eval_expression<LowerTag, UpperTag, mul<Argument, NextArguments...> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, mul<Argument, NextArguments...> > :
 			std::conditional_t<
 				(std::is_same_v<eval_expression_t<LowerTag, UpperTag, Argument>, stored_value> && can_be_stored_v<eval_expression_t<LowerTag, UpperTag, mul_t<NextArguments...> > >) || (can_be_stored_v<eval_expression_t<LowerTag, UpperTag, Argument> > && std::is_same_v<eval_expression_t<LowerTag, UpperTag, mul_t<NextArguments...> >, stored_value>),
-				_eval_expression_store_value<LowerTag, UpperTag, mul<Argument, NextArguments...> >,
-				_eval_expression_move<LowerTag, UpperTag, product_t<eval_expression_t<LowerTag, UpperTag, Argument>, eval_expression_t<LowerTag, UpperTag, mul_t<NextArguments...> >, real_mapping>, Argument, mul_t<NextArguments...> >
+				_eval_clifford_expression_store_value<LowerTag, UpperTag, mul<Argument, NextArguments...> >,
+				_eval_clifford_expression_move<LowerTag, UpperTag, product_t<eval_expression_t<LowerTag, UpperTag, Argument>, eval_expression_t<LowerTag, UpperTag, mul_t<NextArguments...> >, real_mapping>, Argument, mul_t<NextArguments...> >
 			> {
 		};
 
 		//TODO Considerar map
 		template<tag_t LowerTag, tag_t UpperTag, class LeftArgument, class RightArgument>
-		struct eval_expression<LowerTag, UpperTag, power<LeftArgument, RightArgument> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, power<LeftArgument, RightArgument> > :
 			std::conditional_t<
 				(std::is_same_v<eval_expression_t<LowerTag, UpperTag, LeftArgument>, stored_value> && can_be_stored_v<eval_expression_t<LowerTag, UpperTag, RightArgument> >) || (can_be_stored_v<eval_expression_t<LowerTag, UpperTag, LeftArgument> > && std::is_same_v<eval_expression_t<LowerTag, UpperTag, RightArgument>, stored_value>),
-				_eval_expression_store_value<LowerTag, UpperTag, power<LeftArgument, RightArgument> >,
-				_eval_expression_move<LowerTag, UpperTag, power_t<eval_expression_t<LowerTag, UpperTag, LeftArgument>, eval_expression_t<LowerTag, UpperTag, RightArgument> >, LeftArgument, RightArgument>
+				_eval_clifford_expression_store_value<LowerTag, UpperTag, power<LeftArgument, RightArgument> >,
+				_eval_clifford_expression_move<LowerTag, UpperTag, power_t<eval_expression_t<LowerTag, UpperTag, LeftArgument>, eval_expression_t<LowerTag, UpperTag, RightArgument> >, LeftArgument, RightArgument>
 			> {
 		};
 
 		//TODO Considerar map
 		template<tag_t LowerTag, tag_t UpperTag, class LeftBitset, class RightValue>
-		struct eval_expression<LowerTag, UpperTag, bitwise_left_shift<LeftBitset, RightValue> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, bitwise_left_shift<LeftBitset, RightValue> > :
 			std::conditional_t<
 				(std::is_same_v<eval_expression_t<LowerTag, UpperTag, LeftBitset>, stored_bitset> && can_be_stored_v<eval_expression_t<LowerTag, UpperTag, RightValue> >) || (can_be_stored_v<eval_expression_t<LowerTag, UpperTag, LeftBitset> > && std::is_same_v<eval_expression_t<LowerTag, UpperTag, RightValue>, stored_value>),
-				_eval_expression_store_bitset<LowerTag, UpperTag, bitwise_left_shift<LeftBitset, RightValue> >,
-				_eval_expression_move<LowerTag, UpperTag, bitwise_left_shift_t<eval_expression_t<LowerTag, UpperTag, LeftBitset>, eval_expression_t<LowerTag, UpperTag, RightValue> >, LeftBitset, RightValue>
+				_eval_clifford_expression_store_bitset<LowerTag, UpperTag, bitwise_left_shift<LeftBitset, RightValue> >,
+				_eval_clifford_expression_move<LowerTag, UpperTag, bitwise_left_shift_t<eval_expression_t<LowerTag, UpperTag, LeftBitset>, eval_expression_t<LowerTag, UpperTag, RightValue> >, LeftBitset, RightValue>
 			> {
 		};
 
 		//TODO Considerar map
 		template<tag_t LowerTag, tag_t UpperTag, class Test, class TrueValue, class FalseValue>
-		struct eval_expression<LowerTag, UpperTag, if_else<Test, TrueValue, FalseValue> > :
+		struct eval_clifford_expression<LowerTag, UpperTag, if_else<Test, TrueValue, FalseValue> > :
 			std::conditional_t<
 				can_be_stored_v<eval_expression_t<LowerTag, UpperTag, Test>, eval_expression_t<LowerTag, UpperTag, TrueValue>, eval_expression_t<LowerTag, UpperTag, TrueValue> >,
-				_eval_expression_store_value<LowerTag, UpperTag, if_else<Test, TrueValue, FalseValue> >,
-				_eval_expression_move<LowerTag, UpperTag, if_else_t<eval_expression_t<LowerTag, UpperTag, Test>, eval_expression_t<LowerTag, UpperTag, TrueValue>, eval_expression_t<LowerTag, UpperTag, TrueValue> >, Test, TrueValue, FalseValue>
+				_eval_clifford_expression_store_value<LowerTag, UpperTag, if_else<Test, TrueValue, FalseValue> >,
+				_eval_clifford_expression_move<LowerTag, UpperTag, if_else_t<eval_expression_t<LowerTag, UpperTag, Test>, eval_expression_t<LowerTag, UpperTag, TrueValue>, eval_expression_t<LowerTag, UpperTag, TrueValue> >, Test, TrueValue, FalseValue>
 			> {
 		};
 		
 		template<tag_t LowerTag, tag_t UpperTag, class CoefficientType, class Expression, class... InputTypes>
 		constexpr static decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &expression, std::tuple<InputTypes...> const &args) {
-			typedef clifford_expression<CoefficientType, eval_expression_t<LowerTag, UpperTag, Expression> > result_type;
+			typedef clifford_expression<eval_coefficient_t<LowerTag, UpperTag, Expression, std::remove_const_t<std::remove_reference_t<InputTypes> >...>, eval_expression_t<LowerTag, UpperTag, Expression> > result_type;
 
 			typename result_type::value_storage_type values;
 			typename result_type::bitset_storage_type bitsets;
@@ -350,7 +397,7 @@ namespace ga {
 			auto bitset_itr = bitsets.begin();
 			auto map_itr = maps.begin();
 
-			eval_expression<LowerTag, UpperTag, Expression>::run(value_itr, bitset_itr, map_itr, args);
+			eval_clifford_expression<LowerTag, UpperTag, Expression>::run(value_itr, bitset_itr, map_itr, args);
 
 			return result_type(std::move(values), std::move(bitsets), std::move(maps));
 		}
@@ -524,8 +571,8 @@ namespace ga {
 		}
 
 		template<class CoefficientType, class Expression, class = std::enable_if_t<super::stored_inputs_count() == 0> >
-		constexpr decltype(auto) eval(clifford_expression<CoefficientType, Expression> &&expression) const {
-			return std::move(expression);
+		constexpr decltype(auto) eval(clifford_expression<CoefficientType, Expression> &&) const {
+			return clifford_expression<CoefficientType, Expression>();
 		}
 	};
 

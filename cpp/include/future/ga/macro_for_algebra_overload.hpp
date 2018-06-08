@@ -62,7 +62,7 @@
 			return rnorm(arg, space); \
 		} \
 		\
-		template<class CoefficientType, class Expression, class PseudoscalarType, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
 		constexpr decltype(auto) dual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
 			return dual(arg, pseudoscalar, space); \
 		} \
@@ -72,7 +72,7 @@
 			return dual(arg, pseudoscalar(space), space); \
 		} \
 		\
-		template<class CoefficientType, class Expression, class PseudoscalarType, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
 		constexpr decltype(auto) undual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
 			return undual(arg, pseudoscalar, space); \
 		} \
@@ -145,7 +145,7 @@
 			return rnorm(arg, space); \
 		} \
 		\
-		template<class CoefficientType, class Expression, class PseudoscalarType, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
 		constexpr decltype(auto) dual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
 			return dual(arg, pseudoscalar, space); \
 		} \
@@ -155,7 +155,7 @@
 			return dual(arg, pseudoscalar(space), space); \
 		} \
 		\
-		template<class CoefficientType, class Expression, class PseudoscalarType, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
 		constexpr decltype(auto) undual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
 			return undual(arg, pseudoscalar, space); \
 		} \

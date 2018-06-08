@@ -38,17 +38,17 @@ namespace ga {
 			reordering_sign,    // 0
 			count_one_bits,     // 1
 			
-			power,              // 2
-			mul,                // 3
-			add,                // 4
+			bitwise_left_shift, // 2
+			bitwise_and,        // 3
+			bitwise_xor,        // 4
 
-			bitwise_left_shift, // 5
-			bitwise_and,        // 6
-			bitwise_xor,        // 7
+			equal,              // 5
 
-			equal,              // 8
+			if_else,            // 6
 
-			if_else             // 9
+			power,              // 7
+			mul,                // 8
+			add                 // 9
 		};
 
 		// Integral value defined in compilation time.
@@ -236,6 +236,81 @@ namespace ga {
 			typedef constant_value<0> type; // simplify
 		};
 
+		// Exponentiation of real-valued expressions.
+		template<class LeftArgument, class RightArgument>
+		struct function<name_t::power, LeftArgument, RightArgument>;
+
+		template<class LeftArgument, class RightArgument>
+		using power = function<name_t::power, LeftArgument, RightArgument>;
+
+		template<class LeftArgument, class RightArgument>
+		struct _power;
+
+		template<class LeftArgument, class RightArgument>
+		using power_t = typename _power<LeftArgument, RightArgument>::type;
+
+		template<class LeftArgument, class RightArgument>
+		struct function<name_t::power, LeftArgument, RightArgument> {
+			typedef function type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return pow(LeftArgument::eval<LowerTag, UpperTag>(args), RightArgument::eval<LowerTag, UpperTag>(args));
+			}
+
+			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+			static_assert(!std::is_same_v<RightArgument, constant_value<0> >, "The right-hand side argument cannot be ga::detail::constant_value<0>.");
+			static_assert(!std::is_same_v<RightArgument, constant_value<1> >, "The right-hand side argument cannot be ga::detail::constant_value<1>.");
+		};
+
+		template<class LeftArgument>
+		struct function<name_t::power, LeftArgument, constant_value<-1> > {
+			typedef function type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return 1 / cast_to_floating_point(LeftArgument::eval<LowerTag, UpperTag>(args));
+			}
+
+			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+		};
+
+		template<class LeftArgument>
+		struct function<name_t::power, LeftArgument, constant_value<2> > {
+			typedef function type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return square(LeftArgument::eval<LowerTag, UpperTag>(args));
+			}
+
+			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+		};
+
+		template<class LeftArgument>
+		struct function<name_t::power, LeftArgument, power<constant_value<2>, constant_value<-1> > > {
+			typedef function type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return sqrt(LeftArgument::eval<LowerTag, UpperTag>(args));
+			}
+
+			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+		};
+
+		template<class LeftArgument>
+		struct function<name_t::power, LeftArgument, power<constant_value<3>, constant_value<-1> > > {
+			typedef function type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return cbrt(LeftArgument::eval<LowerTag, UpperTag>(args));
+			}
+
+			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+		};
+
 		// Multiplication of real-valued expressions.
 		template<class... Arguments>
 		struct function<name_t::mul, Arguments...>;
@@ -259,6 +334,42 @@ namespace ga {
 			static_assert(!is_any_v<constant_value<1>, Argument, NextArguments...>, "The argument ga::detail::constant_value<1> is invalid.");
 		};
 
+		template<class... NextArguments>
+		struct function<name_t::mul, constant_value<-1>, NextArguments...> {
+			typedef function type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return -mul_t<NextArguments...>::eval<LowerTag, UpperTag>(args);
+			}
+
+			static_assert(!is_any_v<constant_value<0>, NextArguments...>, "The argument ga::detail::constant_value<0> is invalid.");
+			static_assert(!is_any_v<constant_value<1>, NextArguments...>, "The argument ga::detail::constant_value<1> is invalid.");
+		};
+
+		template<class LeftArgument, class RightArgument>
+		struct function<name_t::mul, LeftArgument, power<RightArgument, constant_value<-1> > > {
+			typedef function type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return LeftArgument::eval<LowerTag, UpperTag>(args) / RightArgument::eval<LowerTag, UpperTag>(args);
+			}
+
+			static_assert(!is_any_v<constant_value<0>, LeftArgument>, "The argument ga::detail::constant_value<0> is invalid.");
+			static_assert(!is_any_v<constant_value<1>, LeftArgument>, "The argument ga::detail::constant_value<1> is invalid.");
+		};
+
+		template<class RightArgument>
+		struct function<name_t::mul, constant_value<-1>, power<RightArgument, constant_value<-1> > > {
+			typedef function type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return -power<RightArgument, constant_value<-1> >::eval<LowerTag, UpperTag>(args);
+			}
+		};
+
 		template<class Argument>
 		struct function<name_t::mul, Argument> {
 			typedef Argument type; // simplify
@@ -268,43 +379,6 @@ namespace ga {
 		struct function<name_t::mul> {
 			typedef constant_value<0> type; // simplify
 		};
-
-		// Exponentiation of real-valued expressions.
-		template<class LeftArgument, class RightArgument>
-		struct function<name_t::power, LeftArgument, RightArgument> {
-			typedef function type;
-
-			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
-			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				/*
-				if (std::is_same_v<RightArgument, constant_value<-1> >) {
-					return 1 / LeftArgument::eval<LowerTag, UpperTag>(args);
-				}
-				else if (std::is_same_v<RightArgument, power_t<constant_value<2>, constant_value<-1> > >) {
-					return sqrt(LeftArgument::eval<LowerTag, UpperTag>(args));
-				}
-				else if (std::is_same_v<RightArgument, power_t<constant_value<3>, constant_value<-1> > >) {
-					return cbrt(LeftArgument::eval<LowerTag, UpperTag>(args));
-				}
-				else {
-				*/
-					return pow(LeftArgument::eval<LowerTag, UpperTag>(args), RightArgument::eval<LowerTag, UpperTag>(args));
-				//}
-			}
-
-			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
-			static_assert(!std::is_same_v<RightArgument, constant_value<0> >, "The right-hand side argument cannot be ga::detail::constant_value<0>.");
-			static_assert(!std::is_same_v<RightArgument, constant_value<1> >, "The right-hand side argument cannot be ga::detail::constant_value<1>.");
-		};
-
-		template<class LeftArgument, class RightArgument>
-		using power = function<name_t::power, LeftArgument, RightArgument>;
-
-		template<class LeftArgument, class RightArgument>
-		struct _power;
-
-		template<class LeftArgument, class RightArgument>
-		using power_t = typename _power<LeftArgument, RightArgument>::type;
 
 		// Lazy computation of the sign induced by the canonical reordering of basis vectors in bilinear products.
 		template<class LeftBitset, class RightBitset>
@@ -397,7 +471,7 @@ namespace ga {
 				std::conditional_t<
 					std::is_same_v<LeftType, constant_bitset<default_bitset_t(0)> > || std::is_same_v<RightType, constant_bitset<default_bitset_t(0)> >,
 					constant_bitset<default_bitset_t(0)>, // simplify
-					function // degault
+					function // default
 				>
 			> type;
 				

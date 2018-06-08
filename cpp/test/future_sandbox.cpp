@@ -149,7 +149,7 @@ void test_scp(metric_space<MetricSpaceType> const &mtr, std::string const &name)
 	std::cout << std::endl;
 
 	std::cout << "scp(ei, ei^ej) = " << eval(scp(ei, eiej, mtr)) << std::endl;
-	std::cout << "scp(ei^ej, ei^ej) = " << eval(scp(eiej, eiej, mtr)) << std::endl; //TODO Dedução incorreta em lazy
+	std::cout << "scp(ei^ej, ei^ej) = " << eval(scp(eiej, eiej, mtr)) << std::endl;
 	std::cout << "scp(ei^ek, ei^ej) = " << eval(scp(eiek, eiej, mtr)) << std::endl;
 	std::cout << std::endl;
 
@@ -503,6 +503,39 @@ int main() {
 
 		std::cout << std::endl;
 	}
+
+	{
+		using namespace ga3m;
+
+		double c1 = 5.0;
+		double c2 = 2.0;
+		double c3 = -4.5;
+
+		auto v = c1 * e1 + c2 * e2 + c3 * e3;
+		auto p = no + v + (scp(v, v) / c<2>) * ni;
+
+		/**/
+		auto x1 = scp(p, e1);
+		double d1 = x1;
+		std::cout << x1 << std::endl;
+		/**/
+
+		/**/
+		auto x2 = sqrt(scp(e1, e1));
+		double d2 = x2;
+		std::cout << x2 << std::endl;
+		/**/
+
+		/**/
+		auto x3 = pow(c<2> * scp(e1, e1), c<-3>);
+		double d3 = x3;
+		std::cout << x3 << std::endl;
+		/**/
+
+		std::cout << std::endl;
+	}
+
+	auto test = c<3> / c<2>;
 
 	return EXIT_SUCCESS;
 }

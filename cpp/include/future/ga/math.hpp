@@ -8,7 +8,7 @@ namespace ga {
 	template<class LeftCoefficientType, class LeftCoefficient, class RightCoefficientType, class RightCoefficient>
 	constexpr decltype(auto) pow(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
 		auto const lazy = make_lazy_context(lhs, rhs);
-		return lazy.eval(scalar_clifford_expression<std::common_type_t<LeftCoefficientType, RightCoefficientType>, detail::power_t<LeftCoefficient, RightCoefficient> >());
+		return lazy.eval(scalar_clifford_expression<default_integral_t, detail::power_t<detail::coefficient_t<decltype(lazy)::argument_expression_t<0> >, detail::coefficient_t<decltype(lazy)::argument_expression_t<1> > > >());
 	}
 
 	template<class LeftCoefficientType, class LeftCoefficient, class RightType, class = std::enable_if_t<!is_clifford_expression_v<RightType> > >
@@ -25,14 +25,14 @@ namespace ga {
 
 	template<class CoefficientType, class Coefficient>
 	constexpr decltype(auto) sqrt(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
-		return pow(arg, clifford_expression<CoefficientType, detail::power_t<detail::constant_value<2>, detail::constant_value<-1> > >());
+		return pow(arg, scalar_clifford_expression<CoefficientType, detail::power_t<detail::constant_value<2>, detail::constant_value<-1> > >());
 	}
 
 	using std::cbrt;
 
 	template<class CoefficientType, class Coefficient>
 	constexpr decltype(auto) cbrt(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
-		return pow(arg, clifford_expression<CoefficientType, detail::power_t<detail::constant_value<3>, detail::constant_value<-1> > >());
+		return pow(arg, scalar_clifford_expression<CoefficientType, detail::power_t<detail::constant_value<3>, detail::constant_value<-1> > >());
 	}
 
 	using std::abs;

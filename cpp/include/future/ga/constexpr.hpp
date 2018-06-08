@@ -62,6 +62,23 @@ namespace ga {
 			return lhs != default_bitset_t(0) ? (ones(lhs & rhs) + swaps_count((lhs >> 1), rhs)) : 0;
 		}
 
+		// Cast the given integral type to the default floating point type.
+		template<class Type, class = std::enable_if_t<std::is_integral_v<Type> > >
+		constexpr decltype(auto) cast_to_floating_point(Type const &arg) {
+			return static_cast<default_floating_point_t>(arg);
+		}
+
+		template<class Type, class = std::enable_if_t<!std::is_integral_v<Type> > >
+		constexpr decltype(auto) cast_to_floating_point(Type &&arg) {
+			return std::move(arg);
+		}
+
+		// Returns the square of a given value.
+		template<class Type>
+		constexpr decltype(auto) square(Type const &arg) {
+			return arg * arg;
+		}
+
 	}
 
 }
