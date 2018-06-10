@@ -43,8 +43,6 @@ namespace ga {
 					std::false_type
 				> test_type;
 
-				//TODO reordering_sign_t poderia ser otimizado em função do possible_grades_t caso left_basis_vectors == right_basis_vectors
-
 			public:
 
 				typedef if_else_t<

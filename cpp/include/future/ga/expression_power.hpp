@@ -36,30 +36,6 @@ namespace ga {
 		template<default_integral_t Value>
 		using simpler_isqrt_t = typename simpler_isqrt<Value>::type;
 
-		// Returns if the given expression may be positive.
-		template<class Expression>
-		struct may_be_positive {
-			constexpr static bool value = true;
-		};
-
-		template<class Expression>
-		constexpr bool may_be_positive_v = may_be_positive<Expression>::value;
-
-		template<default_integral_t Value>
-		struct may_be_positive<constant_value<Value> > {
-			constexpr static bool value = sign(Value) > 0;
-		};
-
-		template<class Argument, class... NextArguments>
-		struct may_be_positive<mul<Argument, NextArguments...> > {
-			constexpr static bool value = may_be_positive_v<Argument> && may_be_positive_v<mul_t<NextArguments...> >;
-		};
-
-		template<class LeftArgument, class RightArgument>
-		struct may_be_positive<power<LeftArgument, RightArgument> > {
-			constexpr static bool value = may_be_positive_v<LeftArgument> || !is_constant_expression_v<RightArgument>;
-		};
-
 		// Specializations of _power_level2<LeftArgument, RightArgument>.
 		template<class LeftExpression, class RightExpression>
 		struct _power_level2 {
@@ -95,8 +71,8 @@ namespace ga {
 				>,
 				std::conditional_t<
 					(RightValue > 0),
-					simpler_ipow_t<LeftValue, absolute(RightValue)>, // X^{Y} = simpler (simplify)
-					power<simpler_ipow_t<LeftValue, absolute(RightValue)>, constant_value<-1> > // X^{Y} = simpler (simplify and bind)
+					simpler_ipow_t<LeftValue, iabs(RightValue)>, // X^{Y} = simpler (simplify)
+					power<simpler_ipow_t<LeftValue, iabs(RightValue)>, constant_value<-1> > // X^{Y} = simpler (simplify and bind)
 				>
 			> type;
 		};

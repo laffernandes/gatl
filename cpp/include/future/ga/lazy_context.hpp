@@ -366,6 +366,26 @@ namespace ga {
 		};
 
 		//TODO Considerar map
+		template<tag_t LowerTag, tag_t UpperTag, class LeftBitset, class RightBitset>
+		struct eval_clifford_expression<LowerTag, UpperTag, reordering_sign<LeftBitset, RightBitset> > :
+			std::conditional_t<
+				(std::is_same_v<eval_expression_t<LowerTag, UpperTag, LeftBitset>, stored_bitset> && can_be_stored_v<eval_expression_t<LowerTag, UpperTag, RightBitset> >) || (can_be_stored_v<eval_expression_t<LowerTag, UpperTag, LeftBitset> > && std::is_same_v<eval_expression_t<LowerTag, UpperTag, RightBitset>, stored_bitset>),
+				_eval_clifford_expression_store_value<LowerTag, UpperTag, reordering_sign<LeftBitset, RightBitset> >,
+				_eval_clifford_expression_move<LowerTag, UpperTag, reordering_sign_t<eval_expression_t<LowerTag, UpperTag, LeftBitset>, eval_expression_t<LowerTag, UpperTag, RightBitset> >, LeftBitset, RightBitset>
+			> {
+		};
+
+		//TODO Considerar map
+		template<tag_t LowerTag, tag_t UpperTag, class Bitset>
+		struct eval_clifford_expression<LowerTag, UpperTag, count_one_bits<Bitset> > :
+			std::conditional_t<
+				std::is_same_v<eval_expression_t<LowerTag, UpperTag, Bitset>, stored_bitset>,
+				_eval_clifford_expression_store_value<LowerTag, UpperTag, count_one_bits<Bitset> >,
+				_eval_clifford_expression_move<LowerTag, UpperTag, count_one_bits_t<eval_expression_t<LowerTag, UpperTag, Bitset> >, Bitset>
+			> {
+		};
+
+		//TODO Considerar map
 		template<tag_t LowerTag, tag_t UpperTag, class LeftBitset, class RightValue>
 		struct eval_clifford_expression<LowerTag, UpperTag, bitwise_left_shift<LeftBitset, RightValue> > :
 			std::conditional_t<

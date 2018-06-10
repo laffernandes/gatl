@@ -6,7 +6,7 @@ namespace ga {
 	namespace detail {
 
 		// Returns the absolute integer value.
-		constexpr default_integral_t absolute(default_integral_t arg) {
+		constexpr default_integral_t iabs(default_integral_t arg) {
 			return arg >= 0 ? arg : -arg;
 		}
 

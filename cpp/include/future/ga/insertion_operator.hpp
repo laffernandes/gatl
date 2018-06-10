@@ -194,6 +194,96 @@ namespace ga {
 			}
 		};
 
+		template<class Value>
+		struct write_expression<absolute<Value> > {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr) {
+				os << "abs(";
+				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr);
+				os << ")";
+			}
+		};
+
+		template<class Value>
+		struct write_expression<exponential<Value> > {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr) {
+				os << "exp(";
+				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr);
+				os << ")";
+			}
+		};
+
+		template<class Value>
+		struct write_expression<logarithm<Value> > {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr) {
+				os << "log(";
+				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr);
+				os << ")";
+			}
+		};
+
+		template<class Value>
+		struct write_expression<cosine<Value> > {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr) {
+				os << "cos(";
+				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr);
+				os << ")";
+			}
+		};
+
+		template<class Value>
+		struct write_expression<sine<Value> > {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr) {
+				os << "sin(";
+				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr);
+				os << ")";
+			}
+		};
+
+		template<class Value>
+		struct write_expression<tangent<Value> > {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr) {
+				os << "tan(";
+				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr);
+				os << ")";
+			}
+		};
+
+		template<class Value>
+		struct write_expression<hyperbolic_cosine<Value> > {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr) {
+				os << "cosh(";
+				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr);
+				os << ")";
+			}
+		};
+
+		template<class Value>
+		struct write_expression<hyperbolic_sine<Value> > {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr) {
+				os << "sinh(";
+				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr);
+				os << ")";
+			}
+		};
+
+		template<class Value>
+		struct write_expression<hyperbolic_tangent<Value> > {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr) {
+				os << "tanh(";
+				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr);
+				os << ")";
+			}
+		};
+
 		template<class LeftBitset, class RightBitset>
 		struct write_expression<reordering_sign<LeftBitset, RightBitset> > {
 			template<class ValueCItr, class BitsetCItr, class MapCIts>
@@ -259,6 +349,18 @@ namespace ga {
 				os << "(";
 				write_expression<LeftType>::run(os, value_citr, bitset_citr, map_citr);
 				os << " == ";
+				write_expression<RightType>::run(os, value_citr, bitset_citr, map_citr);
+				os << ")";
+			}
+		};
+
+		template<class LeftType, class RightType>
+		struct write_expression<less_or_equal<LeftType, RightType> > {
+			template<class ValueCItr, class BitsetCItr, class MapCIts>
+			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr) {
+				os << "(";
+				write_expression<LeftType>::run(os, value_citr, bitset_citr, map_citr);
+				os << " <= ";
 				write_expression<RightType>::run(os, value_citr, bitset_citr, map_citr);
 				os << ")";
 			}

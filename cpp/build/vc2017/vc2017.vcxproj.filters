@@ -468,6 +468,15 @@
     <ClInclude Include="..\..\include\future\ga\math.hpp">
       <Filter>Header Files\future\ga</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\grade.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\conformal_metric_space.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\future\ga\default_tolerance.hpp">
+      <Filter>Header Files\future\ga</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\sandbox.cpp">

@@ -109,7 +109,6 @@ void test_op() {
 
 template<class MetricSpaceType>
 void test_scp(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
-	/**/
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -120,20 +119,19 @@ void test_scp(metric_space<MetricSpaceType> const &mtr, std::string const &name)
 	auto eval = [&](auto const &arg) -> decltype(auto) {
 		return arg;
 	};
-	/*/
-	auto lazy = make_lazy_context(e(c<1>), e(c<2>), e(c<3>), e(1), e(2), e(3));
-	
-	auto e1 = lazy.argument<0>();
-	auto e2 = lazy.argument<1>();
-	auto e3 = lazy.argument<2>();
-	auto ei = lazy.argument<3>();
-	auto ej = lazy.argument<4>();
-	auto ek = lazy.argument<5>();
-	
-	auto eval = [&](auto const &arg) -> decltype(auto) {
-		return lazy.eval(arg);
-	};
-	/**/
+
+//	auto lazy = make_lazy_context(e(c<1>), e(c<2>), e(c<3>), e(1), e(2), e(3));
+//	
+//	auto e1 = lazy.argument<0>();
+//	auto e2 = lazy.argument<1>();
+//	auto e3 = lazy.argument<2>();
+//	auto ei = lazy.argument<3>();
+//	auto ej = lazy.argument<4>();
+//	auto ek = lazy.argument<5>();
+//	
+//	auto eval = [&](auto const &arg) -> decltype(auto) {
+//		return lazy.eval(arg);
+//	};
 
 	auto e1e2 = op(e1, e2, mtr);
 	auto e1e3 = op(e1, e3, mtr);
@@ -427,6 +425,26 @@ void test_variable() {
 	span_line(lazy.argument<2>(), lazy.argument<0>(), lazy.argument<3>(), lazy_eval);
 }
 
+void test_grade() {
+	std::cout << "--- test_grade()" << std::endl;
+
+	using namespace ga3e;
+
+	std::cout << "grade(c<0>) = " << grade(c<0>) << std::endl;
+	std::cout << "grade(8.0) = " << grade(8.0) << std::endl;
+	std::cout << "grade(c<1>) = " << grade(c<1>) << std::endl;
+	std::cout << "grade(e1) = " << grade(e1) << std::endl;
+	std::cout << "grade(c<5> - e1) = " << grade(c<5, double> - e1) << std::endl;
+	std::cout << "grade(5.0 - e1) = " << grade(5.0 - e1) << std::endl;
+	std::cout << "grade(e1^e2) = " << grade(e1^e2) << std::endl;
+	std::cout << "grade(e1^e2 + e1^e3) = " << grade((e1^e2) + (e1^e3)) << std::endl;
+	std::cout << "grade(e(1)^e2 + e1^e3) = " << grade((e(1)^e2) + (e1^e3)) << std::endl;
+	std::cout << "grade(9.0 * e1^e2 + e1^e3) = " << grade((9.0 * e1^e2) + (e1^e3)) << std::endl;
+	std::cout << "grade(9 * e(1)^e2 + e1^e3) = " << grade((9 * e(1)^e2) + (e1^e3)) << std::endl;
+
+	std::cout << std::endl;
+}
+
 int main() {
 	test_make_constant();
 
@@ -458,6 +476,8 @@ int main() {
 	test_simplification();
 
 	test_variable();
+
+	test_grade();
 
 	auto e1 = e(1);
 	auto e2 = e(2);
@@ -514,23 +534,17 @@ int main() {
 		auto v = c1 * e1 + c2 * e2 + c3 * e3;
 		auto p = no + v + (scp(v, v) / c<2>) * ni;
 
-		/**/
 		auto x1 = scp(p, e1);
 		double d1 = x1;
 		std::cout << x1 << std::endl;
-		/**/
 
-		/**/
 		auto x2 = sqrt(scp(e1, e1));
 		double d2 = x2;
 		std::cout << x2 << std::endl;
-		/**/
 
-		/**/
 		auto x3 = pow(c<2> * scp(e1, e1), c<-3>);
 		double d3 = x3;
 		std::cout << x3 << std::endl;
-		/**/
 
 		std::cout << std::endl;
 	}
@@ -540,22 +554,72 @@ int main() {
 	return EXIT_SUCCESS;
 }
 /*/
-#include <ga.hpp>
+#include <ga5e.hpp>
 
 int main() {
-	using namespace future::ga;
+	using namespace ga5e;
 
-	typedef detail::dynamic_basis_blade<2, detail::get_bitset<1, 0> > BasisBlade;
-	typedef detail::get_value<2, 0> Grade;
-	typedef detail::basis_vectors_t<BasisBlade> BasisVectors;
-	typedef detail::count_one_bits_t<BasisVectors > OneBits;
-	typedef detail::equal_t<OneBits, Grade> Equal;
+	auto x1 = c<5> + pow(c<2>, c<10>);
+	auto x2 = scalar(5.0);
 
-	BasisBlade a;
-	Grade b;
-	BasisVectors c;
-	OneBits d;
-	Equal e;
+	auto lazy = make_lazy_context(scalar(5.0), scalar(7), scalar(7.0));
+
+	auto x3 = lazy.argument<0>() + lazy.argument<1>();
+	auto x4 = c<5> + sqrt(lazy.argument<2>());
+	auto x5 = c<5> + sqrt(c<7>) + cbrt(c<11>);
+	std::cout << "size(x1) = " << sizeof(decltype(x1)) << "\t x1 = " << x1 << std::endl;
+	std::cout << "size(x2) = " << sizeof(decltype(x2)) << "\t x2 = " << x2 << std::endl;
+	std::cout << "size(x3) = " << sizeof(decltype(x3)) << "\t x3 = " << x3 << std::endl;
+	std::cout << "size(x4) = " << sizeof(decltype(x4)) << "\t x4 = " << x4 << std::endl;
+	std::cout << "size(x5) = " << sizeof(decltype(x5)) << "\t x5 = " << x5 << std::endl;
+	std::cout << std::endl;
+
+	auto y12 = x1 + x2;
+	auto y13 = x1 + x3;
+	auto y23 = x2 + x3;
+	std::cout << "size(y12) = " << sizeof(decltype(y12)) << "\t y12 = " << y12 << std::endl;
+	std::cout << "size(y13) = " << sizeof(decltype(y13)) << "\t y13 = " << y13 << std::endl;
+	std::cout << "size(y23) = " << sizeof(decltype(y23)) << "\t y23 = " << y23 << std::endl;
+	std::cout << std::endl;
+
+	auto z12 = x1 * x2;
+	auto z13 = x1 * x3;
+	auto z23 = x2 * x3;
+	std::cout << "size(z12) = " << sizeof(decltype(z12)) << "\t z12 = " << z12 << std::endl;
+	std::cout << "size(z13) = " << sizeof(decltype(z13)) << "\t z13 = " << z13 << std::endl;
+	std::cout << "size(z23) = " << sizeof(decltype(z23)) << "\t z23 = " << z23 << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "size(sqrt(x1)) = " << sizeof(decltype(sqrt(x1))) << "\t sqrt(x1) = " << sqrt(x1) << std::endl;
+	std::cout << "size(sqrt(x2)) = " << sizeof(decltype(sqrt(x2))) << "\t sqrt(x2) = " << sqrt(x2) << std::endl;
+	std::cout << "size(sqrt(x3)) = " << sizeof(decltype(sqrt(x3))) << "\t sqrt(x3) = " << sqrt(x3) << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "size(sqrt(<8>)) = " << sizeof(decltype(sqrt(c<8>))) << "\t sqrt(<8>) = " << sqrt(c<8>) << std::endl;
+	std::cout << "size(sqrt(<4>)) = " << sizeof(decltype(sqrt(c<4>))) << "\t sqrt(<4>) = " << sqrt(c<4>) << std::endl;
+	//std::cout << "size(sqrt(<-4>)) = " << sizeof(decltype(sqrt(c<-4>))) << "\t sqrt(<4>) = " << sqrt(c<-4>) << std::endl;
+	std::cout << std::endl;
+
+	double x, y, z;
+	std::cout << "x = "; std::cin >> x;
+	std::cout << "y = "; std::cin >> y;
+	std::cout << "z = "; std::cin >> z;
+	std::cout << std::endl;
+
+	auto p = (x * e1 + y * e2 + z * e3 + e4) ^ e5;
+	std::cout << "p = " << p << std::endl;
+	std::cout << std::endl;
+
+	std::cout << "sizeof(x) = " << sizeof(decltype(x)) << std::endl;
+	std::cout << "sizeof(e1) = " << sizeof(decltype(e1)) << std::endl;
+	std::cout << "sizeof(e1 + e2 + e3) = " << sizeof(decltype(e1 + e2 + e3)) << std::endl;
+	std::cout << "sizeof(p) = " << sizeof(decltype(p)) << std::endl;
+	std::cout << std::endl;
+
+	auto r = gp(p, e3);
+	std::cout << "gp(p, e3) = " << r << std::endl;
+	std::cout << "sizeof(gp(p, e3)) = " << sizeof(decltype(r)) << std::endl;
+	std::cout << std::endl;
 
 	return EXIT_SUCCESS;
 }

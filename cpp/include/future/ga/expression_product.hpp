@@ -6,14 +6,14 @@ namespace ga {
 	namespace detail {
 
 		// Returns the simpler rational constant.
-		template<default_integral_t Numerator, default_integral_t Denominator, default_integral_t GreatestCommonDivisor = gcd(absolute(Numerator), absolute(Denominator))>
+		template<default_integral_t Numerator, default_integral_t Denominator, default_integral_t GreatestCommonDivisor = gcd(iabs(Numerator), iabs(Denominator))>
 		struct simpler_rational_constant {
-			typedef product_t<constant_value<(sign(Numerator) * sign(Denominator)) * (absolute(Numerator) / GreatestCommonDivisor)>, power_t<constant_value<absolute(Denominator) / GreatestCommonDivisor>, constant_value<-1> >, real_mapping> type;
+			typedef product_t<constant_value<(sign(Numerator) * sign(Denominator)) * (iabs(Numerator) / GreatestCommonDivisor)>, power_t<constant_value<iabs(Denominator) / GreatestCommonDivisor>, constant_value<-1> >, real_mapping> type;
 		};
 
 		template<default_integral_t Numerator, default_integral_t Denominator>
 		struct simpler_rational_constant<Numerator, Denominator, 1> {
-			typedef mul_t<constant_value<(sign(Numerator) * sign(Denominator)) * absolute(Numerator)>, power_t<constant_value<absolute(Denominator)>, constant_value<-1> > > type;
+			typedef mul_t<constant_value<(sign(Numerator) * sign(Denominator)) * iabs(Numerator)>, power_t<constant_value<iabs(Denominator)>, constant_value<-1> > > type;
 		};
 
 		template<default_integral_t Numerator, default_integral_t Denominator>

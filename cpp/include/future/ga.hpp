@@ -32,7 +32,7 @@ namespace future {
 		template<class ValueType>
 		using default_associative_container_t = std::map<default_bitset_t, ValueType>;
 
-		typedef std::int32_t grade_t;
+		typedef default_integral_t grade_t;
 
 		typedef std::uint32_t index_t;
 		typedef std::uint32_t ndims_t;
@@ -48,6 +48,7 @@ namespace future {
 
 	#include "ga/metric_space.hpp"
 	#include "ga/signed_metric_space.hpp"
+	#include "ga/conformal_metric_space.hpp"
 
 	#include "ga/mapping.hpp"
 	#include "ga/orthogonal_metric_mapping.hpp"
@@ -82,6 +83,9 @@ namespace future {
 	#include "ga/arithmetic_operators.hpp"
 	#include "ga/insertion_operator.hpp"
 
+	#include "ga/default_tolerance.hpp"
+
+	#include "ga/grade.hpp"
 	#include "ga/reverse_norm.hpp"
 	#include "ga/versor_inverse.hpp"
 	#include "ga/inverse_geometric_product.hpp"
@@ -89,9 +93,5 @@ namespace future {
 	#include "ga/take_grade.hpp"
 
 }
-
-//TODO exp
-//TODO grade
-//TODO conformal_metric_space
 
 #endif // __FUTURE_GA_HPP__

@@ -5,10 +5,6 @@ namespace ga {
 
 	namespace detail {
 
-		// A simple mapping for real-valued expressions (it is used with scalar expressions).
-		struct real_mapping {
-		};
-
 		// Mapping for products assuming spaces with orthogonal metric.
 		template<class OrthogonalMetricSpace, class GradedProduct>
 		struct orthogonal_metric_space_mapping;

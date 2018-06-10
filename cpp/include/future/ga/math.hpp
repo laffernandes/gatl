@@ -37,35 +37,75 @@ namespace ga {
 
 	using std::abs;
 
-	//TODO abs
+	template<class CoefficientType, class Coefficient>
+	constexpr decltype(auto) abs(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+		auto const lazy = make_lazy_context(arg);
+		return lazy.eval(scalar_clifford_expression<default_integral_t, detail::absolute_t<detail::coefficient_t<decltype(lazy)::argument_expression_t<0> > > >());
+	}
 
 	using std::exp;
 
-	//TODO exp
+	template<class CoefficientType, class Coefficient>
+	constexpr decltype(auto) exp(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+		auto const lazy = make_lazy_context(arg);
+		return lazy.eval(scalar_clifford_expression<default_integral_t, detail::exponential_t<detail::coefficient_t<decltype(lazy)::argument_expression_t<0> > > >());
+	}
+
+	using std::log;
+
+	template<class CoefficientType, class Coefficient>
+	constexpr decltype(auto) log(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+		auto const lazy = make_lazy_context(arg);
+		return lazy.eval(scalar_clifford_expression<default_integral_t, detail::logarithm_t<detail::coefficient_t<decltype(lazy)::argument_expression_t<0> > > >());
+	}
 
 	using std::cos;
 
-	//TODO cos
+	template<class CoefficientType, class Coefficient>
+	constexpr decltype(auto) cos(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+		auto const lazy = make_lazy_context(arg);
+		return lazy.eval(scalar_clifford_expression<default_integral_t, detail::cosine_t<detail::coefficient_t<decltype(lazy)::argument_expression_t<0> > > >());
+	}
 
 	using std::sin;
 
-	//TODO sin
+	template<class CoefficientType, class Coefficient>
+	constexpr decltype(auto) sin(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+		auto const lazy = make_lazy_context(arg);
+		return lazy.eval(scalar_clifford_expression<default_integral_t, detail::sine_t<detail::coefficient_t<decltype(lazy)::argument_expression_t<0> > > >());
+	}
 
 	using std::tan;
 
-	//TODO tan
+	template<class CoefficientType, class Coefficient>
+	constexpr decltype(auto) tan(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+		auto const lazy = make_lazy_context(arg);
+		return lazy.eval(scalar_clifford_expression<default_integral_t, detail::tangent_t<detail::coefficient_t<decltype(lazy)::argument_expression_t<0> > > >());
+	}
 
 	using std::cosh;
 
-	//TODO cosh
+	template<class CoefficientType, class Coefficient>
+	constexpr decltype(auto) cosh(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+		auto const lazy = make_lazy_context(arg);
+		return lazy.eval(scalar_clifford_expression<default_integral_t, detail::hyperbolic_cosine_t<detail::coefficient_t<decltype(lazy)::argument_expression_t<0> > > >());
+	}
 
 	using std::sinh;
 
-	//TODO sinh
+	template<class CoefficientType, class Coefficient>
+	constexpr decltype(auto) sinh(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+		auto const lazy = make_lazy_context(arg);
+		return lazy.eval(scalar_clifford_expression<default_integral_t, detail::hyperbolic_sine_t<detail::coefficient_t<decltype(lazy)::argument_expression_t<0> > > >());
+	}
 
 	using std::tanh;
 
-	//TODO tanh
+	template<class CoefficientType, class Coefficient>
+	constexpr decltype(auto) tanh(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+		auto const lazy = make_lazy_context(arg);
+		return lazy.eval(scalar_clifford_expression<default_integral_t, detail::hyperbolic_tangent_t<detail::coefficient_t<decltype(lazy)::argument_expression_t<0> > > >());
+	}
 
 }
 

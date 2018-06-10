@@ -183,7 +183,124 @@ namespace ga {
 			constexpr static bool value = has_stored_entries_v<Arguments...>;
 		};
 
-		// Returns whether the given expression is a function with the given name.
+		// Returns whether the given expression is an even value for sure.
+		template<class Expression>
+		struct is_even;
+
+		template<class Expression>
+		constexpr bool is_even_v = is_even<Expression>::value;
+
+		template<default_integral_t Value>
+		struct is_even<constant_value<Value> > {
+			constexpr static bool value = (Value & 1) == 0;
+		};
+
+		template<tag_t Tag, std::size_t Index>
+		struct is_even<get_value<Tag, Index> > {
+			constexpr static bool value = false;
+		};
+
+		template<tag_t Tag, std::size_t Index>
+		struct is_even<get_map_values<Tag, Index> > {
+			constexpr static bool value = false;
+		};
+
+		template<>
+		struct is_even<stored_value> {
+			constexpr static bool value = false;
+		};
+
+		template<>
+		struct is_even<stored_map_values> {
+			constexpr static bool value = false;
+		};
+
+		template<class LeftBitset, class RightBitset>
+		struct is_even<reordering_sign<LeftBitset, RightBitset> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Bitset>
+		struct is_even<count_one_bits<Bitset> > {
+			constexpr static bool value = false;
+		};
+
+		template<class LeftType, class RightType>
+		struct is_even<bitwise_and<LeftType, RightType> > {
+			constexpr static bool value = is_even_v<LeftType> && is_even_v<RightType>;
+		};
+
+		template<class LeftType, class RightType>
+		struct is_even<bitwise_xor<LeftType, RightType> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Test, class TrueValue, class FalseValue>
+		struct is_even<if_else<Test, TrueValue, FalseValue> > {
+			constexpr static bool value = is_even_v<TrueValue> && is_even_v<FalseValue>;
+		};
+
+		template<class Value>
+		struct is_even<absolute<Value> > {
+			constexpr static bool value = is_even_v<Value>;
+		};
+
+		template<class Value>
+		struct is_even<exponential<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_even<logarithm<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_even<cosine<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_even<sine<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_even<tangent<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_even<hyperbolic_cosine<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_even<hyperbolic_sine<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_even<hyperbolic_tangent<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class LeftArgument, class RightArgument>
+		struct is_even<power<LeftArgument, RightArgument> > {
+			constexpr static bool value = is_even_v<RightArgument>;
+		};
+
+		template<class... Arguments>
+		struct is_even<mul<Arguments...> > {
+			constexpr static bool value = false;
+		};
+
+		template<class... Arguments>
+		struct is_even<add<Arguments...> > {
+			constexpr static bool value = false;
+		};
+
+		// Specializations of is_function<Expression>.
 		template<name_t Name, class Expression>
 		struct is_function {
 			constexpr static bool value = false;
@@ -194,9 +311,224 @@ namespace ga {
 			constexpr static bool value = true;
 		};
 
-		template<name_t Name, class Expression>
-		constexpr bool is_function_v = is_function<Name, Expression>::value;
+		// Specializations of is_non_negative<Expression>.
+		template<default_integral_t Value>
+		struct is_non_negative<constant_value<Value> > {
+			constexpr static bool value = Value >= 0;
+		};
 
+		template<tag_t Tag, std::size_t Index>
+		struct is_non_negative<get_value<Tag, Index> > {
+			constexpr static bool value = false;
+		};
+		
+		template<tag_t Tag, std::size_t Index>
+		struct is_non_negative<get_map_values<Tag, Index> > {
+			constexpr static bool value = false;
+		};
+
+		template<>
+		struct is_non_negative<stored_value> {
+			constexpr static bool value = false;
+		};
+
+		template<>
+		struct is_non_negative<stored_map_values> {
+			constexpr static bool value = false;
+		};
+
+		template<class LeftBitset, class RightBitset>
+		struct is_non_negative<reordering_sign<LeftBitset, RightBitset> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Bitset>
+		struct is_non_negative<count_one_bits<Bitset> > {
+			constexpr static bool value = true;
+		};
+
+		template<class LeftType, class RightType>
+		struct is_non_negative<bitwise_and<LeftType, RightType> > {
+			constexpr static bool value = true;
+		};
+
+		template<class LeftType, class RightType>
+		struct is_non_negative<bitwise_xor<LeftType, RightType> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Test, class TrueValue, class FalseValue>
+		struct is_non_negative<if_else<Test, TrueValue, FalseValue> > {
+			constexpr static bool value = is_non_negative_v<TrueValue> && is_non_negative_v<FalseValue>;
+		};
+
+		template<class Value>
+		struct is_non_negative<absolute<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Value>
+		struct is_non_negative<exponential<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_non_negative<logarithm<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_non_negative<cosine<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_non_negative<sine<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_non_negative<tangent<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_non_negative<hyperbolic_cosine<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_non_negative<hyperbolic_sine<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class Value>
+		struct is_non_negative<hyperbolic_tangent<Value> > {
+			constexpr static bool value = false;
+		};
+
+		template<class LeftArgument, class RightArgument>
+		struct is_non_negative<power<LeftArgument, RightArgument> > {
+			constexpr static bool value = is_non_negative_v<LeftArgument> || is_even_v<RightArgument>;
+		};
+
+		template<class Argument, class... NextArguments>
+		struct is_non_negative<mul<Argument, NextArguments...> > {
+			constexpr static bool value = is_non_negative_v<Argument> && is_non_negative_v<mul_t<NextArguments...> >;
+		};
+
+		template<class... Arguments>
+		struct is_non_negative<add<Arguments...> > {
+			constexpr static bool value = false;
+		};
+
+		// Returns if the given expression may be positive.
+		template<class Expression>
+		struct may_be_positive;
+
+		template<class Expression>
+		constexpr bool may_be_positive_v = may_be_positive<Expressio>::value;
+
+		template<default_integral_t Value>
+		struct may_be_positive<constant_value<Value> > {
+			constexpr static bool value = Value > 0;
+		};
+
+		template<tag_t Tag, std::size_t Index>
+		struct may_be_positive<get_value<Tag, Index> > {
+			constexpr static bool value = true;
+		};
+		
+		template<tag_t Tag, std::size_t Index>
+		struct may_be_positive<get_map_values<Tag, Index> > {
+			constexpr static bool value = true;
+		};
+
+		template<>
+		struct may_be_positive<stored_value> {
+			constexpr static bool value = true;
+		};
+
+		template<>
+		struct may_be_positive<stored_map_values> {
+			constexpr static bool value = true;
+		};
+
+		template<class LeftBitset, class RightBitset>
+		struct may_be_positive<reordering_sign<LeftBitset, RightBitset> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Bitset>
+		struct may_be_positive<count_one_bits<Bitset> > {
+			constexpr static bool value = true;
+		};
+
+		template<class LeftType, class RightType>
+		struct may_be_positive<bitwise_and<LeftType, RightType> > {
+			constexpr static bool value = true;
+		};
+
+		template<class LeftType, class RightType>
+		struct may_be_positive<bitwise_xor<LeftType, RightType> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Test, class TrueValue, class FalseValue>
+		struct may_be_positive<if_else<Test, TrueValue, FalseValue> > {
+			constexpr static bool value = may_be_positive_v<TrueValue> && may_be_positive_v<FalseValue>;
+		};
+
+		template<class Value>
+		struct may_be_positive<absolute<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Value>
+		struct may_be_positive<cosine<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Value>
+		struct may_be_positive<sine<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Value>
+		struct may_be_positive<tangent<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Value>
+		struct may_be_positive<hyperbolic_cosine<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Value>
+		struct may_be_positive<hyperbolic_sine<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<class Value>
+		struct may_be_positive<hyperbolic_tangent<Value> > {
+			constexpr static bool value = true;
+		};
+
+		template<class LeftArgument, class RightArgument>
+		struct may_be_positive<power<LeftArgument, RightArgument> > {
+			constexpr static bool value = may_be_positive_v<LeftArgument> || is_even_v<RightArgument>;
+		};
+
+		template<class Argument, class... NextArguments>
+		struct may_be_positive<mul<Argument, NextArguments...> > {
+			constexpr static bool value = may_be_positive_v<Argument> && may_be_positive_v<mul_t<NextArguments...> >;
+		};
+
+		template<class... Arguments>
+		struct may_be_positive<add<Arguments...> > {
+			constexpr static bool value = true;
+		};
+		
 		// Specializations of possible_grades<BasisVectors>.
 		template<default_bitset_t BasisVectors>
 		struct possible_grades<constant_basis_blade<BasisVectors> > {
@@ -248,20 +580,6 @@ namespace ga {
 
 		template<class BasisBlade>
 		using basis_vectors_t = typename basis_vectors<BasisBlade>::type;
-
-		// Product operation.
-		template<class LeftExpression, class RightExpression, class Mapping>
-		struct _product;
-
-		template<class LeftExpression, class RightExpression, class Mapping>
-		using product_t = typename _product<LeftExpression, RightExpression, Mapping>::type;
-
-		// Addition operation.
-		template<class LeftExpression, class RightExpression>
-		struct _addition;
-
-		template<class LeftExpression, class RightExpression>
-		using addition_t = typename _addition<LeftExpression, RightExpression>::type;
 
 	}
 

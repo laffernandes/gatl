@@ -5,6 +5,42 @@ namespace ga {
 
 	namespace detail {
 
+		// The name of implemented functions.
+		enum class name_t : std::uint8_t {
+			reordering_sign,    //  0
+			count_one_bits,     //  1
+
+			bitwise_left_shift, //  2
+			bitwise_and,        //  3
+			bitwise_xor,        //  4
+
+			equal,              //  5
+			less_or_equal,      //  6
+
+			if_else,            //  7
+
+			absolute,           //  8
+
+			exponential,        //  9
+			logarithm,          // 10
+
+			cosine,             // 11
+			sine,               // 12
+			tangent,            // 13
+
+			hyperbolic_cosine,  // 14
+			hyperbolic_sine,    // 15
+			hyperbolic_tangent, // 16
+
+			power,              // 17
+			mul,                // 18
+			add                 // 19
+		};
+
+		// A simple mapping for real-valued expressions (it is used with scalar expressions).
+		struct real_mapping {
+		};
+
 		// Returns whether the given expression has stored entries.
 		template<class... Expressions>
 		struct has_stored_entries;
@@ -19,6 +55,20 @@ namespace ga {
 		template<class... Expressions>
 		constexpr bool is_constant_expression_v = is_constant_expression<Expressions...>::value;
 
+		// Returns whether the given expression is a function with the given name.
+		template<name_t Name, class Expression>
+		struct is_function;
+
+		template<name_t Name, class Expression>
+		constexpr bool is_function_v = is_function<Name, Expression>::value;
+
+		// Returns whether the given expression is non-negative for sure.
+		template<class Expression>
+		struct is_non_negative;
+
+		template<class Expression>
+		constexpr bool is_non_negative_v = is_non_negative<Expression>::value;
+
 		// Returns the possible grades of a given basis blade.
 		template<class BasisBlade>
 		struct possible_grades;
@@ -26,30 +76,26 @@ namespace ga {
 		template<class BasisBlade>
 		constexpr default_bitset_t possible_grades_v = possible_grades<BasisBlade>::value;
 
+		// Product operation.
+		template<class LeftExpression, class RightExpression, class Mapping>
+		struct _product;
+
+		template<class LeftExpression, class RightExpression, class Mapping>
+		using product_t = typename _product<LeftExpression, RightExpression, Mapping>::type;
+
+		// Addition operation.
+		template<class LeftExpression, class RightExpression>
+		struct _addition;
+
+		template<class LeftExpression, class RightExpression>
+		using addition_t = typename _addition<LeftExpression, RightExpression>::type;
+
 	}
 
 	namespace detail {
 
 		// Tag of variables/arguments.
 		typedef std::uint16_t tag_t;
-
-		// The name of implemented functions.
-		enum class name_t : std::uint8_t {
-			reordering_sign,    // 0
-			count_one_bits,     // 1
-			
-			bitwise_left_shift, // 2
-			bitwise_and,        // 3
-			bitwise_xor,        // 4
-
-			equal,              // 5
-
-			if_else,            // 6
-
-			power,              // 7
-			mul,                // 8
-			add                 // 9
-		};
 
 		// Integral value defined in compilation time.
 		template<default_integral_t Value>
@@ -235,6 +281,187 @@ namespace ga {
 		struct function<name_t::add> {
 			typedef constant_value<0> type; // simplify
 		};
+
+		// Absolute value of scalar-valued expressions.
+		template<class Value>
+		struct function<name_t::absolute, Value>;
+
+		template<class Value>
+		using absolute = function<name_t::absolute, Value>;
+
+		template<class Value>
+		using absolute_t = typename absolute<Value>::type;
+
+		template<class Value>
+		struct function<name_t::absolute, Value> {
+			typedef std::conditional_t<
+				is_non_negative_v<Value>,
+				Value,
+				std::conditional_t<
+					is_constant_expression_v<Value> && !(is_function_v<name_t::add, Value> || is_function_v<name_t::if_else, Value>),
+					product_t<constant_value<-1>, Value, real_mapping>,
+					function<name_t::absolute, Value>
+				>
+			> type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return abs(Value::eval<LowerTag, UpperTag>(args));
+			}
+		};
+
+		// The base-e exponential function of scalar-valued expressions.
+		template<class Value>
+		struct function<name_t::exponential, Value>;
+
+		template<class Value>
+		using exponential = function<name_t::exponential, Value>;
+
+		template<class Value>
+		using exponential_t = typename exponential<Value>::type;
+
+		// The natural logarithm of scalar-valued expressions.
+		template<class Value>
+		struct function<name_t::logarithm, Value>;
+
+		template<class Value>
+		using logarithm = function<name_t::logarithm, Value>;
+
+		template<class Value>
+		using logarithm_t = typename logarithm<Value>::type;
+
+		// Specializations of exponentiation<Value> and logarithm<Value>.
+		template<class Value>
+		struct function<name_t::exponential, Value> {
+			typedef function type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return exp(Value::eval<LowerTag, UpperTag>(args));
+			}
+		};
+
+		template<class Value>
+		struct function<name_t::exponential, logarithm<Value> > {
+			typedef Value type;
+		};
+
+		template<class Value>
+		struct function<name_t::logarithm, Value> {
+			typedef function type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return log(Value::eval<LowerTag, UpperTag>(args));
+			}
+		};
+
+		template<class Value>
+		struct function<name_t::logarithm, exponential<Value> > {
+			typedef Value type;
+		};
+
+		// Cosine of scalar-valued expressions.
+		template<class Value>
+		struct function<name_t::cosine, Value> {
+			typedef function type; //TODO Not supported yet (simplifications)
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return cos(Value::eval<LowerTag, UpperTag>(args));
+			}
+		};
+
+		template<class Value>
+		using cosine = function<name_t::cosine, Value>;
+
+		template<class Value>
+		using cosine_t = typename cosine<Value>::type;
+
+		// Sine of scalar-valued expressions.
+		template<class Value>
+		struct function<name_t::sine, Value> {
+			typedef function type; //TODO Not supported yet (simplifications)
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return sin(Value::eval<LowerTag, UpperTag>(args));
+			}
+		};
+
+		template<class Value>
+		using sine = function<name_t::sine, Value>;
+
+		template<class Value>
+		using sine_t = typename sine<Value>::type;
+
+		// Tangent of scalar-valued expressions.
+		template<class Value>
+		struct function<name_t::tangent, Value> {
+			typedef function type; //TODO Not supported yet (simplifications)
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return tan(Value::eval<LowerTag, UpperTag>(args));
+			}
+		};
+
+		template<class Value>
+		using tangent = function<name_t::tangent, Value>;
+
+		template<class Value>
+		using tangent_t = typename tangent<Value>::type;
+
+		// Hyperbolic cosine of scalar-valued expressions.
+		template<class Value>
+		struct function<name_t::hyperbolic_cosine, Value> {
+			typedef function type; //TODO Not supported yet (simplifications)
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return cosh(Value::eval<LowerTag, UpperTag>(args));
+			}
+		};
+
+		template<class Value>
+		using hyperbolic_cosine = function<name_t::hyperbolic_cosine, Value>;
+
+		template<class Value>
+		using hyperbolic_cosine_t = typename hyperbolic_cosine<Value>::type;
+
+		// Hyperbolic sine of scalar-valued expressions.
+		template<class Value>
+		struct function<name_t::hyperbolic_sine, Value> {
+			typedef function type; //TODO Not supported yet (simplifications)
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return sinh(Value::eval<LowerTag, UpperTag>(args));
+			}
+		};
+
+		template<class Value>
+		using hyperbolic_sine = function<name_t::hyperbolic_sine, Value>;
+
+		template<class Value>
+		using hyperbolic_sine_t = typename hyperbolic_sine<Value>::type;
+
+		// Hyperbolic tangent of scalar-valued expressions.
+		template<class Value>
+		struct function<name_t::hyperbolic_tangent, Value> {
+			typedef function type; //TODO Not supported yet (simplifications)
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+				return tanh(Value::eval<LowerTag, UpperTag>(args));
+			}
+		};
+
+		template<class Value>
+		using hyperbolic_tangent = function<name_t::hyperbolic_tangent, Value>;
+
+		template<class Value>
+		using hyperbolic_tangent_t = typename hyperbolic_tangent<Value>::type;
 
 		// Exponentiation of real-valued expressions.
 		template<class LeftArgument, class RightArgument>
@@ -532,7 +759,7 @@ namespace ga {
 		template<class LeftType, class RightType>
 		using bitwise_xor_t = typename bitwise_xor<LeftType, RightType>::type;
 
-		// Lazy bitwise EQUAL operation.
+		// Lazy relational EQUAL TO operation.
 		template<class LeftType, class RightType>
 		struct function<name_t::equal, LeftType, RightType> {
 			typedef std::conditional_t<
@@ -556,6 +783,37 @@ namespace ga {
 
 		template<class LeftType, class RightType>
 		using equal_t = typename equal<LeftType, RightType>::type;
+
+		// Lazy relational LESS THAN OR EQUAL TO operation.
+		template<class LeftType, class RightType>
+		struct function<name_t::less_or_equal, LeftType, RightType> {
+			typedef std::conditional_t<
+				std::is_same_v<LeftType, RightType> && !has_stored_entries_v<LeftType>,
+				std::true_type, // simplify
+				function // default
+			> type;
+
+			template<tag_t LowerTag, tag_t UpperTag, class... InputTypes>
+			constexpr static bool eval(std::tuple<InputTypes...> const &args) {
+				return LeftType::eval<LowerTag, UpperTag>(args) <= RightType::eval<LowerTag, UpperTag>(args);
+			}
+		};
+
+		template<default_integral_t LeftValue, default_integral_t RightValue>
+		struct function<name_t::less_or_equal, constant_value<LeftValue>, constant_value<RightValue> > {
+			typedef std::bool_constant<(LeftValue <= RightValue)> type; // simplify
+		};
+
+		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
+		struct function<name_t::less_or_equal, constant_bitset<LeftBitset>, constant_bitset<RightBitset> > {
+			typedef std::bool_constant<(LeftBitset <= RightBitset)> type; // simplify
+		};
+
+		template<class LeftType, class RightType>
+		using less_or_equal = function<name_t::less_or_equal, LeftType, RightType>;
+
+		template<class LeftType, class RightType>
+		using less_or_equal_t = typename less_or_equal<LeftType, RightType>::type;
 
 		// Lazy ternary conditional operation.
 		template<class Test, class TrueValue, class FalseValue>
