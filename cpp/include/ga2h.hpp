@@ -16,8 +16,6 @@ namespace ga2h {
 	static auto const Ie = e1 ^ e2;
 	static auto const I = pseudoscalar();
 
-	GA_USE_LAZY_VARK_FUNCTIONS()
-
 }
 
 #endif // __GA2H_HPP__

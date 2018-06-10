@@ -4,125 +4,82 @@
 #define GA_SIGNED_ALGEBRA_OVERLOAD(NAMESPACE_MNEMONIC, P, Q) \
 	namespace NAMESPACE_MNEMONIC { \
 		\
-		static ga::clifford::signed_metric_space<P, Q> const space; \
+		using namespace ga; \
 		\
-		using ga::id_t; \
-		\
-		using ga::grade_t; \
-		using ga::index_t; \
-		using ga::ndims_t; \
-		\
-		using ga::clifford::operator+; \
-		using ga::clifford::operator-; \
-		using ga::clifford::operator*; \
-		using ga::clifford::operator/; \
-		using ga::clifford::operator^; \
-		using ga::clifford::operator<<; \
-		\
-		using ga::clifford::abs; \
-		using ga::clifford::cbrt; \
-		using ga::clifford::exp; \
-		using ga::clifford::sqrt; \
-		using ga::clifford::cos; \
-		using ga::clifford::sin; \
-		using ga::clifford::tan; \
-		using ga::clifford::cosh; \
-		using ga::clifford::sinh; \
-		using ga::clifford::tanh; \
-		\
-		using ga::clifford::conjugation; \
-		using ga::clifford::involution; \
-		using ga::clifford::reversion; \
-		\
-		using ga::clifford::grade; \
-		using ga::clifford::take_grade; \
-		\
-		using ga::lazy::c; \
-		using ga::lazy::val; \
-		using ga::lazy::var; \
-		\
-		using ga::clifford::e; \
-		using ga::clifford::native; \
-		\
-		using ga::clifford::eval; \
+		static signed_metric_space<P, Q> const space; \
 		\
 		constexpr decltype(auto) pseudoscalar() { \
-			return ga::clifford::pseudoscalar(space); \
+			return pseudoscalar(space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) gp(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::gp(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) gp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return gp(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) lcont(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::lcont(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) lcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return lcont(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) op(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::op(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) op(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return op(lhs, rhs, space); \
 		} \
 		\
-		template<class... LeftElementTypes, class... RightElementTypes, typename std::enable_if<!(ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<LeftElementTypes...> >::value || ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<RightElementTypes...> >::value), int>::type = 0> \
-		constexpr decltype(auto) operator^(ga::clifford::clifford_expression<LeftElementTypes...> const &lhs, ga::clifford::clifford_expression<RightElementTypes...> const &rhs) { \
-			return ga::clifford::op(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression > \
+		constexpr decltype(auto) operator^(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return op(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) rcont(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::rcont(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) rcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return rcont(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) scp(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::scp(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) scp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return scp(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) igp(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::igp(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) igp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return igp(lhs, rhs, space); \
 		} \
 		\
-		template<class... ElementTypes, typename std::enable_if<!ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<ElementTypes...> >::value, int>::type = 0> \
-		constexpr decltype(auto) exp(ga::clifford::clifford_expression<ElementTypes...> const &arg) { \
-			return ga::clifford::exp(arg, space); \
+		template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) inv(clifford_expression<CoefficientType, Expression> const &arg) { \
+			return inv(arg, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) inv(Type const &arg) { \
-			return ga::clifford::inv(arg, space); \
+		template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) rnorm_sqr(clifford_expression<CoefficientType, Expression> const &arg) { \
+			return rnorm_sqr(arg, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) rnorm_sqr(Type const &arg) { \
-			return ga::clifford::rnorm_sqr(arg, space); \
+		template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) rnorm(clifford_expression<CoefficientType, Expression> const &arg) { \
+			return rnorm(arg, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) rnorm(Type const &arg) { \
-			return ga::clifford::rnorm(arg, space); \
-		} \
-		\
-		template<class Type, class PseudoscalarType> \
-		constexpr decltype(auto) dual(Type const &arg, PseudoscalarType const &pseudoscalar) { \
-			return ga::clifford::dual(arg, pseudoscalar, space); \
+		template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		constexpr decltype(auto) dual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
+			return dual(arg, pseudoscalar, space); \
 		} \
 		\
 		template<class Type> \
 		constexpr decltype(auto) dual(Type const &arg) { \
-			return ga::clifford::dual(arg, ga::clifford::pseudoscalar(space), space); \
+			return dual(arg, pseudoscalar(space), space); \
 		} \
 		\
-		template<class Type, class PseudoscalarType> \
-		constexpr decltype(auto) undual(Type const &arg, PseudoscalarType const &pseudoscalar) { \
-			return ga::clifford::undual(arg, pseudoscalar, space); \
+		template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		constexpr decltype(auto) undual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
+			return undual(arg, pseudoscalar, space); \
 		} \
 		\
 		template<class Type> \
 		constexpr decltype(auto) undual(Type const &arg) { \
-			return ga::clifford::undual(arg, ga::clifford::pseudoscalar(space), space); \
+			return undual(arg, pseudoscalar(space), space); \
 		} \
 		\
 	}
@@ -130,125 +87,87 @@
 #define GA_CONFORMAL_ALGEBRA_OVERLOAD(NAMESPACE_MNEMONIC, N) \
 	namespace NAMESPACE_MNEMONIC { \
 		\
-		static ga::clifford::conformal_metric_space<N> const space; \
+		using namespace ga; \
 		\
-		using ga::id_t; \
-		\
-		using ga::grade_t; \
-		using ga::index_t; \
-		using ga::ndims_t; \
-		\
-		using ga::clifford::operator+; \
-		using ga::clifford::operator-; \
-		using ga::clifford::operator*; \
-		using ga::clifford::operator/; \
-		using ga::clifford::operator^; \
-		using ga::clifford::operator<<; \
-		\
-		using ga::clifford::abs; \
-		using ga::clifford::cbrt; \
-		using ga::clifford::exp; \
-		using ga::clifford::sqrt; \
-		using ga::clifford::cos; \
-		using ga::clifford::sin; \
-		using ga::clifford::tan; \
-		using ga::clifford::cosh; \
-		using ga::clifford::sinh; \
-		using ga::clifford::tanh; \
-		\
-		using ga::clifford::conjugation; \
-		using ga::clifford::involution; \
-		using ga::clifford::reversion; \
-		\
-		using ga::clifford::grade; \
-		using ga::clifford::take_grade; \
-		\
-		using ga::lazy::c; \
-		using ga::lazy::val; \
-		using ga::lazy::var; \
-		\
-		using ga::clifford::e; \
-		using ga::clifford::native; \
-		\
-		using ga::clifford::eval; \
+		static conformal_metric_space<N> const space; \
 		\
 		constexpr decltype(auto) pseudoscalar() { \
-			return ga::clifford::pseudoscalar(space); \
+			return pseudoscalar(space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) gp(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::gp(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) gp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return gp(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) lcont(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::lcont(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) lcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return lcont(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) op(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::op(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) op(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return op(lhs, rhs, space); \
 		} \
 		\
-		template<class... LeftElementTypes, class... RightElementTypes, typename std::enable_if<!(ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<LeftElementTypes...> >::value || ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<RightElementTypes...> >::value), int>::type = 0> \
-		constexpr decltype(auto) operator^(ga::clifford::clifford_expression<LeftElementTypes...> const &lhs, ga::clifford::clifford_expression<RightElementTypes...> const &rhs) { \
-			return ga::clifford::op(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression > \
+		constexpr decltype(auto) operator^(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return op(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) rcont(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::rcont(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) rcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return rcont(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) scp(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::scp(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) scp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return scp(lhs, rhs, space); \
 		} \
 		\
-		template<class LeftType, class RightType> \
-		constexpr decltype(auto) igp(LeftType const &lhs, RightType const &rhs) { \
-			return ga::clifford::igp(lhs, rhs, space); \
+		template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
+		constexpr decltype(auto) igp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+			return igp(lhs, rhs, space); \
 		} \
 		\
-		template<class... ElementTypes, typename std::enable_if<!ga::clifford::detail::may_cast_to_native<ga::clifford::clifford_expression<ElementTypes...> >::value, int>::type = 0> \
-		constexpr decltype(auto) exp(ga::clifford::clifford_expression<ElementTypes...> const &arg) { \
-			return ga::clifford::exp(arg, space); \
+				template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) inv(clifford_expression<CoefficientType, Expression> const &arg) { \
+			return inv(arg, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) inv(Type const &arg) { \
-			return ga::clifford::inv(arg, space); \
+		template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) rnorm_sqr(clifford_expression<CoefficientType, Expression> const &arg) { \
+			return rnorm_sqr(arg, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) rnorm_sqr(Type const &arg) { \
-			return ga::clifford::rnorm_sqr(arg, space); \
+		template<class CoefficientType, class Expression> \
+		constexpr decltype(auto) rnorm(clifford_expression<CoefficientType, Expression> const &arg) { \
+			return rnorm(arg, space); \
 		} \
 		\
-		template<class Type> \
-		constexpr decltype(auto) rnorm(Type const &arg) { \
-			return ga::clifford::rnorm(arg, space); \
+		template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		constexpr decltype(auto) dual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
+			return dual(arg, pseudoscalar, space); \
 		} \
 		\
-		template<class Type, class PseudoscalarType> \
-		constexpr decltype(auto) dual(Type const &arg, PseudoscalarType const &pseudoscalar) { \
-			return ga::clifford::dual(arg, pseudoscalar, space); \
+		template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		constexpr decltype(auto) dual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
+			return dual(arg, pseudoscalar, space); \
 		} \
 		\
 		template<class Type> \
 		constexpr decltype(auto) dual(Type const &arg) { \
-			return ga::clifford::dual(arg, ga::clifford::pseudoscalar(space), space); \
+			return dual(arg, pseudoscalar(space), space); \
 		} \
 		\
-		template<class Type, class PseudoscalarType> \
-		constexpr decltype(auto) undual(Type const &arg, PseudoscalarType const &pseudoscalar) { \
-			return ga::clifford::undual(arg, pseudoscalar, space); \
+		template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+		constexpr decltype(auto) undual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
+			return undual(arg, pseudoscalar, space); \
 		} \
 		\
 		template<class Type> \
 		constexpr decltype(auto) undual(Type const &arg) { \
-			return ga::clifford::undual(arg, ga::clifford::pseudoscalar(space), space); \
+			return undual(arg, pseudoscalar(space), space); \
 		} \
 		\
 	}

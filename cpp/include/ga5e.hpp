@@ -16,8 +16,6 @@ namespace ga5e {
 
 	static auto const I = pseudoscalar();
 
-	GA_USE_LAZY_VARK_FUNCTIONS()
-
 }
 
 #endif // __GA5E_HPP__

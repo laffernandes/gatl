@@ -13,8 +13,6 @@ namespace ga2e {
 
 	static auto const I = pseudoscalar();
 
-	GA_USE_LAZY_VARK_FUNCTIONS()
-
 }
 
 #endif // __GA2E_HPP__

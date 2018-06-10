@@ -19,165 +19,65 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\future\ga.hpp" />
-    <ClInclude Include="..\..\include\future\ga1c.hpp" />
-    <ClInclude Include="..\..\include\future\ga1e.hpp" />
-    <ClInclude Include="..\..\include\future\ga1h.hpp" />
-    <ClInclude Include="..\..\include\future\ga1m.hpp" />
-    <ClInclude Include="..\..\include\future\ga2c.hpp" />
-    <ClInclude Include="..\..\include\future\ga2e.hpp" />
-    <ClInclude Include="..\..\include\future\ga2h.hpp" />
-    <ClInclude Include="..\..\include\future\ga2m.hpp" />
-    <ClInclude Include="..\..\include\future\ga3c.hpp" />
-    <ClInclude Include="..\..\include\future\ga3e.hpp" />
-    <ClInclude Include="..\..\include\future\ga3h.hpp" />
-    <ClInclude Include="..\..\include\future\ga3m.hpp" />
-    <ClInclude Include="..\..\include\future\ga4e.hpp" />
-    <ClInclude Include="..\..\include\future\ga4h.hpp" />
-    <ClInclude Include="..\..\include\future\ga5e.hpp" />
-    <ClInclude Include="..\..\include\future\ga\conformal_metric_space.hpp" />
-    <ClInclude Include="..\..\include\future\ga\default_tolerance.hpp" />
-    <ClInclude Include="..\..\include\future\ga\expression_addition.hpp" />
-    <ClInclude Include="..\..\include\future\ga\conjugation.hpp" />
-    <ClInclude Include="..\..\include\future\ga\dualization.hpp" />
-    <ClInclude Include="..\..\include\future\ga\general_metric_mapping.hpp" />
-    <ClInclude Include="..\..\include\future\ga\grade.hpp" />
-    <ClInclude Include="..\..\include\future\ga\insertion_operator.hpp" />
-    <ClInclude Include="..\..\include\future\ga\involution.hpp" />
-    <ClInclude Include="..\..\include\future\ga\lazy_context.hpp" />
-    <ClInclude Include="..\..\include\future\ga\arithmetic_operators.hpp" />
-    <ClInclude Include="..\..\include\future\ga\basis_vector.hpp" />
-    <ClInclude Include="..\..\include\future\ga\clifford_expression.hpp" />
-    <ClInclude Include="..\..\include\future\ga\constant.hpp" />
-    <ClInclude Include="..\..\include\future\ga\constexpr.hpp" />
-    <ClInclude Include="..\..\include\future\ga\expression_power.hpp" />
-    <ClInclude Include="..\..\include\future\ga\expression.hpp" />
-    <ClInclude Include="..\..\include\future\ga\expression_traits.hpp" />
-    <ClInclude Include="..\..\include\future\ga\geometric_product.hpp" />
-    <ClInclude Include="..\..\include\future\ga\inverse_geometric_product.hpp" />
-    <ClInclude Include="..\..\include\future\ga\left_contraction.hpp" />
-    <ClInclude Include="..\..\include\future\ga\macro_for_algebra_overload.hpp" />
-    <ClInclude Include="..\..\include\future\ga\mapping.hpp" />
-    <ClInclude Include="..\..\include\future\ga\math.hpp" />
-    <ClInclude Include="..\..\include\future\ga\metric_space.hpp" />
-    <ClInclude Include="..\..\include\future\ga\orthogonal_metric_mapping.hpp" />
-    <ClInclude Include="..\..\include\future\ga\outer_product.hpp" />
-    <ClInclude Include="..\..\include\future\ga\expression_product.hpp" />
-    <ClInclude Include="..\..\include\future\ga\pseudoscalar.hpp" />
-    <ClInclude Include="..\..\include\future\ga\expression_relational_operators.hpp" />
-    <ClInclude Include="..\..\include\future\ga\reverse_norm.hpp" />
-    <ClInclude Include="..\..\include\future\ga\reversion.hpp" />
-    <ClInclude Include="..\..\include\future\ga\right_contraction.hpp" />
-    <ClInclude Include="..\..\include\future\ga\scalar_product.hpp" />
-    <ClInclude Include="..\..\include\future\ga\signed_metric_space.hpp" />
-    <ClInclude Include="..\..\include\future\ga\expression_graded_unary_minus.hpp" />
-    <ClInclude Include="..\..\include\future\ga\take_grade.hpp" />
-    <ClInclude Include="..\..\include\future\ga\type_traits_extension.hpp" />
-    <ClInclude Include="..\..\include\future\ga\scalar.hpp" />
-    <ClInclude Include="..\..\include\future\ga\versor_inverse.hpp" />
+    <ClCompile Include="..\..\test\sandbox.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="..\..\include\ga.hpp" />
     <ClInclude Include="..\..\include\ga1c.hpp" />
-    <ClInclude Include="..\..\include\ga1m.hpp" />
     <ClInclude Include="..\..\include\ga1e.hpp" />
     <ClInclude Include="..\..\include\ga1h.hpp" />
+    <ClInclude Include="..\..\include\ga1m.hpp" />
     <ClInclude Include="..\..\include\ga2c.hpp" />
-    <ClInclude Include="..\..\include\ga2m.hpp" />
     <ClInclude Include="..\..\include\ga2e.hpp" />
     <ClInclude Include="..\..\include\ga2h.hpp" />
+    <ClInclude Include="..\..\include\ga2m.hpp" />
     <ClInclude Include="..\..\include\ga3c.hpp" />
-    <ClInclude Include="..\..\include\ga3m.hpp" />
     <ClInclude Include="..\..\include\ga3e.hpp" />
     <ClInclude Include="..\..\include\ga3h.hpp" />
+    <ClInclude Include="..\..\include\ga3m.hpp" />
     <ClInclude Include="..\..\include\ga4e.hpp" />
     <ClInclude Include="..\..\include\ga4h.hpp" />
     <ClInclude Include="..\..\include\ga5e.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\basis_blade_grade.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\basis_blade_ordering.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\basis_vector.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\binary_minus.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\binary_plus.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\blade_exponential.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\cast_to_variable.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\clifford_expression.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\clifford_expression_insert.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\compile_time_basis_blade.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\component.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\components.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\conformal_metric_space.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\conjugation.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\dualization.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\dynamic_basis_blade.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\element_binary_minus.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\element_binary_plus.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\element_deduce_grade.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\element_graded_product_general_metric.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\element_graded_product_orthogonal_metric.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\element_graded_unary_minus.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\element_keep_if_grade.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\element_ordering.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\element_unary_minus.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\euclidean_metric_space.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\eval.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\copy.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\general_metric_space.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\geometric_product.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\grade.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\graded_product.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\graded_unary_minus.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\inverse_geometric_product.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\involution.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\left_contraction.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\metric_space.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\clifford_expression_native.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\orthogonal_metric_space.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\outer_product.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\pseudoscalar.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\reverse_norm.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\reversion.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\right_contraction.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\scalar_expression_math.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\scalar_product.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\signed_metric_space.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\space.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\take_grade.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\unary_minus.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\unary_plus.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\clifford_expression_iterators.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\versor_inverse.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford\insertion_operator.hpp" />
-    <ClInclude Include="..\..\include\ga\compile_time_ordering.hpp" />
+    <ClInclude Include="..\..\include\ga\arithmetic_operators.hpp" />
+    <ClInclude Include="..\..\include\ga\basis_vector.hpp" />
+    <ClInclude Include="..\..\include\ga\clifford_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\conformal_metric_space.hpp" />
+    <ClInclude Include="..\..\include\ga\conjugation.hpp" />
+    <ClInclude Include="..\..\include\ga\constant.hpp" />
+    <ClInclude Include="..\..\include\ga\constexpr.hpp" />
     <ClInclude Include="..\..\include\ga\default_tolerance.hpp" />
+    <ClInclude Include="..\..\include\ga\dualization.hpp" />
+    <ClInclude Include="..\..\include\ga\expression.hpp" />
+    <ClInclude Include="..\..\include\ga\expression_addition.hpp" />
+    <ClInclude Include="..\..\include\ga\expression_graded_unary_minus.hpp" />
+    <ClInclude Include="..\..\include\ga\expression_power.hpp" />
+    <ClInclude Include="..\..\include\ga\expression_product.hpp" />
+    <ClInclude Include="..\..\include\ga\expression_relational_operators.hpp" />
     <ClInclude Include="..\..\include\ga\expression_traits.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\add.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\addition.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\arithmetic_operators.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\arguments_storage.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\constant.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\division.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\eval.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\exponentiation.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\lazy_expression.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\expression_ordering.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\insertion_operator.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\macro_for_variable_definition.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\math.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\mul.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\multiplication.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\power.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\subtraction.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\value.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy\variable.hpp" />
+    <ClInclude Include="..\..\include\ga\general_metric_mapping.hpp" />
+    <ClInclude Include="..\..\include\ga\geometric_product.hpp" />
+    <ClInclude Include="..\..\include\ga\grade.hpp" />
+    <ClInclude Include="..\..\include\ga\insertion_operator.hpp" />
+    <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp" />
+    <ClInclude Include="..\..\include\ga\involution.hpp" />
+    <ClInclude Include="..\..\include\ga\lazy_context.hpp" />
+    <ClInclude Include="..\..\include\ga\left_contraction.hpp" />
     <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\test\future_sandbox.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\test\sandbox.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClInclude Include="..\..\include\ga\mapping.hpp" />
+    <ClInclude Include="..\..\include\ga\math.hpp" />
+    <ClInclude Include="..\..\include\ga\metric_space.hpp" />
+    <ClInclude Include="..\..\include\ga\orthogonal_metric_mapping.hpp" />
+    <ClInclude Include="..\..\include\ga\outer_product.hpp" />
+    <ClInclude Include="..\..\include\ga\pseudoscalar.hpp" />
+    <ClInclude Include="..\..\include\ga\reverse_norm.hpp" />
+    <ClInclude Include="..\..\include\ga\reversion.hpp" />
+    <ClInclude Include="..\..\include\ga\right_contraction.hpp" />
+    <ClInclude Include="..\..\include\ga\scalar.hpp" />
+    <ClInclude Include="..\..\include\ga\scalar_product.hpp" />
+    <ClInclude Include="..\..\include\ga\signed_metric_space.hpp" />
+    <ClInclude Include="..\..\include\ga\take_grade.hpp" />
+    <ClInclude Include="..\..\include\ga\type_traits_extension.hpp" />
+    <ClInclude Include="..\..\include\ga\versor_inverse.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -266,7 +166,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include/future;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
@@ -303,7 +203,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include/future;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>

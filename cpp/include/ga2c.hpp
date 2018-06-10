@@ -20,8 +20,6 @@ namespace ga2c {
 	static auto const Ie = e1 ^ e2;
 	static auto const I = pseudoscalar();
 
-	GA_USE_LAZY_VARK_FUNCTIONS()
-
 }
 
 #endif // __GA2C_HPP__

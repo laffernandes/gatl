@@ -15,8 +15,6 @@ namespace ga4e {
 
 	static auto const I = pseudoscalar();
 
-	GA_USE_LAZY_VARK_FUNCTIONS()
-
 }
 
 #endif // __GA4E_HPP__
