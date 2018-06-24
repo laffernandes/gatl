@@ -16,9 +16,21 @@
     <Filter Include="Header Files\ga">
       <UniqueIdentifier>{f2121064-dae0-414a-981d-95e3432712de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ga\core">
+      <UniqueIdentifier>{fb9d9f37-4993-4df6-8427-fca12b32dc74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ga\extra">
+      <UniqueIdentifier>{5f296417-a821-4564-bad8-1976d824280d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ga\utils">
+      <UniqueIdentifier>{175cc3a2-967e-403d-9040-d123d33309bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\sandbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\test\multiplication_tables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,125 +83,146 @@
     <ClInclude Include="..\..\include\ga5e.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\arithmetic_operators.hpp">
+    <ClInclude Include="..\..\include\ga\core\arithmetic_operators.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\basis_vector.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\clifford_expression.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\conformal_metric_space.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\conjugation.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\constant.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\constexpr.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\expression.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\expression_addition.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\expression_graded_unary_minus.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\expression_power.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\expression_product.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\expression_relational_operators.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\expression_traits.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\general_metric_mapping.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\geometric_product.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\involution.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\lazy_context.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\left_contraction.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\mapping.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\math.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\metric_space.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\orthogonal_metric_mapping.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\outer_product.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\reversion.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\right_contraction.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\scalar.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\scalar_product.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\signed_metric_space.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\type_traits_extension.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\basis_vector.hpp">
+    <ClInclude Include="..\..\include\ga\core\pseudoscalar.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\arithmetic_operators.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\default_tolerance.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\dualization.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\grade.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\insertion_operator.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\inverse_geometric_product.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\reverse_norm.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\take_grade.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\versor_inverse.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\clifford_expression.hpp">
-      <Filter>Header Files\ga</Filter>
+    <ClInclude Include="..\..\include\ga\utils\macro_for_conformal_algebra_overload.hpp">
+      <Filter>Header Files\ga\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\conformal_metric_space.hpp">
-      <Filter>Header Files\ga</Filter>
+    <ClInclude Include="..\..\include\ga\utils\macro_for_signed_algebra_overload.hpp">
+      <Filter>Header Files\ga\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\conjugation.hpp">
-      <Filter>Header Files\ga</Filter>
+    <ClInclude Include="..\..\include\ga\core\regressive_product.hpp">
+      <Filter>Header Files\ga\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\constant.hpp">
-      <Filter>Header Files\ga</Filter>
+    <ClInclude Include="..\..\include\ga\core\exterior_product_mapping.hpp">
+      <Filter>Header Files\ga\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\constexpr.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\default_tolerance.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\dualization.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\expression.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\expression_addition.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\expression_graded_unary_minus.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\expression_power.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\expression_product.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\expression_relational_operators.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\expression_traits.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\general_metric_mapping.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\geometric_product.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\grade.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\insertion_operator.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\involution.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\lazy_context.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\left_contraction.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\mapping.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\math.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\metric_space.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\orthogonal_metric_mapping.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\outer_product.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\pseudoscalar.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\reverse_norm.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\reversion.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\right_contraction.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\scalar.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\scalar_product.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\signed_metric_space.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\take_grade.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\type_traits_extension.hpp">
-      <Filter>Header Files\ga</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\versor_inverse.hpp">
-      <Filter>Header Files\ga</Filter>
+    <ClInclude Include="..\..\include\ga\core\regressive_product_mapping.hpp">
+      <Filter>Header Files\ga\core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

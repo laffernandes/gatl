@@ -1,8 +1,9 @@
 #ifndef __GA3C_HPP__
 #define __GA3C_HPP__
 
-#include <ga.hpp>
-#include <ga/macro_for_algebra_overload.hpp>
+#include <ga/core.hpp>
+#include <ga/extra.hpp>
+#include <ga/utils/macro_for_conformal_algebra_overload.hpp>
 
 GA_CONFORMAL_ALGEBRA_OVERLOAD(ga3c, 3)
 

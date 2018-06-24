@@ -1,8 +1,9 @@
 #ifndef __GA1H_HPP__
 #define __GA1H_HPP__
 
-#include <ga.hpp>
-#include <ga/macro_for_algebra_overload.hpp>
+#include <ga/core.hpp>
+#include <ga/extra.hpp>
+#include <ga/utils/macro_for_signed_algebra_overload.hpp>
 
 GA_SIGNED_ALGEBRA_OVERLOAD(ga1h, 1 + 1, 0)
 

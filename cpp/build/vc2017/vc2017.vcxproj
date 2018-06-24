@@ -19,7 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\test\sandbox.cpp" />
+    <ClCompile Include="..\..\test\multiplication_tables.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\test\sandbox.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\ga.hpp" />
@@ -38,46 +45,53 @@
     <ClInclude Include="..\..\include\ga4e.hpp" />
     <ClInclude Include="..\..\include\ga4h.hpp" />
     <ClInclude Include="..\..\include\ga5e.hpp" />
-    <ClInclude Include="..\..\include\ga\arithmetic_operators.hpp" />
-    <ClInclude Include="..\..\include\ga\basis_vector.hpp" />
-    <ClInclude Include="..\..\include\ga\clifford_expression.hpp" />
-    <ClInclude Include="..\..\include\ga\conformal_metric_space.hpp" />
-    <ClInclude Include="..\..\include\ga\conjugation.hpp" />
-    <ClInclude Include="..\..\include\ga\constant.hpp" />
-    <ClInclude Include="..\..\include\ga\constexpr.hpp" />
-    <ClInclude Include="..\..\include\ga\default_tolerance.hpp" />
-    <ClInclude Include="..\..\include\ga\dualization.hpp" />
-    <ClInclude Include="..\..\include\ga\expression.hpp" />
-    <ClInclude Include="..\..\include\ga\expression_addition.hpp" />
-    <ClInclude Include="..\..\include\ga\expression_graded_unary_minus.hpp" />
-    <ClInclude Include="..\..\include\ga\expression_power.hpp" />
-    <ClInclude Include="..\..\include\ga\expression_product.hpp" />
-    <ClInclude Include="..\..\include\ga\expression_relational_operators.hpp" />
-    <ClInclude Include="..\..\include\ga\expression_traits.hpp" />
-    <ClInclude Include="..\..\include\ga\general_metric_mapping.hpp" />
-    <ClInclude Include="..\..\include\ga\geometric_product.hpp" />
-    <ClInclude Include="..\..\include\ga\grade.hpp" />
-    <ClInclude Include="..\..\include\ga\insertion_operator.hpp" />
-    <ClInclude Include="..\..\include\ga\inverse_geometric_product.hpp" />
-    <ClInclude Include="..\..\include\ga\involution.hpp" />
-    <ClInclude Include="..\..\include\ga\lazy_context.hpp" />
-    <ClInclude Include="..\..\include\ga\left_contraction.hpp" />
-    <ClInclude Include="..\..\include\ga\macro_for_algebra_overload.hpp" />
-    <ClInclude Include="..\..\include\ga\mapping.hpp" />
-    <ClInclude Include="..\..\include\ga\math.hpp" />
-    <ClInclude Include="..\..\include\ga\metric_space.hpp" />
-    <ClInclude Include="..\..\include\ga\orthogonal_metric_mapping.hpp" />
-    <ClInclude Include="..\..\include\ga\outer_product.hpp" />
-    <ClInclude Include="..\..\include\ga\pseudoscalar.hpp" />
-    <ClInclude Include="..\..\include\ga\reverse_norm.hpp" />
-    <ClInclude Include="..\..\include\ga\reversion.hpp" />
-    <ClInclude Include="..\..\include\ga\right_contraction.hpp" />
-    <ClInclude Include="..\..\include\ga\scalar.hpp" />
-    <ClInclude Include="..\..\include\ga\scalar_product.hpp" />
-    <ClInclude Include="..\..\include\ga\signed_metric_space.hpp" />
-    <ClInclude Include="..\..\include\ga\take_grade.hpp" />
-    <ClInclude Include="..\..\include\ga\type_traits_extension.hpp" />
-    <ClInclude Include="..\..\include\ga\versor_inverse.hpp" />
+    <ClInclude Include="..\..\include\ga\core.hpp" />
+    <ClInclude Include="..\..\include\ga\core\arithmetic_operators.hpp" />
+    <ClInclude Include="..\..\include\ga\core\basis_vector.hpp" />
+    <ClInclude Include="..\..\include\ga\core\clifford_expression.hpp" />
+    <ClInclude Include="..\..\include\ga\core\conformal_metric_space.hpp" />
+    <ClInclude Include="..\..\include\ga\core\conjugation.hpp" />
+    <ClInclude Include="..\..\include\ga\core\constant.hpp" />
+    <ClInclude Include="..\..\include\ga\core\constexpr.hpp" />
+    <ClInclude Include="..\..\include\ga\core\expression.hpp" />
+    <ClInclude Include="..\..\include\ga\core\expression_addition.hpp" />
+    <ClInclude Include="..\..\include\ga\core\expression_graded_unary_minus.hpp" />
+    <ClInclude Include="..\..\include\ga\core\expression_power.hpp" />
+    <ClInclude Include="..\..\include\ga\core\expression_product.hpp" />
+    <ClInclude Include="..\..\include\ga\core\expression_relational_operators.hpp" />
+    <ClInclude Include="..\..\include\ga\core\expression_traits.hpp" />
+    <ClInclude Include="..\..\include\ga\core\exterior_product_mapping.hpp" />
+    <ClInclude Include="..\..\include\ga\core\general_metric_mapping.hpp" />
+    <ClInclude Include="..\..\include\ga\core\geometric_product.hpp" />
+    <ClInclude Include="..\..\include\ga\core\involution.hpp" />
+    <ClInclude Include="..\..\include\ga\core\lazy_context.hpp" />
+    <ClInclude Include="..\..\include\ga\core\left_contraction.hpp" />
+    <ClInclude Include="..\..\include\ga\core\mapping.hpp" />
+    <ClInclude Include="..\..\include\ga\core\math.hpp" />
+    <ClInclude Include="..\..\include\ga\core\metric_space.hpp" />
+    <ClInclude Include="..\..\include\ga\core\orthogonal_metric_mapping.hpp" />
+    <ClInclude Include="..\..\include\ga\core\outer_product.hpp" />
+    <ClInclude Include="..\..\include\ga\core\pseudoscalar.hpp" />
+    <ClInclude Include="..\..\include\ga\core\regressive_product.hpp" />
+    <ClInclude Include="..\..\include\ga\core\regressive_product_mapping.hpp" />
+    <ClInclude Include="..\..\include\ga\core\reversion.hpp" />
+    <ClInclude Include="..\..\include\ga\core\right_contraction.hpp" />
+    <ClInclude Include="..\..\include\ga\core\scalar.hpp" />
+    <ClInclude Include="..\..\include\ga\core\scalar_product.hpp" />
+    <ClInclude Include="..\..\include\ga\core\signed_metric_space.hpp" />
+    <ClInclude Include="..\..\include\ga\core\type_traits_extension.hpp" />
+    <ClInclude Include="..\..\include\ga\extra.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\arithmetic_operators.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\default_tolerance.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\dualization.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\grade.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\insertion_operator.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\inverse_geometric_product.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\reverse_norm.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\take_grade.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\versor_inverse.hpp" />
+    <ClInclude Include="..\..\include\ga\utils\macro_for_conformal_algebra_overload.hpp" />
+    <ClInclude Include="..\..\include\ga\utils\macro_for_signed_algebra_overload.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -163,11 +177,12 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -200,11 +215,12 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

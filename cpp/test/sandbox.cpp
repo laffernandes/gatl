@@ -1,8 +1,9 @@
-/**/
+﻿/**/
 #include <ga.hpp>
 #include <ga3e.hpp>
 #include <ga3h.hpp>
 #include <ga3m.hpp>
+#include <ga3c.hpp>
 
 using namespace ga;
 
@@ -108,7 +109,7 @@ void test_op() {
 }
 
 template<class MetricSpaceType>
-void test_scp(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
+void test_sp(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -139,21 +140,21 @@ void test_scp(metric_space<MetricSpaceType> const &mtr, std::string const &name)
 	auto eiek = op(ei, ek, mtr);
 	auto e1ej = op(e1, ej, mtr);
 
-	std::cout << "--- test_scp(" << name << ")" << std::endl;
+	std::cout << "--- test_sp(" << name << ")" << std::endl;
 
-	std::cout << "scp(e1, e1^e2) = " << eval(scp(e1, e1e2, mtr)) << std::endl;
-	std::cout << "scp(e1^e2, e1^e2) = " << eval(scp(e1e2, e1e2, mtr)) << std::endl;
-	std::cout << "scp(e1^e3, e1^e2) = " << eval(scp(e1e3, e1e2, mtr)) << std::endl;
+	std::cout << "sp(e1, e1^e2) = " << eval(sp(e1, e1e2, mtr)) << std::endl;
+	std::cout << "sp(e1^e2, e1^e2) = " << eval(sp(e1e2, e1e2, mtr)) << std::endl;
+	std::cout << "sp(e1^e3, e1^e2) = " << eval(sp(e1e3, e1e2, mtr)) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "scp(ei, ei^ej) = " << eval(scp(ei, eiej, mtr)) << std::endl;
-	std::cout << "scp(ei^ej, ei^ej) = " << eval(scp(eiej, eiej, mtr)) << std::endl;
-	std::cout << "scp(ei^ek, ei^ej) = " << eval(scp(eiek, eiej, mtr)) << std::endl;
+	std::cout << "sp(ei, ei^ej) = " << eval(sp(ei, eiej, mtr)) << std::endl;
+	std::cout << "sp(ei^ej, ei^ej) = " << eval(sp(eiej, eiej, mtr)) << std::endl;
+	std::cout << "sp(ei^ek, ei^ej) = " << eval(sp(eiek, eiej, mtr)) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "scp(e1, e1^ej) = " << eval(scp(e1, e1ej, mtr)) << std::endl;
-	std::cout << "scp(e1^ej, e1^ej) = " << eval(scp(e1ej, e1ej, mtr)) << std::endl;
-	std::cout << "scp(e1^e3, e1^ej) = " << eval(scp(e1e3, e1ej, mtr)) << std::endl;
+	std::cout << "sp(e1, e1^ej) = " << eval(sp(e1, e1ej, mtr)) << std::endl;
+	std::cout << "sp(e1^ej, e1^ej) = " << eval(sp(e1ej, e1ej, mtr)) << std::endl;
+	std::cout << "sp(e1^e3, e1^ej) = " << eval(sp(e1e3, e1ej, mtr)) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -445,6 +446,99 @@ void test_grade() {
 	std::cout << std::endl;
 }
 
+void test_general_metric() {
+	std::cout << "--- test_general_metric()" << std::endl;
+	std::cout << std::endl;
+
+	double p1 = 5.0;
+	double p2 = 2.0;
+	double p3 = -4.5;
+
+	double q1 = 10.0;
+	double q2 = -5.0;
+	double q3 = 3.0;
+
+	{
+		using namespace ga3m;
+
+		auto vp = p1 * e1 + p2 * e2 + p3 * e3;
+		auto p = no + vp + (sp(vp, vp) / c<2>) * ni;
+
+		auto vq = q1 * e1 + q2 * e2 + q3 * e3;
+		auto q = no + vq + (sp(vq, vq) / c<2>) * ni;
+
+		std::cout << "ga3m" << std::endl;
+		std::cout << "------------------------------------------------------------------------" << std::endl;
+		std::cout << "p = " << p << std::endl;
+		std::cout << "q = " << q << std::endl;
+		std::cout << std::endl;
+		std::cout << "sp(vp, vp) = " << sp(vp, vp) << std::endl;
+		std::cout << std::endl;
+		std::cout << "gp(p, p) = " << gp(p, p) << std::endl;
+		std::cout << "gp(p, q) = " << gp(p, q) << std::endl;
+		std::cout << "gp(p, no) = " << gp(p, no) << std::endl;
+		std::cout << "gp(q, no) = " << gp(q, no) << std::endl;
+
+		std::cout << std::endl;
+		auto xxx = gp(p, q);
+		std::cout << sp(xxx, e1^e2) << std::endl;
+		std::cout << sp(xxx, e1^e3) << std::endl;
+		std::cout << sp(xxx, e1^no) << std::endl;
+		std::cout << sp(xxx, e1^ni) << std::endl;
+		std::cout << sp(xxx, e2^e3) << std::endl;
+		std::cout << sp(xxx, e2^no) << std::endl;
+		std::cout << sp(xxx, e2^ni) << std::endl;
+		std::cout << sp(xxx, e3^no) << std::endl;
+		std::cout << sp(xxx, e3^ni) << std::endl;
+		std::cout << sp(xxx, no^ni) << std::endl;
+	}
+
+	std::cout << std::endl;
+
+	{
+		using namespace ga3c;
+
+		typedef conformal_metric_space<3> GeneralMetricSpace;
+		typedef detail::general_metric_mapping<GeneralMetricSpace, detail::gp_mapping> mappping;
+		typedef mappping::multiply<detail::basis_blade_t<decltype(e1)::expression_type>, detail::basis_blade_t<decltype(e2)::expression_type> > e1e2;
+
+		auto vp = p1 * e1 + p2 * e2 + p3 * e3;
+		auto test = sp(vp, vp);
+
+		auto p = no + vp + (sp(vp, vp) / c<2>) * ni;
+
+		auto vq = q1 * e1 + q2 * e2 + q3 * e3;
+		auto q = no + vq + (sp(vq, vq) / c<2>) * ni;
+
+		std::cout << "ga3c" << std::endl;
+		std::cout << "------------------------------------------------------------------------" << std::endl;
+		std::cout << "p = " << p << std::endl;
+		std::cout << "q = " << q << std::endl;
+		std::cout << std::endl;
+		std::cout << "sp(vp, vp) = " << sp(vp, vp) << std::endl;
+		std::cout << std::endl;
+		std::cout << "gp(p, p) = " << gp(p, p) << std::endl;
+		std::cout << "gp(p, q) = " << gp(p, q) << std::endl;
+		std::cout << "gp(p, no) = " << gp(p, no) << std::endl;
+		std::cout << "gp(q, no) = " << gp(q, no) << std::endl;
+	
+		std::cout << std::endl;
+		auto xxx = gp(p, q);
+		std::cout << sp(xxx, e1^e2) << std::endl;
+		std::cout << sp(xxx, e1^e3) << std::endl;
+		std::cout << sp(xxx, e1^no) << std::endl;
+		std::cout << sp(xxx, e1^ni) << std::endl;
+		std::cout << sp(xxx, e2^e3) << std::endl;
+		std::cout << sp(xxx, e2^no) << std::endl;
+		std::cout << sp(xxx, e2^ni) << std::endl;
+		std::cout << sp(xxx, e3^no) << std::endl;
+		std::cout << sp(xxx, e3^ni) << std::endl;
+		std::cout << sp(xxx, no^ni) << std::endl;
+	}
+
+	std::cout << std::endl;
+}
+
 int main() {
 	test_make_constant();
 
@@ -460,7 +554,7 @@ int main() {
 	test_minus();
 
 	test_op();
-	test_scp(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
+	test_sp(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
 	test_lcont(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
 	test_rcont(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
 	test_gp(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
@@ -479,6 +573,8 @@ int main() {
 
 	test_grade();
 
+	test_general_metric();
+
 	auto e1 = e(1);
 	auto e2 = e(2);
 	auto e3 = e(3);
@@ -487,13 +583,13 @@ int main() {
 	std::cout << m << std::endl;
 
 	auto v1 = c<5> * e(1) + c<5> * e(2);
-	auto s1 = scp(v1, v1, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+	auto s1 = sp(v1, v1, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 	std::cout << "v1 = " << v1 << std::endl;
 	std::cout << "s1 = " << s1 << std::endl;
 	std::cout << std::endl;
 
 	auto v2 = 10.0 * e(1) + 10.0 * e(2);
-	auto s2 = scp(v2, v2, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+	auto s2 = sp(v2, v2, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
 	std::cout << "v2 = " << v2 << std::endl;
 	std::cout << "s2 = " << s2 << std::endl;
 	std::cout << std::endl;
@@ -532,17 +628,17 @@ int main() {
 		double c3 = -4.5;
 
 		auto v = c1 * e1 + c2 * e2 + c3 * e3;
-		auto p = no + v + (scp(v, v) / c<2>) * ni;
+		auto p = no + v + (sp(v, v) / c<2>) * ni;
 
-		auto x1 = scp(p, e1);
+		auto x1 = sp(p, e1);
 		double d1 = x1;
 		std::cout << x1 << std::endl;
 
-		auto x2 = sqrt(scp(e1, e1));
+		auto x2 = sqrt(sp(e1, e1));
 		double d2 = x2;
 		std::cout << x2 << std::endl;
 
-		auto x3 = pow(c<2> * scp(e1, e1), c<-3>);
+		auto x3 = pow(c<2> * sp(e1, e1), c<-3>);
 		double d3 = x3;
 		std::cout << x3 << std::endl;
 
@@ -550,6 +646,29 @@ int main() {
 	}
 
 	auto test = c<3> / c<2>;
+
+	{
+		default_bitset_t bits = 235;
+		std::cout << "left  = " << detail::leftmost_set_bit(bits) << std::endl;
+		std::cout << "right = " << detail::rightmost_set_bit(bits) << std::endl;
+		std::cout << std::endl;
+
+		ndims_t n = 5;
+		default_bitset_t comb = 3;
+		default_bitset_t mask = (default_bitset_t(1) << n) - 1;
+		do {
+			std::cout << '[';
+			index_t index = 1;
+			default_bitset_t temp = comb;
+			for (default_bitset_t i = 1; temp; i *= 2, ++index) {
+				if (i & temp) {
+					std::cout << index << ", ";
+					temp -= i;
+				}
+			}
+			std::cout << ']' << std::endl;
+		} while ((comb = detail::next_combination(comb, mask)) != default_bitset_t(0));
+	}
 
 	return EXIT_SUCCESS;
 }
