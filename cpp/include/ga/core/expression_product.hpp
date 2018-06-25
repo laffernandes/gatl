@@ -29,7 +29,7 @@ namespace ga {
 			> type;
 		};
 
-		// Specializations of _product_level4<LeftExpression, RightExpression> with at least one constant argument (simplify).
+		// Specializations of _product_level5<LeftExpression, RightExpression> with at least one constant argument (simplify).
 		template<default_integral_t LeftValue, default_integral_t RightValue>
 		struct _product_level5<constant_value<LeftValue>, constant_value<RightValue> > {
 			typedef constant_value<LeftValue * RightValue> type; // A * B = C, end of recursion (simplify)
@@ -74,6 +74,11 @@ namespace ga {
 		template<class CommonArgument, class LeftRightArgument, class RightRightArgument>
 		struct _product_level4<power<CommonArgument, LeftRightArgument>, power<CommonArgument, RightRightArgument> > {
 			typedef power_t<CommonArgument, addition_t<LeftRightArgument, RightRightArgument> > type; // A^{P} * A^{Q} = A^{P + Q}, end of recursion (simplify)
+		};
+
+		template<class CommonLeftArgument, class CommonRightArgument>
+		struct _product_level4<power<CommonLeftArgument, CommonRightArgument>, power<CommonLeftArgument, CommonRightArgument> > {
+			typedef power_t<CommonLeftArgument, product_t<constant_value<2>, CommonRightArgument, real_mapping> > type; // A^{P} * A^{P} = A^{2 * P}, end of recursion (simplify)
 		};
 
 		// Specialization of _product_level3<LeftExpression, RightExpression> (merge mul<...>).
