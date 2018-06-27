@@ -350,7 +350,7 @@ namespace ga {
 			std::conditional_t<
 				(std::is_same_v<eval_expression_t<LowerTag, UpperTag, Argument>, stored_value> && can_be_stored_v<eval_expression_t<LowerTag, UpperTag, mul_t<NextArguments...> > >) || (can_be_stored_v<eval_expression_t<LowerTag, UpperTag, Argument> > && std::is_same_v<eval_expression_t<LowerTag, UpperTag, mul_t<NextArguments...> >, stored_value>),
 				_eval_clifford_expression_store_value<LowerTag, UpperTag, mul<Argument, NextArguments...> >,
-				_eval_clifford_expression_move<LowerTag, UpperTag, product_t<eval_expression_t<LowerTag, UpperTag, Argument>, eval_expression_t<LowerTag, UpperTag, mul_t<NextArguments...> >, real_mapping>, Argument, mul_t<NextArguments...> >
+				_eval_clifford_expression_move<LowerTag, UpperTag, product_t<eval_expression_t<LowerTag, UpperTag, Argument>, eval_expression_t<LowerTag, UpperTag, mul_t<NextArguments...> >, value_mapping>, Argument, mul_t<NextArguments...> >
 			> {
 		};
 

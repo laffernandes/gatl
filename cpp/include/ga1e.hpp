@@ -3,15 +3,18 @@
 
 #include <ga/core.hpp>
 #include <ga/extra.hpp>
-#include <ga/utils/macro_for_signed_algebra_overload.hpp>
-
-GA_SIGNED_ALGEBRA_OVERLOAD(ga1e, 1, 0)
+#include <ga/utils/euclidean.hpp>
 
 namespace ga1e {
 
+	using namespace ga;
+
+	_GA_UTILS_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, 1, "e1")
+
 	static auto const e1 = e(c<1>);
-	
-	static auto const I = pseudoscalar();
+
+	_GA_CORE_OVERLOAD(space)
+	_GA_EXTRA_OVERLOAD(space, basis_vectors_names)
 
 }
 

@@ -45,8 +45,7 @@ namespace ga {
 #include "ga/core/expression_traits.hpp"
 
 #include "ga/core/metric_space.hpp"
-#include "ga/core/signed_metric_space.hpp"
-#include "ga/core/conformal_metric_space.hpp"
+#include "ga/core/real_metric_space.hpp"
 
 #include "ga/core/mapping.hpp"
 
@@ -74,7 +73,9 @@ namespace ga {
 #include "ga/core/orthogonal_metric_mapping.hpp"
 #include "ga/core/general_metric_mapping.hpp"
 
+#include "ga/core/dot_product.hpp"
 #include "ga/core/geometric_product.hpp"
+#include "ga/core/hestenes_inner_product.hpp"
 #include "ga/core/left_contraction.hpp"
 #include "ga/core/outer_product.hpp"
 #include "ga/core/regressive_product.hpp"
@@ -83,5 +84,7 @@ namespace ga {
 
 #include "ga/core/math.hpp"
 #include "ga/core/arithmetic_operators.hpp"
+
+#include "ga/core/macro_for_algebra_overload.hpp"
 
 #endif // __GA_CORE_HPP__

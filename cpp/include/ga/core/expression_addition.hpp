@@ -23,32 +23,32 @@ namespace ga {
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
 		struct _addition_level5<constant_value<LeftValue>, power<constant_value<RightValue>, constant_value<-1> > > {
-			typedef product_t<constant_value<LeftValue * RightValue + 1>, power_t<constant_value<RightValue>, constant_value<-1> >, real_mapping> type; // A + 1 / B = (A * B + 1) / B (simplify)
+			typedef product_t<constant_value<LeftValue * RightValue + 1>, power_t<constant_value<RightValue>, constant_value<-1> >, value_mapping> type; // A + 1 / B = (A * B + 1) / B (simplify)
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
 		struct _addition_level5<power<constant_value<LeftValue>, constant_value<-1> >, constant_value<RightValue> > {
-			typedef product_t<constant_value<1 + RightValue * LeftValue>, power_t<constant_value<LeftValue>, constant_value<-1> >, real_mapping> type; // 1 / A + B = (1 + B * A) / A (simplify)
+			typedef product_t<constant_value<1 + RightValue * LeftValue>, power_t<constant_value<LeftValue>, constant_value<-1> >, value_mapping> type; // 1 / A + B = (1 + B * A) / A (simplify)
 		};
 
 		template<default_integral_t LeftLeftValue, default_integral_t LeftRightValue, default_integral_t RightValue>
 		struct _addition_level5<mul<constant_value<LeftLeftValue>, power<constant_value<LeftRightValue>, constant_value<-1> > >, power<constant_value<RightValue>, constant_value<-1> > > {
-			typedef product_t<constant_value<LeftLeftValue * RightValue + LeftRightValue>, power_t<constant_value<LeftRightValue * RightValue>, constant_value<-1> >, real_mapping> type; // A / B + 1 / C = (A * C + B) / (B * C) (simplify)
+			typedef product_t<constant_value<LeftLeftValue * RightValue + LeftRightValue>, power_t<constant_value<LeftRightValue * RightValue>, constant_value<-1> >, value_mapping> type; // A / B + 1 / C = (A * C + B) / (B * C) (simplify)
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightLeftValue, default_integral_t RightRightValue>
 		struct _addition_level5<power<constant_value<LeftValue>, constant_value<-1> >, mul<constant_value<RightLeftValue>, power<constant_value<RightRightValue>, constant_value<-1> > > > {
-			typedef product_t<constant_value<RightRightValue + LeftValue * RightLeftValue>, power_t<constant_value<LeftValue * RightRightValue>, constant_value<-1> >, real_mapping> type; // 1 / C + A / B = (B + C * A) / (C * B) (simplify)
+			typedef product_t<constant_value<RightRightValue + LeftValue * RightLeftValue>, power_t<constant_value<LeftValue * RightRightValue>, constant_value<-1> >, value_mapping> type; // 1 / C + A / B = (B + C * A) / (C * B) (simplify)
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
 		struct _addition_level5<power<constant_value<LeftValue>, constant_value<-1> >, power<constant_value<RightValue>, constant_value<-1> > > {
-			typedef product_t<constant_value<RightValue + LeftValue>, power_t<constant_value<LeftValue * RightValue>, constant_value<-1> >, real_mapping> type; // 1 / B + 1 / C = (C + B) / (B * C) (simplify)
+			typedef product_t<constant_value<RightValue + LeftValue>, power_t<constant_value<LeftValue * RightValue>, constant_value<-1> >, value_mapping> type; // 1 / B + 1 / C = (C + B) / (B * C) (simplify)
 		};
 
 		template<default_integral_t LeftLeftValue, default_integral_t LeftRightValue, default_integral_t RightLeftValue, default_integral_t RightRightValue>
 		struct _addition_level5<mul<constant_value<LeftLeftValue>, power<constant_value<LeftRightValue>, constant_value<-1> > >, mul<constant_value<RightLeftValue>, power<constant_value<RightRightValue>, constant_value<-1> > > > {
-			typedef product_t<constant_value<LeftLeftValue * RightRightValue + LeftRightValue * RightLeftValue>, power_t<constant_value<LeftRightValue * RightRightValue>, constant_value<-1> >, real_mapping> type; // A / B + C / D = (A * D + B * C) / (B * D) (simplify)
+			typedef product_t<constant_value<LeftLeftValue * RightRightValue + LeftRightValue * RightLeftValue>, power_t<constant_value<LeftRightValue * RightRightValue>, constant_value<-1> >, value_mapping> type; // A / B + C / D = (A * D + B * C) / (B * D) (simplify)
 		};
 
 		// Specializations of _addition_level4<LeftExpression, RightExpression> with some patterns to simplify (simplify).
@@ -59,32 +59,32 @@ namespace ga {
 
 		template<class LeftLeftArgument, class CommonArgument>
 		struct _addition_level4<mul<LeftLeftArgument, CommonArgument>, CommonArgument, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, constant_value<1> >, add_t<LeftLeftArgument, constant_value<1> >, add_t<constant_value<1>, LeftLeftArgument> > > > {
-			typedef product_t<addition_t<LeftLeftArgument, constant_value<1> >, CommonArgument, real_mapping> type; // (P * A) + A = (P + 1) * A (simplify)
+			typedef product_t<addition_t<LeftLeftArgument, constant_value<1> >, CommonArgument, value_mapping> type; // (P * A) + A = (P + 1) * A (simplify)
 		};
 
 		template<class LeftLeftArgument, class... CommonArguments>
 		struct _addition_level4<mul<LeftLeftArgument, CommonArguments...>, mul<CommonArguments...>, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, constant_value<1> >, add_t<LeftLeftArgument, constant_value<1> >, add_t<constant_value<1>, LeftLeftArgument > > > > {
-			typedef product_t<addition_t<LeftLeftArgument, constant_value<1> >, mul_t<CommonArguments...>, real_mapping> type; // (P * A * ...) + (A * ...) = (P + 1) * (A * ...) (simplify)
+			typedef product_t<addition_t<LeftLeftArgument, constant_value<1> >, mul_t<CommonArguments...>, value_mapping> type; // (P * A * ...) + (A * ...) = (P + 1) * (A * ...) (simplify)
 		};
 
 		template<class CommonArgument, class RightLeftArgument>
 		struct _addition_level4<CommonArgument, mul<RightLeftArgument, CommonArgument>, std::enable_if_t<!is_any_v<addition_t<constant_value<1>, RightLeftArgument>, add_t<constant_value<1>, RightLeftArgument>, add_t<RightLeftArgument, constant_value<1> > > > > {
-			typedef product_t<addition_t<constant_value<1>, RightLeftArgument>, CommonArgument, real_mapping> type; // A + (P * A) = (1 + P) * A (simplify)
+			typedef product_t<addition_t<constant_value<1>, RightLeftArgument>, CommonArgument, value_mapping> type; // A + (P * A) = (1 + P) * A (simplify)
 		};
 
 		template<class... CommonArguments, class RightLeftArgument>
 		struct _addition_level4<mul<CommonArguments...>, mul<RightLeftArgument, CommonArguments...>, std::enable_if_t<!is_any_v<addition_t<constant_value<1>, RightLeftArgument>, add_t<constant_value<1>, RightLeftArgument>, add_t<RightLeftArgument, constant_value<1> > > > > {
-			typedef product_t<addition_t<constant_value<1>, RightLeftArgument>, mul_t<CommonArguments...>, real_mapping> type; // A * ... + (P * A * ...) = (1 + P) * (A * ...) (simplify)
+			typedef product_t<addition_t<constant_value<1>, RightLeftArgument>, mul_t<CommonArguments...>, value_mapping> type; // A * ... + (P * A * ...) = (1 + P) * (A * ...) (simplify)
 		};
 
 		template<class LeftLeftArgument, class CommmonArgument, class RightLeftArgument>
 		struct _addition_level4<mul<LeftLeftArgument, CommmonArgument>, mul<RightLeftArgument, CommmonArgument>, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, RightLeftArgument>, add_t<LeftLeftArgument, RightLeftArgument>, add_t<RightLeftArgument, LeftLeftArgument> > > > {
-			typedef product_t<addition_t<LeftLeftArgument, RightLeftArgument>, CommmonArgument, real_mapping> type; // (P * A) + (Q * A) = (P + Q) * A (simplify)
+			typedef product_t<addition_t<LeftLeftArgument, RightLeftArgument>, CommmonArgument, value_mapping> type; // (P * A) + (Q * A) = (P + Q) * A (simplify)
 		};
 
 		template<class LeftLeftArgument, class... CommonArguments, class RightLeftArgument>
 		struct _addition_level4<mul<LeftLeftArgument, CommonArguments...>, mul<RightLeftArgument, CommonArguments...>, std::enable_if_t<!is_any_v<addition_t<LeftLeftArgument, RightLeftArgument>, add_t<LeftLeftArgument, RightLeftArgument>, add_t<RightLeftArgument, LeftLeftArgument> > > > {
-			typedef product_t<addition_t<LeftLeftArgument, RightLeftArgument>, mul_t<CommonArguments...>, real_mapping> type; // (P * A * ...) + (Q * A * ...) = (P + Q) * (A * ...) (simplify)
+			typedef product_t<addition_t<LeftLeftArgument, RightLeftArgument>, mul_t<CommonArguments...>, value_mapping> type; // (P * A * ...) + (Q * A * ...) = (P + Q) * (A * ...) (simplify)
 		};
 
 		// Specialization of _addition_level3<LeftExpression, RightExpression>.
@@ -95,7 +95,7 @@ namespace ga {
 
 		template<class CommonExpression>
 		struct _addition_level3<CommonExpression, CommonExpression> {
-			typedef product_t<constant_value<2>, CommonExpression, real_mapping> type; // A + A = 2 * A (simplify)
+			typedef product_t<constant_value<2>, CommonExpression, value_mapping> type; // A + A = 2 * A (simplify)
 		};
 
 		// Specialization of _addition_level2<LeftExpression, RightExpression>.

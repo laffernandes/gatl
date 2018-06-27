@@ -25,6 +25,21 @@
     <Filter Include="Header Files\ga\utils">
       <UniqueIdentifier>{175cc3a2-967e-403d-9040-d123d33309bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ga\utils\conformal">
+      <UniqueIdentifier>{97f43e29-bcb2-4046-8cba-2a1dcea68e0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ga\utils\signed">
+      <UniqueIdentifier>{225b1fa1-f3e7-4a01-b358-e541d09943a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ga\utils\signed\euclidean">
+      <UniqueIdentifier>{83e8e16a-46e7-417f-a37c-60be93979e32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ga\utils\signed\homogeneous">
+      <UniqueIdentifier>{d8a0202f-3623-442b-834f-ab45a5f006d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ga\utils\signed\minkowski">
+      <UniqueIdentifier>{baccb810-2fcf-48b7-8a85-a00fd563a8bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\sandbox.cpp">
@@ -90,9 +105,6 @@
       <Filter>Header Files\ga\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\core\clifford_expression.hpp">
-      <Filter>Header Files\ga\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\core\conformal_metric_space.hpp">
       <Filter>Header Files\ga\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\core\conjugation.hpp">
@@ -167,9 +179,6 @@
     <ClInclude Include="..\..\include\ga\core\scalar_product.hpp">
       <Filter>Header Files\ga\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\core\signed_metric_space.hpp">
-      <Filter>Header Files\ga\core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\core\type_traits_extension.hpp">
       <Filter>Header Files\ga\core</Filter>
     </ClInclude>
@@ -191,9 +200,6 @@
     <ClInclude Include="..\..\include\ga\extra\grade.hpp">
       <Filter>Header Files\ga\extra</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\extra\insertion_operator.hpp">
-      <Filter>Header Files\ga\extra</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\extra\inverse_geometric_product.hpp">
       <Filter>Header Files\ga\extra</Filter>
     </ClInclude>
@@ -209,12 +215,6 @@
     <ClInclude Include="..\..\include\ga\extra.hpp">
       <Filter>Header Files\ga</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\utils\macro_for_conformal_algebra_overload.hpp">
-      <Filter>Header Files\ga\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\utils\macro_for_signed_algebra_overload.hpp">
-      <Filter>Header Files\ga\utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\core\regressive_product.hpp">
       <Filter>Header Files\ga\core</Filter>
     </ClInclude>
@@ -223,6 +223,69 @@
     </ClInclude>
     <ClInclude Include="..\..\include\ga\core\regressive_product_mapping.hpp">
       <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\real_metric_space.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\write.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\metric_space.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\metric_space.hpp">
+      <Filter>Header Files\ga\utils\signed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\euclidean\metric_space.hpp">
+      <Filter>Header Files\ga\utils\signed\euclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\homogeneous\metric_space.hpp">
+      <Filter>Header Files\ga\utils\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\metric_space.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal.hpp">
+      <Filter>Header Files\ga\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\euclidean.hpp">
+      <Filter>Header Files\ga\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\homogeneous.hpp">
+      <Filter>Header Files\ga\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\minkowski.hpp">
+      <Filter>Header Files\ga\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\macro_for_algebra_overload.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\macro_for_algebra_overload.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\macro_for_algebra_definition.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\euclidean\macro_for_algebra_definition.hpp">
+      <Filter>Header Files\ga\utils\signed\euclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\homogeneous\macro_for_algebra_definition.hpp">
+      <Filter>Header Files\ga\utils\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\macro_for_algebra_definition.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\macro_for_algebra_definition.hpp">
+      <Filter>Header Files\ga\utils\signed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\hestenes_inner_product.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\dot_product.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\commutator_product.hpp">
+      <Filter>Header Files\ga\extra</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
-#ifndef __GA_CORE_SIGNED_METRIC_SPACE_HPP__
-#define __GA_CORE_SIGNED_METRIC_SPACE_HPP__
+#ifndef __GA_UTILS_SIGNED_METRIC_SPACE_HPP__
+#define __GA_UTILS_SIGNED_METRIC_SPACE_HPP__
 
 namespace ga {
 
@@ -32,27 +32,12 @@ namespace ga {
 		static_assert((P + Q) <= GA_MAX_BASIS_VECTOR_INDEX, "ga::signed_metric_space<P, Q> is ill-defined. It is expectated (P + Q) <= GA_MAX_BASIS_VECTOR_INDEX.");
 	};
 
-	// Euclidean metric space.
-	template<ndims_t N>
-	using euclidean_metric_space = signed_metric_space<N, 0>;
-
-	// Minkowski metric space.
-	template<ndims_t N>
-	using minkowski_metric_space = signed_metric_space<N, 1>;
-
 	// Specialization of is_orthogonal_metric_space<MetricSpaceType>.
 	template<ndims_t P, ndims_t Q>
 	struct is_orthogonal_metric_space<signed_metric_space<P, Q> > {
 		constexpr static bool value = true;
 	};
 
-	namespace detail {
-		
-		// Helper for metric space of real numbers (it is used with scalar expressions).
-		typedef signed_metric_space<GA_MAX_BASIS_VECTOR_INDEX, 0> real_metric_space;
-
-	}
-
 }
 
-#endif // __GA_CORE_SIGNED_METRIC_SPACE_HPP__
+#endif // __GA_UTILS_SIGNED_METRIC_SPACE_HPP__

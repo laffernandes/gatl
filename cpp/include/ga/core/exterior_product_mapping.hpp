@@ -10,38 +10,25 @@ namespace ga {
 		struct exterior_product_mapping {
 		private:
 
-			struct _iterate_end {
+			constexpr static default_bitset_t all_possible_grades = default_bitset_t(default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - (VectorSpaceDimensions + 1)));
+			constexpr static default_bitset_t basis_vectors = all_possible_grades >> 1;
+
+			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
+			struct possible_grades_result {
+			private:
+
+				constexpr static default_bitset_t left_grade_bitset = rightmost_set_bit(LeftPossibleGrades);
+				constexpr static default_bitset_t possible_grades = (left_grade_bitset * RightPossibleGrades) & all_possible_grades;
+
+			public:
+
+				constexpr static default_bitset_t value = possible_grades_result<possible_grades != default_bitset_t(0) ? (LeftPossibleGrades ^ left_grade_bitset) : default_bitset_t(0), RightPossibleGrades>::value | possible_grades;
+			};
+
+			template<default_bitset_t RightPossibleGrades>
+			struct possible_grades_result<default_bitset_t(0), RightPossibleGrades> {
 				constexpr static default_bitset_t value = default_bitset_t(0);
 			};
-
-			template<grade_t LeftGrade, default_bitset_t RightPossibleGrades, grade_t RightGrade>
-			struct _iterate_right {
-				constexpr static default_bitset_t value = _iterate_right<
-					LeftGrade,
-					((LeftGrade + RightGrade + 1) < std::numeric_limits<default_bitset_t>::digits ? (RightPossibleGrades >> 1) : default_bitset_t(0)),
-					RightGrade + 1
-				>::value | ((RightPossibleGrades & default_bitset_t(1)) != default_bitset_t(0) ? (default_bitset_t(1) << (LeftGrade + RightGrade)) : default_bitset_t(0));
-			};
-
-			template<grade_t LeftGrade, grade_t RightGrade>
-			struct _iterate_right<LeftGrade, 0, RightGrade> : _iterate_end {
-			};
-
-			template<default_bitset_t LeftPossibleGrades, grade_t LeftGrade, default_bitset_t RightPossibleGrades>
-			struct _iterate_left {
-				constexpr static default_bitset_t value = _iterate_left<(LeftPossibleGrades >> 1), LeftGrade + 1, RightPossibleGrades>::value | std::conditional<(LeftPossibleGrades & default_bitset_t(1)) != default_bitset_t(0), _iterate_right<LeftGrade, RightPossibleGrades, 0>, _iterate_end>::type::value;
-			};
-
-			template<grade_t LeftGrade, default_bitset_t RightPossibleGrades>
-			struct _iterate_left<0, LeftGrade, RightPossibleGrades> : _iterate_end {
-			};
-
-			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades, ndims_t VectorSpaceDimensions>
-			struct possible_grades_result {
-				constexpr static default_bitset_t value = _iterate_left<LeftPossibleGrades, 0, RightPossibleGrades>::value & (default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - (VectorSpaceDimensions + 1)));
-			};
-
-			constexpr static default_bitset_t basis_vectors = default_bitset_t(default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - VectorSpaceDimensions));
 
 		public:
 
@@ -49,7 +36,12 @@ namespace ga {
 			struct multiply {
 			private:
 
-				constexpr static default_bitset_t result_possible_grades = possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade>, VectorSpaceDimensions>::value;
+#pragma warning( push )
+#pragma warning( disable: 4293 )
+				static_assert(((possible_grades_v<LeftBasisBlade> | possible_grades_v<RightBasisBlade>) >> (VectorSpaceDimensions + 1)) == default_bitset_t(0), "The possible grades exceed the number of dimensions of the vectors space.");
+#pragma warning( pop )
+
+				constexpr static default_bitset_t result_possible_grades = possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade> >::value;
 
 				typedef basis_vectors_t<LeftBasisBlade> left_basis_vectors;
 				typedef basis_vectors_t<RightBasisBlade> right_basis_vectors;

@@ -5,6 +5,10 @@ namespace ga {
 
 	namespace detail {
 
+		// Helper for real-valued expression mappings (it is used with the product of values).
+		struct value_mapping {
+		};
+
 		// The name of implemented functions.
 		enum class name_t : std::uint8_t {
 			reordering_sign,    //  0
@@ -41,10 +45,6 @@ namespace ga {
 			power,              // 22
 			mul,                // 23
 			add                 // 24
-		};
-
-		// A simple mapping for real-valued expressions (it is used with scalar expressions).
-		struct real_mapping {
 		};
 
 		// Returns whether the given expression has stored entries.
@@ -805,7 +805,7 @@ namespace ga {
 				Value,
 				std::conditional_t<
 					is_constant_expression_v<Value> && !(is_function_v<name_t::add, Value> || is_function_v<name_t::if_else, Value>),
-					product_t<constant_value<-1>, Value, real_mapping>,
+					product_t<constant_value<-1>, Value, value_mapping>,
 					function
 				>
 			> type;

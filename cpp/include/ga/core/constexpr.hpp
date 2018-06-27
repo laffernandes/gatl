@@ -82,6 +82,11 @@ namespace ga {
 			return arg & -std::make_signed_t<default_bitset_t>(arg);
 		}
 
+		// Returns the index of the set bit, assuming that there is a single set bit in the bitset.
+		constexpr index_t set_bit_index(default_bitset_t const arg) {
+			return ones(arg - default_bitset_t(1));
+		}
+
 		// Returns the bitset of the first k-combination.
 		constexpr default_bitset_t first_combination(ndims_t const k) {
 			return default_bitset_t((default_bitset_t(1) << k) - 1);

@@ -3,22 +3,18 @@
 
 #include <ga/core.hpp>
 #include <ga/extra.hpp>
-#include <ga/utils/macro_for_conformal_algebra_overload.hpp>
-
-GA_CONFORMAL_ALGEBRA_OVERLOAD(ga1c, 1)
+#include <ga/utils/conformal.hpp>
 
 namespace ga1c {
 
+	using namespace ga;
+
+	_GA_UTILS_CONFORMAL_ALGEBRA_DEFINITION(space, basis_vectors_names, 1, "e1")
+
 	static auto const e1 = e(c<1>);
 
-	static auto const no = e(c<2>);
-	static auto const ni = e(c<3>);
-
-	static auto const ep = (ni / c<2>) - no;
-	static auto const em = (ni / c<2>) + no;
-
-	static auto const Ie = e1;
-	static auto const I = pseudoscalar();
+	_GA_CORE_OVERLOAD(space)
+	_GA_EXTRA_OVERLOAD(space, basis_vectors_names)
 
 }
 

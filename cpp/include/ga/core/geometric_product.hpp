@@ -5,15 +5,13 @@ namespace ga {
 
 	namespace detail {
 
+		//TODO É possível melhorar?
+
 		struct gp_mapping {
 		private:
 
-			struct _iterate_end {
-				constexpr static default_bitset_t value = default_bitset_t(0);
-			};
-
-			template<grade_t LeftGrade, default_bitset_t RightPossibleGrades, grade_t RightGrade>
-			struct _iterate_right {
+			template<grade_t LeftGrade, grade_t RightGrade>
+			struct resulting_bitset {
 			private:
 
 				constexpr static default_bitset_t pattern = (default_bitset_t)0x5555555555555555ull;
@@ -23,24 +21,39 @@ namespace ga {
 
 			public:
 
-				constexpr static default_bitset_t value = _iterate_right<
-						LeftGrade,
-						(RightPossibleGrades >> 1),
-						RightGrade + 1
-					>::value | ((RightPossibleGrades & default_bitset_t(1)) != default_bitset_t(0) ? ((((default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - max_grade - 1)) >> min_grade) & pattern) << min_grade) : default_bitset_t(0));
-			};
-
-			template<grade_t LeftGrade, grade_t RightGrade>
-			struct _iterate_right<LeftGrade, 0, RightGrade> : _iterate_end {
-			};
-
-			template<default_bitset_t LeftPossibleGrades, grade_t LeftGrade, default_bitset_t RightPossibleGrades>
-			struct _iterate_left {
-				constexpr static default_bitset_t value = _iterate_left<(LeftPossibleGrades >> 1), LeftGrade + 1, RightPossibleGrades>::value | std::conditional<(LeftPossibleGrades & default_bitset_t(1)) != default_bitset_t(0), _iterate_right<LeftGrade, RightPossibleGrades, 0>, _iterate_end>::type::value;
+				constexpr static default_bitset_t value = (((default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - max_grade - 1)) >> min_grade) & pattern) << min_grade;
 			};
 
 			template<grade_t LeftGrade, default_bitset_t RightPossibleGrades>
-			struct _iterate_left<0, LeftGrade, RightPossibleGrades> : _iterate_end {
+			struct iterate_right {
+			private:
+
+				constexpr static default_bitset_t right_grade_bitset = rightmost_set_bit(RightPossibleGrades);
+
+			public:
+
+				constexpr static default_bitset_t value = iterate_right<LeftGrade, RightPossibleGrades ^ right_grade_bitset>::value | resulting_bitset<LeftGrade, set_bit_index(right_grade_bitset)>::value;
+			};
+
+			template<grade_t LeftGrade>
+			struct iterate_right<LeftGrade, default_bitset_t(0)> {
+				constexpr static default_bitset_t value = default_bitset_t(0);
+			};
+
+			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
+			struct iterate_left {
+			private:
+
+				constexpr static default_bitset_t left_grade_bitset = rightmost_set_bit(LeftPossibleGrades);
+
+			public:
+
+				constexpr static default_bitset_t value = iterate_left<LeftPossibleGrades ^ left_grade_bitset, RightPossibleGrades>::value | iterate_right<set_bit_index(left_grade_bitset), RightPossibleGrades>::value;
+			};
+
+			template<default_bitset_t RightPossibleGrades>
+			struct iterate_left<default_bitset_t(0), RightPossibleGrades> {
+				constexpr static default_bitset_t value = default_bitset_t(0);
 			};
 
 		public:
@@ -52,9 +65,8 @@ namespace ga {
 
 			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades, ndims_t VectorSpaceDimensions>
 			struct possible_grades_result {
-				constexpr static default_bitset_t value = _iterate_left<LeftPossibleGrades, 0, RightPossibleGrades>::value & (default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - (VectorSpaceDimensions + 1)));
+				constexpr static default_bitset_t value = iterate_left<LeftPossibleGrades, RightPossibleGrades>::value & (default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - (VectorSpaceDimensions + 1)));
 			};
-
 		};
 
 	}

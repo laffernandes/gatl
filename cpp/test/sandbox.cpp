@@ -1,13 +1,31 @@
 ﻿/**/
 #include <ga.hpp>
+
+#include <ga1e.hpp>
+#include <ga1h.hpp>
+#include <ga1m.hpp>
+#include <ga1c.hpp>
+
+#include <ga2e.hpp>
+#include <ga2h.hpp>
+#include <ga2m.hpp>
+#include <ga2c.hpp>
+
 #include <ga3e.hpp>
 #include <ga3h.hpp>
 #include <ga3m.hpp>
 #include <ga3c.hpp>
 
+#include <ga4e.hpp>
+#include <ga4h.hpp>
+
+#include <ga5e.hpp>
+
 using namespace ga;
 
 void test_make_constant() {
+	using namespace ga3e;
+
 	std::cout << "--- test_make_constant()" << std::endl;
 	constexpr auto x = c<5>;
 	std::cout << "5 = " << x << std::endl;
@@ -15,6 +33,8 @@ void test_make_constant() {
 }
 
 void test_make_scalarc() {
+	using namespace ga3e;
+
 	std::cout << "--- test_make_scalarc()" << std::endl;
 	std::cout << "5 = " << c<5> << std::endl;
 	auto nine = c<9>; std::cout << "9 = " << nine << std::endl;
@@ -26,6 +46,8 @@ decltype(auto) test_make_ek_func(index_t k) {
 }
 
 void test_make_e() {
+	using namespace ga3e;
+
 	std::cout << "--- test_make_e()" << std::endl;
 	std::cout << "e1 = " << e(1) << std::endl;
 	std::cout << "e3 = " << e(3) << std::endl;
@@ -37,6 +59,8 @@ void test_make_e() {
 }
 
 void test_make_ec() {
+	using namespace ga3e;
+
 	std::cout << "--- test_make_ec()" << std::endl;
 	std::cout << "e1 = " << e(c<1>) << std::endl;
 	std::cout << "e3 = " << e(c<3>) << std::endl;
@@ -45,6 +69,8 @@ void test_make_ec() {
 }
 
 void test_uplus() {
+	using namespace ga3e;
+
 	std::cout << "--- test_uplus()" << std::endl;
 	auto e1 = +(e(1)); std::cout << "e1 = " << e1 << std::endl;
 	auto e2 = +e(c<2>); std::cout << "e2 = " << e2 << std::endl;
@@ -52,6 +78,8 @@ void test_uplus() {
 }
 
 void test_uminus() {
+	using namespace ga3e;
+
 	std::cout << "--- test_uminus()" << std::endl;
 	auto e1 = -e(1); std::cout << "-e1 = " << e1 << std::endl;
 	auto e2 = -e(c<2>); std::cout << "-e2 = " << e2 << std::endl;
@@ -59,6 +87,8 @@ void test_uminus() {
 }
 
 void test_plus() {
+	using namespace ga3e;
+
 	std::cout << "--- test_plus()" << std::endl;
 	std::cout << "e1 + e2 = " << (e(c<1>) + e(c<2>)) << std::endl;
 	std::cout << "5 + 2 * e1 + e2 = " << (c<5> + e(c<1>) + e(c<2>) + e(c<1>)) << std::endl;
@@ -68,6 +98,8 @@ void test_plus() {
 }
 
 void test_minus() {
+	using namespace ga3e;
+
 	std::cout << "--- test_minus()" << std::endl;
 	std::cout << "e1 - e2 = " << (e(c<1>) - e(c<2>)) << std::endl;
 	std::cout << "e2 - e1 = " << (e(c<2>) - e(c<1>)) << std::endl;
@@ -108,8 +140,9 @@ void test_op() {
 	std::cout << std::endl;
 }
 
-template<class MetricSpaceType>
-void test_sp(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
+void test_sp() {
+	using namespace ga3e;
+
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -134,32 +167,33 @@ void test_sp(metric_space<MetricSpaceType> const &mtr, std::string const &name) 
 //		return lazy.eval(arg);
 //	};
 
-	auto e1e2 = op(e1, e2, mtr);
-	auto e1e3 = op(e1, e3, mtr);
-	auto eiej = op(ei, ej, mtr);
-	auto eiek = op(ei, ek, mtr);
-	auto e1ej = op(e1, ej, mtr);
+	auto e1e2 = op(e1, e2);
+	auto e1e3 = op(e1, e3);
+	auto eiej = op(ei, ej);
+	auto eiek = op(ei, ek);
+	auto e1ej = op(e1, ej);
 
-	std::cout << "--- test_sp(" << name << ")" << std::endl;
+	std::cout << "--- test_sp(ga3e)" << std::endl;
 
-	std::cout << "sp(e1, e1^e2) = " << eval(sp(e1, e1e2, mtr)) << std::endl;
-	std::cout << "sp(e1^e2, e1^e2) = " << eval(sp(e1e2, e1e2, mtr)) << std::endl;
-	std::cout << "sp(e1^e3, e1^e2) = " << eval(sp(e1e3, e1e2, mtr)) << std::endl;
+	std::cout << "sp(e1, e1^e2) = " << eval(sp(e1, e1e2)) << std::endl;
+	std::cout << "sp(e1^e2, e1^e2) = " << eval(sp(e1e2, e1e2)) << std::endl;
+	std::cout << "sp(e1^e3, e1^e2) = " << eval(sp(e1e3, e1e2)) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "sp(ei, ei^ej) = " << eval(sp(ei, eiej, mtr)) << std::endl;
-	std::cout << "sp(ei^ej, ei^ej) = " << eval(sp(eiej, eiej, mtr)) << std::endl;
-	std::cout << "sp(ei^ek, ei^ej) = " << eval(sp(eiek, eiej, mtr)) << std::endl;
+	std::cout << "sp(ei, ei^ej) = " << eval(sp(ei, eiej)) << std::endl;
+	std::cout << "sp(ei^ej, ei^ej) = " << eval(sp(eiej, eiej)) << std::endl;
+	std::cout << "sp(ei^ek, ei^ej) = " << eval(sp(eiek, eiej)) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "sp(e1, e1^ej) = " << eval(sp(e1, e1ej, mtr)) << std::endl;
-	std::cout << "sp(e1^ej, e1^ej) = " << eval(sp(e1ej, e1ej, mtr)) << std::endl;
-	std::cout << "sp(e1^e3, e1^ej) = " << eval(sp(e1e3, e1ej, mtr)) << std::endl;
+	std::cout << "sp(e1, e1^ej) = " << eval(sp(e1, e1ej)) << std::endl;
+	std::cout << "sp(e1^ej, e1^ej) = " << eval(sp(e1ej, e1ej)) << std::endl;
+	std::cout << "sp(e1^e3, e1^ej) = " << eval(sp(e1e3, e1ej)) << std::endl;
 	std::cout << std::endl;
 }
 
-template<class MetricSpaceType>
-void test_lcont(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
+void test_lcont() {
+	using namespace ga3e;
+
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -167,35 +201,36 @@ void test_lcont(metric_space<MetricSpaceType> const &mtr, std::string const &nam
 	auto ej = e(2);
 	auto ek = e(3);
 
-	auto e1e2 = op(e1, e2, mtr);
-	auto e1e3 = op(e1, e3, mtr);
-	auto eiej = op(ei, ej, mtr);
-	auto eiek = op(ei, ek, mtr);
-	auto e1ej = op(e1, ej, mtr);
+	auto e1e2 = op(e1, e2);
+	auto e1e3 = op(e1, e3);
+	auto eiej = op(ei, ej);
+	auto eiek = op(ei, ek);
+	auto e1ej = op(e1, ej);
 
-	std::cout << "--- test_lcont(" << name << ")" << std::endl;
+	std::cout << "--- test_lcont(ga3e)" << std::endl;
 
-	std::cout << "lcont(e1, e1^e2) = " << lcont(e1, e1e2, mtr) << std::endl;
-	std::cout << "lcont(e2, e1^e2) = " << lcont(e2, e1e2, mtr) << std::endl;
-	std::cout << "lcont(e1^e2, e2) = " << lcont(e1e2, e2, mtr) << std::endl;
-	std::cout << "lcont(e3, e1^e2) = " << lcont(e3, e1e2, mtr) << std::endl;
+	std::cout << "lcont(e1, e1^e2) = " << lcont(e1, e1e2) << std::endl;
+	std::cout << "lcont(e2, e1^e2) = " << lcont(e2, e1e2) << std::endl;
+	std::cout << "lcont(e1^e2, e2) = " << lcont(e1e2, e2) << std::endl;
+	std::cout << "lcont(e3, e1^e2) = " << lcont(e3, e1e2) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "lcont(ei, ei^ej) = " << lcont(ei, eiej, mtr) << std::endl;
-	std::cout << "lcont(ej, ei^ej) = " << lcont(ej, eiej, mtr) << std::endl;
-	std::cout << "lcont(ei^ej, ej) = " << lcont(eiej, ej, mtr) << std::endl;
-	std::cout << "lcont(ek, ei^ej) = " << lcont(ek, eiej, mtr) << std::endl;
+	std::cout << "lcont(ei, ei^ej) = " << lcont(ei, eiej) << std::endl;
+	std::cout << "lcont(ej, ei^ej) = " << lcont(ej, eiej) << std::endl;
+	std::cout << "lcont(ei^ej, ej) = " << lcont(eiej, ej) << std::endl;
+	std::cout << "lcont(ek, ei^ej) = " << lcont(ek, eiej) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "lcont(e1, e1^ej) = " << lcont(e1, e1ej, mtr) << std::endl;
-	std::cout << "lcont(ej, e1^ej) = " << lcont(ej, e1ej, mtr) << std::endl;
-	std::cout << "lcont(e1^ej, ej) = " << lcont(e1ej, ej, mtr) << std::endl;
-	std::cout << "lcont(e3, e1^ej) = " << lcont(e3, e1ej, mtr) << std::endl;
+	std::cout << "lcont(e1, e1^ej) = " << lcont(e1, e1ej) << std::endl;
+	std::cout << "lcont(ej, e1^ej) = " << lcont(ej, e1ej) << std::endl;
+	std::cout << "lcont(e1^ej, ej) = " << lcont(e1ej, ej) << std::endl;
+	std::cout << "lcont(e3, e1^ej) = " << lcont(e3, e1ej) << std::endl;
 	std::cout << std::endl;
 }
 
-template<class MetricSpaceType>
-void test_rcont(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
+void test_rcont() {
+	using namespace ga3e;
+
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -203,35 +238,36 @@ void test_rcont(metric_space<MetricSpaceType> const &mtr, std::string const &nam
 	auto ej = e(2);
 	auto ek = e(3);
 
-	auto e1e2 = op(e1, e2, mtr);
-	auto e1e3 = op(e1, e3, mtr);
-	auto eiej = op(ei, ej, mtr);
-	auto eiek = op(ei, ek, mtr);
-	auto e1ej = op(e1, ej, mtr);
+	auto e1e2 = op(e1, e2);
+	auto e1e3 = op(e1, e3);
+	auto eiej = op(ei, ej);
+	auto eiek = op(ei, ek);
+	auto e1ej = op(e1, ej);
 
-	std::cout << "--- test_rcont(" << name << ")" << std::endl;
+	std::cout << "--- test_rcont(ga3e)" << std::endl;
 
-	std::cout << "rcont(e1^e2, e1) = " << rcont(e1e2, e1, mtr) << std::endl;
-	std::cout << "rcont(e1^e2, e2) = " << rcont(e1e2, e2, mtr) << std::endl;
-	std::cout << "rcont(e2, e1^e2) = " << rcont(e2, e1e2, mtr) << std::endl;
-	std::cout << "rcont(e1^e2, e3) = " << rcont(e1e2, e3, mtr) << std::endl;
+	std::cout << "rcont(e1^e2, e1) = " << rcont(e1e2, e1) << std::endl;
+	std::cout << "rcont(e1^e2, e2) = " << rcont(e1e2, e2) << std::endl;
+	std::cout << "rcont(e2, e1^e2) = " << rcont(e2, e1e2) << std::endl;
+	std::cout << "rcont(e1^e2, e3) = " << rcont(e1e2, e3) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "rcont(ei^ej, ei) = " << rcont(eiej, ei, mtr) << std::endl;
-	std::cout << "rcont(ei^ej, ej) = " << rcont(eiej, ej, mtr) << std::endl;
-	std::cout << "rcont(ej, ei^ej) = " << rcont(ej, eiej, mtr) << std::endl;
-	std::cout << "rcont(ei^ej, ek) = " << rcont(eiej, ek, mtr) << std::endl;
+	std::cout << "rcont(ei^ej, ei) = " << rcont(eiej, ei) << std::endl;
+	std::cout << "rcont(ei^ej, ej) = " << rcont(eiej, ej) << std::endl;
+	std::cout << "rcont(ej, ei^ej) = " << rcont(ej, eiej) << std::endl;
+	std::cout << "rcont(ei^ej, ek) = " << rcont(eiej, ek) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "rcont(e1^ej, e1) = " << rcont(e1ej, e1, mtr) << std::endl;
-	std::cout << "rcont(e1^ej, ej) = " << rcont(e1ej, ej, mtr) << std::endl;
-	std::cout << "rcont(ej, e1^ej) = " << rcont(ej, e1ej, mtr) << std::endl;
-	std::cout << "rcont(e1^ej, e3) = " << rcont(e1ej, e3, mtr) << std::endl;
+	std::cout << "rcont(e1^ej, e1) = " << rcont(e1ej, e1) << std::endl;
+	std::cout << "rcont(e1^ej, ej) = " << rcont(e1ej, ej) << std::endl;
+	std::cout << "rcont(ej, e1^ej) = " << rcont(ej, e1ej) << std::endl;
+	std::cout << "rcont(e1^ej, e3) = " << rcont(e1ej, e3) << std::endl;
 	std::cout << std::endl;
 }
 
-template<class MetricSpaceType>
-void test_gp(metric_space<MetricSpaceType> const &mtr, std::string const &name) {
+void test_gp() {
+	using namespace ga3e;
+
 	auto e1 = e(c<1>);
 	auto e2 = e(c<2>);
 	auto e3 = e(c<3>);
@@ -239,30 +275,30 @@ void test_gp(metric_space<MetricSpaceType> const &mtr, std::string const &name) 
 	auto ej = e(2);
 	auto ek = e(3);
 
-	auto e1e2 = op(e1, e2, mtr);
-	auto e1e3 = op(e1, e3, mtr);
-	auto eiej = op(ei, ej, mtr);
-	auto eiek = op(ei, ek, mtr);
-	auto e1ej = op(e1, ej, mtr);
+	auto e1e2 = op(e1, e2);
+	auto e1e3 = op(e1, e3);
+	auto eiej = op(ei, ej);
+	auto eiek = op(ei, ek);
+	auto e1ej = op(e1, ej);
 
-	std::cout << "--- test_gp(" << name << ")" << std::endl;
+	std::cout << "--- test_gp(ga3e)" << std::endl;
 
-	std::cout << "gp(e1, e1^e2) = " << gp(e1, e1e2, mtr) << std::endl;
-	std::cout << "gp(e2, e1^e2) = " << gp(e2, e1e2, mtr) << std::endl;
-	std::cout << "gp(e1^e2, e2) = " << gp(e1e2, e2, mtr) << std::endl;
-	std::cout << "gp(e3, e1^e2) = " << gp(e3, e1e2, mtr) << std::endl;
+	std::cout << "gp(e1, e1^e2) = " << gp(e1, e1e2) << std::endl;
+	std::cout << "gp(e2, e1^e2) = " << gp(e2, e1e2) << std::endl;
+	std::cout << "gp(e1^e2, e2) = " << gp(e1e2, e2) << std::endl;
+	std::cout << "gp(e3, e1^e2) = " << gp(e3, e1e2) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "gp(ei, ei^ej) = " << gp(ei, eiej, mtr) << std::endl;
-	std::cout << "gp(ej, ei^ej) = " << gp(ej, eiej, mtr) << std::endl;
-	std::cout << "gp(ei^ej, ej) = " << gp(eiej, ej, mtr) << std::endl;
-	std::cout << "gp(ek, ei^ej) = " << gp(ek, eiej, mtr) << std::endl;
+	std::cout << "gp(ei, ei^ej) = " << gp(ei, eiej) << std::endl;
+	std::cout << "gp(ej, ei^ej) = " << gp(ej, eiej) << std::endl;
+	std::cout << "gp(ei^ej, ej) = " << gp(eiej, ej) << std::endl;
+	std::cout << "gp(ek, ei^ej) = " << gp(ek, eiej) << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "gp(e1, e1^ej) = " << gp(e1, e1ej, mtr) << std::endl;
-	std::cout << "gp(ej, e1^ej) = " << gp(ej, e1ej, mtr) << std::endl;
-	std::cout << "gp(e1^ej, ej) = " << gp(e1ej, ej, mtr) << std::endl;
-	std::cout << "gp(e3, e1^ej) = " << gp(e3, e1ej, mtr) << std::endl;
+	std::cout << "gp(e1, e1^ej) = " << gp(e1, e1ej) << std::endl;
+	std::cout << "gp(ej, e1^ej) = " << gp(ej, e1ej) << std::endl;
+	std::cout << "gp(e1^ej, ej) = " << gp(e1ej, ej) << std::endl;
+	std::cout << "gp(e3, e1^ej) = " << gp(e3, e1ej) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -308,23 +344,26 @@ void test_take_grade() {
 
 void test_sign_change_operations() {
 	auto mtr = signed_metric_space<6, 1>();
+	std::string const basis_vectors[] = { "e1", "e2", "e3", "e4", "e5", "e6", "e7" };
 	auto e1 = e(c<1>); auto e2 = e(c<2>); auto e3 = e(c<3>); auto e4 = e(c<4>); auto e5 = e(c<5>); auto e6 = e(c<6>); auto e7 = e(c<7>);
 
 	std::cout << "--- test_sign_change_operations()" << std::endl;
-	std::cout << "+ - - + + - - + = " << conjugation(1 + op(e1, (1 + op(e2, (1 + op(e3, (1 + op(e4, (1 + op(e5, (1 + op(e6, (1 + e7), mtr)), mtr)), mtr)), mtr)), mtr)), mtr)) << std::endl;
-	std::cout << "+ - + - + - + - = " << involution(1 + op(e1, (1 + op(e2, (1 + op(e3, (1 + op(e4, (1 + op(e5, (1 + op(e6, (1 + e7), mtr)), mtr)), mtr)), mtr)), mtr)), mtr)) << std::endl;
-	std::cout << "+ + - - + + - - = " << reversion(1 + op(e1, (1 + op(e2, (1 + op(e3, (1 + op(e4, (1 + op(e5, (1 + op(e6, (1 + e7), mtr)), mtr)), mtr)), mtr)), mtr)), mtr)) << std::endl;
+	std::cout << "+ - - + + - - + = "; write(std::cout, conjugation(1 + op(e1, (1 + op(e2, (1 + op(e3, (1 + op(e4, (1 + op(e5, (1 + op(e6, (1 + e7), mtr)), mtr)), mtr)), mtr)), mtr)), mtr)), basis_vectors) << std::endl;
+	std::cout << "+ - + - + - + - = "; write(std::cout, involution(1 + op(e1, (1 + op(e2, (1 + op(e3, (1 + op(e4, (1 + op(e5, (1 + op(e6, (1 + e7), mtr)), mtr)), mtr)), mtr)), mtr)), mtr)), basis_vectors) << std::endl;
+	std::cout << "+ + - - + + - - = "; write(std::cout, reversion(1 + op(e1, (1 + op(e2, (1 + op(e3, (1 + op(e4, (1 + op(e5, (1 + op(e6, (1 + e7), mtr)), mtr)), mtr)), mtr)), mtr)), mtr)), basis_vectors) << std::endl;
 	std::cout << std::endl;
 }
 
-template<class MetricSpaceType>
-void test_pseudoscalar(metric_space<MetricSpaceType> const &spc, std::string const &name) {
+template<class MetricSpaceType, std::size_t N>
+void test_pseudoscalar(metric_space<MetricSpaceType> const &spc, std::string const &name, std::string const (&basis_vectors)[N]) {
 	std::cout << "--- test_pseudoscalar(" << name << ")" << std::endl;
-	std::cout << "I = " << pseudoscalar(spc) << std::endl;
+	std::cout << "I = "; write(std::cout, pseudoscalar(spc), basis_vectors) << std::endl;
 	std::cout << std::endl;
 }
 
 void test_simplification() {
+	using namespace ga3e;
+
 	std::cout << "--- test_simplification()" << std::endl;
 
 	auto A = c<2> / c<3>;
@@ -368,6 +407,8 @@ void test_simplification() {
 
 void test_variable() {
 	auto addition = [](auto const &x, auto const &y, auto eval) {
+		using namespace ga3h;
+
 		auto r = x + x + y;
 
 		std::cout << "r = " << eval(r) << std::endl;
@@ -375,6 +416,8 @@ void test_variable() {
 	};
 
 	auto subtraction = [](auto const &x, auto eval) {
+		using namespace ga3h;
+
 		auto r = x - x;
 
 		std::cout << "r = " << eval(r) << std::endl;
@@ -427,9 +470,9 @@ void test_variable() {
 }
 
 void test_grade() {
-	std::cout << "--- test_grade()" << std::endl;
-
 	using namespace ga3e;
+
+	std::cout << "--- test_grade()" << std::endl;
 
 	std::cout << "grade(c<0>) = " << grade(c<0>) << std::endl;
 	std::cout << "grade(8.0) = " << grade(8.0) << std::endl;
@@ -540,6 +583,7 @@ void test_general_metric() {
 }
 
 int main() {
+
 	test_make_constant();
 
 	test_make_scalarc();
@@ -554,18 +598,18 @@ int main() {
 	test_minus();
 
 	test_op();
-	test_sp(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
-	test_lcont(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
-	test_rcont(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
-	test_gp(euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>(), "euclidean");
+	test_sp();
+	test_lcont();
+	test_rcont();
+	test_gp();
 
 	test_take_grade();
 
 	test_sign_change_operations();
 
-	test_pseudoscalar(euclidean_metric_space<3>(), "euclidean<3>");
-	test_pseudoscalar(euclidean_metric_space<2>(), "euclidean<2>");
-	test_pseudoscalar(signed_metric_space<2, 1>(), "signed<2, 1>");
+	test_pseudoscalar(euclidean_metric_space<3>(), "euclidean<3>", { "e1", "e2", "e3" });
+	test_pseudoscalar(euclidean_metric_space<2>(), "euclidean<2>", { "e1", "e2" });
+	test_pseudoscalar(signed_metric_space<2, 1>(), "signed<2, 1>", { "e1", "e2", "em" });
 
 	test_simplification();
 
@@ -575,34 +619,38 @@ int main() {
 
 	test_general_metric();
 
-	auto e1 = e(1);
-	auto e2 = e(2);
-	auto e3 = e(3);
+	{
+		using namespace ga3e;
 
-	auto m = 1 + e1 + e2 + e3 + op(e1, e2, euclidean_metric_space<3>()) + op(e1, e3, euclidean_metric_space<3>()) + op(e2, e3, euclidean_metric_space<3>()) + op(op(e1, e2, euclidean_metric_space<3>()), e3, euclidean_metric_space<3>());
-	std::cout << m << std::endl;
+		auto e1 = e(1);
+		auto e2 = e(2);
+		auto e3 = e(3);
 
-	auto v1 = c<5> * e(1) + c<5> * e(2);
-	auto s1 = sp(v1, v1, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
-	std::cout << "v1 = " << v1 << std::endl;
-	std::cout << "s1 = " << s1 << std::endl;
-	std::cout << std::endl;
+		auto m = 1 + e1 + e2 + e3 + op(e1, e2, euclidean_metric_space<3>()) + op(e1, e3, euclidean_metric_space<3>()) + op(e2, e3, euclidean_metric_space<3>()) + op(op(e1, e2, euclidean_metric_space<3>()), e3, euclidean_metric_space<3>());
+		std::cout << m << std::endl;
 
-	auto v2 = 10.0 * e(1) + 10.0 * e(2);
-	auto s2 = sp(v2, v2, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
-	std::cout << "v2 = " << v2 << std::endl;
-	std::cout << "s2 = " << s2 << std::endl;
-	std::cout << std::endl;
+		auto v1 = c<5> * e(1) + c<5> * e(2);
+		auto s1 = sp(v1, v1, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+		std::cout << "v1 = " << v1 << std::endl;
+		std::cout << "s1 = " << s1 << std::endl;
+		std::cout << std::endl;
 
-	auto const lazy = make_lazy_context(scalar(3), scalar(10), scalar(5));
+		auto v2 = 10.0 * e(1) + 10.0 * e(2);
+		auto s2 = sp(v2, v2, euclidean_metric_space<GA_MAX_BASIS_VECTOR_INDEX>());
+		std::cout << "v2 = " << v2 << std::endl;
+		std::cout << "s2 = " << s2 << std::endl;
+		std::cout << std::endl;
+
+		auto const lazy = make_lazy_context(scalar(3), scalar(10), scalar(5));
 	
-	auto xxx = (c<4> * ((lazy.argument<0>() * e(c<1>) * c<5>) * c<2>)) * (lazy.argument<2>() + lazy.argument<1>());
-	std::cout << lazy.eval(xxx) << std::endl;
-	std::cout << std::endl;
+		auto xxx = (c<4> * ((lazy.argument<0>() * e(c<1>) * c<5>) * c<2>)) * (lazy.argument<2>() + lazy.argument<1>());
+		std::cout << lazy.eval(xxx) << std::endl;
+		std::cout << std::endl;
 
-	auto yyy = (c<4> + ((lazy.argument<0>() * e(c<1>) * c<5>) + c<2>)) * (lazy.argument<2>() + lazy.argument<1>());
-	std::cout << lazy.eval(yyy) << std::endl;
-	std::cout << std::endl;
+		auto yyy = (c<4> + ((lazy.argument<0>() * e(c<1>) * c<5>) + c<2>)) * (lazy.argument<2>() + lazy.argument<1>());
+		std::cout << lazy.eval(yyy) << std::endl;
+		std::cout << std::endl;
+	}
 
 	{
 		using namespace ga3e;
@@ -632,15 +680,15 @@ int main() {
 
 		auto x1 = sp(p, e1);
 		double d1 = x1;
-		std::cout << x1 << std::endl;
+		std::cout << x1 << " = " << d1 << std::endl;
 
 		auto x2 = sqrt(sp(e1, e1));
 		double d2 = x2;
-		std::cout << x2 << std::endl;
+		std::cout << x2 << " = " << d2 << std::endl;
 
 		auto x3 = pow(c<2> * sp(e1, e1), c<-3>);
 		double d3 = x3;
-		std::cout << x3 << std::endl;
+		std::cout << x3 << " = " << d3 << std::endl;
 
 		std::cout << std::endl;
 	}
@@ -668,6 +716,14 @@ int main() {
 			}
 			std::cout << ']' << std::endl;
 		} while ((comb = detail::next_combination(comb, mask)) != default_bitset_t(0));
+	}
+
+	{
+		using namespace ga2m;
+
+		std::cout << I << std::endl;
+		std::cout << Ie << std::endl;
+
 	}
 
 	return EXIT_SUCCESS;

@@ -673,9 +673,8 @@ namespace ga {
 		private:
 
 			constexpr static default_bitset_t current_indirect_element = rightmost_set_bit(IndirectElements);
-			constexpr static default_integral_t current_indirect_element_index = ones(current_indirect_element - default_bitset_t(1));
 
-			typedef indirect_element_bitset_t<Bitset, current_indirect_element_index> current_element;
+			typedef indirect_element_bitset_t<Bitset, set_bit_index(current_indirect_element)> current_element;
 
 		public:
 

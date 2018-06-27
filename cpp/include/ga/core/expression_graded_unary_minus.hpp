@@ -25,7 +25,7 @@ namespace ga {
 			typedef std::conditional_t<
 				(SignChangePattern & (default_bitset_t(1) << ones(BasisVectors))) == default_bitset_t(0),
 				component<Coefficient, constant_basis_blade<BasisVectors> >,
-				component_t<product_t<constant_value<-1>, Coefficient, real_mapping>, constant_basis_blade<BasisVectors> >
+				component_t<product_t<constant_value<-1>, Coefficient, value_mapping>, constant_basis_blade<BasisVectors> >
 			> type;
 		};
 
@@ -38,7 +38,7 @@ namespace ga {
 					if_else_t<
 						equal_t<bitwise_and_t<constant_bitset<SignChangePattern>, bitwise_left_shift_t<constant_bitset<default_bitset_t(1)>, count_one_bits_t<Bitset> > >, constant_bitset<default_bitset_t(0)> >,
 						Coefficient,
-						product_t<constant_value<-1>, Coefficient, real_mapping>
+						product_t<constant_value<-1>, Coefficient, value_mapping>
 					>,
 					dynamic_basis_blade<PossibleGrades, Bitset>
 				>

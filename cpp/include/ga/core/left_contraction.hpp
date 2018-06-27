@@ -8,41 +8,32 @@ namespace ga {
 		struct lcont_mapping {
 		private:
 
-			struct _iterate_end {
+			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades>
+			struct _possible_grades_result {
+			private:
+
+				constexpr static default_bitset_t left_grade_bitset = rightmost_set_bit(LeftPossibleGrades);
+				constexpr static default_bitset_t possible_grades = RightPossibleGrades / left_grade_bitset;
+
+			public:
+
+				constexpr static default_bitset_t value = _possible_grades_result<(possible_grades != default_bitset_t(0) ? LeftPossibleGrades ^ left_grade_bitset : default_bitset_t(0)), RightPossibleGrades>::value | possible_grades;
+			};
+
+			template<default_bitset_t RightPossibleGrades>
+			struct _possible_grades_result<default_bitset_t(0), RightPossibleGrades> {
 				constexpr static default_bitset_t value = default_bitset_t(0);
-			};
-
-			template<grade_t LeftGrade, default_bitset_t RightPossibleGrades, grade_t RightGrade>
-			struct _iterate_right {
-				constexpr static default_bitset_t value = _iterate_right<
-						LeftGrade,
-						(RightPossibleGrades >> 1),
-						RightGrade + 1
-					>::value | ((RightPossibleGrades & default_bitset_t(1)) != default_bitset_t(0) ? (default_bitset_t(1) << (RightGrade - LeftGrade)) : default_bitset_t(0));
-			};
-
-			template<grade_t LeftGrade, grade_t RightGrade>
-			struct _iterate_right<LeftGrade, 0, RightGrade> : _iterate_end {
-			};
-
-			template<default_bitset_t LeftPossibleGrades, grade_t LeftGrade, default_bitset_t RightPossibleGrades>
-			struct _iterate_left {
-				constexpr static default_bitset_t value = _iterate_left<(LeftPossibleGrades >> 1), LeftGrade + 1, RightPossibleGrades>::value | std::conditional<(LeftPossibleGrades & default_bitset_t(1)) != default_bitset_t(0), _iterate_right<LeftGrade, (RightPossibleGrades >> LeftGrade), LeftGrade>, _iterate_end>::type::value;
-			};
-
-			template<grade_t LeftGrade, default_bitset_t RightPossibleGrades>
-			struct _iterate_left<0, LeftGrade, RightPossibleGrades> : _iterate_end {
 			};
 
 		public:
 
 			template<class LeftGrade, class RightGrade, class ResultGrade>
 			struct are_valid_grades {
-				typedef equal_t<addition_t<RightGrade, product_t<constant_value<-1>, LeftGrade, real_mapping> >, ResultGrade> type;
+				typedef equal_t<addition_t<RightGrade, product_t<constant_value<-1>, LeftGrade, value_mapping> >, ResultGrade> type;
 			};
 
 			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades, ndims_t VectorSpaceDimensions>
-			struct possible_grades_result : _iterate_left<LeftPossibleGrades, 0, RightPossibleGrades> {
+			struct possible_grades_result : _possible_grades_result<LeftPossibleGrades, RightPossibleGrades> {
 			};
 		};
 

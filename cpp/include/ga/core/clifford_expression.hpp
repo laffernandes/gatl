@@ -576,16 +576,16 @@ namespace ga {
 		template<class Expression, bool IsConstant = is_constant_expression_v<Expression> >
 		struct _clifford_expression_to_native;
 		
-		template<class Expression>
-		struct _clifford_expression_to_native<Expression, true> {
+		template<class Coefficient>
+		struct _clifford_expression_to_native<component<Coefficient, constant_basis_blade<default_bitset_t(0)> >, true> {
 			template<class ValueCItr>
 			constexpr static decltype(auto) eval(ValueCItr const &) {
-				return Expression::eval<0, 0>(std::tuple<>());
+				return Coefficient::eval<0, 0>(std::tuple<>());
 			}
 		};
 
-		template<class Expression>
-		struct _clifford_expression_to_native<Expression, false> {
+		template<>
+		struct _clifford_expression_to_native<component<stored_value, constant_basis_blade<default_bitset_t(0)> >, false> {
 			template<class ValueCItr>
 			constexpr static decltype(auto) eval(ValueCItr const &value_itr) {
 				return *value_itr;
@@ -637,8 +637,8 @@ namespace ga {
 		template<class OtherCoefficientType, class OtherExpression>
 		constexpr clifford_expression & operator=(clifford_expression<OtherCoefficientType, OtherExpression> const &) = delete; //TODO Not supported yet (copy).
 
-		template<class = std::enable_if_t<detail::is_scalar_component_v<Expression> && detail::can_be_stored_v<Expression> > >
-		constexpr operator coefficient_type() const {
+		template<class Type, class = std::enable_if_t<detail::is_scalar_component_v<Expression> && detail::can_be_stored_v<Expression> > >
+		constexpr operator Type() const {
 			return detail::_clifford_expression_to_native<Expression>::eval(super::values().cbegin());
 		}
 	};

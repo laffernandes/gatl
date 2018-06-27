@@ -8,7 +8,7 @@ namespace ga {
 		// Returns the simpler rational constant.
 		template<default_integral_t Numerator, default_integral_t Denominator, default_integral_t GreatestCommonDivisor = gcd(iabs(Numerator), iabs(Denominator))>
 		struct simpler_rational_constant {
-			typedef product_t<constant_value<(sign(Numerator) * sign(Denominator)) * (iabs(Numerator) / GreatestCommonDivisor)>, power_t<constant_value<iabs(Denominator) / GreatestCommonDivisor>, constant_value<-1> >, real_mapping> type;
+			typedef product_t<constant_value<(sign(Numerator) * sign(Denominator)) * (iabs(Numerator) / GreatestCommonDivisor)>, power_t<constant_value<iabs(Denominator) / GreatestCommonDivisor>, constant_value<-1> >, value_mapping> type;
 		};
 
 		template<default_integral_t Numerator, default_integral_t Denominator>
@@ -78,7 +78,7 @@ namespace ga {
 
 		template<class CommonLeftArgument, class CommonRightArgument>
 		struct _product_level4<power<CommonLeftArgument, CommonRightArgument>, power<CommonLeftArgument, CommonRightArgument> > {
-			typedef power_t<CommonLeftArgument, product_t<constant_value<2>, CommonRightArgument, real_mapping> > type; // A^{P} * A^{P} = A^{2 * P}, end of recursion (simplify)
+			typedef power_t<CommonLeftArgument, product_t<constant_value<2>, CommonRightArgument, value_mapping> > type; // A^{P} * A^{P} = A^{2 * P}, end of recursion (simplify)
 		};
 
 		// Specialization of _product_level3<LeftExpression, RightExpression> (merge mul<...>).
@@ -92,37 +92,37 @@ namespace ga {
 
 		template<class LeftArgument, class... LeftNextArguments, class RightArgument, class... RightNextArguments>
 		struct _product_level3<mul<LeftArgument, LeftNextArguments...>, mul<RightArgument, RightNextArguments...>, std::enable_if_t<le_v<LeftArgument, RightArgument> > > {
-			typedef product_t<LeftArgument, product_t<mul_t<LeftNextArguments...>, mul<RightArgument, RightNextArguments...>, real_mapping>, real_mapping> type; // merge
+			typedef product_t<LeftArgument, product_t<mul_t<LeftNextArguments...>, mul<RightArgument, RightNextArguments...>, value_mapping>, value_mapping> type; // merge
 		};
 
 		template<class LeftArgument, class... LeftNextArguments, class RightArgument, class... RightNextArguments>
 		struct _product_level3<mul<LeftArgument, LeftNextArguments...>, mul<RightArgument, RightNextArguments...>, std::enable_if_t<lt_v<RightArgument, LeftArgument> > > {
-			typedef product_t<RightArgument, product_t<mul<LeftArgument, LeftNextArguments...>, mul_t<RightNextArguments...>, real_mapping>, real_mapping> type; // merge
+			typedef product_t<RightArgument, product_t<mul<LeftArgument, LeftNextArguments...>, mul_t<RightNextArguments...>, value_mapping>, value_mapping> type; // merge
 		};
 
 		template<class LeftExpression, class RightArgument, class... RightNextArguments>
 		struct _product_level3<LeftExpression, mul<RightArgument, RightNextArguments...>, std::enable_if_t<!is_function_v<name_t::mul, LeftExpression> && lt_v<RightArgument, LeftExpression> > > {
-			typedef product_t<RightArgument, product_t<LeftExpression, mul_t<RightNextArguments...>, real_mapping>, real_mapping> type; // merge
+			typedef product_t<RightArgument, product_t<LeftExpression, mul_t<RightNextArguments...>, value_mapping>, value_mapping> type; // merge
 		};
 
 		template<class LeftExpression, class RightArgument, class... RightNextArguments>
-		struct _product_level3<LeftExpression, mul<RightArgument, RightNextArguments...>, std::enable_if_t<!is_function_v<name_t::mul, LeftExpression> && le_v<LeftExpression, RightArgument> && !std::is_same_v<product_t<LeftExpression, RightArgument, real_mapping>, mul<LeftExpression, RightArgument> > > > {
-			typedef product_t<product_t<LeftExpression, RightArgument, real_mapping>, mul_t<RightNextArguments...>, real_mapping> type; // simplification found (simplify-and-merge)
+		struct _product_level3<LeftExpression, mul<RightArgument, RightNextArguments...>, std::enable_if_t<!is_function_v<name_t::mul, LeftExpression> && le_v<LeftExpression, RightArgument> && !std::is_same_v<product_t<LeftExpression, RightArgument, value_mapping>, mul<LeftExpression, RightArgument> > > > {
+			typedef product_t<product_t<LeftExpression, RightArgument, value_mapping>, mul_t<RightNextArguments...>, value_mapping> type; // simplification found (simplify-and-merge)
 		};
 
 		template<class LeftExpression, class RightArgument, class... RightNextArguments>
-		struct _product_level3<LeftExpression, mul<RightArgument, RightNextArguments...>, std::enable_if_t<!is_function_v<name_t::mul, LeftExpression> && le_v<LeftExpression, RightArgument> && std::is_same_v<product_t<LeftExpression, RightArgument, real_mapping>, mul<LeftExpression, RightArgument> > > > {
+		struct _product_level3<LeftExpression, mul<RightArgument, RightNextArguments...>, std::enable_if_t<!is_function_v<name_t::mul, LeftExpression> && le_v<LeftExpression, RightArgument> && std::is_same_v<product_t<LeftExpression, RightArgument, value_mapping>, mul<LeftExpression, RightArgument> > > > {
 			typedef mul_t<LeftExpression, RightArgument, RightNextArguments...> type; // no simplification found (bind)
 		};
 
 		template<class LeftArgument, class... LeftNextArguments, class RightExpression>
 		struct _product_level3<mul<LeftArgument, LeftNextArguments...>, RightExpression, std::enable_if_t<!is_function_v<name_t::mul, RightExpression> && le_v<LeftArgument, RightExpression> > > {
-			typedef product_t<LeftArgument, product_t<mul_t<LeftNextArguments...>, RightExpression, real_mapping>, real_mapping> type; // merge
+			typedef product_t<LeftArgument, product_t<mul_t<LeftNextArguments...>, RightExpression, value_mapping>, value_mapping> type; // merge
 		};
 
 		template<class LeftArgument, class... LeftNextArguments, class RightExpression>
 		struct _product_level3<mul<LeftArgument, LeftNextArguments...>, RightExpression, std::enable_if_t<!is_function_v<name_t::mul, RightExpression> && lt_v<RightExpression, LeftArgument> > > {
-			typedef product_t<RightExpression, mul<LeftArgument, LeftNextArguments...>, real_mapping> type; // merge
+			typedef product_t<RightExpression, mul<LeftArgument, LeftNextArguments...>, value_mapping> type; // merge
 		};
 
 		// Specialization of _product_level2<LeftExpression, RightExpression>.
@@ -182,17 +182,17 @@ namespace ga {
 
 		template<class Scalar, class Coefficient, class BasisBlade, class... NextComponents>
 		struct _product_level1_distribute<Scalar, add<component<Coefficient, BasisBlade>, NextComponents...> > {
-			typedef addition_t<component_t<product_t<Scalar, Coefficient, real_mapping>, BasisBlade>, typename _product_level1_distribute<Scalar, add_t<NextComponents...> >::type> type;
+			typedef addition_t<component_t<product_t<Scalar, Coefficient, value_mapping>, BasisBlade>, typename _product_level1_distribute<Scalar, add_t<NextComponents...> >::type> type;
 		};
 
 		template<class Scalar, class Coefficient, class BasisBlade>
 		struct _product_level1_distribute<Scalar, component<Coefficient, BasisBlade> > {
-			typedef component_t<product_t<Scalar, Coefficient, real_mapping>, BasisBlade> type;
+			typedef component_t<product_t<Scalar, Coefficient, value_mapping>, BasisBlade> type;
 		};
 
 		template<class LeftCoefficient, class LeftBasisBlade, class RightCoefficient, class RightBasisBlade, class Mapping>
 		struct _product_level1<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade>, Mapping> :
-			_product_level1_distribute<product_t<LeftCoefficient, RightCoefficient, real_mapping>, typename Mapping::template multiply<LeftBasisBlade, RightBasisBlade>::type> {
+			_product_level1_distribute<product_t<LeftCoefficient, RightCoefficient, value_mapping>, typename Mapping::template multiply<LeftBasisBlade, RightBasisBlade>::type> {
 		};
 
 		// Specialization of _product<add<...>, add<...>, Mapping>, product<LeftExpression, add<...>, Mapping>, and product<RightExpression, add<...>, Mapping> (distributive property over addition).

@@ -77,9 +77,33 @@ namespace ga {
 			> type;
 		};
 
+		template<default_integral_t RightValue>
+		struct _power_level2<constant_value<0>, constant_value<RightValue> > {
+			typedef std::conditional_t<
+				(RightValue > 0),
+				constant_value<0>, // 0^{X} = 0, for X > 0 (simplify)
+				nullptr_t // the value of pow(0, X) is undefined for X <= 0
+			> type;
+		};
+
+		template<default_integral_t RightValue>
+		struct _power_level2<constant_value<1>, constant_value<RightValue> > {
+			typedef constant_value<1> type; // 1^{K} = 1 (simplify)
+		};
+
 		template<default_integral_t LeftValue>
 		struct _power_level2<constant_value<LeftValue>, power<constant_value<2>, constant_value<-1> > > {
 			typedef simpler_isqrt_t<LeftValue> type; // sqrt(X) = Y, if it is possible simplify for given integer X and Y values (simplify)
+		};
+
+		template<>
+		struct _power_level2<constant_value<0>, power<constant_value<2>, constant_value<-1> > > {
+			typedef constant_value<0> type; // sqrt(0) = 0 (simplify)
+		};
+
+		template<>
+		struct _power_level2<constant_value<1>, power<constant_value<2>, constant_value<-1> > > {
+			typedef constant_value<1> type; // sqrt(1) = 1 (simplify)
 		};
 
 		// Specializations of _power_level1<LeftArgument, RightArgument>.
@@ -106,12 +130,12 @@ namespace ga {
 
 		template<class LeftArgument, class... LeftNextArguments, class RightExpression>
 		struct _power<mul<LeftArgument, LeftNextArguments...>, RightExpression> {
-			typedef product_t<power_t<LeftArgument, RightExpression>, power_t<mul_t<LeftNextArguments...>, RightExpression>, real_mapping> type; // (A * B)^{C} = A^{C} * B^{C}
+			typedef product_t<power_t<LeftArgument, RightExpression>, power_t<mul_t<LeftNextArguments...>, RightExpression>, value_mapping> type; // (A * B)^{C} = A^{C} * B^{C}
 		};
 
 		template<class LeftLeftArgument, class LeftRightArgument, class RightExpression>
 		struct _power<power<LeftLeftArgument, LeftRightArgument>, RightExpression> {
-			typedef power_t<LeftLeftArgument, product_t<LeftRightArgument, RightExpression, real_mapping> > type; // (A^{B})^{C} = A^{B * C} (simplify)
+			typedef power_t<LeftLeftArgument, product_t<LeftRightArgument, RightExpression, value_mapping> > type; // (A^{B})^{C} = A^{B * C} (simplify)
 		};
 	}
 

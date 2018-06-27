@@ -13,6 +13,11 @@ namespace ga {
 			struct multiply {
 			private:
 
+#pragma warning( push )
+#pragma warning( disable: 4293 )
+				static_assert(((possible_grades_v<LeftBasisBlade> | possible_grades_v<RightBasisBlade>) >> (OrthogonalMetricSpace::vector_space_dimensions + 1)) == default_bitset_t(0), "The possible grades exceed the number of dimensions of the vectors space.");
+#pragma warning( pop )
+
 				constexpr static default_bitset_t result_possible_grades = GradedProduct::template possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade>, OrthogonalMetricSpace::vector_space_dimensions>::value;
 
 				typedef basis_vectors_t<LeftBasisBlade> left_basis_vectors;
@@ -38,7 +43,7 @@ namespace ga {
 				typedef component_t<
 					if_else_t<
 						test_type,
-						product_t<reordering_sign_t<left_basis_vectors, right_basis_vectors>, typename OrthogonalMetricSpace::template metric_factor<common_basis_vectors>::type, real_mapping>,
+						product_t<reordering_sign_t<left_basis_vectors, right_basis_vectors>, typename OrthogonalMetricSpace::template metric_factor<common_basis_vectors>::type, value_mapping>,
 						constant_value<0>
 					>,
 					candidate_basis_blade

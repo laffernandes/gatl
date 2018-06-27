@@ -35,10 +35,10 @@ namespace ga {
 						product_t<
 							std::conditional_t<(ColumnIndex & 1) == 0, constant_value<-1>, constant_value<1> >,
 							typename GeneralMetricSpace::template entry<row1, coli>::type,
-							real_mapping
+							value_mapping
 						>,
 						determinant_t<GeneralMetricSpace, other_rows_basis_vectors, bitwise_xor_t<ColumnBasisVectors, coli_basis_vector>, N - 1>,
-						real_mapping
+						value_mapping
 					>
 				> type;
 			};
@@ -55,7 +55,7 @@ namespace ga {
 				typedef product_t<
 					typename GeneralMetricSpace::template entry<row1, col1>::type,
 					determinant_t<GeneralMetricSpace, other_rows_basis_vectors, bitwise_xor_t<ColumnBasisVectors, col1_basis_vector>, N - 1>,
-					real_mapping
+					value_mapping
 				> type;
 			};
 
@@ -87,7 +87,7 @@ namespace ga {
 
 		public:
 
-			typedef addition_t<product_t<a11, a22, real_mapping>, product_t<constant_value<-1>, product_t<a21, a12, real_mapping>, real_mapping> > type;
+			typedef addition_t<product_t<a11, a22, value_mapping>, product_t<constant_value<-1>, product_t<a21, a12, value_mapping>, value_mapping> > type;
 		};
 
 		template<class GeneralMetricSpace, class RowBasisVectors, class ColumnBasisVectors>
@@ -114,6 +114,11 @@ namespace ga {
 			template<class LeftBasisBlade, class RightBasisBlade>
 			struct multiply {
 			private:
+
+#pragma warning( push )
+#pragma warning( disable: 4293 )
+				static_assert(((possible_grades_v<LeftBasisBlade> | possible_grades_v<RightBasisBlade>) >> (GeneralMetricSpace::vector_space_dimensions + 1)) == default_bitset_t(0), "The possible grades exceed the number of dimensions of the vectors space.");
+#pragma warning( pop )
 
 				constexpr static default_bitset_t candidate_possible_grades = GradedProduct::template possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade>, GeneralMetricSpace::vector_space_dimensions>::value;
 				
@@ -235,7 +240,7 @@ namespace ga {
 								if_else_t<
 									equal_t<
 										bitwise_and_t<
-											addition_t<constant_value<-2 * Order>, product_t<constant_value<Order>, left_grade, real_mapping> >,
+											addition_t<constant_value<-2 * Order>, product_t<constant_value<Order>, left_grade, value_mapping> >,
 											constant_value<1>
 										>,
 										constant_value<0>
@@ -268,7 +273,7 @@ namespace ga {
 
 			public:
 
-				typedef order_summation_t<smaller(ones(leftmost_set_bit(possible_grades_v<LeftBasisBlade>) - default_bitset_t(1)), ones(leftmost_set_bit(possible_grades_v<RightBasisBlade>) - default_bitset_t(1)))> type;
+				typedef order_summation_t<smaller(set_bit_index(leftmost_set_bit(possible_grades_v<LeftBasisBlade>)), set_bit_index(leftmost_set_bit(possible_grades_v<RightBasisBlade>)))> type;
 			};
 		};
 
