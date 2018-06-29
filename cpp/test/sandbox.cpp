@@ -26,6 +26,9 @@ using namespace ga;
 void test_make_constant() {
 	using namespace ga3e;
 
+	auto v = make_euclidean_vector(c<0>, c<0>, 10.5);
+	std::cout << v << std::endl;
+
 	std::cout << "--- test_make_constant()" << std::endl;
 	constexpr auto x = c<5>;
 	std::cout << "5 = " << x << std::endl;
@@ -46,7 +49,7 @@ decltype(auto) test_make_ek_func(index_t k) {
 }
 
 void test_make_e() {
-	using namespace ga3e;
+	using namespace ga5e;
 
 	std::cout << "--- test_make_e()" << std::endl;
 	std::cout << "e1 = " << e(1) << std::endl;
@@ -54,7 +57,7 @@ void test_make_e() {
 	std::cout << "e1 = " << test_make_ek_func(1) << std::endl;
 	std::cout << "e3 = " << test_make_ek_func(3) << std::endl;
 	auto e1 = e(1); std::cout << "e1 = " << e1 << std::endl;
-	volatile index_t i = 9; std::cout << "e9 = " << e(i) << std::endl;
+	volatile index_t i = 5; std::cout << "e5 = " << e(i) << std::endl;
 	std::cout << std::endl;
 }
 
@@ -344,7 +347,7 @@ void test_take_grade() {
 
 void test_sign_change_operations() {
 	auto mtr = signed_metric_space<6, 1>();
-	std::string const basis_vectors[] = { "e1", "e2", "e3", "e4", "e5", "e6", "e7" };
+	std::array<std::string, 7> const basis_vectors = { "e1", "e2", "e3", "e4", "e5", "e6", "e7" };
 	auto e1 = e(c<1>); auto e2 = e(c<2>); auto e3 = e(c<3>); auto e4 = e(c<4>); auto e5 = e(c<5>); auto e6 = e(c<6>); auto e7 = e(c<7>);
 
 	std::cout << "--- test_sign_change_operations()" << std::endl;
@@ -355,7 +358,7 @@ void test_sign_change_operations() {
 }
 
 template<class MetricSpaceType, std::size_t N>
-void test_pseudoscalar(metric_space<MetricSpaceType> const &spc, std::string const &name, std::string const (&basis_vectors)[N]) {
+void test_pseudoscalar(metric_space<MetricSpaceType> const &spc, std::string const &name, std::array<std::string, N> const &basis_vectors) {
 	std::cout << "--- test_pseudoscalar(" << name << ")" << std::endl;
 	std::cout << "I = "; write(std::cout, pseudoscalar(spc), basis_vectors) << std::endl;
 	std::cout << std::endl;
@@ -607,9 +610,9 @@ int main() {
 
 	test_sign_change_operations();
 
-	test_pseudoscalar(euclidean_metric_space<3>(), "euclidean<3>", { "e1", "e2", "e3" });
-	test_pseudoscalar(euclidean_metric_space<2>(), "euclidean<2>", { "e1", "e2" });
-	test_pseudoscalar(signed_metric_space<2, 1>(), "signed<2, 1>", { "e1", "e2", "em" });
+	test_pseudoscalar(euclidean_metric_space<3>(), "euclidean<3>", std::array<std::string, 3>{ "e1", "e2", "e3" });
+	test_pseudoscalar(euclidean_metric_space<2>(), "euclidean<2>", std::array<std::string, 2>{ "e1", "e2" });
+	test_pseudoscalar(signed_metric_space<2, 1>(), "signed<2, 1>", std::array<std::string, 3>{ "e1", "e2", "em" });
 
 	test_simplification();
 
@@ -724,6 +727,16 @@ int main() {
 		std::cout << I << std::endl;
 		std::cout << Ie << std::endl;
 
+	}
+
+	{
+		using namespace ga2m;
+
+		auto const pi = (4 * atan(1));
+		std::cout << "pi = " << pi << std::endl;
+
+		auto alpha = pi / 2;
+		std::cout << "alpha = " << alpha << ", exp(-(alpha / 2) * (e1^e2)) = " << exp(-(alpha / 2) * (e1^e2)) << std::endl;
 	}
 
 	return EXIT_SUCCESS;

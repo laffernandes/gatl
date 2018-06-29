@@ -25,8 +25,8 @@ namespace ga {
 
 	// Specialization of is_general_metric_space<MetricSpaceType>.
 	template<ndims_t N>
-	struct is_general_metric_space<conformal_metric_space<N> > {
-		constexpr static bool value = true;
+	struct is_general_metric_space<conformal_metric_space<N> > :
+		std::true_type {
 	};
 
 }

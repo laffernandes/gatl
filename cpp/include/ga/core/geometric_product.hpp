@@ -59,8 +59,8 @@ namespace ga {
 		public:
 
 			template<class LeftGrade, class RightGrade, class ResultGrade>
-			struct are_valid_grades {
-				typedef std::true_type type;
+			struct are_valid_grades :
+				std::true_type {
 			};
 
 			template<default_bitset_t LeftPossibleGrades, default_bitset_t RightPossibleGrades, ndims_t VectorSpaceDimensions>

@@ -3,6 +3,6 @@
 
 #define _GA_UTILS_SIGNED_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, P, Q, ...) \
 	static signed_metric_space<P, Q> const SPACE; \
-	static std::string const BASIS_VECTORS_NAMES [] = { __VA_ARGS__ };
+	static std::array<std::string, P + Q> const BASIS_VECTORS_NAMES = { __VA_ARGS__ };
 
 #endif // __GA_UTILS_SIGNED_MACRO_FOR_ALGEBRA_DEFINITION_HPP__

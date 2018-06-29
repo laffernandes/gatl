@@ -1,5 +1,5 @@
-#ifndef __GA_VERSOR_INVERSE_HPP__
-#define __GA_VERSOR_INVERSE_HPP__
+#ifndef __GA_EXTRA_VERSOR_INVERSE_HPP__
+#define __GA_EXTRA_VERSOR_INVERSE_HPP__
 
 namespace ga {
 
@@ -26,4 +26,4 @@ namespace ga {
 
 }
 
-#endif // __GA_VERSOR_INVERSE_HPP__
+#endif // __GA_EXTRA_VERSOR_INVERSE_HPP__

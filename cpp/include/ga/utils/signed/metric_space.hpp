@@ -34,8 +34,8 @@ namespace ga {
 
 	// Specialization of is_orthogonal_metric_space<MetricSpaceType>.
 	template<ndims_t P, ndims_t Q>
-	struct is_orthogonal_metric_space<signed_metric_space<P, Q> > {
-		constexpr static bool value = true;
+	struct is_orthogonal_metric_space<signed_metric_space<P, Q> > :
+		std::true_type {
 	};
 
 }

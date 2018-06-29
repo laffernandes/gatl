@@ -3,7 +3,7 @@
 
 #define _GA_UTILS_CONFORMAL_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, N, ...) \
 	static conformal_metric_space<N> const SPACE; \
-	static std::string const BASIS_VECTORS_NAMES [] = { __VA_ARGS__ , "no", "ni" }; \
+	static std::array<std::string, N + 2> const BASIS_VECTORS_NAMES = { __VA_ARGS__ , "no", "ni" }; \
 	\
 	static auto const no = e(c<N + 1>); \
 	static auto const ni = e(c<N + 2>); \

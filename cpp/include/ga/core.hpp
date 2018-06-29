@@ -62,6 +62,7 @@ namespace ga {
 #include "ga/core/scalar.hpp"
 #include "ga/core/constant.hpp"
 #include "ga/core/basis_vector.hpp"
+#include "ga/core/vector.hpp"
 #include "ga/core/pseudoscalar.hpp"
 
 #include "ga/core/conjugation.hpp"

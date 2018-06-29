@@ -1,5 +1,5 @@
-#ifndef __GA_GRADE_HPP__
-#define __GA_GRADE_HPP__
+#ifndef __GA_EXTRA_GRADE_HPP__
+#define __GA_EXTRA_GRADE_HPP__
 
 namespace ga {
 
@@ -174,4 +174,4 @@ namespace ga {
 
 }
 
-#endif // __GA_GRADE_HPP__
+#endif // __GA_EXTRA_GRADE_HPP__

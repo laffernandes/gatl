@@ -48,18 +48,18 @@ namespace ga {
 		};
 
 		// Returns whether the given expression has stored entries.
-		template<class... Expressions>
+		template<class Expression>
 		struct has_stored_entries;
 
-		template<class... Expressions>
-		constexpr bool has_stored_entries_v = has_stored_entries<Expressions...>::value;
+		template<class Expression>
+		constexpr bool has_stored_entries_v = has_stored_entries<Expression>::value;
 
-		// Returns whether the given expressions are compile-time defined.
-		template<class... Expressions>
+		// Returns whether the given expression is compile-time defined.
+		template<class Expression>
 		struct is_constant_expression;
 
-		template<class... Expressions>
-		constexpr bool is_constant_expression_v = is_constant_expression<Expressions...>::value;
+		template<class Expression>
+		constexpr bool is_constant_expression_v = is_constant_expression<Expression>::value;
 
 		// Returns whether the given expression is a function with the given name.
 		template<name_t Name, class Expression>
@@ -629,7 +629,7 @@ namespace ga {
 				std::is_same_v<LeftType, RightType> && !has_stored_entries_v<LeftType>,
 				std::true_type, // simplify
 				std::conditional_t<
-					!std::is_same_v<LeftType, RightType> && is_constant_expression_v<LeftType, RightType>,
+					!std::is_same_v<LeftType, RightType> && is_constant_expression_v<LeftType> && is_constant_expression_v<RightType>,
 					std::false_type, // simplify
 					function // default
 				>
@@ -657,13 +657,13 @@ namespace ga {
 		};
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
-		struct function<name_t::less_or_equal, constant_value<LeftValue>, constant_value<RightValue> > {
-			typedef std::bool_constant<(LeftValue <= RightValue)> type; // simplify
+		struct function<name_t::less_or_equal, constant_value<LeftValue>, constant_value<RightValue> > :
+			std::bool_constant<(LeftValue <= RightValue)> { // simplify
 		};
 
 		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
-		struct function<name_t::less_or_equal, constant_bitset<LeftBitset>, constant_bitset<RightBitset> > {
-			typedef std::bool_constant<(LeftBitset <= RightBitset)> type; // simplify
+		struct function<name_t::less_or_equal, constant_bitset<LeftBitset>, constant_bitset<RightBitset> > :
+			std::bool_constant<(LeftBitset <= RightBitset)> { // simplify
 		};
 
 		// Specializations of logical_and<LeftType, RightType>.
@@ -692,33 +692,33 @@ namespace ga {
 		};
 
 		template<class LeftType>
-		struct function<name_t::logical_and, LeftType, std::false_type> {
-			typedef std::false_type type; // simplify
+		struct function<name_t::logical_and, LeftType, std::false_type> :
+			std::false_type { // simplify
 		};
 
 		template<class RightType>
-		struct function<name_t::logical_and, std::false_type, RightType> {
-			typedef std::false_type type; // simplify
+		struct function<name_t::logical_and, std::false_type, RightType> :
+			std::false_type { // simplify
 		};
 		
 		template<>
-		struct function<name_t::logical_and, std::true_type, std::true_type> {
-			typedef std::true_type type; // simplify
+		struct function<name_t::logical_and, std::true_type, std::true_type> :
+			std::true_type { // simplify
 		};
 
 		template<>
-		struct function<name_t::logical_and, std::false_type, std::true_type> {
-			typedef std::false_type type; // simplify
+		struct function<name_t::logical_and, std::false_type, std::true_type> :
+			std::false_type { // simplify
 		};
 
 		template<>
-		struct function<name_t::logical_and, std::true_type, std::false_type> {
-			typedef std::false_type type; // simplify
+		struct function<name_t::logical_and, std::true_type, std::false_type> :
+			std::false_type { // simplify
 		};
 
 		template<>
-		struct function<name_t::logical_and, std::false_type, std::false_type> {
-			typedef std::false_type type; // simplify
+		struct function<name_t::logical_and, std::false_type, std::false_type> :
+			std::false_type { // simplify
 		};
 
 		// Specializations of logical_or<LeftType, RightType>.
@@ -743,33 +743,33 @@ namespace ga {
 		};
 
 		template<class LeftType>
-		struct function<name_t::logical_or, LeftType, std::true_type> {
-			typedef std::true_type type; // simplify
+		struct function<name_t::logical_or, LeftType, std::true_type> :
+			std::true_type { // simplify
 		};
 
 		template<class RightType>
-		struct function<name_t::logical_or, std::true_type, RightType> {
-			typedef std::true_type type; // simplify
+		struct function<name_t::logical_or, std::true_type, RightType> :
+			std::true_type { // simplify
 		};
 
 		template<>
-		struct function<name_t::logical_or, std::true_type, std::true_type> {
-			typedef std::true_type type; // simplify
+		struct function<name_t::logical_or, std::true_type, std::true_type> :
+			std::true_type { // simplify
 		};
 
 		template<>
-		struct function<name_t::logical_or, std::false_type, std::true_type> {
-			typedef std::true_type type; // simplify
+		struct function<name_t::logical_or, std::false_type, std::true_type> :
+			std::true_type { // simplify
 		};
 
 		template<>
-		struct function<name_t::logical_or, std::true_type, std::false_type> {
-			typedef std::true_type type; // simplify
+		struct function<name_t::logical_or, std::true_type, std::false_type> :
+			std::true_type { // simplify
 		};
 
 		template<>
-		struct function<name_t::logical_or, std::false_type, std::false_type> {
-			typedef std::false_type type; // simplify
+		struct function<name_t::logical_or, std::false_type, std::false_type> :
+			std::false_type { // simplify
 		};
 
 		// Specializations of if_else<Test, TrueValue, FalseValue>.

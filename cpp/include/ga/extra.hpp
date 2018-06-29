@@ -11,6 +11,8 @@
 #include "ga/extra/inverse_geometric_product.hpp"
 #include "ga/extra/arithmetic_operators.hpp"
 
+#include "ga/extra/blade_exponential.hpp"
+
 #include "ga/extra/commutator_product.hpp"
 
 #include "ga/extra/dualization.hpp"

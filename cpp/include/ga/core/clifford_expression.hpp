@@ -171,7 +171,7 @@ namespace ga {
 		};
 
 		// Superclass for ga::clifford_expression<ValueType, Expression>.
-		template<class ValueType, class Expression, std::size_t StoredValues = count_stored_values_v<Expression>, std::size_t StoredBitsets = count_stored_bitsets_v<Expression>, std::size_t StoredMaps = count_stored_maps_v<Expression> >
+		template<class ValueType, class Expression, std::size_t StoredValuesCount = count_stored_values_v<Expression>, std::size_t StoredBitsetsCount = count_stored_bitsets_v<Expression>, std::size_t StoredMapsCount = count_stored_maps_v<Expression> >
 		class _super_clifford_expression {
 		public:
 
@@ -179,9 +179,9 @@ namespace ga {
 			typedef default_bitset_t bitset_type;
 			typedef default_associative_container_t<value_type> map_type;
 
-			typedef sequential_storage<value_type, StoredValues> value_storage_type;
-			typedef sequential_storage<bitset_type, StoredBitsets> bitset_storage_type;
-			typedef sequential_storage<map_type, StoredMaps> map_storage_type;
+			typedef sequential_storage<value_type, StoredValuesCount> value_storage_type;
+			typedef sequential_storage<bitset_type, StoredBitsetsCount> bitset_storage_type;
+			typedef sequential_storage<map_type, StoredMapsCount> map_storage_type;
 
 			constexpr _super_clifford_expression() = default;
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
@@ -227,8 +227,8 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredBitsets, std::size_t StoredMaps>
-		class _super_clifford_expression<ValueType, Expression, 0, StoredBitsets, StoredMaps> {
+		template<class ValueType, class Expression, std::size_t StoredBitsetsCount, std::size_t StoredMapsCount>
+		class _super_clifford_expression<ValueType, Expression, 0, StoredBitsetsCount, StoredMapsCount> {
 		public:
 
 			typedef ValueType value_type;
@@ -236,8 +236,8 @@ namespace ga {
 			typedef default_associative_container_t<value_type> map_type;
 
 			typedef sequential_storage<value_type, 0> value_storage_type;
-			typedef sequential_storage<bitset_type, StoredBitsets> bitset_storage_type;
-			typedef sequential_storage<map_type, StoredMaps> map_storage_type;
+			typedef sequential_storage<bitset_type, StoredBitsetsCount> bitset_storage_type;
+			typedef sequential_storage<map_type, StoredMapsCount> map_storage_type;
 
 			constexpr _super_clifford_expression() = default;
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
@@ -282,17 +282,17 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredValues, std::size_t StoredMaps>
-		class _super_clifford_expression<ValueType, Expression, StoredValues, 0, StoredMaps> {
+		template<class ValueType, class Expression, std::size_t StoredValuesCount, std::size_t StoredMapsCount>
+		class _super_clifford_expression<ValueType, Expression, StoredValuesCount, 0, StoredMapsCount> {
 		public:
 
 			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
 			typedef default_associative_container_t<value_type> map_type;
 
-			typedef sequential_storage<value_type, StoredValues> value_storage_type;
+			typedef sequential_storage<value_type, StoredValuesCount> value_storage_type;
 			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
-			typedef sequential_storage<map_type, StoredMaps> map_storage_type;
+			typedef sequential_storage<map_type, StoredMapsCount> map_storage_type;
 
 			constexpr _super_clifford_expression() = default;
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
@@ -337,8 +337,8 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredMaps>
-		class _super_clifford_expression<ValueType, Expression, 0, 0, StoredMaps> {
+		template<class ValueType, class Expression, std::size_t StoredMapsCount>
+		class _super_clifford_expression<ValueType, Expression, 0, 0, StoredMapsCount> {
 		public:
 
 			typedef ValueType value_type;
@@ -347,7 +347,7 @@ namespace ga {
 
 			typedef sequential_storage<value_type, 0> value_storage_type;
 			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
-			typedef sequential_storage<map_type, StoredMaps> map_storage_type;
+			typedef sequential_storage<map_type, StoredMapsCount> map_storage_type;
 
 			constexpr _super_clifford_expression() = default;
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
@@ -385,16 +385,16 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredValues, std::size_t StoredBitsets>
-		class _super_clifford_expression<ValueType, Expression, StoredValues, StoredBitsets, 0> {
+		template<class ValueType, class Expression, std::size_t StoredValuesCount, std::size_t StoredBitsetsCount>
+		class _super_clifford_expression<ValueType, Expression, StoredValuesCount, StoredBitsetsCount, 0> {
 		public:
 
 			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
 			typedef default_associative_container_t<value_type> map_type;
 
-			typedef sequential_storage<value_type, StoredValues> value_storage_type;
-			typedef sequential_storage<bitset_type, StoredBitsets> bitset_storage_type;
+			typedef sequential_storage<value_type, StoredValuesCount> value_storage_type;
+			typedef sequential_storage<bitset_type, StoredBitsetsCount> bitset_storage_type;
 			typedef sequential_storage<map_type, 0> map_storage_type;
 
 			constexpr _super_clifford_expression() = default;
@@ -440,8 +440,8 @@ namespace ga {
 			bitset_storage_type bitsets_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredBitsets>
-		class _super_clifford_expression<ValueType, Expression, 0, StoredBitsets, 0> {
+		template<class ValueType, class Expression, std::size_t StoredBitsetsCount>
+		class _super_clifford_expression<ValueType, Expression, 0, StoredBitsetsCount, 0> {
 		public:
 
 			typedef ValueType value_type;
@@ -449,7 +449,7 @@ namespace ga {
 			typedef default_associative_container_t<value_type> map_type;
 
 			typedef sequential_storage<value_type, 0> value_storage_type;
-			typedef sequential_storage<bitset_type, StoredBitsets> bitset_storage_type;
+			typedef sequential_storage<bitset_type, StoredBitsetsCount> bitset_storage_type;
 			typedef sequential_storage<map_type, 0> map_storage_type;
 
 			constexpr _super_clifford_expression() = default;
@@ -488,15 +488,15 @@ namespace ga {
 			bitset_storage_type bitsets_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredValues>
-		class _super_clifford_expression<ValueType, Expression, StoredValues, 0, 0> {
+		template<class ValueType, class Expression, std::size_t StoredValuesCount>
+		class _super_clifford_expression<ValueType, Expression, StoredValuesCount, 0, 0> {
 		public:
 
 			typedef ValueType value_type;
 			typedef default_bitset_t bitset_type;
 			typedef default_associative_container_t<value_type> map_type;
 
-			typedef sequential_storage<value_type, StoredValues> value_storage_type;
+			typedef sequential_storage<value_type, StoredValuesCount> value_storage_type;
 			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
 			typedef sequential_storage<map_type, 0> map_storage_type;
 
@@ -645,13 +645,13 @@ namespace ga {
 
 	// Returns whether the given type is a clifford expression.
 	template<class Type>
-	struct is_clifford_expression {
-		constexpr static bool value = false;
+	struct is_clifford_expression :
+		std::false_type {
 	};
 
 	template<class CoefficientType, class Expression>
-	struct is_clifford_expression<clifford_expression<CoefficientType, Expression> > {
-		constexpr static bool value = true;
+	struct is_clifford_expression<clifford_expression<CoefficientType, Expression> > :
+		std::true_type {
 	};
 
 	template<class Type>
@@ -660,7 +660,7 @@ namespace ga {
 	// Helper function to build a sequential storage of values, bitsets or maps.
 	template<class... Args>
 	constexpr decltype(auto) make_sequential_storage(Args &&... args) {
-		return detail::sequential_storage<std::common_type_t<Args...>, sizeof...(args)>(std::move(args)...);
+		return detail::sequential_storage<std::common_type_t<std::remove_cv_t<std::remove_reference_t<Args> >...>, sizeof...(args)>(std::move(args)...);
 	}
 
 }

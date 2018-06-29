@@ -153,8 +153,8 @@ public:
 namespace ga {
 
 	template<ga::ndims_t N>
-	struct is_general_metric_space<general_euclidean_metric_space<N> > {
-		constexpr static bool value = true;
+	struct is_general_metric_space<general_euclidean_metric_space<N> > :
+		std::true_type {
 	};
 
 }

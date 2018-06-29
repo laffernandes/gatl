@@ -1,5 +1,5 @@
-#ifndef __GA_CORE_COMMUTATOR_PRODUCT_HPP__
-#define __GA_CORE_COMMUTATOR_PRODUCT_HPP__
+#ifndef __GA_EXTRA_COMMUTATOR_PRODUCT_HPP__
+#define __GA_EXTRA_COMMUTATOR_PRODUCT_HPP__
 
 namespace ga {
 
@@ -56,4 +56,4 @@ namespace ga {
 
 }
 
-#endif // __GA_CORE_COMMUTATOR_PRODUCT_HPP__
+#endif // __GA_EXTRA_COMMUTATOR_PRODUCT_HPP__

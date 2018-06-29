@@ -3,7 +3,7 @@
 
 #define _GA_UTILS_MINKOWSKI_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, N, ...) \
 	static minkowski_metric_space<N> const SPACE; \
-	static std::string const BASIS_VECTORS_NAMES [] = { __VA_ARGS__ , "ep", "em" }; \
+	static std::array<std::string, N + 2> const BASIS_VECTORS_NAMES = { __VA_ARGS__ , "ep", "em" }; \
 	\
 	static auto const ep = e(c<N + 1>); \
 	static auto const em = e(c<N + 2>); \

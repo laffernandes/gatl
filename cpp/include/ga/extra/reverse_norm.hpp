@@ -1,5 +1,5 @@
-#ifndef __GA_REVERSE_NORM_HPP__
-#define __GA_REVERSE_NORM_HPP__
+#ifndef __GA_EXTRA_REVERSE_NORM_HPP__
+#define __GA_EXTRA_REVERSE_NORM_HPP__
 
 namespace ga {
 
@@ -47,4 +47,4 @@ namespace ga {
 
 }
 
-#endif // __GA_REVERSE_NORM_HPP__
+#endif // __GA_EXTRA_REVERSE_NORM_HPP__

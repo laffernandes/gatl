@@ -7,14 +7,24 @@
 		return cp(lhs, rhs, SPACE); \
 	} \
 	\
-	template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
-	constexpr decltype(auto) dual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
+	template<class Type, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+	constexpr decltype(auto) dual(Type const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
 		return dual(arg, pseudoscalar, SPACE); \
 	} \
 	\
 	template<class Type> \
 	constexpr decltype(auto) dual(Type const &arg) { \
 		return dual(arg, pseudoscalar(SPACE), SPACE); \
+	} \
+	\
+	template<class CoefficientType, class Expression> \
+	constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg, CoefficientType const &tol) { \
+		return exp(arg, tol, SPACE); \
+	} \
+	\
+	template<class CoefficientType, class Expression> \
+	constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg) { \
+		return exp(arg, SPACE); \
 	} \
 	\
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
@@ -37,8 +47,8 @@
 		return rnorm_sqr(arg, SPACE); \
 	} \
 	\
-	template<class CoefficientType, class Expression, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
-	constexpr decltype(auto) undual(clifford_expression<CoefficientType, Expression> const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
+	template<class Type, class PseudoscalarCoefficientType, class PseudoscalarExpression> \
+	constexpr decltype(auto) undual(Type const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) { \
 		return undual(arg, pseudoscalar, SPACE); \
 	} \
 	\

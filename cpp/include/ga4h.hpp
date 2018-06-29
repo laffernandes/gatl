@@ -18,6 +18,7 @@ namespace ga4h {
 
 	_GA_CORE_OVERLOAD(space)
 	_GA_EXTRA_OVERLOAD(space, basis_vectors_names)
+	_GA_UTILS_HOMOGENEOUS_ALGEBRA_OVERLOAD(space)
 
 }
 

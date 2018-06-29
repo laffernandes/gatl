@@ -49,6 +49,11 @@
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 	constexpr decltype(auto) sp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 		return sp(lhs, rhs, SPACE); \
+	} \
+	\
+	template<class... Types> \
+	constexpr decltype(auto) vector(Types const &... coords) { \
+		return vector(SPACE, coords...); \
 	}
 
 #endif // __GA_CORE_MACRO_FOR_ALGEBRA_OVERLOAD_HPP__

@@ -418,7 +418,7 @@ namespace ga {
 		template<tag_t LowerTag, tag_t UpperTag, class Test, class TrueValue, class FalseValue>
 		struct eval_clifford_expression<LowerTag, UpperTag, if_else<Test, TrueValue, FalseValue> > :
 			std::conditional_t<
-				can_be_stored_v<eval_expression_t<LowerTag, UpperTag, Test>, eval_expression_t<LowerTag, UpperTag, TrueValue>, eval_expression_t<LowerTag, UpperTag, TrueValue> >,
+				can_be_stored_v<eval_expression_t<LowerTag, UpperTag, Test> > && can_be_stored_v<eval_expression_t<LowerTag, UpperTag, TrueValue> > && can_be_stored_v<eval_expression_t<LowerTag, UpperTag, TrueValue> >,
 				_eval_clifford_expression_store_value<LowerTag, UpperTag, if_else<Test, TrueValue, FalseValue> >,
 				_eval_clifford_expression_move<LowerTag, UpperTag, if_else_t<eval_expression_t<LowerTag, UpperTag, Test>, eval_expression_t<LowerTag, UpperTag, TrueValue>, eval_expression_t<LowerTag, UpperTag, TrueValue> >, Test, TrueValue, FalseValue>
 			> {
@@ -562,8 +562,8 @@ namespace ga {
 				return 0;
 			}
 		};
-
-	};
+	
+	}
 
 	// Helper structure to define lazy arguments for lazy evaluation of expressions.
 	template<class... InputTypes>

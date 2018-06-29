@@ -6,181 +6,148 @@ namespace ga {
 	namespace detail {
 
 		// Returns whether the given expressions can be stored if necessary.
-		template<class... Expressions>
-		struct can_be_stored;
-
-		template<class... Expressions>
-		constexpr bool can_be_stored_v = can_be_stored<Expressions...>::value;
-
-		template<class Expression, class... NextExpressions>
-		struct can_be_stored<Expression, NextExpressions...> {
-			constexpr static bool value = can_be_stored_v<Expression> && can_be_stored_v<NextExpressions...>; // recursion
-		};
-
-		template<>
-		struct can_be_stored<> {
-			constexpr static bool value = true; // end of recursion
+		template<class Expression>
+		struct can_be_stored :
+			std::false_type { // default
 		};
 
 		template<class Expression>
-		struct can_be_stored<Expression> {
-			constexpr static bool value = false; // default
-		};
+		constexpr bool can_be_stored_v = can_be_stored<Expression>::value;
 
 		template<default_integral_t Value>
-		struct can_be_stored<constant_value<Value> > {
-			constexpr static bool value = true;
+		struct can_be_stored<constant_value<Value> > :
+			std::true_type {
 		};
 
 		template<>
-		struct can_be_stored<stored_value> {
-			constexpr static bool value = true;
+		struct can_be_stored<stored_value> :
+			std::true_type {
 		};
 
 		template<>
-		struct can_be_stored<stored_map_values> {
-			constexpr static bool value = true;
+		struct can_be_stored<stored_map_values> :
+			std::true_type {
 		};
 
 		template<default_bitset_t Bitset>
-		struct can_be_stored<constant_bitset<Bitset> > {
-			constexpr static bool value = true;
+		struct can_be_stored<constant_bitset<Bitset> > :
+			std::true_type {
 		};
 
 		template<>
-		struct can_be_stored<stored_bitset> {
-			constexpr static bool value = true;
+		struct can_be_stored<stored_bitset> :
+			std::true_type {
 		};
 
 		template<>
-		struct can_be_stored<stored_map_bitsets> {
-			constexpr static bool value = true;
+		struct can_be_stored<stored_map_bitsets> :
+			std::true_type {
 		};
 
 		template<default_bitset_t Bitset>
-		struct can_be_stored<constant_basis_blade<Bitset> > {
-			constexpr static bool value = true;
+		struct can_be_stored<constant_basis_blade<Bitset> > :
+			std::true_type {
 		};
 
 		template<default_bitset_t PossibleGrades, class Bitset>
-		struct can_be_stored<dynamic_basis_blade<PossibleGrades, Bitset> > {
-			constexpr static bool value = can_be_stored_v<Bitset>;
+		struct can_be_stored<dynamic_basis_blade<PossibleGrades, Bitset> > :
+			std::bool_constant<can_be_stored_v<Bitset> > {
 		};
 
 		template<class Coefficient, class BasisBlade>
-		struct can_be_stored<component<Coefficient, BasisBlade> > {
-			constexpr static bool value = can_be_stored_v<Coefficient> && can_be_stored_v<BasisBlade>;
+		struct can_be_stored<component<Coefficient, BasisBlade> > :
+			std::bool_constant<can_be_stored_v<Coefficient> && can_be_stored_v<BasisBlade> > {
 		};
 
 		template<name_t Name, class... Arguments>
-		struct can_be_stored<function<Name, Arguments...> > {
-			constexpr static bool value = can_be_stored_v<Arguments...>;
+		struct can_be_stored<function<Name, Arguments...> > :
+			std::conjunction<std::bool_constant<can_be_stored_v<Arguments> >...>::type {
 		};
 
-		// Specializations of is_constant_expression<Expressions...>.
-		template<class Expression, class... NextExpressions>
-		struct is_constant_expression<Expression, NextExpressions...> {
-			constexpr static bool value = is_constant_expression_v<Expression> && is_constant_expression_v<NextExpressions...>; // recursion
-		};
-
-		template<>
-		struct is_constant_expression<> {
-			constexpr static bool value = true; // end of recursion
-		};
-
+		// Specializations of is_constant_expression<Expression>.
 		template<class Expression>
-		struct is_constant_expression<Expression> {
-			constexpr static bool value = false; // default
+		struct is_constant_expression :
+			std::false_type { // default
 		};
 
 		template<default_integral_t Value>
-		struct is_constant_expression<constant_value<Value> > {
-			constexpr static bool value = true;
+		struct is_constant_expression<constant_value<Value> > :
+			std::true_type {
 		};
 
 		template<default_bitset_t Bitset>
-		struct is_constant_expression<constant_bitset<Bitset> > {
-			constexpr static bool value = true;
+		struct is_constant_expression<constant_bitset<Bitset> > :
+			std::true_type {
 		};
 
 		template<default_bitset_t Bitset>
-		struct is_constant_expression<constant_basis_blade<Bitset> > {
-			constexpr static bool value = true;
+		struct is_constant_expression<constant_basis_blade<Bitset> > :
+			std::true_type {
 		};
 
 		template<class Coefficient, class BasisBlade>
-		struct is_constant_expression<component<Coefficient, BasisBlade> > {
-			constexpr static bool value = is_constant_expression_v<Coefficient> && is_constant_expression_v<BasisBlade>;
+		struct is_constant_expression<component<Coefficient, BasisBlade> > :
+			std::bool_constant<is_constant_expression_v<Coefficient> && is_constant_expression_v<BasisBlade> > {
 		};
 
 		template<name_t Name, class... Arguments>
-		struct is_constant_expression<function<Name, Arguments...> > {
-			constexpr static bool value = is_constant_expression_v<Arguments...>;
+		struct is_constant_expression<function<Name, Arguments...> > :
+			std::conjunction<std::bool_constant<is_constant_expression_v<Arguments> >...>::type {
 		};
 
 		// Returns whether the given expression is a scalar component.
 		template<class Expression>
-		struct is_scalar_component {
-			constexpr static bool value = false;
+		struct is_scalar_component :
+			std::false_type {
 		};
 
 		template<class Coefficient>
-		struct is_scalar_component<component<Coefficient, constant_basis_blade<default_bitset_t(0)> > > {
-			constexpr static bool value = true;
+		struct is_scalar_component<component<Coefficient, constant_basis_blade<default_bitset_t(0)> > > :
+			std::true_type {
 		};
 
 		template<class Expression>
 		constexpr bool is_scalar_component_v = is_scalar_component<Expression>::value;
 
-		// Specializations of has_stored_entries<Expressions...>.
-		template<class Expression, class... NextExpressions>
-		struct has_stored_entries<Expression, NextExpressions...> {
-			constexpr static bool value = has_stored_entries_v<Expression> || has_stored_entries_v<NextExpressions...>; // recursion
-		};
-
-		template<>
-		struct has_stored_entries<> {
-			constexpr static bool value = false; // end of recursion
-		};
-
+		// Specializations of has_stored_entries<Expression>.
 		template<class Expression>
-		struct has_stored_entries<Expression> {
-			constexpr static bool value = false; // default
+		struct has_stored_entries :
+			std::false_type { // default
 		};
 
 		template<>
-		struct has_stored_entries<stored_value> {
-			constexpr static bool value = true;
+		struct has_stored_entries<stored_value> :
+			std::true_type {
 		};
 
 		template<>
-		struct has_stored_entries<stored_map_values> {
-			constexpr static bool value = true;
+		struct has_stored_entries<stored_map_values> :
+			std::true_type {
 		};
 
 		template<>
-		struct has_stored_entries<stored_bitset> {
-			constexpr static bool value = true;
+		struct has_stored_entries<stored_bitset> :
+			std::true_type {
 		};
 
 		template<>
-		struct has_stored_entries<stored_map_bitsets> {
-			constexpr static bool value = true;
+		struct has_stored_entries<stored_map_bitsets> :
+			std::true_type {
 		};
 
 		template<default_bitset_t PossibleGrades, class Bitset>
-		struct has_stored_entries<dynamic_basis_blade<PossibleGrades, Bitset> > {
-			constexpr static bool value = has_stored_entries_v<Bitset>;
+		struct has_stored_entries<dynamic_basis_blade<PossibleGrades, Bitset> > :
+			std::bool_constant<has_stored_entries_v<Bitset> > {
 		};
 
 		template<class Coefficient, class BasisBlade>
-		struct has_stored_entries<component<Coefficient, BasisBlade> > {
-			constexpr static bool value = has_stored_entries_v<Coefficient> || has_stored_entries_v<BasisBlade>;
+		struct has_stored_entries<component<Coefficient, BasisBlade> > :
+			std::bool_constant<(has_stored_entries_v<Coefficient> || has_stored_entries_v<BasisBlade>)> {
 		};
 
 		template<name_t Name, class... Arguments>
-		struct has_stored_entries<function<Name, Arguments...> > {
-			constexpr static bool value = has_stored_entries_v<Arguments...>;
+		struct has_stored_entries<function<Name, Arguments...> > :
+			std::disjunction<std::bool_constant<has_stored_entries_v<Arguments> >...>::type {
 		};
 
 		// Returns whether the given expression is an even value for sure.
@@ -191,265 +158,265 @@ namespace ga {
 		constexpr bool is_even_v = is_even<Expression>::value;
 
 		template<default_integral_t Value>
-		struct is_even<constant_value<Value> > {
-			constexpr static bool value = (Value & 1) == 0;
+		struct is_even<constant_value<Value> > :
+			std::bool_constant<(Value & 1) == 0> {
 		};
 
 		template<tag_t Tag, std::size_t Index>
-		struct is_even<get_value<Tag, Index> > {
-			constexpr static bool value = false;
+		struct is_even<get_value<Tag, Index> > :
+			std::false_type {
 		};
 
 		template<tag_t Tag, std::size_t Index>
-		struct is_even<get_map_values<Tag, Index> > {
-			constexpr static bool value = false;
+		struct is_even<get_map_values<Tag, Index> > :
+			std::false_type {
 		};
 
 		template<>
-		struct is_even<stored_value> {
-			constexpr static bool value = false;
+		struct is_even<stored_value> :
+			std::false_type{
 		};
 
 		template<>
-		struct is_even<stored_map_values> {
-			constexpr static bool value = false;
+		struct is_even<stored_map_values> :
+			std::false_type {
 		};
 
 		template<class LeftBitset, class RightBitset>
-		struct is_even<reordering_sign<LeftBitset, RightBitset> > {
-			constexpr static bool value = false;
+		struct is_even<reordering_sign<LeftBitset, RightBitset> > :
+			std::false_type {
 		};
 
 		template<class Bitset>
-		struct is_even<count_one_bits<Bitset> > {
-			constexpr static bool value = false;
+		struct is_even<count_one_bits<Bitset> > :
+			std::false_type {
 		};
 
 		template<class Bitset>
-		struct is_even<bitwise_uminus<Bitset> > {
-			constexpr static bool value = is_even_v<Bitset>;
+		struct is_even<bitwise_uminus<Bitset> > :
+			std::bool_constant<is_even_v<Bitset> > {
 		};
 
 		template<class Bitset>
-		struct is_even<bitwise_dec<Bitset> > {
-			constexpr static bool value = !is_even_v<Bitset>;
+		struct is_even<bitwise_dec<Bitset> > :
+			std::bool_constant<!is_even_v<Bitset> > {
 		};
 
 		template<class LeftType, class RightType>
-		struct is_even<bitwise_and<LeftType, RightType> > {
-			constexpr static bool value = is_even_v<LeftType> && is_even_v<RightType>;
+		struct is_even<bitwise_and<LeftType, RightType> > :
+			std::bool_constant<is_even_v<LeftType> && is_even_v<RightType> > {
 		};
 
 		template<class LeftType, class RightType>
-		struct is_even<bitwise_or<LeftType, RightType> > {
-			constexpr static bool value = is_even_v<LeftType> || is_even_v<RightType>;
+		struct is_even<bitwise_or<LeftType, RightType> > :
+			std::bool_constant<is_even_v<LeftType> || is_even_v<RightType> > {
 		};
 
 		template<class LeftType, class RightType>
-		struct is_even<bitwise_xor<LeftType, RightType> > {
-			constexpr static bool value = false;
+		struct is_even<bitwise_xor<LeftType, RightType> > :
+			std::false_type {
 		};
 
 		template<class Test, class TrueValue, class FalseValue>
-		struct is_even<if_else<Test, TrueValue, FalseValue> > {
-			constexpr static bool value = is_even_v<TrueValue> && is_even_v<FalseValue>;
+		struct is_even<if_else<Test, TrueValue, FalseValue> > :
+			std::bool_constant<is_even_v<TrueValue> && is_even_v<FalseValue> > {
 		};
 
 		template<class Value>
-		struct is_even<absolute<Value> > {
-			constexpr static bool value = is_even_v<Value>;
+		struct is_even<absolute<Value> > :
+			std::bool_constant<is_even_v<Value> > {
 		};
 
 		template<class Value>
-		struct is_even<exponential<Value> > {
-			constexpr static bool value = false;
+		struct is_even<exponential<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_even<logarithm<Value> > {
-			constexpr static bool value = false;
+		struct is_even<logarithm<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_even<cosine<Value> > {
-			constexpr static bool value = false;
+		struct is_even<cosine<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_even<sine<Value> > {
-			constexpr static bool value = false;
+		struct is_even<sine<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_even<tangent<Value> > {
-			constexpr static bool value = false;
+		struct is_even<tangent<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_even<hyperbolic_cosine<Value> > {
-			constexpr static bool value = false;
+		struct is_even<hyperbolic_cosine<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_even<hyperbolic_sine<Value> > {
-			constexpr static bool value = false;
+		struct is_even<hyperbolic_sine<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_even<hyperbolic_tangent<Value> > {
-			constexpr static bool value = false;
+		struct is_even<hyperbolic_tangent<Value> > :
+			std::false_type {
 		};
 
 		template<class LeftArgument, class RightArgument>
-		struct is_even<power<LeftArgument, RightArgument> > {
-			constexpr static bool value = is_even_v<RightArgument>;
+		struct is_even<power<LeftArgument, RightArgument> > :
+			std::bool_constant<is_even_v<RightArgument> > {
 		};
 
 		template<class... Arguments>
-		struct is_even<mul<Arguments...> > {
-			constexpr static bool value = false;
+		struct is_even<mul<Arguments...> > :
+			std::false_type {
 		};
 
 		template<class... Arguments>
-		struct is_even<add<Arguments...> > {
-			constexpr static bool value = false;
+		struct is_even<add<Arguments...> > :
+			std::false_type {
 		};
 
 		// Specializations of is_function<Expression>.
 		template<name_t Name, class Expression>
-		struct is_function {
-			constexpr static bool value = false;
+		struct is_function :
+			std::false_type {
 		};
 
 		template<name_t Name, class... Arguments>
-		struct is_function<Name, function<Name, Arguments...> > {
-			constexpr static bool value = true;
+		struct is_function<Name, function<Name, Arguments...> > :
+			std::true_type {
 		};
 
 		// Specializations of is_non_negative<Expression>.
 		template<default_integral_t Value>
-		struct is_non_negative<constant_value<Value> > {
-			constexpr static bool value = Value >= 0;
+		struct is_non_negative<constant_value<Value> > :
+			std::bool_constant<(Value >= 0)> {
 		};
 
 		template<tag_t Tag, std::size_t Index>
-		struct is_non_negative<get_value<Tag, Index> > {
-			constexpr static bool value = false;
+		struct is_non_negative<get_value<Tag, Index> > :
+			std::false_type {
 		};
 		
 		template<tag_t Tag, std::size_t Index>
-		struct is_non_negative<get_map_values<Tag, Index> > {
-			constexpr static bool value = false;
+		struct is_non_negative<get_map_values<Tag, Index> > :
+			std::false_type {
 		};
 
 		template<>
-		struct is_non_negative<stored_value> {
-			constexpr static bool value = false;
+		struct is_non_negative<stored_value> :
+			std::false_type {
 		};
 
 		template<>
-		struct is_non_negative<stored_map_values> {
-			constexpr static bool value = false;
+		struct is_non_negative<stored_map_values> :
+			std::false_type {
 		};
 
 		template<class LeftBitset, class RightBitset>
-		struct is_non_negative<reordering_sign<LeftBitset, RightBitset> > {
-			constexpr static bool value = true;
+		struct is_non_negative<reordering_sign<LeftBitset, RightBitset> > :
+			std::true_type {
 		};
 
 		template<class Bitset>
-		struct is_non_negative<count_one_bits<Bitset> > {
-			constexpr static bool value = true;
+		struct is_non_negative<count_one_bits<Bitset> > :
+			std::true_type {
 		};
 
 		template<class Bitset>
-		struct is_non_negative<bitwise_uminus<Bitset> > {
-			constexpr static bool value = true;
+		struct is_non_negative<bitwise_uminus<Bitset> > :
+			std::true_type {
 		};
 
 		template<class Bitset>
-		struct is_non_negative<bitwise_dec<Bitset> > {
-			constexpr static bool value = true;
+		struct is_non_negative<bitwise_dec<Bitset> > :
+			std::true_type {
 		};
 
 		template<class LeftType, class RightType>
-		struct is_non_negative<bitwise_and<LeftType, RightType> > {
-			constexpr static bool value = true;
+		struct is_non_negative<bitwise_and<LeftType, RightType> > :
+			std::true_type {
 		};
 
 		template<class LeftType, class RightType>
-		struct is_non_negative<bitwise_or<LeftType, RightType> > {
-			constexpr static bool value = true;
+		struct is_non_negative<bitwise_or<LeftType, RightType> > :
+			std::true_type {
 		};
 
 		template<class LeftType, class RightType>
-		struct is_non_negative<bitwise_xor<LeftType, RightType> > {
-			constexpr static bool value = true;
+		struct is_non_negative<bitwise_xor<LeftType, RightType> > :
+			std::true_type {
 		};
 
 		template<class Test, class TrueValue, class FalseValue>
-		struct is_non_negative<if_else<Test, TrueValue, FalseValue> > {
-			constexpr static bool value = is_non_negative_v<TrueValue> && is_non_negative_v<FalseValue>;
+		struct is_non_negative<if_else<Test, TrueValue, FalseValue> > :
+			std::bool_constant<is_non_negative_v<TrueValue> && is_non_negative_v<FalseValue> > {
 		};
 
 		template<class Value>
-		struct is_non_negative<absolute<Value> > {
-			constexpr static bool value = true;
+		struct is_non_negative<absolute<Value> > :
+			std::true_type {
 		};
 
 		template<class Value>
-		struct is_non_negative<exponential<Value> > {
-			constexpr static bool value = false;
+		struct is_non_negative<exponential<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_non_negative<logarithm<Value> > {
-			constexpr static bool value = false;
+		struct is_non_negative<logarithm<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_non_negative<cosine<Value> > {
-			constexpr static bool value = false;
+		struct is_non_negative<cosine<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_non_negative<sine<Value> > {
-			constexpr static bool value = false;
+		struct is_non_negative<sine<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_non_negative<tangent<Value> > {
-			constexpr static bool value = false;
+		struct is_non_negative<tangent<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_non_negative<hyperbolic_cosine<Value> > {
-			constexpr static bool value = false;
+		struct is_non_negative<hyperbolic_cosine<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_non_negative<hyperbolic_sine<Value> > {
-			constexpr static bool value = false;
+		struct is_non_negative<hyperbolic_sine<Value> > :
+			std::false_type {
 		};
 
 		template<class Value>
-		struct is_non_negative<hyperbolic_tangent<Value> > {
-			constexpr static bool value = false;
+		struct is_non_negative<hyperbolic_tangent<Value> > :
+			std::false_type {
 		};
 
 		template<class LeftArgument, class RightArgument>
-		struct is_non_negative<power<LeftArgument, RightArgument> > {
-			constexpr static bool value = is_non_negative_v<LeftArgument> || is_even_v<RightArgument>;
-		};
-
-		template<class Argument, class... NextArguments>
-		struct is_non_negative<mul<Argument, NextArguments...> > {
-			constexpr static bool value = is_non_negative_v<Argument> && is_non_negative_v<mul_t<NextArguments...> >;
+		struct is_non_negative<power<LeftArgument, RightArgument> > :
+			std::bool_constant<is_non_negative_v<LeftArgument> || is_even_v<RightArgument> > {
 		};
 
 		template<class... Arguments>
-		struct is_non_negative<add<Arguments...> > {
-			constexpr static bool value = false;
+		struct is_non_negative<mul<Arguments...> > :
+			std::conjunction<std::bool_constant<is_non_negative_v<Arguments> >...>::type {
+		};
+
+		template<class... Arguments>
+		struct is_non_negative<add<Arguments...> > :
+			std::false_type {
 		};
 
 		// Returns if the given expression may be positive.
@@ -457,121 +424,121 @@ namespace ga {
 		struct may_be_positive;
 
 		template<class Expression>
-		constexpr bool may_be_positive_v = may_be_positive<Expressio>::value;
+		constexpr bool may_be_positive_v = may_be_positive<Expression>::value;
 
 		template<default_integral_t Value>
-		struct may_be_positive<constant_value<Value> > {
-			constexpr static bool value = Value > 0;
+		struct may_be_positive<constant_value<Value> > :
+			std::bool_constant<(Value > 0)> {
 		};
 
 		template<tag_t Tag, std::size_t Index>
-		struct may_be_positive<get_value<Tag, Index> > {
-			constexpr static bool value = true;
+		struct may_be_positive<get_value<Tag, Index> > :
+			std::true_type {
 		};
 		
 		template<tag_t Tag, std::size_t Index>
-		struct may_be_positive<get_map_values<Tag, Index> > {
-			constexpr static bool value = true;
+		struct may_be_positive<get_map_values<Tag, Index> > :
+			std::true_type {
 		};
 
 		template<>
-		struct may_be_positive<stored_value> {
-			constexpr static bool value = true;
+		struct may_be_positive<stored_value> :
+			std::true_type {
 		};
 
 		template<>
-		struct may_be_positive<stored_map_values> {
-			constexpr static bool value = true;
+		struct may_be_positive<stored_map_values> :
+			std::true_type {
 		};
 
 		template<class LeftBitset, class RightBitset>
-		struct may_be_positive<reordering_sign<LeftBitset, RightBitset> > {
-			constexpr static bool value = true;
+		struct may_be_positive<reordering_sign<LeftBitset, RightBitset> > :
+			std::true_type {
 		};
 
 		template<class Bitset>
-		struct may_be_positive<count_one_bits<Bitset> > {
-			constexpr static bool value = true;
+		struct may_be_positive<count_one_bits<Bitset> > :
+			std::true_type {
 		};
 
 		template<class Bitset>
-		struct may_be_positive<bitwise_uminus<Bitset> > {
-			constexpr static bool value = true;
+		struct may_be_positive<bitwise_uminus<Bitset> > :
+			std::true_type {
 		};
 
 		template<class Bitset>
-		struct may_be_positive<bitwise_dec<Bitset> > {
-			constexpr static bool value = true;
+		struct may_be_positive<bitwise_dec<Bitset> > :
+			std::true_type {
 		};
 
 		template<class LeftType, class RightType>
-		struct may_be_positive<bitwise_and<LeftType, RightType> > {
-			constexpr static bool value = true;
+		struct may_be_positive<bitwise_and<LeftType, RightType> > :
+			std::true_type {
 		};
 
 		template<class LeftType, class RightType>
-		struct may_be_positive<bitwise_or<LeftType, RightType> > {
-			constexpr static bool value = true;
+		struct may_be_positive<bitwise_or<LeftType, RightType> > :
+			std::true_type {
 		};
 
 		template<class LeftType, class RightType>
-		struct may_be_positive<bitwise_xor<LeftType, RightType> > {
-			constexpr static bool value = true;
+		struct may_be_positive<bitwise_xor<LeftType, RightType> > :
+			std::true_type {
 		};
 
 		template<class Test, class TrueValue, class FalseValue>
-		struct may_be_positive<if_else<Test, TrueValue, FalseValue> > {
-			constexpr static bool value = may_be_positive_v<TrueValue> && may_be_positive_v<FalseValue>;
+		struct may_be_positive<if_else<Test, TrueValue, FalseValue> > :
+			std::bool_constant<may_be_positive_v<TrueValue> && may_be_positive_v<FalseValue> > {
 		};
 
 		template<class Value>
-		struct may_be_positive<absolute<Value> > {
-			constexpr static bool value = true;
+		struct may_be_positive<absolute<Value> > :
+			std::true_type {
 		};
 
 		template<class Value>
-		struct may_be_positive<cosine<Value> > {
-			constexpr static bool value = true;
+		struct may_be_positive<cosine<Value> > :
+			std::true_type {
 		};
 
 		template<class Value>
-		struct may_be_positive<sine<Value> > {
-			constexpr static bool value = true;
+		struct may_be_positive<sine<Value> > :
+			std::true_type {
 		};
 
 		template<class Value>
-		struct may_be_positive<tangent<Value> > {
-			constexpr static bool value = true;
+		struct may_be_positive<tangent<Value> > :
+			std::true_type {
 		};
 
 		template<class Value>
-		struct may_be_positive<hyperbolic_cosine<Value> > {
-			constexpr static bool value = true;
+		struct may_be_positive<hyperbolic_cosine<Value> > :
+			std::true_type {
 		};
 
 		template<class Value>
-		struct may_be_positive<hyperbolic_sine<Value> > {
-			constexpr static bool value = true;
+		struct may_be_positive<hyperbolic_sine<Value> > :
+			std::true_type {
 		};
 
 		template<class Value>
-		struct may_be_positive<hyperbolic_tangent<Value> > {
-			constexpr static bool value = true;
+		struct may_be_positive<hyperbolic_tangent<Value> > :
+			std::true_type {
 		};
 
 		template<class LeftArgument, class RightArgument>
-		struct may_be_positive<power<LeftArgument, RightArgument> > {
-			constexpr static bool value = may_be_positive_v<LeftArgument> || is_even_v<RightArgument>;
-		};
-
-		template<class Argument, class... NextArguments>
-		struct may_be_positive<mul<Argument, NextArguments...> > {
-			constexpr static bool value = may_be_positive_v<Argument> && may_be_positive_v<mul_t<NextArguments...> >;
+		struct may_be_positive<power<LeftArgument, RightArgument> > :
+			std::bool_constant<may_be_positive_v<LeftArgument> || is_even_v<RightArgument> > {
 		};
 
 		template<class... Arguments>
-		struct may_be_positive<add<Arguments...> > {
-			constexpr static bool value = true;
+		struct may_be_positive<mul<Arguments...> > :
+			std::conjunction<std::bool_constant<may_be_positive_v<Arguments> >...>::type {
+		};
+
+		template<class... Arguments>
+		struct may_be_positive<add<Arguments...> > :
+			std::true_type {
 		};
 		
 		// Specializations of possible_grades<BasisVectors>.

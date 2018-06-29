@@ -21,30 +21,30 @@ namespace ga {
 
 	// Returns whether the given metric space is orthogonal.
 	template<class MetricSpaceType>
-	struct is_orthogonal_metric_space {
-		constexpr static bool value = false;
+	struct is_orthogonal_metric_space :
+		std::false_type {
 	};
 
 	template<class MetricSpaceType>
 	constexpr bool is_orthogonal_metric_space_v = is_orthogonal_metric_space<MetricSpaceType>::value;
 
 	template<class MetricSpaceType>
-	struct is_orthogonal_metric_space<metric_space<MetricSpaceType> > {
-		constexpr static bool value = is_orthogonal_metric_space_v<MetricSpaceType>;
+	struct is_orthogonal_metric_space<metric_space<MetricSpaceType> > :
+		std::bool_constant<is_orthogonal_metric_space_v<MetricSpaceType> > {
 	};
 
 	// Returns whether the given metric space is general.
 	template<class MetricSpaceType>
-	struct is_general_metric_space {
-		constexpr static bool value = false;
+	struct is_general_metric_space :
+		std::false_type {
 	};
 
 	template<class MetricSpaceType>
 	constexpr bool is_general_metric_space_v = is_general_metric_space<MetricSpaceType>::value;
 
 	template<class MetricSpaceType>
-	struct is_general_metric_space<metric_space<MetricSpaceType> > {
-		constexpr static bool value = is_general_metric_space_v<MetricSpaceType>;
+	struct is_general_metric_space<metric_space<MetricSpaceType> > :
+		std::bool_constant<is_general_metric_space_v<MetricSpaceType> > {
 	};
 
 }

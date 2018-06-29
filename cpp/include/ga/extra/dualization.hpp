@@ -1,5 +1,5 @@
-#ifndef __GA_DUALIZATION_HPP__
-#define __GA_DUALIZATION_HPP__
+#ifndef __GA_EXTRA_DUALIZATION_HPP__
+#define __GA_EXTRA_DUALIZATION_HPP__
 
 namespace ga {
 
@@ -27,4 +27,4 @@ namespace ga {
 
 }
 
-#endif // __GA_DUALIZATION_HPP__
+#endif // __GA_EXTRA_DUALIZATION_HPP__

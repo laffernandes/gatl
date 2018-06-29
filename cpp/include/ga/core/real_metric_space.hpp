@@ -26,8 +26,8 @@ namespace ga {
 
 	// Specialization of is_orthogonal_metric_space<MetricSpaceType>.
 	template<>
-	struct is_orthogonal_metric_space<detail::real_metric_space> {
-		constexpr static bool value = true;
+	struct is_orthogonal_metric_space<detail::real_metric_space> :
+		std::true_type {
 	};
 
 }
