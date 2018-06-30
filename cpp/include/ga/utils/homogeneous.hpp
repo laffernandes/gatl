@@ -6,8 +6,8 @@
 #include "ga/utils/signed/homogeneous/macro_for_algebra_definition.hpp"
 #include "ga/utils/signed/homogeneous/macro_for_algebra_overload.hpp"
 
-#include "ga/utils/signed/homogeneous/make_euclidean_vector.hpp"
-#include "ga/utils/signed/homogeneous/make_point.hpp"
+#include "ga/utils/signed/homogeneous/euclidean_vector.hpp"
+#include "ga/utils/signed/homogeneous/point.hpp"
 
 #include "ga/utils/signed/homogeneous/flat_direction.hpp"
 #include "ga/utils/signed/homogeneous/flat_moment.hpp"

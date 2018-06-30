@@ -2,6 +2,16 @@
 #define __GA_EXTRA_MACRO_FOR_ALGEBRA_OVERLOAD_HPP__
 
 #define _GA_EXTRA_OVERLOAD(SPACE, BASIS_VECTORS_NAMES) \
+	template<class VersorType, class Type> \
+	constexpr decltype(auto) apply_even_versor(VersorType const &versor, Type const &arg) { \
+		return apply_even_versor(versor, arg, SPACE); \
+	} \
+	\
+	template<class VersorType, class Type> \
+	constexpr decltype(auto) apply_odd_versor(VersorType const &versor, Type const &arg) { \
+		return apply_odd_versor(versor, arg, SPACE); \
+	} \
+	\
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \
 	constexpr decltype(auto) cp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 		return cp(lhs, rhs, SPACE); \
@@ -55,6 +65,11 @@
 	template<class Type> \
 	constexpr decltype(auto) undual(Type const &arg) { \
 		return undual(arg, pseudoscalar(SPACE), SPACE); \
+	} \
+	\
+	template<class CoefficientType, class Expression> \
+	constexpr decltype(auto) unit(clifford_expression<CoefficientType, Expression> const &arg) { \
+		return unit(arg, SPACE); \
 	} \
 	\
 	template<class CoefficientType, class Expression> \

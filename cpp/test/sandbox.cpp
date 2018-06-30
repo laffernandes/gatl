@@ -26,7 +26,7 @@ using namespace ga;
 void test_make_constant() {
 	using namespace ga3e;
 
-	auto v = make_euclidean_vector(c<0>, c<0>, 10.5);
+	auto v = euclidean_vector(c<0>, c<0>, 10.5);
 	std::cout << v << std::endl;
 
 	std::cout << "--- test_make_constant()" << std::endl;

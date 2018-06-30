@@ -3,8 +3,8 @@
 
 #define _GA_UTILS_EUCLIDEAN_ALGEBRA_OVERLOAD(SPACE) \
 	template <class... Types> \
-	constexpr decltype(auto) make_euclidean_vector(Types &&... coords) { \
-		return make_euclidean_vector(SPACE, std::move(coords)...); \
+	constexpr decltype(auto) euclidean_vector(Types &&... coords) { \
+		return euclidean_vector(SPACE, std::move(coords)...); \
 	} \
 	\
 	template<class LeftCoefficientType, class LeftExpression, class RightCoefficientType, class RightExpression> \

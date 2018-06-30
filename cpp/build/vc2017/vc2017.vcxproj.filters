@@ -299,9 +299,6 @@
     <ClInclude Include="..\..\include\ga\core\vector.hpp">
       <Filter>Header Files\ga\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\utils\signed\euclidean\make_euclidean_vector.hpp">
-      <Filter>Header Files\ga\utils\signed\euclidean</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\utils\signed\homogeneous\flat_direction.hpp">
       <Filter>Header Files\ga\utils\signed\homogeneous</Filter>
     </ClInclude>
@@ -314,12 +311,6 @@
     <ClInclude Include="..\..\include\ga\utils\signed\homogeneous\flat_unit_support_point.hpp">
       <Filter>Header Files\ga\utils\signed\homogeneous</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\utils\signed\homogeneous\make_point.hpp">
-      <Filter>Header Files\ga\utils\signed\homogeneous</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\utils\signed\homogeneous\make_euclidean_vector.hpp">
-      <Filter>Header Files\ga\utils\signed\homogeneous</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\utils\signed\homogeneous\macro_for_algebra_overload.hpp">
       <Filter>Header Files\ga\utils\signed\homogeneous</Filter>
     </ClInclude>
@@ -327,6 +318,81 @@
       <Filter>Header Files\ga\utils\signed\homogeneous</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\extra\blade_exponential.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\apply_versor.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\euclidean\euclidean_vector.hpp">
+      <Filter>Header Files\ga\utils\signed\euclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\homogeneous\euclidean_vector.hpp">
+      <Filter>Header Files\ga\utils\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\homogeneous\point.hpp">
+      <Filter>Header Files\ga\utils\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\euclidean_vector.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\point.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\macro_for_algebra_overload.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\flat_direction.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\flat_location.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\round_direction.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\round_location.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\round_size_sqr.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\tangent_direction.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\conformal\tangent_location.hpp">
+      <Filter>Header Files\ga\utils\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\euclidean_vector.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\flat_direction.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\flat_location.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\macro_for_algebra_overload.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\point.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\round_direction.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\round_location.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\round_size_sqr.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\tangent_direction.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\utils\signed\minkowski\tangent_location.hpp">
+      <Filter>Header Files\ga\utils\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\unit.hpp">
       <Filter>Header Files\ga\extra</Filter>
     </ClInclude>
   </ItemGroup>

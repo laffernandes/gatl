@@ -118,8 +118,19 @@ namespace ga {
 
 		// Returns the square of a given value.
 		template<class Type>
-		constexpr decltype(auto) square(Type const &arg) {
-			return arg * arg;
+		constexpr decltype(auto) square(Type &&arg) {
+			return std::move(arg) * std::move(arg);
+		}
+
+		// Returns the sum of a given values.
+		template<class Type, class... NextTypes>
+		constexpr decltype(auto) sum(Type &&arg, NextTypes &&... next_args) {
+			return std::move(arg) + sum(std::move(next_args)...);
+		}
+
+		template<class Type>
+		constexpr decltype(auto) sum(Type const &&arg) {
+			return std::move(arg);
 		}
 
 	}

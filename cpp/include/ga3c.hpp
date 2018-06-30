@@ -17,6 +17,7 @@ namespace ga3c {
 
 	_GA_CORE_OVERLOAD(space)
 	_GA_EXTRA_OVERLOAD(space, basis_vectors_names)
+	_GA_UTILS_CONFORMAL_ALGEBRA_OVERLOAD(space)
 
 }
 
