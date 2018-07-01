@@ -739,6 +739,16 @@ int main() {
 		std::cout << "alpha = " << alpha << ", exp(-(alpha / 2) * (e1^e2)) = " << exp(-(alpha / 2) * (e1^e2)) << std::endl;
 	}
 
+	{
+		using namespace ga4e;
+
+		unit_constant_basis_blade_t<1, 3, 4> xxx;
+		auto yyy = e1^e3^e4;
+
+		std::cout << xxx << std::endl;
+		std::cout << yyy << std::endl;
+	}
+
 	return EXIT_SUCCESS;
 }
 /*/
