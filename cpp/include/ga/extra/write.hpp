@@ -23,12 +23,12 @@ namespace ga {
 			}
 		}
 
-		template<class Expression>
+		template<typename Expression>
 		struct write_expression;
 
 		template<default_integral_t Value>
 		struct write_expression<constant_value<Value> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr const &, BitsetCItr const &, MapCIts const &, std::array<std::string, N> const &) {
 				os << "<" << Value << ">";
 			}
@@ -36,7 +36,7 @@ namespace ga {
 
 		template<tag_t Tag, std::size_t Index>
 		struct write_expression<get_value<Tag, Index> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr const &, BitsetCItr const &, MapCIts const &, std::array<std::string, N> const &) {
 				os << "{Tag: " << Tag << ", ValueIndex: " << Index << "}";
 			}
@@ -44,7 +44,7 @@ namespace ga {
 
 		template<tag_t Tag, std::size_t Index>
 		struct write_expression<get_map_values<Tag, Index> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr const &, BitsetCItr const &, MapCIts const &, std::array<std::string, N> const &) {
 				os << "[{Tag: " << Tag << ", MapValuesIndex: " << Index << "}]";
 			}
@@ -52,7 +52,7 @@ namespace ga {
 
 		template<>
 		struct write_expression<stored_value> {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr const &, MapCIts const &, std::array<std::string, N> const &) {
 				if ((*value_citr) >= 0) os << (*value_citr);
 				else os << "(" << (*value_citr) << ")";
@@ -62,7 +62,7 @@ namespace ga {
 
 		template<default_bitset_t Bitset>
 		struct write_expression<constant_bitset<Bitset> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr const &, BitsetCItr const &, MapCIts const &, std::array<std::string, N> const &basis_vectors) {
 				os << "<";
 				write_basis_blade(os, Bitset, basis_vectors);
@@ -72,7 +72,7 @@ namespace ga {
 
 		template<tag_t Tag, std::size_t Index>
 		struct write_expression<get_bitset<Tag, Index> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr const &, BitsetCItr const &, MapCIts const &, std::array<std::string, N> const &) {
 				os << "{Tag: " << Tag << ", BitsetIndex: " << Index << "}";
 			}
@@ -80,7 +80,7 @@ namespace ga {
 
 		template<tag_t Tag, std::size_t Index>
 		struct write_expression<get_map_bitsets<Tag, Index> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr const &, BitsetCItr const &, MapCIts const &, std::array<std::string, N> const &) {
 				os << "[{Tag: " << Tag << ", MapBitsetsIndex: " << Index << "}]";
 			}
@@ -88,7 +88,7 @@ namespace ga {
 
 		template<>
 		struct write_expression<stored_bitset> {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr const &, BitsetCItr &bitset_citr, MapCIts const &, std::array<std::string, N> const &basis_vectors) {
 				write_basis_blade(os, *bitset_citr, basis_vectors);
 				std::advance(bitset_citr, 1);
@@ -99,13 +99,13 @@ namespace ga {
 		struct write_expression<constant_basis_blade<BasisVectors> > : write_expression<constant_bitset<BasisVectors> >  {
 		};
 
-		template<default_bitset_t PossibleGrades, class Bitset>
+		template<default_bitset_t PossibleGrades, typename Bitset>
 		struct write_expression<dynamic_basis_blade<PossibleGrades, Bitset> > : write_expression<Bitset> {
 		};
 
-		template<class Coefficient, class BasisBlade>
+		template<typename Coefficient, typename BasisBlade>
 		struct write_expression<component<Coefficient, BasisBlade> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				if (is_function_v<name_t::add, Coefficient>) os << "(";
 				write_expression<Coefficient>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -117,7 +117,7 @@ namespace ga {
 
 		template<default_bitset_t PossibleGrades>
 		struct write_expression<component<stored_map_values, dynamic_basis_blade<PossibleGrades, stored_map_bitsets> > > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr const &, BitsetCItr const &, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "[";
 				if (!map_citr->empty()) {
@@ -141,9 +141,9 @@ namespace ga {
 			}
 		};
 
-		template<class Argument, class... NextArguments>
+		template<typename Argument, typename... NextArguments>
 		struct write_expression<add<Argument, NextArguments...> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				write_expression<Argument>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
 				os << " + ";
@@ -151,9 +151,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftArgument, class RightArgument>
+		template<typename LeftArgument, typename RightArgument>
 		struct write_expression<add<LeftArgument, RightArgument> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				write_expression<LeftArgument>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
 				os << " + ";
@@ -161,9 +161,9 @@ namespace ga {
 			}
 		};
 
-		template<class Argument, class... NextArguments>
+		template<typename Argument, typename... NextArguments>
 		struct write_expression<mul<Argument, NextArguments...> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				write_expression<Argument>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
 				os << " * ";
@@ -171,9 +171,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftArgument, class RightArgument>
+		template<typename LeftArgument, typename RightArgument>
 		struct write_expression<mul<LeftArgument, RightArgument> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				write_expression<LeftArgument>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
 				os << " * ";
@@ -181,9 +181,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftArgument, class RightArgument>
+		template<typename LeftArgument, typename RightArgument>
 		struct write_expression<power<LeftArgument, RightArgument> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "pow(";
 				write_expression<LeftArgument>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -193,9 +193,9 @@ namespace ga {
 			}
 		};
 
-		template<class Value>
+		template<typename Value>
 		struct write_expression<absolute<Value> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "abs(";
 				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -203,9 +203,9 @@ namespace ga {
 			}
 		};
 
-		template<class Value>
+		template<typename Value>
 		struct write_expression<exponential<Value> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "exp(";
 				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -213,9 +213,9 @@ namespace ga {
 			}
 		};
 
-		template<class Value>
+		template<typename Value>
 		struct write_expression<logarithm<Value> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "log(";
 				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -223,9 +223,9 @@ namespace ga {
 			}
 		};
 
-		template<class Value>
+		template<typename Value>
 		struct write_expression<cosine<Value> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "cos(";
 				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -233,9 +233,9 @@ namespace ga {
 			}
 		};
 
-		template<class Value>
+		template<typename Value>
 		struct write_expression<sine<Value> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "sin(";
 				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -243,9 +243,9 @@ namespace ga {
 			}
 		};
 
-		template<class Value>
+		template<typename Value>
 		struct write_expression<tangent<Value> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "tan(";
 				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -253,9 +253,9 @@ namespace ga {
 			}
 		};
 
-		template<class Value>
+		template<typename Value>
 		struct write_expression<hyperbolic_cosine<Value> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "cosh(";
 				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -263,9 +263,9 @@ namespace ga {
 			}
 		};
 
-		template<class Value>
+		template<typename Value>
 		struct write_expression<hyperbolic_sine<Value> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "sinh(";
 				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -273,9 +273,9 @@ namespace ga {
 			}
 		};
 
-		template<class Value>
+		template<typename Value>
 		struct write_expression<hyperbolic_tangent<Value> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "tanh(";
 				write_expression<Value>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -283,9 +283,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftBitset, class RightBitset>
+		template<typename LeftBitset, typename RightBitset>
 		struct write_expression<reordering_sign<LeftBitset, RightBitset> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "reordering_sign(";
 				write_expression<LeftBitset>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -295,9 +295,9 @@ namespace ga {
 			}
 		};
 	
-		template<class Bitset>
+		template<typename Bitset>
 		struct write_expression<count_one_bits<Bitset> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "count_one_bits(";
 				write_expression<Bitset>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -305,9 +305,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftType, class RightValue>
+		template<typename LeftType, typename RightValue>
 		struct write_expression<bitwise_left_shift<LeftType, RightValue> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(";
 				write_expression<LeftType>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -317,9 +317,9 @@ namespace ga {
 			}
 		};
 
-		template<class Bitset>
+		template<typename Bitset>
 		struct write_expression<bitwise_uminus<Bitset> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(-";
 				write_expression<Bitset>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -327,9 +327,9 @@ namespace ga {
 			}
 		};
 
-		template<class Bitset>
+		template<typename Bitset>
 		struct write_expression<bitwise_dec<Bitset> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(";
 				write_expression<Bitset>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -337,9 +337,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftType, class RightType>
+		template<typename LeftType, typename RightType>
 		struct write_expression<bitwise_and<LeftType, RightType> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(";
 				write_expression<LeftType>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -349,9 +349,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftType, class RightType>
+		template<typename LeftType, typename RightType>
 		struct write_expression<bitwise_or<LeftType, RightType> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(";
 				write_expression<LeftType>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -361,9 +361,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftType, class RightType>
+		template<typename LeftType, typename RightType>
 		struct write_expression<bitwise_xor<LeftType, RightType> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(";
 				write_expression<LeftType>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -373,9 +373,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftType, class RightType>
+		template<typename LeftType, typename RightType>
 		struct write_expression<equal<LeftType, RightType> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(";
 				write_expression<LeftType>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -385,9 +385,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftType, class RightType>
+		template<typename LeftType, typename RightType>
 		struct write_expression<less_or_equal<LeftType, RightType> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(";
 				write_expression<LeftType>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -397,9 +397,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftType, class RightType>
+		template<typename LeftType, typename RightType>
 		struct write_expression<logical_and<LeftType, RightType> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(";
 				write_expression<LeftType>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -409,9 +409,9 @@ namespace ga {
 			}
 		};
 
-		template<class LeftType, class RightType>
+		template<typename LeftType, typename RightType>
 		struct write_expression<logical_or<LeftType, RightType> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(";
 				write_expression<LeftType>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -421,9 +421,9 @@ namespace ga {
 			}
 		};
 
-		template<class Test, class TrueValue, class FalseValue>
+		template<typename Test, typename TrueValue, typename FalseValue>
 		struct write_expression<if_else<Test, TrueValue, FalseValue> > {
-			template<class ValueCItr, class BitsetCItr, class MapCIts, std::size_t N>
+			template<typename ValueCItr, typename BitsetCItr, typename MapCIts, std::size_t N>
 			inline static void run(std::ostream &os, ValueCItr &value_citr, BitsetCItr &bitset_citr, MapCIts &map_citr, std::array<std::string, N> const &basis_vectors) {
 				os << "(";
 				write_expression<Test>::run(os, value_citr, bitset_citr, map_citr, basis_vectors);
@@ -437,7 +437,7 @@ namespace ga {
 
 	}
 
-	template<class CoefficientType, class Expression, std::size_t N>
+	template<typename CoefficientType, typename Expression, std::size_t N>
 	std::ostream & write(std::ostream &os, clifford_expression<CoefficientType, Expression> const &expression, std::array<std::string, N> const &basis_vectors) {
 		auto value_citr = expression.values().cbegin();
 		auto bitset_citr = expression.bitsets().cbegin();

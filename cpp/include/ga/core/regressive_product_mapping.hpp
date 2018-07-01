@@ -61,7 +61,7 @@ namespace ga {
 
 		public:
 
-			template<class LeftBasisBlade, class RightBasisBlade>
+			template<typename LeftBasisBlade, typename RightBasisBlade>
 			struct multiply {
 			private:
 

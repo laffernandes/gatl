@@ -3,7 +3,7 @@
 
 namespace ga {
 
-	template<class CoefficientType, class Expression, class ToleranceCoefficient, class MetricSpaceType>
+	template<typename CoefficientType, typename Expression, typename ToleranceCoefficient, typename MetricSpaceType>
 	constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg, scalar_clifford_expression<CoefficientType, ToleranceCoefficient> const &tol, metric_space<MetricSpaceType> const &) {
 		typedef decltype(make_lazy_context(arg, tol)) lazy_context_type;
 
@@ -47,37 +47,37 @@ namespace ga {
 		return lazy.eval(clifford_expression<default_integral_t, result_expression>());
 	}
 
-	template<class CoefficientType, class Expression, class MetricSpaceType>
+	template<typename CoefficientType, typename Expression, typename MetricSpaceType>
 	constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg, CoefficientType const &tol, metric_space<MetricSpaceType> const &) {
 		return exp(arg, scalar(tol), mtr);
 	}
 
-	template<class CoefficientType, class Expression, class MetricSpaceType>
+	template<typename CoefficientType, typename Expression, typename MetricSpaceType>
 	constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
 		return exp(arg, default_tolerance<CoefficientType>(), mtr);
 	}
 
-	template<class CoefficientType, class Coefficient, class MetricSpaceType>
+	template<typename CoefficientType, typename Coefficient, typename MetricSpaceType>
 	constexpr decltype(auto) exp(scalar_clifford_expression<CoefficientType, Coefficient> const &arg, CoefficientType const &, metric_space<MetricSpaceType> const &) {
 		return exp(arg);
 	}
 
-	template<class CoefficientType, class Coefficient, class MetricSpaceType>
+	template<typename CoefficientType, typename Coefficient, typename MetricSpaceType>
 	constexpr decltype(auto) exp(scalar_clifford_expression<CoefficientType, Coefficient> const &arg, metric_space<MetricSpaceType> const &) {
 		return exp(arg);
 	}
 
-	template<class Type, class MetricSpaceType, class = std::enable_if_t<!is_clifford_expression_v<Type> > >
+	template<typename Type, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
 	constexpr decltype(auto) exp(Type const &arg, Type const &, metric_space<MetricSpaceType> const &) {
 		return exp(arg);
 	}
 
-	template<class Type, class MetricSpaceType, class = std::enable_if_t<!is_clifford_expression_v<Type> > >
+	template<typename Type, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
 	constexpr decltype(auto) exp(Type const &arg, metric_space<MetricSpaceType> const &) {
 		return exp(arg);
 	}
 
-	template<class Type, class = std::enable_if_t<!is_clifford_expression_v<Type> > >
+	template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
 	constexpr decltype(auto) exp(Type const &arg, Type const &) {
 		return exp(arg);
 	}

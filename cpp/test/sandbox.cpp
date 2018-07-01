@@ -357,7 +357,7 @@ void test_sign_change_operations() {
 	std::cout << std::endl;
 }
 
-template<class MetricSpaceType, std::size_t N>
+template<typename MetricSpaceType, std::size_t N>
 void test_pseudoscalar(metric_space<MetricSpaceType> const &spc, std::string const &name, std::array<std::string, N> const &basis_vectors) {
 	std::cout << "--- test_pseudoscalar(" << name << ")" << std::endl;
 	std::cout << "I = "; write(std::cout, pseudoscalar(spc), basis_vectors) << std::endl;

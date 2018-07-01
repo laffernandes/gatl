@@ -11,13 +11,13 @@ namespace ga {
 		}
 
 		// Returns the greater value.
-		template<class Type>
+		template<typename Type>
 		constexpr Type greater(Type const &lhs, Type const &rhs) {
 			return lhs >= rhs ? lhs : rhs;
 		}
 
 		// Returns the smaller value;
-		template<class Type>
+		template<typename Type>
 		constexpr Type smaller(Type const &lhs, Type const &rhs) {
 			return lhs <= rhs ? lhs : rhs;
 		}
@@ -106,29 +106,29 @@ namespace ga {
 		}
 
 		// Cast the given integral type to the default floating point type.
-		template<class Type, class = std::enable_if_t<std::is_integral_v<Type> > >
+		template<typename Type, typename = std::enable_if_t<std::is_integral_v<Type> > >
 		constexpr decltype(auto) cast_to_floating_point(Type const &arg) {
 			return static_cast<default_floating_point_t>(arg);
 		}
 
-		template<class Type, class = std::enable_if_t<!std::is_integral_v<Type> > >
+		template<typename Type, typename = std::enable_if_t<!std::is_integral_v<Type> > >
 		constexpr decltype(auto) cast_to_floating_point(Type &&arg) {
 			return std::move(arg);
 		}
 
 		// Returns the square of a given value.
-		template<class Type>
+		template<typename Type>
 		constexpr decltype(auto) square(Type &&arg) {
 			return std::move(arg) * std::move(arg);
 		}
 
 		// Returns the sum of a given values.
-		template<class Type, class... NextTypes>
+		template<typename Type, typename... NextTypes>
 		constexpr decltype(auto) sum(Type &&arg, NextTypes &&... next_args) {
 			return std::move(arg) + sum(std::move(next_args)...);
 		}
 
-		template<class Type>
+		template<typename Type>
 		constexpr decltype(auto) sum(Type const &&arg) {
 			return std::move(arg);
 		}

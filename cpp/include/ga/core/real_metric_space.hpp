@@ -16,7 +16,7 @@ namespace ga {
 
 		public:
 
-			template<class BasisVectorsBitset>
+			template<typename BasisVectorsBitset>
 			struct metric_factor {
 				typedef detail::constant_value<1> type;
 			};

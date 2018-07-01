@@ -20,7 +20,7 @@ namespace ga {
 		using simpler_rational_constant_t = typename simpler_rational_constant<Numerator, Denominator>::type;
 
 		// Specialization of _product_level5<LeftExpression, RightExpression> with simple bind or sort-and-bind patterns.
-		template<class LeftExpression, class RightExpression>
+		template<typename LeftExpression, typename RightExpression>
 		struct _product_level5 {
 			typedef std::conditional_t<
 				lt_v<LeftExpression, RightExpression>,
@@ -51,92 +51,92 @@ namespace ga {
 		};
 
 		// Specializations of _product_level4<LeftExpression, RightExpression> with some patterns to simplify (simplify).
-		template<class LeftExpression, class RightExpression>
+		template<typename LeftExpression, typename RightExpression>
 		struct _product_level4 {
 			typedef typename _product_level5<LeftExpression, RightExpression>::type type;
 		};
 
-		template<class CommonExpression>
+		template<typename CommonExpression>
 		struct _product_level4<CommonExpression, CommonExpression> {
 			typedef power_t<CommonExpression, constant_value<2> > type; // A * A = A^{2}, end of recursion (simplify)
 		};
 
-		template<class CommonArgument, class LeftRightArgument>
+		template<typename CommonArgument, typename LeftRightArgument>
 		struct _product_level4<power<CommonArgument, LeftRightArgument>, CommonArgument> {
 			typedef power_t<CommonArgument, addition_t<LeftRightArgument, constant_value<1> > > type; // A^{P} * A = A^{P + 1}, end of recursion (simplify)
 		};
 
-		template<class CommonArgument, class RightRightArgument>
+		template<typename CommonArgument, typename RightRightArgument>
 		struct _product_level4<CommonArgument, power<CommonArgument, RightRightArgument> > {
 			typedef power_t<CommonArgument, addition_t<constant_value<1>, RightRightArgument> > type; // A * A^{Q} = A^{1 + Q}, end of recursion (simplify)
 		};
 
-		template<class CommonArgument, class LeftRightArgument, class RightRightArgument>
+		template<typename CommonArgument, typename LeftRightArgument, typename RightRightArgument>
 		struct _product_level4<power<CommonArgument, LeftRightArgument>, power<CommonArgument, RightRightArgument> > {
 			typedef power_t<CommonArgument, addition_t<LeftRightArgument, RightRightArgument> > type; // A^{P} * A^{Q} = A^{P + Q}, end of recursion (simplify)
 		};
 
-		template<class CommonLeftArgument, class CommonRightArgument>
+		template<typename CommonLeftArgument, typename CommonRightArgument>
 		struct _product_level4<power<CommonLeftArgument, CommonRightArgument>, power<CommonLeftArgument, CommonRightArgument> > {
 			typedef power_t<CommonLeftArgument, product_t<constant_value<2>, CommonRightArgument, value_mapping> > type; // A^{P} * A^{P} = A^{2 * P}, end of recursion (simplify)
 		};
 
 		// Specialization of _product_level3<LeftExpression, RightExpression> (merge mul<...>).
-		template<class LeftExpression, class RightExpression, class Enable = void>
+		template<typename LeftExpression, typename RightExpression, typename Enable = void>
 		struct _product_level3;
 		
-		template<class LeftExpression, class RightExpression>
+		template<typename LeftExpression, typename RightExpression>
 		struct _product_level3<LeftExpression, RightExpression, std::enable_if_t<!(is_function_v<name_t::mul, LeftExpression> || is_function_v<name_t::mul, RightExpression>)> > {
 			typedef typename _product_level4<LeftExpression, RightExpression>::type type;
 		};
 
-		template<class LeftArgument, class... LeftNextArguments, class RightArgument, class... RightNextArguments>
+		template<typename LeftArgument, typename... LeftNextArguments, typename RightArgument, typename... RightNextArguments>
 		struct _product_level3<mul<LeftArgument, LeftNextArguments...>, mul<RightArgument, RightNextArguments...>, std::enable_if_t<le_v<LeftArgument, RightArgument> > > {
 			typedef product_t<LeftArgument, product_t<mul_t<LeftNextArguments...>, mul<RightArgument, RightNextArguments...>, value_mapping>, value_mapping> type; // merge
 		};
 
-		template<class LeftArgument, class... LeftNextArguments, class RightArgument, class... RightNextArguments>
+		template<typename LeftArgument, typename... LeftNextArguments, typename RightArgument, typename... RightNextArguments>
 		struct _product_level3<mul<LeftArgument, LeftNextArguments...>, mul<RightArgument, RightNextArguments...>, std::enable_if_t<lt_v<RightArgument, LeftArgument> > > {
 			typedef product_t<RightArgument, product_t<mul<LeftArgument, LeftNextArguments...>, mul_t<RightNextArguments...>, value_mapping>, value_mapping> type; // merge
 		};
 
-		template<class LeftExpression, class RightArgument, class... RightNextArguments>
+		template<typename LeftExpression, typename RightArgument, typename... RightNextArguments>
 		struct _product_level3<LeftExpression, mul<RightArgument, RightNextArguments...>, std::enable_if_t<!is_function_v<name_t::mul, LeftExpression> && lt_v<RightArgument, LeftExpression> > > {
 			typedef product_t<RightArgument, product_t<LeftExpression, mul_t<RightNextArguments...>, value_mapping>, value_mapping> type; // merge
 		};
 
-		template<class LeftExpression, class RightArgument, class... RightNextArguments>
+		template<typename LeftExpression, typename RightArgument, typename... RightNextArguments>
 		struct _product_level3<LeftExpression, mul<RightArgument, RightNextArguments...>, std::enable_if_t<!is_function_v<name_t::mul, LeftExpression> && le_v<LeftExpression, RightArgument> && !std::is_same_v<product_t<LeftExpression, RightArgument, value_mapping>, mul<LeftExpression, RightArgument> > > > {
 			typedef product_t<product_t<LeftExpression, RightArgument, value_mapping>, mul_t<RightNextArguments...>, value_mapping> type; // simplification found (simplify-and-merge)
 		};
 
-		template<class LeftExpression, class RightArgument, class... RightNextArguments>
+		template<typename LeftExpression, typename RightArgument, typename... RightNextArguments>
 		struct _product_level3<LeftExpression, mul<RightArgument, RightNextArguments...>, std::enable_if_t<!is_function_v<name_t::mul, LeftExpression> && le_v<LeftExpression, RightArgument> && std::is_same_v<product_t<LeftExpression, RightArgument, value_mapping>, mul<LeftExpression, RightArgument> > > > {
 			typedef mul_t<LeftExpression, RightArgument, RightNextArguments...> type; // no simplification found (bind)
 		};
 
-		template<class LeftArgument, class... LeftNextArguments, class RightExpression>
+		template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression>
 		struct _product_level3<mul<LeftArgument, LeftNextArguments...>, RightExpression, std::enable_if_t<!is_function_v<name_t::mul, RightExpression> && le_v<LeftArgument, RightExpression> > > {
 			typedef product_t<LeftArgument, product_t<mul_t<LeftNextArguments...>, RightExpression, value_mapping>, value_mapping> type; // merge
 		};
 
-		template<class LeftArgument, class... LeftNextArguments, class RightExpression>
+		template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression>
 		struct _product_level3<mul<LeftArgument, LeftNextArguments...>, RightExpression, std::enable_if_t<!is_function_v<name_t::mul, RightExpression> && lt_v<RightExpression, LeftArgument> > > {
 			typedef product_t<RightExpression, mul<LeftArgument, LeftNextArguments...>, value_mapping> type; // merge
 		};
 
 		// Specialization of _product_level2<LeftExpression, RightExpression>.
-		template<class LeftExpression, class RightExpression>
+		template<typename LeftExpression, typename RightExpression>
 		struct _product_level2 {
 			typedef typename _product_level3<LeftExpression, RightExpression>::type type;
 		};
 
-		template<class LeftExpression>
+		template<typename LeftExpression>
 		struct _product_level2<LeftExpression, constant_value<0> > {
 			typedef constant_value<0> type; // simplify
 		};
 
-		template<class RightExpression>
+		template<typename RightExpression>
 		struct _product_level2<constant_value<0>, RightExpression> {
 			typedef constant_value<0> type; // simplify
 		};
@@ -146,12 +146,12 @@ namespace ga {
 			typedef constant_value<0> type; // simplify
 		};
 
-		template<class LeftExpression>
+		template<typename LeftExpression>
 		struct _product_level2<LeftExpression, constant_value<1> > {
 			typedef LeftExpression type; // simplify
 		};
 
-		template<class RightExpression>
+		template<typename RightExpression>
 		struct _product_level2<constant_value<1>, RightExpression> {
 			typedef RightExpression type; // simplify
 		};
@@ -172,46 +172,46 @@ namespace ga {
 		};
 
 		// Specialization of _product_level1<LeftExpression, RightExpression, Mapping> (multiply components).
-		template<class LeftExpression, class RightExpression, class Mapping>
+		template<typename LeftExpression, typename RightExpression, typename Mapping>
 		struct _product_level1 {
 			typedef typename _product_level2<LeftExpression, RightExpression>::type type;
 		};
 
-		template<class Scalar, class Components>
+		template<typename Scalar, typename Components>
 		struct _product_level1_distribute;
 
-		template<class Scalar, class Coefficient, class BasisBlade, class... NextComponents>
+		template<typename Scalar, typename Coefficient, typename BasisBlade, typename... NextComponents>
 		struct _product_level1_distribute<Scalar, add<component<Coefficient, BasisBlade>, NextComponents...> > {
 			typedef addition_t<component_t<product_t<Scalar, Coefficient, value_mapping>, BasisBlade>, typename _product_level1_distribute<Scalar, add_t<NextComponents...> >::type> type;
 		};
 
-		template<class Scalar, class Coefficient, class BasisBlade>
+		template<typename Scalar, typename Coefficient, typename BasisBlade>
 		struct _product_level1_distribute<Scalar, component<Coefficient, BasisBlade> > {
 			typedef component_t<product_t<Scalar, Coefficient, value_mapping>, BasisBlade> type;
 		};
 
-		template<class LeftCoefficient, class LeftBasisBlade, class RightCoefficient, class RightBasisBlade, class Mapping>
+		template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade, typename Mapping>
 		struct _product_level1<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade>, Mapping> :
 			_product_level1_distribute<product_t<LeftCoefficient, RightCoefficient, value_mapping>, typename Mapping::template multiply<LeftBasisBlade, RightBasisBlade>::type> {
 		};
 
 		// Specialization of _product<add<...>, add<...>, Mapping>, product<LeftExpression, add<...>, Mapping>, and product<RightExpression, add<...>, Mapping> (distributive property over addition).
-		template<class LeftExpression, class RightExpression, class Mapping>
+		template<typename LeftExpression, typename RightExpression, typename Mapping>
 		struct _product {
 			typedef typename _product_level1<LeftExpression, RightExpression, Mapping>::type type;
 		};
 
-		template<class LeftArgument, class... LeftNextArguments, class RightArgument, class... RightNextArguments, class Mapping>
+		template<typename LeftArgument, typename... LeftNextArguments, typename RightArgument, typename... RightNextArguments, typename Mapping>
 		struct _product<add<LeftArgument, LeftNextArguments...>, add<RightArgument, RightNextArguments...>, Mapping> {
 			typedef addition_t<addition_t<product_t<LeftArgument, RightArgument, Mapping>, product_t<add_t<LeftNextArguments...>, RightArgument, Mapping> >, addition_t<product_t<LeftArgument, add_t<RightNextArguments...>, Mapping>, product_t<add_t<LeftNextArguments...>, add_t<RightNextArguments...>, Mapping> > > type;
 		};
 
-		template<class LeftExpression, class RightArgument, class... RightNextArguments, class Mapping>
+		template<typename LeftExpression, typename RightArgument, typename... RightNextArguments, typename Mapping>
 		struct _product<LeftExpression, add<RightArgument, RightNextArguments...>, Mapping> {
 			typedef addition_t<product_t<LeftExpression, RightArgument, Mapping>, product_t<LeftExpression, add_t<RightNextArguments...>, Mapping> > type;
 		};
 
-		template<class LeftArgument, class... LeftNextArguments, class RightExpression, class Mapping>
+		template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression, typename Mapping>
 		struct _product<add<LeftArgument, LeftNextArguments...>, RightExpression, Mapping> {
 			typedef addition_t<product_t<LeftArgument, RightExpression, Mapping>, product_t<add_t<LeftNextArguments...>, RightExpression, Mapping> > type;
 		};

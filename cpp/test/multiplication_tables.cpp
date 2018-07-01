@@ -27,7 +27,7 @@ struct _multiplication_table_rows {
 
 	template<int ColIndex>
 	struct _cols {
-		template<class MetricSpaceType, class Product>
+		template<typename MetricSpaceType, typename Product>
 		static void run(std::ostream &os, ga::metric_space<MetricSpaceType> const &mtr, Product const &prod) {
 			_cols<ColIndex - 1>::run(os, mtr, prod);
 			os << prod(ga::clifford_expression<ga::default_integral_t, ga::detail::component_t<ga::detail::constant_value<1>, ga::detail::constant_basis_blade<RowIndex> > >(), ga::clifford_expression<ga::default_integral_t, ga::detail::component_t<ga::detail::constant_value<1>, ga::detail::constant_basis_blade<ColIndex> > >(), mtr) << "\t";
@@ -36,12 +36,12 @@ struct _multiplication_table_rows {
 
 	template<>
 	struct _cols<-1> {
-		template<class MetricSpaceType, class Product>
+		template<typename MetricSpaceType, typename Product>
 		static void run(std::ostream const &, ga::metric_space<MetricSpaceType> const &, Product const &) {
 		}
 	};
 
-	template<class MetricSpaceType, class Product>
+	template<typename MetricSpaceType, typename Product>
 	static void run(std::ostream &os, ga::metric_space<MetricSpaceType> const &mtr, Product const &prod) {
 		_multiplication_table_rows<RowIndex - 1>::run(os, mtr, prod);
 		_cols<(1 << MetricSpaceType::vector_space_dimensions) - 1>::run(os, mtr, prod);
@@ -51,12 +51,12 @@ struct _multiplication_table_rows {
 
 template<>
 struct _multiplication_table_rows<-1> {
-	template<class MetricSpaceType, class Product>
+	template<typename MetricSpaceType, typename Product>
 	static void run(std::ostream const &, ga::metric_space<MetricSpaceType> const &, Product const &prod) {
 	}
 };
 
-template<class MetricSpaceType, class Product>
+template<typename MetricSpaceType, typename Product>
 void multiplication_table(std::ostream &os, ga::metric_space<MetricSpaceType> const &mtr, Product const &prod) {
 	_multiplication_table_rows<(1 << MetricSpaceType::vector_space_dimensions) - 1>::run(os, mtr, prod);
 }
@@ -65,7 +65,7 @@ template<ga::ndims_t N, ga::default_bitset_t Rows, ga::default_bitset_t Cols>
 struct _determinants_cols {
 private:
 
-	template<class GeneralMetricSpaceType>
+	template<typename GeneralMetricSpaceType>
 	static void print_bitset(std::ostream &os, ga::metric_space<GeneralMetricSpaceType> const &mtr, ga::default_bitset_t const bitset) {
 		for (ga::ndims_t index = 0; index != GeneralMetricSpaceType::vector_space_dimensions; ++index) {
 			if ((bitset & (ga::default_bitset_t(1) << index)) != ga::default_bitset_t(0)) {
@@ -79,7 +79,7 @@ private:
 
 public:
 
-	template<class GeneralMetricSpaceType>
+	template<typename GeneralMetricSpaceType>
 	static void run(std::ostream &os, ga::metric_space<GeneralMetricSpaceType> const &mtr) {
 		print_bitset(os, mtr, Rows);
 		os << ", ";
@@ -93,14 +93,14 @@ public:
 
 template<ga::ndims_t N, ga::default_bitset_t Rows>
 struct _determinants_cols<N, Rows, ga::default_bitset_t(0)> {
-	template<class GeneralMetricSpaceType>
+	template<typename GeneralMetricSpaceType>
 	static void run(std::ostream const &, ga::metric_space<GeneralMetricSpaceType> const &) {
 	}
 };
 
 template<ga::ndims_t N, ga::default_bitset_t Rows>
 struct _determinants_rows {
-	template<class GeneralMetricSpaceType>
+	template<typename GeneralMetricSpaceType>
 	static void run(std::ostream &os, ga::metric_space<GeneralMetricSpaceType> const &mtr) {
 		_determinants_cols<N, Rows, ga::detail::first_combination(N)>::run(os, mtr);
 		_determinants_rows<N, ga::detail::next_combination(Rows, GeneralMetricSpaceType::basis_vectors)>::run(os, mtr);
@@ -109,14 +109,14 @@ struct _determinants_rows {
 
 template<ga::ndims_t N>
 struct _determinants_rows<N, ga::default_bitset_t(0)> {
-	template<class GeneralMetricSpaceType>
+	template<typename GeneralMetricSpaceType>
 	static void run(std::ostream const &, ga::metric_space<GeneralMetricSpaceType> const &) {
 	}
 };
 
 template<ga::ndims_t N>
 struct _determinants_grade {
-	template<class GeneralMetricSpaceType>
+	template<typename GeneralMetricSpaceType>
 	static void run(std::ostream &os, ga::metric_space<GeneralMetricSpaceType> const &mtr) {
 		_determinants_grade<N - 1>::run(os, mtr);
 		_determinants_rows<N, ga::detail::first_combination(N)>::run(os, mtr);
@@ -125,12 +125,12 @@ struct _determinants_grade {
 
 template<>
 struct _determinants_grade<0> {
-	template<class GeneralMetricSpaceType>
+	template<typename GeneralMetricSpaceType>
 	static void run(std::ostream const &, ga::metric_space<GeneralMetricSpaceType> const &) {
 	}
 };
 
-template<class GeneralMetricSpaceType>
+template<typename GeneralMetricSpaceType>
 void determinants(std::ostream &os, ga::metric_space<GeneralMetricSpaceType> const &mtr) {
 	_determinants_grade<GeneralMetricSpaceType::vector_space_dimensions>::run(os, mtr);
 }
@@ -144,7 +144,7 @@ public:
 	constexpr static ga::default_bitset_t basis_vectors = ga::default_bitset_t(ga::default_bitset_t(~0) >> (std::numeric_limits<ga::default_bitset_t>::digits - N));
 	constexpr static ga::ndims_t vector_space_dimensions = N;
 
-	template<class RowIndex, class ColIndex>
+	template<typename RowIndex, typename ColIndex>
 	struct entry {
 		typedef ga::detail::if_else_t<ga::detail::equal_t<RowIndex, ColIndex>, ga::detail::constant_value<1>, ga::detail::constant_value<0> > type;
 	};

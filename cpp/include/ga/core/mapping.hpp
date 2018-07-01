@@ -14,15 +14,15 @@ namespace ga {
 		struct regressive_product_mapping;
 
 		// Mapping for products assuming spaces with orthogonal metric.
-		template<class OrthogonalMetricSpace, class GradedProduct>
+		template<typename OrthogonalMetricSpace, typename GradedProduct>
 		struct orthogonal_metric_mapping;
 
 		// Mapping for productes assuming spaces with general (non-orthogonal) metric.
-		template<class GeneralMetricSpace, class GradedProduct>
+		template<typename GeneralMetricSpace, typename GradedProduct>
 		struct general_metric_mapping;
 
 		// Returns the metric space mapping that fits the given arguments.
-		template<class MetricSpaceType, class GradedProduct>
+		template<typename MetricSpaceType, typename GradedProduct>
 		struct _metric_space_mapping {
 			typedef std::conditional_t<
 				is_orthogonal_metric_space_v<MetricSpaceType>,
@@ -35,7 +35,7 @@ namespace ga {
 			> type;
 		};
 		
-		template<class MetricSpaceType, class GradedProduct>
+		template<typename MetricSpaceType, typename GradedProduct>
 		using metric_space_mapping_t = typename _metric_space_mapping<MetricSpaceType, GradedProduct>::type;
 
 	}

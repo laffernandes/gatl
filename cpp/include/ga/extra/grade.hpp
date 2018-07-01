@@ -7,10 +7,10 @@ namespace ga {
 	enum grade_interpretation_t { LAZY_GRADE = -3, UNDETERMINED_GRADE = -2, MIXED_GRADE = -1, SINGLE_GRADE = 0 };
 
 	// The result of the ga::grade() function.
-	template<class Value>
+	template<typename Value>
 	class grade_result;
 	
-	template<class Value>
+	template<typename Value>
 	class grade_result<scalar_clifford_expression<grade_t, Value> > final {
 	public:
 
@@ -94,19 +94,19 @@ namespace ga {
 
 	namespace detail {
 
-		template<class Value>
+		template<typename Value>
 		constexpr decltype(auto) make_grade_result(scalar_clifford_expression<grade_t, Value> const &arg) {
 			return grade_result<scalar_clifford_expression<grade_t, Value> >(arg);
 		}
 
 		// Grade deduction.
-		template<class Expression, class ToleranceValue>
+		template<typename Expression, typename ToleranceValue>
 		struct deduce_grade_result;
 
-		template<class Expression, class ToleranceValue>
+		template<typename Expression, typename ToleranceValue>
 		using deduce_grade_result_t = typename deduce_grade_result<Expression, ToleranceValue>::type;
 
-		template<class Argument, class... NextArguments, class ToleranceValue>
+		template<typename Argument, typename... NextArguments, typename ToleranceValue>
 		struct deduce_grade_result<add<Argument, NextArguments...>, ToleranceValue> {
 		private:
 				
@@ -139,7 +139,7 @@ namespace ga {
 		};
 
 		//TODO Not supported yet (map)
-		template<class Coefficient, class BasisBlade, class ToleranceValue>
+		template<typename Coefficient, typename BasisBlade, typename ToleranceValue>
 		struct deduce_grade_result<component<Coefficient, BasisBlade>, ToleranceValue> {
 			typedef if_else_t<
 				less_or_equal_t<absolute_t<Coefficient>, ToleranceValue>,
@@ -150,24 +150,24 @@ namespace ga {
 
 	}
 
-	template<class CoefficientType, class Expression>
+	template<typename CoefficientType, typename Expression>
 	constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg, CoefficientType const &tol) {
 		auto const lazy = make_lazy_context(arg, scalar(tol));
 		return detail::make_grade_result(lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_grade_result_t<decltype(lazy)::argument_expression_t<0>, detail::coefficient_t<decltype(lazy)::argument_expression_t<1> > > >()));
 	}
 
-	template<class Type, class = std::enable_if_t<!is_clifford_expression_v<Type> > >
+	template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
 	constexpr decltype(auto) grade(Type const &arg, Type const &tol) {
 		return grade(scalar(arg), tol);
 	}
 
-	template<class CoefficientType, class Expression>
+	template<typename CoefficientType, typename Expression>
 	constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg) {
 		auto const lazy = make_lazy_context(arg, default_tolerance<CoefficientType>());
 		return detail::make_grade_result(lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_grade_result_t<decltype(lazy)::argument_expression_t<0>, detail::coefficient_t<decltype(lazy)::argument_expression_t<1> > > >()));
 	}
 
-	template<class Type, class = std::enable_if_t<!is_clifford_expression_v<Type> > >
+	template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
 	constexpr decltype(auto) grade(Type const &arg) {
 		return grade(scalar(arg));
 	}

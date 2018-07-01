@@ -15,7 +15,7 @@
 
 namespace ga {
 
-	template<class ValueType>
+	template<typename ValueType>
 	constexpr decltype(auto) default_tolerance() {
 		return c<0, ValueType>;
 	}

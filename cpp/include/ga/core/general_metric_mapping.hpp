@@ -6,13 +6,13 @@ namespace ga {
 	namespace detail {
 
 		// Returns the determinant of a square submatrix of the metric matrix induced by the general metric of the space.
-		template<class GeneralMetricSpace, class RowBasisVectors, class ColumnBasisVectors, ndims_t N>
+		template<typename GeneralMetricSpace, typename RowBasisVectors, typename ColumnBasisVectors, ndims_t N>
 		struct determinant;
 
-		template<class GeneralMetricSpace, class RowBasisVectors, class ColumnBasisVectors, ndims_t N>
+		template<typename GeneralMetricSpace, typename RowBasisVectors, typename ColumnBasisVectors, ndims_t N>
 		using determinant_t = typename determinant<GeneralMetricSpace, RowBasisVectors, ColumnBasisVectors, N>::type;
 
-		template<class GeneralMetricSpace, class RowBasisVectors, class ColumnBasisVectors, ndims_t N>
+		template<typename GeneralMetricSpace, typename RowBasisVectors, typename ColumnBasisVectors, ndims_t N>
 		struct determinant {
 		private:
 
@@ -64,7 +64,7 @@ namespace ga {
 			typedef typename sum<N>::type type;
 		};
 
-		template<class GeneralMetricSpace, class RowBasisVectors, class ColumnBasisVectors>
+		template<typename GeneralMetricSpace, typename RowBasisVectors, typename ColumnBasisVectors>
 		struct determinant<GeneralMetricSpace, RowBasisVectors, ColumnBasisVectors, 2> {
 		private:
 
@@ -90,7 +90,7 @@ namespace ga {
 			typedef addition_t<product_t<a11, a22, value_mapping>, product_t<constant_value<-1>, product_t<a21, a12, value_mapping>, value_mapping> > type;
 		};
 
-		template<class GeneralMetricSpace, class RowBasisVectors, class ColumnBasisVectors>
+		template<typename GeneralMetricSpace, typename RowBasisVectors, typename ColumnBasisVectors>
 		struct determinant<GeneralMetricSpace, RowBasisVectors, ColumnBasisVectors, 1> {
 		private:
 
@@ -102,16 +102,16 @@ namespace ga {
 			typedef typename GeneralMetricSpace::template entry<row, col>::type type;
 		};
 
-		template<class GeneralMetricSpace, class RowBasisVectors, class ColumnBasisVectors>
+		template<typename GeneralMetricSpace, typename RowBasisVectors, typename ColumnBasisVectors>
 		struct determinant<GeneralMetricSpace, RowBasisVectors, ColumnBasisVectors, 0> {
 			typedef constant_value<1> type;
 		};
 
 		// The implementation of mapping for products assuming spaces with general (non-orthogonal) metric.
-		template<class GeneralMetricSpace, class GradedProduct>
+		template<typename GeneralMetricSpace, typename GradedProduct>
 		struct general_metric_mapping {
 
-			template<class LeftBasisBlade, class RightBasisBlade>
+			template<typename LeftBasisBlade, typename RightBasisBlade>
 			struct multiply {
 			private:
 
@@ -129,7 +129,7 @@ namespace ga {
 				typedef count_one_bits_t<right_basis_vectors> right_grade;
 
 				// Returns the resulting component in function of the graded product.
-				template<class CandidateComponent>
+				template<typename CandidateComponent>
 				struct result_component {
 				private:
 
@@ -156,7 +156,7 @@ namespace ga {
 					typedef component_t<coefficient, basis_blade> type;
 				};
 
-				template<class CandidateComponent>
+				template<typename CandidateComponent>
 				using result_component_t = typename result_component<CandidateComponent>::type;
 
 				// Summation indexed by the combination of k basis vectors used to index (indirectly) the rows of the metric matrix on the evaluation of the interior product.

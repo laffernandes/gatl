@@ -15,7 +15,7 @@ namespace ga {
 		using simpler_ipow_t = typename simpler_ipow<Base, Exponent>::type;
 
 		// Returns the square root of the given integral value.
-		template<default_integral_t Value, class Enable = void>
+		template<default_integral_t Value, typename Enable = void>
 		struct simpler_isqrt;
 		
 		template<default_integral_t Value>
@@ -37,12 +37,12 @@ namespace ga {
 		using simpler_isqrt_t = typename simpler_isqrt<Value>::type;
 
 		// Specializations of _power_level2<LeftArgument, RightArgument>.
-		template<class LeftExpression, class RightExpression>
+		template<typename LeftExpression, typename RightExpression>
 		struct _power_level2 {
 			typedef power<LeftExpression, RightExpression> type; // default (bind)
 		};
 
-		template<class RightExpression>
+		template<typename RightExpression>
 		struct _power_level2<constant_value<0>, RightExpression> {
 			typedef std::conditional_t<
 				is_constant_expression_v<RightExpression>,
@@ -55,7 +55,7 @@ namespace ga {
 			> type;
 		};
 
-		template<class RightExpression>
+		template<typename RightExpression>
 		struct _power_level2<constant_value<1>, RightExpression> {
 			typedef constant_value<1> type; // 1^{X} = 1 (simplify)
 		};
@@ -107,33 +107,33 @@ namespace ga {
 		};
 
 		// Specializations of _power_level1<LeftArgument, RightArgument>.
-		template<class LeftArgument, class RightArgument>
+		template<typename LeftArgument, typename RightArgument>
 		struct _power_level1 {
 			typedef typename _power_level2<LeftArgument, RightArgument>::type type;
 		};
 
-		template<class LeftExpression>
+		template<typename LeftExpression>
 		struct _power_level1<LeftExpression, constant_value<0> > {
 			typedef constant_value<1> type; // X^{0} = 1 (simplify)
 		};
 
-		template<class LeftExpression>
+		template<typename LeftExpression>
 		struct _power_level1<LeftExpression, constant_value<1> > {
 			typedef LeftExpression type; // X^{1} = X (simplify)
 		};
 
 		// Specializations of _power<LeftArgument, RightArgument> (distributive property over multiplication).
-		template<class LeftArgument, class RightArgument>
+		template<typename LeftArgument, typename RightArgument>
 		struct _power {
 			typedef typename _power_level1<LeftArgument, RightArgument>::type type;
 		};
 
-		template<class LeftArgument, class... LeftNextArguments, class RightExpression>
+		template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression>
 		struct _power<mul<LeftArgument, LeftNextArguments...>, RightExpression> {
 			typedef product_t<power_t<LeftArgument, RightExpression>, power_t<mul_t<LeftNextArguments...>, RightExpression>, value_mapping> type; // (A * B)^{C} = A^{C} * B^{C}
 		};
 
-		template<class LeftLeftArgument, class LeftRightArgument, class RightExpression>
+		template<typename LeftLeftArgument, typename LeftRightArgument, typename RightExpression>
 		struct _power<power<LeftLeftArgument, LeftRightArgument>, RightExpression> {
 			typedef power_t<LeftLeftArgument, product_t<LeftRightArgument, RightExpression, value_mapping> > type; // (A^{B})^{C} = A^{B * C} (simplify)
 		};

@@ -24,10 +24,10 @@ namespace ga {
 	typedef std::double_t default_floating_point_t;
 	typedef std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 8, std::uint8_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 16, std::uint16_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 32, std::uint32_t, std::uint64_t> > > default_bitset_t;
 
-	template<class EntryType, std::size_t Size>
+	template<typename EntryType, std::size_t Size>
 	using default_sequence_container_t = std::array<EntryType, Size>;
 		
-	template<class ValueType>
+	template<typename ValueType>
 	using default_associative_container_t = std::map<default_bitset_t, ValueType>;
 
 	typedef default_integral_t grade_t;

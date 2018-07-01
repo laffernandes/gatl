@@ -6,13 +6,13 @@ namespace ga {
 	namespace detail {
 
 		// Returns the number of values stored by the given expression.
-		template<class... Expressions>
+		template<typename... Expressions>
 		struct count_stored_values;
 
-		template<class... Expressions>
+		template<typename... Expressions>
 		constexpr std::size_t count_stored_values_v = count_stored_values<Expressions...>::value;
 
-		template<class Expression, class... NextExpressions>
+		template<typename Expression, typename... NextExpressions>
 		struct count_stored_values<Expression, NextExpressions...> {
 			constexpr static std::size_t value = count_stored_values_v<Expression> + count_stored_values_v<NextExpressions...>; // recursion
 		};
@@ -22,7 +22,7 @@ namespace ga {
 			constexpr static std::size_t value = 0; // end of recursion
 		};
 
-		template<class Expression>
+		template<typename Expression>
 		struct count_stored_values<Expression> {
 			constexpr static std::size_t value = 0; // default
 		};
@@ -32,29 +32,29 @@ namespace ga {
 			constexpr static std::size_t value = 1;
 		};
 
-		template<default_bitset_t PossibleGrades, class Bitset>
+		template<default_bitset_t PossibleGrades, typename Bitset>
 		struct count_stored_values<dynamic_basis_blade<PossibleGrades, Bitset> > {
 			constexpr static std::size_t value = count_stored_values_v<Bitset>;
 		};
 
-		template<class Coefficient, class BasisBlade>
+		template<typename Coefficient, typename BasisBlade>
 		struct count_stored_values<component<Coefficient, BasisBlade> > {
 			constexpr static std::size_t value = count_stored_values_v<Coefficient> + count_stored_values_v<BasisBlade>;
 		};
 
-		template<name_t Name, class... Arguments>
+		template<name_t Name, typename... Arguments>
 		struct count_stored_values<function<Name, Arguments...> > {
 			constexpr static std::size_t value = count_stored_values_v<Arguments...>;
 		};
 
 		// Returns the number of bitsets stored by the given expression.
-		template<class... Expressions>
+		template<typename... Expressions>
 		struct count_stored_bitsets;
 
-		template<class... Expressions>
+		template<typename... Expressions>
 		constexpr std::size_t count_stored_bitsets_v = count_stored_bitsets<Expressions...>::value;
 
-		template<class Expression, class... NextExpressions>
+		template<typename Expression, typename... NextExpressions>
 		struct count_stored_bitsets<Expression, NextExpressions...> {
 			constexpr static std::size_t value = count_stored_bitsets_v<Expression> + count_stored_bitsets_v<NextExpressions...>; // recursion
 		};
@@ -64,7 +64,7 @@ namespace ga {
 			constexpr static std::size_t value = 0; // end of recursion
 		};
 
-		template<class Expression>
+		template<typename Expression>
 		struct count_stored_bitsets<Expression> {
 			constexpr static std::size_t value = 0; // default
 		};
@@ -74,29 +74,29 @@ namespace ga {
 			constexpr static std::size_t value = 1;
 		};
 
-		template<default_bitset_t PossibleGrades, class Bitset>
+		template<default_bitset_t PossibleGrades, typename Bitset>
 		struct count_stored_bitsets<dynamic_basis_blade<PossibleGrades, Bitset> > {
 			constexpr static std::size_t value = count_stored_bitsets_v<Bitset>;
 		};
 
-		template<class Coefficient, class BasisBlade>
+		template<typename Coefficient, typename BasisBlade>
 		struct count_stored_bitsets<component<Coefficient, BasisBlade> > {
 			constexpr static std::size_t value = count_stored_bitsets_v<Coefficient> + count_stored_bitsets_v<BasisBlade>;
 		};
 
-		template<name_t Name, class... Arguments>
+		template<name_t Name, typename... Arguments>
 		struct count_stored_bitsets<function<Name, Arguments...> > {
 			constexpr static std::size_t value = count_stored_bitsets_v<Arguments...>;
 		};
 
 		// Returns the number of maps stored by the given expression.
-		template<class... Expressions>
+		template<typename... Expressions>
 		struct count_stored_maps;
 
-		template<class... Expressions>
+		template<typename... Expressions>
 		constexpr std::size_t count_stored_maps_v = count_stored_maps<Expressions...>::value;
 
-		template<class Expression, class... NextExpressions>
+		template<typename Expression, typename... NextExpressions>
 		struct count_stored_maps<Expression, NextExpressions...> {
 			constexpr static std::size_t value = count_stored_maps_v<Expression> + count_stored_maps_v<NextExpressions...>; // recursion
 		};
@@ -106,7 +106,7 @@ namespace ga {
 			constexpr static std::size_t value = 0; // end of recursion
 		};
 
-		template<class Expression>
+		template<typename Expression>
 		struct count_stored_maps<Expression> {
 			constexpr static std::size_t value = 0; // default
 		};
@@ -116,13 +116,13 @@ namespace ga {
 			constexpr static std::size_t value = 1;
 		};
 
-		template<class... Arguments>
+		template<typename... Arguments>
 		struct count_stored_maps<add<Arguments...> > {
 			constexpr static std::size_t value = count_stored_maps_v<Arguments...>;
 		};
 
 		// Sequential collection of stored data entries.
-		template<class EntryType, std::size_t Size>
+		template<typename EntryType, std::size_t Size>
 		class sequential_storage {
 		public:
 
@@ -132,7 +132,7 @@ namespace ga {
 			constexpr sequential_storage(sequential_storage const &) = default;
 			constexpr sequential_storage(sequential_storage &&) = default;
 
-			template<class... Args>
+			template<typename... Args>
 			constexpr sequential_storage(Args &&... args) :
 				entries_{ std::move(args)... } {
 				static_assert(sizeof...(args) == Size, "The number of arguments must be equal to the number of stored data entries.");
@@ -170,8 +170,8 @@ namespace ga {
 			default_sequence_container_t<entry_type, Size> entries_;
 		};
 
-		// Superclass for ga::clifford_expression<ValueType, Expression>.
-		template<class ValueType, class Expression, std::size_t StoredValuesCount = count_stored_values_v<Expression>, std::size_t StoredBitsetsCount = count_stored_bitsets_v<Expression>, std::size_t StoredMapsCount = count_stored_maps_v<Expression> >
+		// Supertypename for ga::clifford_expression<ValueType, Expression>.
+		template<typename ValueType, typename Expression, std::size_t StoredValuesCount = count_stored_values_v<Expression>, std::size_t StoredBitsetsCount = count_stored_bitsets_v<Expression>, std::size_t StoredMapsCount = count_stored_maps_v<Expression> >
 		class _super_clifford_expression {
 		public:
 
@@ -227,7 +227,7 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredBitsetsCount, std::size_t StoredMapsCount>
+		template<typename ValueType, typename Expression, std::size_t StoredBitsetsCount, std::size_t StoredMapsCount>
 		class _super_clifford_expression<ValueType, Expression, 0, StoredBitsetsCount, StoredMapsCount> {
 		public:
 
@@ -282,7 +282,7 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredValuesCount, std::size_t StoredMapsCount>
+		template<typename ValueType, typename Expression, std::size_t StoredValuesCount, std::size_t StoredMapsCount>
 		class _super_clifford_expression<ValueType, Expression, StoredValuesCount, 0, StoredMapsCount> {
 		public:
 
@@ -337,7 +337,7 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredMapsCount>
+		template<typename ValueType, typename Expression, std::size_t StoredMapsCount>
 		class _super_clifford_expression<ValueType, Expression, 0, 0, StoredMapsCount> {
 		public:
 
@@ -385,7 +385,7 @@ namespace ga {
 			map_storage_type maps_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredValuesCount, std::size_t StoredBitsetsCount>
+		template<typename ValueType, typename Expression, std::size_t StoredValuesCount, std::size_t StoredBitsetsCount>
 		class _super_clifford_expression<ValueType, Expression, StoredValuesCount, StoredBitsetsCount, 0> {
 		public:
 
@@ -440,7 +440,7 @@ namespace ga {
 			bitset_storage_type bitsets_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredBitsetsCount>
+		template<typename ValueType, typename Expression, std::size_t StoredBitsetsCount>
 		class _super_clifford_expression<ValueType, Expression, 0, StoredBitsetsCount, 0> {
 		public:
 
@@ -488,7 +488,7 @@ namespace ga {
 			bitset_storage_type bitsets_;
 		};
 
-		template<class ValueType, class Expression, std::size_t StoredValuesCount>
+		template<typename ValueType, typename Expression, std::size_t StoredValuesCount>
 		class _super_clifford_expression<ValueType, Expression, StoredValuesCount, 0, 0> {
 		public:
 
@@ -536,7 +536,7 @@ namespace ga {
 			value_storage_type values_;
 		};
 
-		template<class ValueType, class Expression>
+		template<typename ValueType, typename Expression>
 		class _super_clifford_expression<ValueType, Expression, 0, 0, 0> {
 		public:
 
@@ -573,12 +573,12 @@ namespace ga {
 		};
 
 		// Cast scalar expressions to native value.
-		template<class Expression, bool IsConstant = is_constant_expression_v<Expression> >
+		template<typename Expression, bool IsConstant = is_constant_expression_v<Expression> >
 		struct _clifford_expression_to_native;
 		
-		template<class Coefficient>
+		template<typename Coefficient>
 		struct _clifford_expression_to_native<component<Coefficient, constant_basis_blade<default_bitset_t(0)> >, true> {
-			template<class ValueCItr>
+			template<typename ValueCItr>
 			constexpr static decltype(auto) eval(ValueCItr const &) {
 				return Coefficient::eval<0, 0>(std::tuple<>());
 			}
@@ -586,7 +586,7 @@ namespace ga {
 
 		template<>
 		struct _clifford_expression_to_native<component<stored_value, constant_basis_blade<default_bitset_t(0)> >, false> {
-			template<class ValueCItr>
+			template<typename ValueCItr>
 			constexpr static decltype(auto) eval(ValueCItr const &value_itr) {
 				return *value_itr;
 			}
@@ -595,7 +595,7 @@ namespace ga {
 	}
 
 	// Clifford expression.
-	template<class CoefficientType, class Expression>
+	template<typename CoefficientType, typename Expression>
 	class clifford_expression final :
 		private detail::_super_clifford_expression<CoefficientType, Expression> {
 	private:
@@ -623,10 +623,10 @@ namespace ga {
 		constexpr clifford_expression(clifford_expression const &) = default;
 		constexpr clifford_expression(clifford_expression &&) = default;
 
-		template<class OtherCoefficientType, class OtherExpression>
+		template<typename OtherCoefficientType, typename OtherExpression>
 		constexpr clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> const &) = delete; //TODO Not supported yet (copy).
 
-		template<class... StorageTypes>
+		template<typename... StorageTypes>
 		constexpr clifford_expression(StorageTypes &&... args) :
 			super(std::move(args)...) {
 		}
@@ -634,31 +634,31 @@ namespace ga {
 		constexpr clifford_expression & operator=(clifford_expression const &) = default;
 		constexpr clifford_expression & operator=(clifford_expression &&) = default;
 
-		template<class OtherCoefficientType, class OtherExpression>
+		template<typename OtherCoefficientType, typename OtherExpression>
 		constexpr clifford_expression & operator=(clifford_expression<OtherCoefficientType, OtherExpression> const &) = delete; //TODO Not supported yet (copy).
 
-		template<class Type, class = std::enable_if_t<detail::is_scalar_component_v<Expression> && detail::can_be_stored_v<Expression> > >
+		template<typename Type, typename = std::enable_if_t<detail::is_scalar_component_v<Expression> && detail::can_be_stored_v<Expression> > >
 		constexpr operator Type() const {
 			return detail::_clifford_expression_to_native<Expression>::eval(super::values().cbegin());
 		}
 	};
 
 	// Returns whether the given type is a clifford expression.
-	template<class Type>
+	template<typename Type>
 	struct is_clifford_expression :
 		std::false_type {
 	};
 
-	template<class CoefficientType, class Expression>
+	template<typename CoefficientType, typename Expression>
 	struct is_clifford_expression<clifford_expression<CoefficientType, Expression> > :
 		std::true_type {
 	};
 
-	template<class Type>
+	template<typename Type>
 	constexpr bool is_clifford_expression_v = is_clifford_expression<Type>::value;
 
 	// Helper function to build a sequential storage of values, bitsets or maps.
-	template<class... Args>
+	template<typename... Args>
 	constexpr decltype(auto) make_sequential_storage(Args &&... args) {
 		return detail::sequential_storage<std::common_type_t<std::remove_cv_t<std::remove_reference_t<Args> >...>, sizeof...(args)>(std::move(args)...);
 	}

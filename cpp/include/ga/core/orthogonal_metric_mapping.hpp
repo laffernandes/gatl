@@ -6,10 +6,10 @@ namespace ga {
 	namespace detail {
 
 		// The implementation of mapping for products assuming spaces with orthogonal metric.
-		template<class OrthogonalMetricSpace, class GradedProduct>
+		template<typename OrthogonalMetricSpace, typename GradedProduct>
 		struct orthogonal_metric_mapping {
 
-			template<class LeftBasisBlade, class RightBasisBlade>
+			template<typename LeftBasisBlade, typename RightBasisBlade>
 			struct multiply {
 			private:
 

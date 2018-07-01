@@ -4,7 +4,7 @@
 namespace ga {
 
 	// Returns the unit support point parameter of a given k-flat.
-	template<class CoefficientType, class Expression, ndims_t N>
+	template<typename CoefficientType, typename Expression, ndims_t N>
 	constexpr decltype(auto) flat_unit_support_point(clifford_expression<CoefficientType, Expression> const &flat, homogeneous_metric_space<N> const &mtr) {
 		auto const lazy = make_lazy_context(flat);
 		return lazy.eval(gp(lazy.argument<0>(), inv(lcont(e(c<N + 1>), lazy.argument<0>(), mtr), mtr), mtr));

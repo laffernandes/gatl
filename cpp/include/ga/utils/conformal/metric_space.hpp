@@ -13,7 +13,7 @@ namespace ga {
 		constexpr static default_bitset_t basis_vectors = default_bitset_t(default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - (N + 2)));
 		constexpr static ndims_t vector_space_dimensions = N + 2;
 
-		template<class RowIndex, class ColIndex>
+		template<typename RowIndex, typename ColIndex>
 		struct entry {
 			typedef detail::if_else_t<
 				detail::equal_t<RowIndex, ColIndex>,

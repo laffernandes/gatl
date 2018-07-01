@@ -6,7 +6,7 @@ namespace ga {
 	namespace detail {
 
 		// Returns true if T and any element in Rest has the same type with the same const-volatile qualifications or false otherwise.
-		template<class T, class... Rest>
+		template<typename T, typename... Rest>
 		constexpr bool is_any_v = std::disjunction_v<std::bool_constant<std::is_same_v<T, Rest> >...>;
 
 		// A set of indices.
@@ -30,12 +30,12 @@ namespace ga {
 		using build_indices_t = typename build_indices<Size>::type;
 
 		// Helper function to convert a tuple into a list-initialization structure.
-		template<class Tuple, std::size_t... Indices>
+		template<typename Tuple, std::size_t... Indices>
 		constexpr decltype(auto) _to_list_initialization(Tuple &&tuple, indices<Indices...>) {
 			return { std::get<Indices>(std::move(tuple))... };
 		}
 
-		template<class Tuple>
+		template<typename Tuple>
 		constexpr decltype(auto) to_list_initialization(Tuple &&tuple) {
 			return _to_list_initialization(std::move(tuple), build_indices_t<std::tuple_size_v<std::remove_cv_t<std::remove_reference_t<Tuple> > > >());
 		}

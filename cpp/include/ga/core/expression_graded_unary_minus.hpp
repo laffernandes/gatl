@@ -6,13 +6,13 @@ namespace ga {
 	namespace detail {
 
 		// Graded-based unary minus operation.
-		template<class Expression, default_bitset_t SignChangePattern>
+		template<typename Expression, default_bitset_t SignChangePattern>
 		struct graded_unary_minus;
 
-		template<class Expression, default_bitset_t SignChangePattern>
+		template<typename Expression, default_bitset_t SignChangePattern>
 		using graded_unary_minus_t = typename graded_unary_minus<Expression, SignChangePattern>::type;
 
-		template<class Argument, class... NextArguments, default_bitset_t SignChangePattern>
+		template<typename Argument, typename... NextArguments, default_bitset_t SignChangePattern>
 		struct graded_unary_minus<add<Argument, NextArguments...>, SignChangePattern> {
 			typedef addition_t<
 				graded_unary_minus_t<Argument, SignChangePattern>,
@@ -20,7 +20,7 @@ namespace ga {
 			> type;
 		};
 
-		template<class Coefficient, default_bitset_t BasisVectors, default_bitset_t SignChangePattern>
+		template<typename Coefficient, default_bitset_t BasisVectors, default_bitset_t SignChangePattern>
 		struct graded_unary_minus<component<Coefficient, constant_basis_blade<BasisVectors> >, SignChangePattern> {
 			typedef std::conditional_t<
 				(SignChangePattern & (default_bitset_t(1) << ones(BasisVectors))) == default_bitset_t(0),
@@ -29,7 +29,7 @@ namespace ga {
 			> type;
 		};
 
-		template<class Coefficient, default_bitset_t PossibleGrades, class Bitset, default_bitset_t SignChangePattern>
+		template<typename Coefficient, default_bitset_t PossibleGrades, typename Bitset, default_bitset_t SignChangePattern>
 		struct graded_unary_minus<component<Coefficient, dynamic_basis_blade<PossibleGrades, Bitset> >, SignChangePattern> {
 			typedef std::conditional_t<
 				(PossibleGrades & SignChangePattern) == default_bitset_t(0),
