@@ -27,12 +27,13 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 #include "ga/model/signed/metric_space.hpp"
 #include "ga/model/signed/euclidean/metric_space.hpp"
-#include "ga/model/signed/euclidean/macro_for_algebra_definition.hpp"
-#include "ga/model/signed/euclidean/macro_for_algebra_overload.hpp"
 
 #include "ga/model/signed/euclidean/euclidean_vector.hpp"
 
 #include "ga/model/signed/euclidean/orthogonal_projection.hpp"
 #include "ga/model/signed/euclidean/rejection.hpp"
+
+#include "ga/model/signed/euclidean/macro_for_algebra_definition.hpp"
+#include "ga/model/signed/euclidean/macro_for_algebra_overload.hpp"
 
 #endif // __GA_MODEL_EUCLIDEAN_HPP__

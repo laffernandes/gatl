@@ -27,6 +27,28 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
+	// Clifford expression.
+	template<typename CoefficientType, typename Expression>
+	class clifford_expression;
+
+	// Helper for defining a scalar Clifford expression type.
+	template<typename CoefficientType, typename Coefficient>
+	using scalar_clifford_expression = clifford_expression<CoefficientType, detail::component<Coefficient, detail::constant_basis_blade<default_bitset_t(0)> > >;
+
+	// Returns whether the given type is a clifford expression.
+	template<typename Type>
+	struct is_clifford_expression :
+		std::false_type {
+	};
+
+	template<typename CoefficientType, typename Expression>
+	struct is_clifford_expression<clifford_expression<CoefficientType, Expression> > :
+		std::true_type {
+	};
+
+	template<typename Type>
+	constexpr bool is_clifford_expression_v = is_clifford_expression<Type>::value;
+
 	namespace detail {
 
 		// Returns the number of values stored by the given expression.
@@ -194,7 +216,7 @@ namespace ga {
 			default_sequence_container_t<entry_type, Size> entries_;
 		};
 
-		// Supertypename for ga::clifford_expression<ValueType, Expression>.
+		// Superclass for ga::clifford_expression<ValueType, Expression>.
 		template<typename ValueType, typename Expression, std::size_t StoredValuesCount = count_stored_values_v<Expression>, std::size_t StoredBitsetsCount = count_stored_bitsets_v<Expression>, std::size_t StoredMapsCount = count_stored_maps_v<Expression> >
 		class _super_clifford_expression {
 		public:
@@ -618,6 +640,10 @@ namespace ga {
 
 	}
 
+	// Copies the coefficients of the left-hand side Clifford expression into the right-hand side Clifford expression.
+	template<typename InputCoefficientType, typename InputExpression, typename ResultCoefficientType, typename ResultExpression>
+	constexpr void copy(clifford_expression<InputCoefficientType, InputExpression> const &input, clifford_expression<ResultCoefficientType, ResultExpression> &result);
+
 	// Clifford expression.
 	template<typename CoefficientType, typename Expression>
 	class clifford_expression final :
@@ -648,7 +674,9 @@ namespace ga {
 		constexpr clifford_expression(clifford_expression &&) = default;
 
 		template<typename OtherCoefficientType, typename OtherExpression>
-		constexpr clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> const &) = delete; //TODO Not supported yet (copy).
+		constexpr clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> const &other) {
+			copy(other, *this);
+		}
 
 		template<typename... StorageTypes>
 		constexpr clifford_expression(StorageTypes &&... args) :
@@ -659,31 +687,16 @@ namespace ga {
 		constexpr clifford_expression & operator=(clifford_expression &&) = default;
 
 		template<typename OtherCoefficientType, typename OtherExpression>
-		constexpr clifford_expression & operator=(clifford_expression<OtherCoefficientType, OtherExpression> const &) = delete; //TODO Not supported yet (copy).
+		constexpr clifford_expression & operator=(clifford_expression<OtherCoefficientType, OtherExpression> const &other) {
+			copy(other, *this);
+			return *this;
+		}
 
 		template<typename Type, typename = std::enable_if_t<detail::is_scalar_component_v<Expression> && detail::can_be_stored_v<Expression> > >
 		constexpr operator Type() const {
 			return detail::_clifford_expression_to_native<Expression>::eval(super::values().cbegin());
 		}
 	};
-
-	// Helper for defining a scalar Clifford expression type.
-	template<typename CoefficientType, typename Coefficient>
-	using scalar_clifford_expression = clifford_expression<CoefficientType, detail::component<Coefficient, detail::constant_basis_blade<default_bitset_t(0)> > >;
-
-	// Returns whether the given type is a clifford expression.
-	template<typename Type>
-	struct is_clifford_expression :
-		std::false_type {
-	};
-
-	template<typename CoefficientType, typename Expression>
-	struct is_clifford_expression<clifford_expression<CoefficientType, Expression> > :
-		std::true_type {
-	};
-
-	template<typename Type>
-	constexpr bool is_clifford_expression_v = is_clifford_expression<Type>::value;
 
 	// Helper function to build a sequential storage of values, bitsets or maps.
 	template<typename... Args>

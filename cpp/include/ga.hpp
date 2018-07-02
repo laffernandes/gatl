@@ -26,6 +26,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #define __GA_HPP__
 
 #include "ga/core.hpp"
+#include "ga/util.hpp"
 #include "ga/extra.hpp"
 
 #endif // __GA_HPP__

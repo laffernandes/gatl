@@ -27,8 +27,6 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 #include "ga/model/signed/metric_space.hpp"
 #include "ga/model/signed/minkowski/metric_space.hpp"
-#include "ga/model/signed/minkowski/macro_for_algebra_definition.hpp"
-#include "ga/model/signed/minkowski/macro_for_algebra_overload.hpp"
 
 #include "ga/model/signed/minkowski/euclidean_vector.hpp"
 #include "ga/model/signed/minkowski/point.hpp"
@@ -40,5 +38,8 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #include "ga/model/signed/minkowski/round_size_sqr.hpp"
 #include "ga/model/signed/minkowski/tangent_direction.hpp"
 #include "ga/model/signed/minkowski/tangent_location.hpp"
+
+#include "ga/model/signed/minkowski/macro_for_algebra_definition.hpp"
+#include "ga/model/signed/minkowski/macro_for_algebra_overload.hpp"
 
 #endif // __GA_MODEL_MINKOWSKI_HPP__

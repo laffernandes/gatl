@@ -658,15 +658,14 @@ int main() {
 	{
 		using namespace ga3e;
 
-		auto copy_in = 5 + 3 * ga3e::e1 + 7 * (ga3e::e1^ga3e::e2);
+		auto copy_in = 5 + 3 * e1 + 7 * (e1^e2);
 		std::cout << " in = " << copy_in << std::endl;
 
-		auto copy_out = 0. + 0. * ga3e::e1 + 0. * (ga3e::e1^ga3e::e2) + 10. * ga3e::e2;
+		auto copy_out = 0. + 0. * e1 + 0. * (e1^e2) + 10. * e2;
 		std::cout << "out = " << copy_out << std::endl;
 
-		//TODO Implementar
-		//copy_out = copy_in;
-		//std::cout << "out = " << copy_out << std::endl;
+		copy_out = copy_in;
+		std::cout << "out = " << copy_out << std::endl;
 
 		std::cout << std::endl;
 	}

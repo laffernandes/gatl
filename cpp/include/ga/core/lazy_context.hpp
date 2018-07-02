@@ -465,7 +465,7 @@ namespace ga {
 			return result_type(std::move(values), std::move(bitsets), std::move(maps));
 		}
 
-		// Supertypename for ga::lazy_context<InputTypes...>.
+		// Superclass for ga::lazy_context<InputTypes...>.
 		template<tag_t BaseTag, typename... InputTypes>
 		class _super_lazy_context;
 

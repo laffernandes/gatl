@@ -84,8 +84,9 @@ namespace ga {
 #include "ga/core/lazy_context.hpp"
 
 #include "ga/core/constant.hpp"
-#include "ga/core/basis_blade.hpp"
-#include "ga/core/k-vector.hpp"
+#include "ga/core/scalar.hpp"
+
+#include "ga/core/copy.hpp"
 
 #include "ga/core/conjugation.hpp"
 #include "ga/core/involution.hpp"

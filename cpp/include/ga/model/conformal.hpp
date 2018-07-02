@@ -26,8 +26,6 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #define __GA_MODEL_CONFORMAL_HPP__
 
 #include "ga/model/conformal/metric_space.hpp"
-#include "ga/model/conformal/macro_for_algebra_definition.hpp"
-#include "ga/model/conformal/macro_for_algebra_overload.hpp"
 
 #include "ga/model/conformal/euclidean_vector.hpp"
 #include "ga/model/conformal/point.hpp"
@@ -39,5 +37,8 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #include "ga/model/conformal/round_size_sqr.hpp"
 #include "ga/model/conformal/tangent_direction.hpp"
 #include "ga/model/conformal/tangent_location.hpp"
+
+#include "ga/model/conformal/macro_for_algebra_definition.hpp"
+#include "ga/model/conformal/macro_for_algebra_overload.hpp"
 
 #endif // __GA_MODEL_CONFORMAL_HPP__

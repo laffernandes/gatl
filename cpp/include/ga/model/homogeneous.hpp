@@ -27,8 +27,6 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 #include "ga/model/signed/metric_space.hpp"
 #include "ga/model/signed/homogeneous/metric_space.hpp"
-#include "ga/model/signed/homogeneous/macro_for_algebra_definition.hpp"
-#include "ga/model/signed/homogeneous/macro_for_algebra_overload.hpp"
 
 #include "ga/model/signed/homogeneous/euclidean_vector.hpp"
 #include "ga/model/signed/homogeneous/point.hpp"
@@ -39,5 +37,8 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #include "ga/model/signed/homogeneous/flat_unit_support_point.hpp"
 
 #include "ga/model/signed/homogeneous/translation.hpp"
+
+#include "ga/model/signed/homogeneous/macro_for_algebra_definition.hpp"
+#include "ga/model/signed/homogeneous/macro_for_algebra_overload.hpp"
 
 #endif // __GA_MODEL_HOMOGENEOUS_HPP__

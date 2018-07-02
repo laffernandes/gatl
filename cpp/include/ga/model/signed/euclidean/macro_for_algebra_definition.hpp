@@ -25,7 +25,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #ifndef __GA_MODEL_SIGNED_EUCLIDEAN_MACRO_FOR_ALGEBRA_DEFINITION_HPP__
 #define __GA_MODEL_SIGNED_EUCLIDEAN_MACRO_FOR_ALGEBRA_DEFINITION_HPP__
 
-#define _GA_MODEL_EUCLIDEAN_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, N, ...) \
+#define _GA_EUCLIDEAN_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, N, ...) \
 	typedef euclidean_metric_space<N> space_t; \
 	\
 	static space_t const SPACE; \

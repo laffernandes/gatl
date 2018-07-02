@@ -40,6 +40,9 @@
     <Filter Include="Header Files\ga\model\signed\minkowski">
       <UniqueIdentifier>{baccb810-2fcf-48b7-8a85-a00fd563a8bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ga\util">
+      <UniqueIdentifier>{e7e03712-6a76-4d0e-8d9a-87530d173476}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\test\sandbox.cpp">
@@ -242,13 +245,7 @@
     <ClInclude Include="..\..\include\ga\extra\unit.hpp">
       <Filter>Header Files\ga\extra</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\core\basis_blade.hpp">
-      <Filter>Header Files\ga\core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\core\constant.hpp">
-      <Filter>Header Files\ga\core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ga\core\k-vector.hpp">
       <Filter>Header Files\ga\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ga\model\conformal.hpp">
@@ -388,6 +385,30 @@
     </ClInclude>
     <ClInclude Include="..\..\include\ga\model\signed\minkowski\tangent_location.hpp">
       <Filter>Header Files\ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\util\macro_for_algebra_overload.hpp">
+      <Filter>Header Files\ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\util.hpp">
+      <Filter>Header Files\ga</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\util\basis_vector.hpp">
+      <Filter>Header Files\ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\util\pseudoscalar.hpp">
+      <Filter>Header Files\ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\util\basis_blade.hpp">
+      <Filter>Header Files\ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\util\k-vector.hpp">
+      <Filter>Header Files\ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\scalar.hpp">
+      <Filter>Header Files\ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\copy.hpp">
+      <Filter>Header Files\ga\core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -25,7 +25,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #ifndef __GA_MODEL_SIGNED_MACRO_FOR_ALGEBRA_DEFINITION_HPP__
 #define __GA_MODEL_SIGNED_MACRO_FOR_ALGEBRA_DEFINITION_HPP__
 
-#define _GA_MODEL_SIGNED_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, P, Q, ...) \
+#define _GA_SIGNED_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, P, Q, ...) \
 	typedef signed_metric_space<P, Q> space_t; \
 	\
 	static space_t const SPACE; \

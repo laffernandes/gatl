@@ -22,8 +22,8 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA_CORE_K_VECTOR_HPP__
-#define __GA_CORE_K_VECTOR_HPP__
+#ifndef __GA_UTIL_K_VECTOR_HPP__
+#define __GA_UTIL_K_VECTOR_HPP__
 
 namespace ga {
 
@@ -189,4 +189,4 @@ namespace ga {
 
 }
 
-#endif // __GA_CORE_K_VECTOR_HPP__
+#endif // __GA_UTIL_K_VECTOR_HPP__

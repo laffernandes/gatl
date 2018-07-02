@@ -26,6 +26,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #define __GA3C_HPP__
 
 #include <ga/core.hpp>
+#include <ga/util.hpp>
 #include <ga/extra.hpp>
 #include <ga/model/conformal.hpp>
 
@@ -33,15 +34,16 @@ namespace ga3c {
 
 	using namespace ga;
 
-	_GA_MODEL_CONFORMAL_ALGEBRA_DEFINITION(space, basis_vectors_names, 3, "e1", "e2", "e3")
+	_GA_CONFORMAL_ALGEBRA_DEFINITION(space, basis_vectors_names, 3, "e1", "e2", "e3")
 
 	static auto const e1 = e(c<1>);
 	static auto const e2 = e(c<2>);
 	static auto const e3 = e(c<3>);
 
 	_GA_CORE_OVERLOAD(space)
+	_GA_UTIL_OVERLOAD(space)
 	_GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-	_GA_MODEL_CONFORMAL_ALGEBRA_OVERLOAD(space)
+	_GA_CONFORMAL_ALGEBRA_OVERLOAD(space)
 
 }
 

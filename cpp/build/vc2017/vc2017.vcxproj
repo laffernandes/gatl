@@ -47,7 +47,8 @@
     <ClInclude Include="..\..\include\ga5e.hpp" />
     <ClInclude Include="..\..\include\ga\core.hpp" />
     <ClInclude Include="..\..\include\ga\core\arithmetic_operators.hpp" />
-    <ClInclude Include="..\..\include\ga\core\basis_blade.hpp" />
+    <ClInclude Include="..\..\include\ga\core\copy.hpp" />
+    <ClInclude Include="..\..\include\ga\core\scalar.hpp" />
     <ClInclude Include="..\..\include\ga\core\clifford_expression.hpp" />
     <ClInclude Include="..\..\include\ga\core\conjugation.hpp" />
     <ClInclude Include="..\..\include\ga\core\constant.hpp" />
@@ -65,7 +66,6 @@
     <ClInclude Include="..\..\include\ga\core\geometric_product.hpp" />
     <ClInclude Include="..\..\include\ga\core\hestenes_inner_product.hpp" />
     <ClInclude Include="..\..\include\ga\core\involution.hpp" />
-    <ClInclude Include="..\..\include\ga\core\k-vector.hpp" />
     <ClInclude Include="..\..\include\ga\core\lazy_context.hpp" />
     <ClInclude Include="..\..\include\ga\core\left_contraction.hpp" />
     <ClInclude Include="..\..\include\ga\core\macro_for_algebra_overload.hpp" />
@@ -142,6 +142,12 @@
     <ClInclude Include="..\..\include\ga\model\signed\minkowski\round_size_sqr.hpp" />
     <ClInclude Include="..\..\include\ga\model\signed\minkowski\tangent_direction.hpp" />
     <ClInclude Include="..\..\include\ga\model\signed\minkowski\tangent_location.hpp" />
+    <ClInclude Include="..\..\include\ga\util.hpp" />
+    <ClInclude Include="..\..\include\ga\util\basis_blade.hpp" />
+    <ClInclude Include="..\..\include\ga\util\basis_vector.hpp" />
+    <ClInclude Include="..\..\include\ga\util\k-vector.hpp" />
+    <ClInclude Include="..\..\include\ga\util\macro_for_algebra_overload.hpp" />
+    <ClInclude Include="..\..\include\ga\util\pseudoscalar.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
