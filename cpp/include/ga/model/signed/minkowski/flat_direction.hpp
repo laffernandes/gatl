@@ -29,7 +29,7 @@ namespace ga {
 
 	// Returns the direction parameter of a given flat.
 	template<typename CoefficientType, typename Expression, ndims_t N>
-	constexpr decltype(auto) flat_direction(clifford_expression<CoefficientType, Expression> const &flat, minkowski_metric_space<N> const &mtr) {
+	constexpr decltype(auto) flat_direction(clifford_expression<CoefficientType, Expression> const &flat, minkowski_metric_space<N> const &mtr) noexcept {
 		return lcont(-(e(c<N + 1>) + e(c<N + 2>)), flat, mtr);
 	}
 

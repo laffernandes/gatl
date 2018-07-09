@@ -29,7 +29,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #include "ga/util/basis_blade.hpp"
 #include "ga/util/pseudoscalar.hpp"
 
-#include "ga/util/k-vector.hpp"
+#include "ga/util/vector.hpp"
+#include "ga/util/multivector.hpp"
+
+#include "ga/util/for_each_basis_vector.hpp"
+#include "ga/util/for_each_component.hpp"
 
 #include "ga/util/macro_for_algebra_overload.hpp"
 

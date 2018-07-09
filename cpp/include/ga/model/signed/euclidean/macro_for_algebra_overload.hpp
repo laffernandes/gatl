@@ -27,7 +27,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 #define _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(SPACE) \
 	template <typename... Types> \
-	constexpr decltype(auto) euclidean_vector(Types &&... coords) { \
+	constexpr decltype(auto) euclidean_vector(Types &&... coords) noexcept { \
 		return euclidean_vector(SPACE, std::move(coords)...); \
 	} \
 	\

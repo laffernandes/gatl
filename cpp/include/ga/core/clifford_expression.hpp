@@ -33,7 +33,7 @@ namespace ga {
 
 	// Helper for defining a scalar Clifford expression type.
 	template<typename CoefficientType, typename Coefficient>
-	using scalar_clifford_expression = clifford_expression<CoefficientType, detail::component<Coefficient, detail::constant_basis_blade<default_bitset_t(0)> > >;
+	using scalar_clifford_expression = clifford_expression<CoefficientType, detail::component<Coefficient, detail::constant_basis_blade<bitset_t(0)> > >;
 
 	// Returns whether the given type is a clifford expression.
 	template<typename Type>
@@ -78,7 +78,7 @@ namespace ga {
 			constexpr static std::size_t value = 1;
 		};
 
-		template<default_bitset_t PossibleGrades, typename Bitset>
+		template<bitset_t PossibleGrades, typename Bitset>
 		struct count_stored_values<dynamic_basis_blade<PossibleGrades, Bitset> > {
 			constexpr static std::size_t value = count_stored_values_v<Bitset>;
 		};
@@ -120,7 +120,7 @@ namespace ga {
 			constexpr static std::size_t value = 1;
 		};
 
-		template<default_bitset_t PossibleGrades, typename Bitset>
+		template<bitset_t PossibleGrades, typename Bitset>
 		struct count_stored_bitsets<dynamic_basis_blade<PossibleGrades, Bitset> > {
 			constexpr static std::size_t value = count_stored_bitsets_v<Bitset>;
 		};
@@ -157,7 +157,7 @@ namespace ga {
 			constexpr static std::size_t value = 0; // default
 		};
 
-		template<default_bitset_t PossibleGrades>
+		template<bitset_t PossibleGrades>
 		struct count_stored_values<component<stored_map_values, dynamic_basis_blade<PossibleGrades, stored_map_bitsets> > > {
 			constexpr static std::size_t value = 1;
 		};
@@ -172,14 +172,14 @@ namespace ga {
 		class sequential_storage {
 		public:
 
-			typedef EntryType entry_type;
+			using entry_type = EntryType;
 
 			constexpr sequential_storage() = default;
 			constexpr sequential_storage(sequential_storage const &) = default;
 			constexpr sequential_storage(sequential_storage &&) = default;
 
 			template<typename... Args>
-			constexpr sequential_storage(Args &&... args) :
+			constexpr sequential_storage(Args &&... args) noexcept :
 				entries_{ std::move(args)... } {
 				static_assert(sizeof...(args) == Size, "The number of arguments must be equal to the number of stored data entries.");
 			}
@@ -187,33 +187,33 @@ namespace ga {
 			constexpr sequential_storage & operator=(sequential_storage const &) = default;
 			constexpr sequential_storage & operator=(sequential_storage &&) = default;
 
-			constexpr decltype(auto) begin() {
+			constexpr decltype(auto) begin() noexcept {
 				return entries_.begin();
 			}
 
-			constexpr decltype(auto) begin() const {
+			constexpr decltype(auto) begin() const noexcept {
 				return entries_.begin();
 			}
 
-			constexpr decltype(auto) end() {
+			constexpr decltype(auto) end() noexcept {
 				return entries_.end();
 			}
 
-			constexpr decltype(auto) end() const {
+			constexpr decltype(auto) end() const noexcept {
 				return entries_.end();
 			}
 
-			constexpr decltype(auto) cbegin() const {
+			constexpr decltype(auto) cbegin() const noexcept {
 				return entries_.cbegin();
 			}
 
-			constexpr decltype(auto) cend() const {
+			constexpr decltype(auto) cend() const noexcept {
 				return entries_.cend();
 			}
 
 		private:
 
-			default_sequence_container_t<entry_type, Size> entries_;
+			sequence_container_t<entry_type, Size> entries_;
 		};
 
 		// Superclass for ga::clifford_expression<ValueType, Expression>.
@@ -221,19 +221,24 @@ namespace ga {
 		class _super_clifford_expression {
 		public:
 
-			typedef ValueType value_type;
-			typedef default_bitset_t bitset_type;
-			typedef default_associative_container_t<value_type> map_type;
+			using value_type = ValueType;
+			using bitset_type = bitset_t;
+			using map_type = associative_container_t<value_type>;
 
-			typedef sequential_storage<value_type, StoredValuesCount> value_storage_type;
-			typedef sequential_storage<bitset_type, StoredBitsetsCount> bitset_storage_type;
-			typedef sequential_storage<map_type, StoredMapsCount> map_storage_type;
+			using value_storage_type = sequential_storage<value_type, StoredValuesCount>;
+			using bitset_storage_type = sequential_storage<bitset_type, StoredBitsetsCount>;
+			using map_storage_type = sequential_storage<map_type, StoredMapsCount>;
 
-			constexpr _super_clifford_expression() = default;
+			constexpr _super_clifford_expression() noexcept :
+				values_{},
+				bitsets_{},
+				maps_{} {
+			}
+
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets, map_storage_type &&maps) :
+			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets, map_storage_type &&maps) noexcept :
 				values_(std::move(values)),
 				bitsets_(std::move(bitsets)),
 				maps_(std::move(maps)) {
@@ -242,27 +247,27 @@ namespace ga {
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-			constexpr value_storage_type & values() {
+			constexpr value_storage_type & values() noexcept {
 				return values_;
 			}
 
-			constexpr value_storage_type const & values() const {
+			constexpr value_storage_type const & values() const noexcept {
 				return values_;
 			}
 
-			constexpr bitset_storage_type & bitsets() {
+			constexpr bitset_storage_type & bitsets() noexcept {
 				return bitsets_;
 			}
 
-			constexpr bitset_storage_type const & bitsets() const {
+			constexpr bitset_storage_type const & bitsets() const noexcept {
 				return bitsets_;
 			}
 
-			constexpr map_storage_type & maps() {
+			constexpr map_storage_type & maps() noexcept {
 				return maps_;
 			}
 
-			constexpr map_storage_type const & maps() const {
+			constexpr map_storage_type const & maps() const noexcept {
 				return maps_;
 			}
 
@@ -277,24 +282,28 @@ namespace ga {
 		class _super_clifford_expression<ValueType, Expression, 0, StoredBitsetsCount, StoredMapsCount> {
 		public:
 
-			typedef ValueType value_type;
-			typedef default_bitset_t bitset_type;
-			typedef default_associative_container_t<value_type> map_type;
+			using value_type = ValueType;
+			using bitset_type = bitset_t;
+			using map_type = associative_container_t<value_type>;
 
-			typedef sequential_storage<value_type, 0> value_storage_type;
-			typedef sequential_storage<bitset_type, StoredBitsetsCount> bitset_storage_type;
-			typedef sequential_storage<map_type, StoredMapsCount> map_storage_type;
+			using value_storage_type = sequential_storage<value_type, 0>;
+			using bitset_storage_type = sequential_storage<bitset_type, StoredBitsetsCount>;
+			using map_storage_type = sequential_storage<map_type, StoredMapsCount>;
 
-			constexpr _super_clifford_expression() = default;
+			constexpr _super_clifford_expression() noexcept :
+				bitsets_{},
+				maps_{} {
+			}
+
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&bitsets, map_storage_type &&maps) :
+			constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&bitsets, map_storage_type &&maps) noexcept :
 				bitsets_(std::move(bitsets)),
 				maps_(std::move(maps)) {
 			}
 			
-			constexpr _super_clifford_expression(bitset_storage_type &&bitsets, map_storage_type &&maps) :
+			constexpr _super_clifford_expression(bitset_storage_type &&bitsets, map_storage_type &&maps) noexcept :
 				bitsets_(std::move(bitsets)),
 				maps_(std::move(maps)) {
 			}
@@ -302,23 +311,23 @@ namespace ga {
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-			constexpr value_storage_type values() const {
+			constexpr value_storage_type values() const noexcept {
 				return value_storage_type();
 			}
 
-			constexpr bitset_storage_type & bitsets() {
+			constexpr bitset_storage_type & bitsets() noexcept {
 				return bitsets_;
 			}
 
-			constexpr bitset_storage_type const & bitsets() const {
+			constexpr bitset_storage_type const & bitsets() const noexcept {
 				return bitsets_;
 			}
 
-			constexpr map_storage_type & maps() {
+			constexpr map_storage_type & maps() noexcept {
 				return maps_;
 			}
 
-			constexpr map_storage_type const & maps() const {
+			constexpr map_storage_type const & maps() const noexcept {
 				return maps_;
 			}
 
@@ -332,24 +341,28 @@ namespace ga {
 		class _super_clifford_expression<ValueType, Expression, StoredValuesCount, 0, StoredMapsCount> {
 		public:
 
-			typedef ValueType value_type;
-			typedef default_bitset_t bitset_type;
-			typedef default_associative_container_t<value_type> map_type;
+			using value_type = ValueType;
+			using bitset_type = bitset_t;
+			using map_type = associative_container_t<value_type>;
 
-			typedef sequential_storage<value_type, StoredValuesCount> value_storage_type;
-			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
-			typedef sequential_storage<map_type, StoredMapsCount> map_storage_type;
+			using value_storage_type = sequential_storage<value_type, StoredValuesCount>;
+			using bitset_storage_type = sequential_storage<bitset_type, 0>;
+			using map_storage_type = sequential_storage<map_type, StoredMapsCount>;
 
-			constexpr _super_clifford_expression() = default;
+			constexpr _super_clifford_expression() noexcept :
+				values_{},
+				maps_{} {
+			}
+
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&, map_storage_type &&maps) :
+			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&, map_storage_type &&maps) noexcept :
 				values_(std::move(values)),
 				maps_(std::move(maps)) {
 			}
 
-			constexpr _super_clifford_expression(value_storage_type &&values, map_storage_type &&maps) :
+			constexpr _super_clifford_expression(value_storage_type &&values, map_storage_type &&maps) noexcept :
 				values_(std::move(values)),
 				maps_(std::move(maps)) {
 			}
@@ -357,23 +370,23 @@ namespace ga {
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-			constexpr value_storage_type & values() {
+			constexpr value_storage_type & values() noexcept {
 				return values_;
 			}
 
-			constexpr value_storage_type const & values() const {
+			constexpr value_storage_type const & values() const noexcept {
 				return values_;
 			}
 
-			constexpr bitset_storage_type bitsets() const {
+			constexpr bitset_storage_type bitsets() const noexcept {
 				return bitset_storage_type();
 			}
 
-			constexpr map_storage_type & maps() {
+			constexpr map_storage_type & maps() noexcept {
 				return maps_;
 			}
 
-			constexpr map_storage_type const & maps() const {
+			constexpr map_storage_type const & maps() const noexcept {
 				return maps_;
 			}
 
@@ -387,42 +400,45 @@ namespace ga {
 		class _super_clifford_expression<ValueType, Expression, 0, 0, StoredMapsCount> {
 		public:
 
-			typedef ValueType value_type;
-			typedef default_bitset_t bitset_type;
-			typedef default_associative_container_t<value_type> map_type;
+			using value_type = ValueType;
+			using bitset_type = bitset_t;
+			using map_type = associative_container_t<value_type>;
 
-			typedef sequential_storage<value_type, 0> value_storage_type;
-			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
-			typedef sequential_storage<map_type, StoredMapsCount> map_storage_type;
+			using value_storage_type = sequential_storage<value_type, 0>;
+			using bitset_storage_type = sequential_storage<bitset_type, 0>;
+			using map_storage_type = sequential_storage<map_type, StoredMapsCount>;
 
-			constexpr _super_clifford_expression() = default;
+			constexpr _super_clifford_expression() noexcept :
+				maps_{} {
+			}
+
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&, map_storage_type &&maps) :
+			constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&, map_storage_type &&maps) noexcept :
 				maps_(std::move(maps)) {
 			}
 
-			constexpr _super_clifford_expression(map_storage_type &&maps) :
+			constexpr _super_clifford_expression(map_storage_type &&maps) noexcept :
 				maps_(std::move(maps)) {
 			}
 
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-			constexpr value_storage_type values() const {
+			constexpr value_storage_type values() const noexcept {
 				return value_storage_type();
 			}
 
-			constexpr bitset_storage_type bitsets() const {
+			constexpr bitset_storage_type bitsets() const noexcept {
 				return bitset_storage_type();
 			}
 
-			constexpr map_storage_type & maps() {
+			constexpr map_storage_type & maps() noexcept {
 				return maps_;
 			}
 
-			constexpr map_storage_type const & maps() const {
+			constexpr map_storage_type const & maps() const noexcept {
 				return maps_;
 			}
 
@@ -435,24 +451,28 @@ namespace ga {
 		class _super_clifford_expression<ValueType, Expression, StoredValuesCount, StoredBitsetsCount, 0> {
 		public:
 
-			typedef ValueType value_type;
-			typedef default_bitset_t bitset_type;
-			typedef default_associative_container_t<value_type> map_type;
+			using value_type = ValueType;
+			using bitset_type = bitset_t;
+			using map_type = associative_container_t<value_type>;
 
-			typedef sequential_storage<value_type, StoredValuesCount> value_storage_type;
-			typedef sequential_storage<bitset_type, StoredBitsetsCount> bitset_storage_type;
-			typedef sequential_storage<map_type, 0> map_storage_type;
+			using value_storage_type = sequential_storage<value_type, StoredValuesCount>;
+			using bitset_storage_type = sequential_storage<bitset_type, StoredBitsetsCount>;
+			using map_storage_type = sequential_storage<map_type, 0>;
 
-			constexpr _super_clifford_expression() = default;
+			constexpr _super_clifford_expression() noexcept :
+				values_{},
+				bitsets_{} {
+			}
+
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets, map_storage_type &&) :
+			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets, map_storage_type &&) noexcept :
 				values_(std::move(values)),
 				bitsets_(std::move(bitsets)) {
 			}
 
-			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets) :
+			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets) noexcept :
 				values_(std::move(values)),
 				bitsets_(std::move(bitsets)) {
 			}
@@ -460,23 +480,23 @@ namespace ga {
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-			constexpr value_storage_type & values() {
+			constexpr value_storage_type & values() noexcept {
 				return values_;
 			}
 
-			constexpr value_storage_type const & values() const {
+			constexpr value_storage_type const & values() const noexcept {
 				return values_;
 			}
 
-			constexpr bitset_storage_type & bitsets() {
+			constexpr bitset_storage_type & bitsets() noexcept {
 				return bitsets_;
 			}
 
-			constexpr bitset_storage_type const & bitsets() const {
+			constexpr bitset_storage_type const & bitsets() const noexcept {
 				return bitsets_;
 			}
 
-			constexpr map_storage_type maps() const {
+			constexpr map_storage_type maps() const noexcept {
 				return map_storage_type();
 			}
 
@@ -490,42 +510,45 @@ namespace ga {
 		class _super_clifford_expression<ValueType, Expression, 0, StoredBitsetsCount, 0> {
 		public:
 
-			typedef ValueType value_type;
-			typedef default_bitset_t bitset_type;
-			typedef default_associative_container_t<value_type> map_type;
+			using value_type = ValueType;
+			using bitset_type = bitset_t;
+			using map_type = associative_container_t<value_type>;
 
-			typedef sequential_storage<value_type, 0> value_storage_type;
-			typedef sequential_storage<bitset_type, StoredBitsetsCount> bitset_storage_type;
-			typedef sequential_storage<map_type, 0> map_storage_type;
+			using value_storage_type = sequential_storage<value_type, 0>;
+			using bitset_storage_type = sequential_storage<bitset_type, StoredBitsetsCount>;
+			using map_storage_type = sequential_storage<map_type, 0>;
 
-			constexpr _super_clifford_expression() = default;
+			constexpr _super_clifford_expression() noexcept :
+				bitsets_{} {
+			}
+
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&bitsets, map_storage_type &&) :
+			constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&bitsets, map_storage_type &&) noexcept :
 				bitsets_(std::move(bitsets)) {
 			}
 
-			constexpr _super_clifford_expression(bitset_storage_type &&bitsets) :
+			constexpr _super_clifford_expression(bitset_storage_type &&bitsets) noexcept :
 				bitsets_(std::move(bitsets)) {
 			}
 
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-			constexpr value_storage_type values() const {
+			constexpr value_storage_type values() const noexcept {
 				return value_storage_type();
 			}
 
-			constexpr bitset_storage_type & bitsets() {
+			constexpr bitset_storage_type & bitsets() noexcept {
 				return bitsets_;
 			}
 
-			constexpr bitset_storage_type const & bitsets() const {
+			constexpr bitset_storage_type const & bitsets() const noexcept {
 				return bitsets_;
 			}
 
-			constexpr map_storage_type maps() const {
+			constexpr map_storage_type maps() const noexcept {
 				return map_storage_type();
 			}
 
@@ -538,42 +561,45 @@ namespace ga {
 		class _super_clifford_expression<ValueType, Expression, StoredValuesCount, 0, 0> {
 		public:
 
-			typedef ValueType value_type;
-			typedef default_bitset_t bitset_type;
-			typedef default_associative_container_t<value_type> map_type;
+			using value_type = ValueType;
+			using bitset_type = bitset_t;
+			using map_type = associative_container_t<value_type>;
 
-			typedef sequential_storage<value_type, StoredValuesCount> value_storage_type;
-			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
-			typedef sequential_storage<map_type, 0> map_storage_type;
+			using value_storage_type = sequential_storage<value_type, StoredValuesCount>;
+			using bitset_storage_type = sequential_storage<bitset_type, 0>;
+			using map_storage_type = sequential_storage<map_type, 0>;
 
-			constexpr _super_clifford_expression() = default;
+			constexpr _super_clifford_expression() noexcept :
+				values_{} {
+			}
+
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&, map_storage_type &&) :
+			constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&, map_storage_type &&) noexcept :
 				values_(std::move(values)) {
 			}
 
-			constexpr _super_clifford_expression(value_storage_type &&values) :
+			constexpr _super_clifford_expression(value_storage_type &&values) noexcept :
 				values_(std::move(values)) {
 			}
 
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-			constexpr value_storage_type & values() {
+			constexpr value_storage_type & values() noexcept {
 				return values_;
 			}
 
-			constexpr value_storage_type const & values() const {
+			constexpr value_storage_type const & values() const noexcept {
 				return values_;
 			}
 
-			constexpr bitset_storage_type bitsets() const {
+			constexpr bitset_storage_type bitsets() const noexcept {
 				return bitset_storage_type();
 			}
 
-			constexpr map_storage_type maps() const {
+			constexpr map_storage_type maps() const noexcept {
 				return map_storage_type();
 			}
 
@@ -586,36 +612,35 @@ namespace ga {
 		class _super_clifford_expression<ValueType, Expression, 0, 0, 0> {
 		public:
 
-			typedef ValueType value_type;
-			typedef default_bitset_t bitset_type;
-			typedef default_associative_container_t<value_type> map_type;
+			using value_type = ValueType;
+			using bitset_type = bitset_t;
+			using map_type = associative_container_t<value_type>;
 
-			typedef sequential_storage<value_type, 0> value_storage_type;
-			typedef sequential_storage<bitset_type, 0> bitset_storage_type;
-			typedef sequential_storage<map_type, 0> map_storage_type;
+			using value_storage_type = sequential_storage<value_type, 0>;
+			using bitset_storage_type = sequential_storage<bitset_type, 0>;
+			using map_storage_type = sequential_storage<map_type, 0>;
 
 			constexpr _super_clifford_expression() = default;
 			constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-			constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&, map_storage_type &&) {
+			constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&, map_storage_type &&) noexcept {
 			}
 
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
 			constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-			constexpr value_storage_type values() const {
+			constexpr value_storage_type values() const noexcept {
 				return value_storage_type();
 			}
 
-			constexpr bitset_storage_type bitsets() const {
+			constexpr bitset_storage_type bitsets() const noexcept {
 				return bitset_storage_type();
 			}
 
-			constexpr map_storage_type maps() const {
+			constexpr map_storage_type maps() const noexcept {
 				return map_storage_type();
 			}
-
 		};
 
 		// Cast scalar expressions to native value.
@@ -623,15 +648,15 @@ namespace ga {
 		struct _clifford_expression_to_native;
 		
 		template<typename Coefficient>
-		struct _clifford_expression_to_native<component<Coefficient, constant_basis_blade<default_bitset_t(0)> >, true> {
+		struct _clifford_expression_to_native<component<Coefficient, constant_basis_blade<bitset_t(0)> >, true> {
 			template<typename ValueCItr>
-			constexpr static decltype(auto) eval(ValueCItr const &) {
+			constexpr static decltype(auto) eval(ValueCItr const &) noexcept {
 				return Coefficient::eval<0, 0>(std::tuple<>());
 			}
 		};
 
 		template<>
-		struct _clifford_expression_to_native<component<stored_value, constant_basis_blade<default_bitset_t(0)> >, false> {
+		struct _clifford_expression_to_native<component<stored_value, constant_basis_blade<bitset_t(0)> >, false> {
 			template<typename ValueCItr>
 			constexpr static decltype(auto) eval(ValueCItr const &value_itr) {
 				return *value_itr;
@@ -640,22 +665,18 @@ namespace ga {
 
 	}
 
-	// Copies the coefficients of the left-hand side Clifford expression into the right-hand side Clifford expression.
-	template<typename InputCoefficientType, typename InputExpression, typename ResultCoefficientType, typename ResultExpression>
-	constexpr void copy(clifford_expression<InputCoefficientType, InputExpression> const &input, clifford_expression<ResultCoefficientType, ResultExpression> &result);
-
 	// Clifford expression.
 	template<typename CoefficientType, typename Expression>
 	class clifford_expression final :
 		private detail::_super_clifford_expression<CoefficientType, Expression> {
 	private:
 
-		typedef detail::_super_clifford_expression<CoefficientType, Expression> super;
+		using super = detail::_super_clifford_expression<CoefficientType, Expression>;
 
 	public:
 
-		typedef CoefficientType coefficient_type;
-		typedef Expression expression_type;
+		using coefficient_type = CoefficientType;
+		using expression_type = Expression;
 		
 		using typename super::value_type;
 		using typename super::bitset_type;
@@ -674,25 +695,20 @@ namespace ga {
 		constexpr clifford_expression(clifford_expression &&) = default;
 
 		template<typename OtherCoefficientType, typename OtherExpression>
-		constexpr clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> const &other) {
-			copy(other, *this);
-		}
+		constexpr clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> const &) = delete;
+
+		template<typename OtherCoefficientType, typename OtherExpression>
+		constexpr clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> &&) = delete;
 
 		template<typename... StorageTypes>
-		constexpr clifford_expression(StorageTypes &&... args) :
+		constexpr clifford_expression(StorageTypes &&... args) noexcept :
 			super(std::move(args)...) {
 		}
 
 		constexpr clifford_expression & operator=(clifford_expression const &) = default;
 		constexpr clifford_expression & operator=(clifford_expression &&) = default;
 
-		template<typename OtherCoefficientType, typename OtherExpression>
-		constexpr clifford_expression & operator=(clifford_expression<OtherCoefficientType, OtherExpression> const &other) {
-			copy(other, *this);
-			return *this;
-		}
-
-		template<typename Type, typename = std::enable_if_t<detail::is_scalar_component_v<Expression> && detail::can_be_stored_v<Expression> > >
+		template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> && detail::is_scalar_component_v<Expression> && detail::can_be_stored_v<Expression> > >
 		constexpr operator Type() const {
 			return detail::_clifford_expression_to_native<Expression>::eval(super::values().cbegin());
 		}
@@ -700,7 +716,7 @@ namespace ga {
 
 	// Helper function to build a sequential storage of values, bitsets or maps.
 	template<typename... Args>
-	constexpr decltype(auto) make_sequential_storage(Args &&... args) {
+	constexpr decltype(auto) make_sequential_storage(Args &&... args) noexcept {
 		return detail::sequential_storage<std::common_type_t<std::remove_cv_t<std::remove_reference_t<Args> >...>, sizeof...(args)>(std::move(args)...);
 	}
 

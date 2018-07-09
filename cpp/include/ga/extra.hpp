@@ -28,6 +28,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #include "ga/extra/default_tolerance.hpp"
 
 #include "ga/extra/grade.hpp"
+#include "ga/extra/take_grade.hpp"
 
 #include "ga/extra/reverse_norm.hpp"
 #include "ga/extra/unit.hpp"
@@ -40,10 +41,14 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #include "ga/extra/blade_exponential.hpp"
 
 #include "ga/extra/commutator_product.hpp"
+#include "ga/extra/delta_product.hpp"
 
 #include "ga/extra/dualization.hpp"
 
-#include "ga/extra/take_grade.hpp"
+#include "ga/extra/trivial_copy.hpp"
+
+#include "ga/extra/fast_meet_and_join.hpp"
+#include "ga/extra/meet_and_join.hpp"
 
 #include "ga/extra/write.hpp"
 

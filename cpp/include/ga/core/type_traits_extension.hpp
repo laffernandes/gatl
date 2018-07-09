@@ -55,12 +55,12 @@ namespace ga {
 
 		// Helper function to convert a tuple into a list-initialization structure.
 		template<typename Tuple, std::size_t... Indices>
-		constexpr decltype(auto) _to_list_initialization(Tuple &&tuple, indices<Indices...>) {
+		constexpr decltype(auto) _to_list_initialization(Tuple &&tuple, indices<Indices...>) noexcept {
 			return { std::get<Indices>(std::move(tuple))... };
 		}
 
 		template<typename Tuple>
-		constexpr decltype(auto) to_list_initialization(Tuple &&tuple) {
+		constexpr decltype(auto) to_list_initialization(Tuple &&tuple) noexcept {
 			return _to_list_initialization(std::move(tuple), build_indices_t<std::tuple_size_v<std::remove_cv_t<std::remove_reference_t<Tuple> > > >());
 		}
 

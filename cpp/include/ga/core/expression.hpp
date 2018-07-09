@@ -104,7 +104,7 @@ namespace ga {
 		struct possible_grades;
 
 		template<typename BasisBlade>
-		constexpr default_bitset_t possible_grades_v = possible_grades<BasisBlade>::value;
+		constexpr bitset_t possible_grades_v = possible_grades<BasisBlade>::value;
 
 		// Product operation.
 		template<typename LeftExpression, typename RightExpression, typename Mapping>
@@ -125,15 +125,15 @@ namespace ga {
 	namespace detail {
 
 		// Tag of variables/arguments.
-		typedef std::uint16_t tag_t;
+		using tag_t = std::uint16_t;
 
 		// Integral value defined in compilation time.
 		template<default_integral_t Value>
 		struct constant_value {
-			typedef constant_value type;
+			using type = constant_value;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
-			constexpr static default_integral_t eval(std::tuple<InputTypes...> const &) {
+			constexpr static default_integral_t eval(std::tuple<InputTypes...> const &) noexcept {
 				return Value;
 			}
 		};
@@ -141,7 +141,7 @@ namespace ga {
 		// Lazy getter for stored values.
 		template<tag_t Tag, std::size_t Index>
 		struct get_value {
-			typedef get_value type;
+			using type = get_value;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -153,32 +153,33 @@ namespace ga {
 		// Lazy getter for values stored in a map.
 		template<tag_t Tag, std::size_t Index>
 		struct get_map_values {
-			typedef get_map_values type;
+			using type = get_map_values;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &) {
 				static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
-				return nullptr; //TODO Not supported yet (map)
+				//TODO Not supported yet (map)
+				throw not_implemented_error("Sorry! The use of ga::clifford_expresion<CoefficientType, Expression> with ga::associative_container_t<ValueType> is not supported yet.");
 			}
 		};
 
 		// A value stored by the current clifford_expression<...>.
 		struct stored_value {
-			typedef stored_value type;
+			using type = stored_value;
 		};
 
 		// A collection of values stored in a map by the current clifford_expression<...>.
 		struct stored_map_values {
-			typedef stored_map_values type;
+			using type = stored_map_values;
 		};
 
 		// Bitset defined in compilation time.
-		template<default_bitset_t Bitset>
+		template<bitset_t Bitset>
 		struct constant_bitset {
-			typedef constant_bitset type;
+			using type = constant_bitset;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
-			constexpr static default_bitset_t eval(std::tuple<InputTypes...> const &) {
+			constexpr static bitset_t eval(std::tuple<InputTypes...> const &) noexcept {
 				return Bitset;
 			}
 		};
@@ -186,10 +187,10 @@ namespace ga {
 		// Lazy getter for stored bitsets.
 		template<tag_t Tag, std::size_t Index>
 		struct get_bitset {
-			typedef get_bitset type;
+			using type = get_bitset;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
-			constexpr static default_bitset_t eval(std::tuple<InputTypes...> const &args) {
+			constexpr static bitset_t eval(std::tuple<InputTypes...> const &args) {
 				static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
 				return *std::next(std::get<Tag - LowerTag>(args).bitsets().cbegin(), Index);
 			}
@@ -198,55 +199,56 @@ namespace ga {
 		// Lazy getter for bisets stored in a map.
 		template<tag_t Tag, std::size_t Index>
 		struct get_map_bitsets {
-			typedef get_map_bitsets type;
+			using type = get_map_bitsets;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &) {
 				static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
-				return nullptr; //TODO Not supported yet (map)
+				//TODO Not supported yet (map)
+				throw not_implemented_error("Sorry! The use of ga::clifford_expresion<CoefficientType, Expression> with ga::associative_container_t<ValueType> is not supported yet.");
 			}
 		};
 
 		// A bitset stored by the current clifford_expression<...>.
 		struct stored_bitset {
-			typedef stored_value type;
+			using type = stored_value;
 		};
 
 		// A collection of bitsets stored in a map by the current clifford_expression<...>.
 		struct stored_map_bitsets {
-			typedef stored_map_bitsets type;
+			using type = stored_map_bitsets;
 		};
 
 		// Basis blade defined in compilation time.
-		template<default_bitset_t BasisVectors>
+		template<bitset_t BasisVectors>
 		struct constant_basis_blade {
-			typedef constant_basis_blade type;
+			using type = constant_basis_blade;
 		};
 
 		// Basis blade defined in runtime.
-		template<default_bitset_t PossibleGrades, typename Bitset>
+		template<bitset_t PossibleGrades, typename Bitset>
 		struct dynamic_basis_blade {
-			typedef dynamic_basis_blade type; // default
+			using type = dynamic_basis_blade; // default
 		};
 
 		template<typename Bitset>
-		struct dynamic_basis_blade<default_bitset_t(1), Bitset> {
-			typedef constant_basis_blade<default_bitset_t(0)> type; // scalar for sure
+		struct dynamic_basis_blade<bitset_t(1), Bitset> {
+			using type = constant_basis_blade<bitset_t(0)>; // scalar for sure
 		};
 
 		template<>
-		struct dynamic_basis_blade<default_bitset_t(1), constant_bitset<default_bitset_t(0)> > {
-			typedef constant_basis_blade<default_bitset_t(0)> type; // scalar for sure
+		struct dynamic_basis_blade<bitset_t(1), constant_bitset<bitset_t(0)> > {
+			using type = constant_basis_blade<bitset_t(0)>; // scalar for sure
 		};
 
-		template<default_bitset_t PossibleGrades, default_bitset_t Bitset>
+		template<bitset_t PossibleGrades, bitset_t Bitset>
 		struct dynamic_basis_blade<PossibleGrades, constant_bitset<Bitset> > {
-			typedef constant_basis_blade<Bitset> type; // it is not dynamic
+			using type = constant_basis_blade<Bitset>; // it is not dynamic
 
 			static_assert(PossibleGrades == possible_grades_v<type>, "The possible grades are inconsistent.");
 		};
 
-		template<default_bitset_t PossibleGrades, typename Bitset>
+		template<bitset_t PossibleGrades, typename Bitset>
 		using dynamic_basis_blade_t = typename dynamic_basis_blade<PossibleGrades, Bitset>::type;
 
 		// A set of basis blades multiplied by some real-valued expression (the coefficient).
@@ -254,23 +256,23 @@ namespace ga {
 		struct component {
 		private:
 
-			constexpr static default_bitset_t possible_grades = possible_grades_v<BasisBlade>;
+			constexpr static bitset_t possible_grades = possible_grades_v<BasisBlade>;
 
-			typedef std::conditional_t<
-				possible_grades == default_bitset_t(0),
+			using coefficient = std::conditional_t<
+				possible_grades == bitset_t(0),
 				constant_value<0>, // impossible basis blade
 				Coefficient
-			> coefficient;
+			>;
 			
-			typedef std::conditional_t<
-				std::is_same_v<Coefficient, constant_value<0> > || possible_grades == default_bitset_t(0),
-				constant_basis_blade<default_bitset_t(0)>,  // impossible basis blade or zero
+			using basis_blade = std::conditional_t<
+				std::is_same_v<Coefficient, constant_value<0> > || possible_grades == bitset_t(0),
+				constant_basis_blade<bitset_t(0)>,  // impossible basis blade or zero
 				BasisBlade
-			> basis_blade;
+			>;
 
 		public:
 			
-			typedef component<coefficient, basis_blade> type;
+			using type = component<coefficient, basis_blade>;
 		};
 
 		template<typename Coefficient, typename BasisBlade>
@@ -439,7 +441,7 @@ namespace ga {
 		using power = function<name_t::power, LeftArgument, RightArgument>;
 
 		template<typename LeftArgument, typename RightArgument>
-		struct _power; //TODO Is it a problem?
+		struct _power;
 
 		template<typename LeftArgument, typename RightArgument>
 		using power_t = typename _power<LeftArgument, RightArgument>::type;
@@ -461,19 +463,19 @@ namespace ga {
 		// Specializations of reordering_sign<LeftBitset, RightBitset>.
 		template<typename LeftBitset, typename RightBitset>
 		struct function<name_t::reordering_sign, LeftBitset, RightBitset> {
-			typedef std::conditional_t<
-				std::is_same_v<LeftBitset, constant_bitset<default_bitset_t(0)> > || std::is_same_v<RightBitset, constant_bitset<default_bitset_t(0)> >,
+			using type = std::conditional_t<
+				std::is_same_v<LeftBitset, constant_bitset<bitset_t(0)> > || std::is_same_v<RightBitset, constant_bitset<bitset_t(0)> >,
 				constant_value<1>, // simplify
 				function // default
-			> type;
+			>;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static default_integral_t eval(std::tuple<InputTypes...> const &args) {
-				default_bitset_t lhs = LeftBitset::eval<LowerTag, UpperTag>(args);
-				default_bitset_t const rhs = RightBitset::eval<LowerTag, UpperTag>(args);
+				bitset_t lhs = LeftBitset::eval<LowerTag, UpperTag>(args);
+				bitset_t const rhs = RightBitset::eval<LowerTag, UpperTag>(args);
 				lhs >>= 1;
 				int changes = 0;
-				while (lhs != default_bitset_t(0)) {
+				while (lhs != bitset_t(0)) {
 					changes += ones(lhs & rhs);
 					lhs >>= 1;
 				}
@@ -481,15 +483,15 @@ namespace ga {
 			}
 		};
 
-		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
+		template<bitset_t LeftBitset, bitset_t RightBitset>
 		struct function<name_t::reordering_sign, constant_bitset<LeftBitset>, constant_bitset<RightBitset> > {
-			typedef constant_value<((swaps_count((LeftBitset >> 1), RightBitset) & 1) != 0) ? -1 : 1> type; // simplify
+			using type = constant_value<((swaps_count((LeftBitset >> 1), RightBitset) & 1) != 0) ? -1 : 1>; // simplify
 		};
 
 		// Specializations of count_one_bits<Bitset>.
 		template<typename Bitset>
 		struct function<name_t::count_one_bits, Bitset> {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static default_integral_t eval(std::tuple<InputTypes...> const &args) {
@@ -497,19 +499,19 @@ namespace ga {
 			}
 		};
 
-		template<default_bitset_t Bitset>
+		template<bitset_t Bitset>
 		struct function<name_t::count_one_bits, constant_bitset<Bitset> > {
-			typedef constant_value<ones(Bitset)> type; // simplify
+			using type = constant_value<ones(Bitset)>; // simplify
 		};
 
 		// Specializations of bitwise_left_shift<LeftBitset, RightValue>.
 		template<typename LeftBitset, typename RightValue>
 		struct function<name_t::bitwise_left_shift, LeftBitset, RightValue> {
-			typedef std::conditional_t<
-				std::is_same_v<LeftBitset, constant_bitset<default_bitset_t(0)> > || std::is_same_v<RightValue, constant_value<0> >,
+			using type = std::conditional_t<
+				std::is_same_v<LeftBitset, constant_bitset<bitset_t(0)> > || std::is_same_v<RightValue, constant_value<0> >,
 				LeftBitset, // simplify
 				function // default
-			> type;
+			>;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -517,60 +519,60 @@ namespace ga {
 			}
 		};
 
-		template<default_bitset_t LeftBitset, default_integral_t RightValue>
+		template<bitset_t LeftBitset, default_integral_t RightValue>
 		struct function<name_t::bitwise_left_shift, constant_bitset<LeftBitset>, constant_value<RightValue> > {
-			typedef constant_bitset<(LeftBitset << RightValue)> type; // simplify
+			using type = constant_bitset<(LeftBitset << RightValue)>; // simplify
 		};
 
 		// Specializations of bitwise_uminus<Bitset>.
 		template<typename Bitset>
 		struct function<name_t::bitwise_uminus, Bitset> {
-			typedef function type;
+			using type = function;
 				
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
-			constexpr static default_bitset_t eval(std::tuple<InputTypes...> const &args) {
+			constexpr static bitset_t eval(std::tuple<InputTypes...> const &args) {
 				return -Bitset::eval<LowerTag, UpperTag>(args);
 			}
 		};
 
 		template<typename Bitset>
 		struct function<name_t::bitwise_uminus, bitwise_uminus<Bitset> > {
-			typedef Bitset type; // simplify
+			using type = Bitset; // simplify
 		};
 
-		template<default_bitset_t Bitset>
+		template<bitset_t Bitset>
 		struct function<name_t::bitwise_uminus, constant_bitset<Bitset> > {
-			typedef constant_bitset<-std::make_signed_t<default_bitset_t>(Bitset)> type; // simplify
+			using type = constant_bitset<-std::make_signed_t<bitset_t>(Bitset)>; // simplify
 		};
 
 		// Specializations of bitwise_dec<Bitset>.
 		template<typename Bitset>
 		struct function<name_t::bitwise_dec, Bitset> {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
-			constexpr static default_bitset_t eval(std::tuple<InputTypes...> const &args) {
-				return Bitset::eval<LowerTag, UpperTag>(args) - default_bitset_t(1);
+			constexpr static bitset_t eval(std::tuple<InputTypes...> const &args) {
+				return Bitset::eval<LowerTag, UpperTag>(args) - bitset_t(1);
 			}
 		};
 
-		template<default_bitset_t Bitset>
+		template<bitset_t Bitset>
 		struct function<name_t::bitwise_dec, constant_bitset<Bitset> > {
-			typedef constant_bitset<Bitset - default_bitset_t(1)> type; // simplify
+			using type = constant_bitset<Bitset - bitset_t(1)>; // simplify
 		};
 
 		// Specializations of bitwise_and<LeftType, RightType>.
 		template<typename LeftType, typename RightType>
 		struct function<name_t::bitwise_and, LeftType, RightType> {
-			typedef std::conditional_t<
+			using type = std::conditional_t<
 				std::is_same_v<LeftType, constant_value<0> > || std::is_same_v<RightType, constant_value<0> >,
 				constant_value<0>, // simplify
 				std::conditional_t<
-					std::is_same_v<LeftType, constant_bitset<default_bitset_t(0)> > || std::is_same_v<RightType, constant_bitset<default_bitset_t(0)> >,
-					constant_bitset<default_bitset_t(0)>, // simplify
+					std::is_same_v<LeftType, constant_bitset<bitset_t(0)> > || std::is_same_v<RightType, constant_bitset<bitset_t(0)> >,
+					constant_bitset<bitset_t(0)>, // simplify
 					function // default
 				>
-			> type;
+			>;
 				
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -580,26 +582,26 @@ namespace ga {
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
 		struct function<name_t::bitwise_and, constant_value<LeftValue>, constant_value<RightValue> > {
-			typedef constant_value<LeftValue & RightValue> type; // simplify
+			using type = constant_value<LeftValue & RightValue>; // simplify
 		};
 
-		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
+		template<bitset_t LeftBitset, bitset_t RightBitset>
 		struct function<name_t::bitwise_and, constant_bitset<LeftBitset>, constant_bitset<RightBitset> > {
-			typedef constant_bitset<LeftBitset & RightBitset> type; // simplify
+			using type = constant_bitset<LeftBitset & RightBitset>; // simplify
 		};
 
 		// Specializations of bitwise_or<LeftType, RightType>.
 		template<typename LeftType, typename RightType>
 		struct function<name_t::bitwise_or, LeftType, RightType> {
-			typedef std::conditional_t<
-				std::is_same_v<LeftType, constant_value<0> > || std::is_same_v<LeftType, constant_bitset<default_bitset_t(0)> >,
+			using type = std::conditional_t<
+				std::is_same_v<LeftType, constant_value<0> > || std::is_same_v<LeftType, constant_bitset<bitset_t(0)> >,
 				RightType, // simplify
 				std::conditional_t<
-					std::is_same_v<RightType, constant_value<0> > || std::is_same_v<RightType, constant_bitset<default_bitset_t(0)> >,
+					std::is_same_v<RightType, constant_value<0> > || std::is_same_v<RightType, constant_bitset<bitset_t(0)> >,
 					LeftType, // simplify
 					function // default
 				>
-			> type;
+			>;
 				
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -609,26 +611,26 @@ namespace ga {
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
 		struct function<name_t::bitwise_or, constant_value<LeftValue>, constant_value<RightValue> > {
-			typedef constant_value<LeftValue | RightValue> type; // simplify
+			using type = constant_value<LeftValue | RightValue>; // simplify
 		};
 
-		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
+		template<bitset_t LeftBitset, bitset_t RightBitset>
 		struct function<name_t::bitwise_or, constant_bitset<LeftBitset>, constant_bitset<RightBitset> > {
-			typedef constant_bitset<LeftBitset | RightBitset> type; // simplify
+			using type = constant_bitset<LeftBitset | RightBitset>; // simplify
 		};
 
 		// Specialization bitwise_xor<LeftType, RightType>.
 		template<typename LeftType, typename RightType>
 		struct function<name_t::bitwise_xor, LeftType, RightType> {
-			typedef std::conditional_t<
-				std::is_same_v<LeftType, constant_value<0> > || std::is_same_v<LeftType, constant_bitset<default_bitset_t(0)> >,
+			using type = std::conditional_t<
+				std::is_same_v<LeftType, constant_value<0> > || std::is_same_v<LeftType, constant_bitset<bitset_t(0)> >,
 				RightType, // simplify
 				std::conditional_t<
-					std::is_same_v<RightType, constant_value<0> > || std::is_same_v<RightType, constant_bitset<default_bitset_t(0)> >,
+					std::is_same_v<RightType, constant_value<0> > || std::is_same_v<RightType, constant_bitset<bitset_t(0)> >,
 					LeftType, // simplify
 					function // default
 				>
-			> type;
+			>;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -638,18 +640,18 @@ namespace ga {
 
 		template<default_integral_t LeftValue, default_integral_t RightValue>
 		struct function<name_t::bitwise_xor, constant_value<LeftValue>, constant_value<RightValue> > {
-			typedef constant_value<LeftValue ^ RightValue> type; // simplify
+			using type = constant_value<LeftValue ^ RightValue>; // simplify
 		};
 
-		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
+		template<bitset_t LeftBitset, bitset_t RightBitset>
 		struct function<name_t::bitwise_xor, constant_bitset<LeftBitset>, constant_bitset<RightBitset> > {
-			typedef constant_bitset<LeftBitset ^ RightBitset> type; // simplify
+			using type = constant_bitset<LeftBitset ^ RightBitset>; // simplify
 		};
 
 		// Specializations of equal<LeftType, RightType>.
 		template<typename LeftType, typename RightType>
 		struct function<name_t::equal, LeftType, RightType> {
-			typedef std::conditional_t<
+			using type = std::conditional_t<
 				std::is_same_v<LeftType, RightType> && !has_stored_entries_v<LeftType>,
 				std::true_type, // simplify
 				std::conditional_t<
@@ -657,7 +659,7 @@ namespace ga {
 					std::false_type, // simplify
 					function // default
 				>
-			> type;
+			>;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static bool eval(std::tuple<InputTypes...> const &args) {
@@ -668,11 +670,11 @@ namespace ga {
 		// Specializations of less_or_equal<LeftType, RightType>.
 		template<typename LeftType, typename RightType>
 		struct function<name_t::less_or_equal, LeftType, RightType> {
-			typedef std::conditional_t<
+			using type = std::conditional_t<
 				std::is_same_v<LeftType, RightType> && !has_stored_entries_v<LeftType>,
 				std::true_type, // simplify
 				function // default
-			> type;
+			>;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static bool eval(std::tuple<InputTypes...> const &args) {
@@ -685,7 +687,7 @@ namespace ga {
 			std::bool_constant<(LeftValue <= RightValue)> { // simplify
 		};
 
-		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
+		template<bitset_t LeftBitset, bitset_t RightBitset>
 		struct function<name_t::less_or_equal, constant_bitset<LeftBitset>, constant_bitset<RightBitset> > :
 			std::bool_constant<(LeftBitset <= RightBitset)> { // simplify
 		};
@@ -693,11 +695,11 @@ namespace ga {
 		// Specializations of logical_and<LeftType, RightType>.
 		template<typename LeftType, typename RightType>
 		struct function<name_t::logical_and, LeftType, RightType> {
-			typedef std::conditional_t<
+			using type = std::conditional_t<
 				std::is_same_v<LeftType, RightType> && !has_stored_entries_v<LeftType>,
 				LeftType, // simplify
 				function // default
-			> type;
+			>;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static bool eval(std::tuple<InputTypes...> const &args) {
@@ -707,12 +709,12 @@ namespace ga {
 
 		template<typename LeftType>
 		struct function<name_t::logical_and, LeftType, std::true_type> {
-			typedef LeftType type; // simplify
+			using type = LeftType; // simplify
 		};
 
 		template<typename RightType>
 		struct function<name_t::logical_and, std::true_type, RightType> {
-			typedef RightType type; // simplify
+			using type = RightType; // simplify
 		};
 
 		template<typename LeftType>
@@ -748,7 +750,7 @@ namespace ga {
 		// Specializations of logical_or<LeftType, RightType>.
 		template<typename LeftType, typename RightType>
 		struct function<name_t::logical_or, LeftType, RightType> {
-			typedef function type; // default
+			using type = function; // default
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static bool eval(std::tuple<InputTypes...> const &args) {
@@ -758,12 +760,12 @@ namespace ga {
 
 		template<typename LeftType>
 		struct function<name_t::logical_or, LeftType, std::false_type> {
-			typedef LeftType type; // simplify
+			using type = LeftType; // simplify
 		};
 
 		template<typename RightType>
 		struct function<name_t::logical_or, std::false_type, RightType> {
-			typedef RightType type; // simplify
+			using type = RightType; // simplify
 		};
 
 		template<typename LeftType>
@@ -799,11 +801,11 @@ namespace ga {
 		// Specializations of if_else<Test, TrueValue, FalseValue>.
 		template<typename Test, typename TrueValue, typename FalseValue>
 		struct function<name_t::if_else, Test, TrueValue, FalseValue> {
-			typedef std::conditional_t<
+			using type = std::conditional_t<
 				std::is_same_v<TrueValue, FalseValue> && !has_stored_entries_v<TrueValue>,
 				TrueValue, // simplify
 				function
-			> type;
+			>;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -813,18 +815,18 @@ namespace ga {
 
 		template<typename TrueValue, typename FalseValue>
 		struct function<name_t::if_else, std::true_type, TrueValue, FalseValue> {
-			typedef TrueValue type; // simplify
+			using type = TrueValue; // simplify
 		};
 
 		template<typename TrueValue, typename FalseValue>
 		struct function<name_t::if_else, std::false_type, TrueValue, FalseValue> {
-			typedef FalseValue type; // simplify
+			using type = FalseValue; // simplify
 		};
 
 		// Specializations of absolute<Value>.
 		template<typename Value>
 		struct function<name_t::absolute, Value> {
-			typedef std::conditional_t<
+			using type = std::conditional_t<
 				is_non_negative_v<Value>,
 				Value,
 				std::conditional_t<
@@ -832,7 +834,7 @@ namespace ga {
 					product_t<constant_value<-1>, Value, value_mapping>,
 					function
 				>
-			> type;
+			>;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -843,7 +845,7 @@ namespace ga {
 		// Specializations of exponential<Value>.
 		template<typename Value>
 		struct function<name_t::exponential, Value> {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -853,13 +855,13 @@ namespace ga {
 
 		template<typename Value>
 		struct function<name_t::exponential, logarithm<Value> > {
-			typedef Value type;
+			using type = Value;
 		};
 
 		// Specializations of logarithm<Value>.
 		template<typename Value>
 		struct function<name_t::logarithm, Value> {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -869,13 +871,13 @@ namespace ga {
 
 		template<typename Value>
 		struct function<name_t::logarithm, exponential<Value> > {
-			typedef Value type;
+			using type = Value;
 		};
 
 		// Specializations of cosine<Value>.
 		template<typename Value>
 		struct function<name_t::cosine, Value> {
-			typedef function type; //TODO Not supported yet (simplifications)
+			using type = function; //TODO Not supported yet (simplifications)
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -886,7 +888,7 @@ namespace ga {
 		// Specializations of sine<Value>.
 		template<typename Value>
 		struct function<name_t::sine, Value> {
-			typedef function type; //TODO Not supported yet (simplifications)
+			using type = function; //TODO Not supported yet (simplifications)
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -897,7 +899,7 @@ namespace ga {
 		// Specializations of tangent<Value>.
 		template<typename Value>
 		struct function<name_t::tangent, Value> {
-			typedef function type; //TODO Not supported yet (simplifications)
+			using type = function; //TODO Not supported yet (simplifications)
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -908,7 +910,7 @@ namespace ga {
 		// Specializations of hyperbolic_cosine<Value>.
 		template<typename Value>
 		struct function<name_t::hyperbolic_cosine, Value> {
-			typedef function type; //TODO Not supported yet (simplifications)
+			using type = function; //TODO Not supported yet (simplifications)
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -919,7 +921,7 @@ namespace ga {
 		// Specializations of hyperbolic_sine<Value>.
 		template<typename Value>
 		struct function<name_t::hyperbolic_sine, Value> {
-			typedef function type; //TODO Not supported yet (simplifications)
+			using type = function; //TODO Not supported yet (simplifications)
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -930,7 +932,7 @@ namespace ga {
 		// Specializations of hyperbolic_tangent<Value>.
 		template<typename Value>
 		struct function<name_t::hyperbolic_tangent, Value> {
-			typedef function type; //TODO Not supported yet (simplifications)
+			using type = function; //TODO Not supported yet (simplifications)
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -941,7 +943,7 @@ namespace ga {
 		// Specializations of power<LeftArgument, RightArgument>.
 		template<typename LeftArgument, typename RightArgument>
 		struct function<name_t::power, LeftArgument, RightArgument> {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -955,7 +957,7 @@ namespace ga {
 
 		template<typename LeftArgument>
 		struct function<name_t::power, LeftArgument, constant_value<-1> > {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -967,7 +969,7 @@ namespace ga {
 
 		template<typename LeftArgument>
 		struct function<name_t::power, LeftArgument, constant_value<2> > {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -979,7 +981,7 @@ namespace ga {
 
 		template<typename LeftArgument>
 		struct function<name_t::power, LeftArgument, power<constant_value<2>, constant_value<-1> > > {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -991,7 +993,7 @@ namespace ga {
 
 		template<typename LeftArgument>
 		struct function<name_t::power, LeftArgument, power<constant_value<3>, constant_value<-1> > > {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -1004,7 +1006,7 @@ namespace ga {
 		// Specializations of mul<Arguments...>.
 		template<typename Argument, typename... NextArguments>
 		struct function<name_t::mul, Argument, NextArguments...> {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -1017,7 +1019,7 @@ namespace ga {
 
 		template<typename... NextArguments>
 		struct function<name_t::mul, constant_value<-1>, NextArguments...> {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -1030,7 +1032,7 @@ namespace ga {
 
 		template<typename LeftArgument, typename RightArgument>
 		struct function<name_t::mul, LeftArgument, power<RightArgument, constant_value<-1> > > {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -1043,7 +1045,7 @@ namespace ga {
 
 		template<typename RightArgument>
 		struct function<name_t::mul, constant_value<-1>, power<RightArgument, constant_value<-1> > > {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -1053,18 +1055,18 @@ namespace ga {
 
 		template<typename Argument>
 		struct function<name_t::mul, Argument> {
-			typedef Argument type; // simplify
+			using type = Argument; // simplify
 		};
 
 		template<>
 		struct function<name_t::mul> {
-			typedef constant_value<0> type; // simplify
+			using type = constant_value<0>; // simplify
 		};
 
 		// Specializations of add<Arguments...>.
 		template<typename Argument, typename... NextArguments>
 		struct function<name_t::add, Argument, NextArguments...> {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -1076,7 +1078,7 @@ namespace ga {
 
 		template<typename LeftArgument, typename... RightArguments>
 		struct function<name_t::add, LeftArgument, mul<constant_value<-1>, RightArguments...> > {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -1088,7 +1090,7 @@ namespace ga {
 
 		template<typename... LeftArguments, typename... RightArguments>
 		struct function<name_t::add, mul<constant_value<-1>, LeftArguments...>, RightArguments...> {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -1098,7 +1100,7 @@ namespace ga {
 
 		template<typename... LeftArguments, typename... RightArguments>
 		struct function<name_t::add, mul<constant_value<-1>, LeftArguments...>, mul<constant_value<-1>, RightArguments...> > {
-			typedef function type;
+			using type = function;
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
@@ -1108,12 +1110,12 @@ namespace ga {
 
 		template<typename Argument>
 		struct function<name_t::add, Argument> {
-			typedef Argument type; // simplify
+			using type = Argument; // simplify
 		};
 
 		template<>
 		struct function<name_t::add> {
-			typedef constant_value<0> type; // simplify
+			using type = constant_value<0>; // simplify
 		};
 
 	}

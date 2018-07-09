@@ -401,13 +401,34 @@
     <ClInclude Include="..\..\include\ga\util\basis_blade.hpp">
       <Filter>Header Files\ga\util</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\util\k-vector.hpp">
-      <Filter>Header Files\ga\util</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\ga\core\scalar.hpp">
       <Filter>Header Files\ga\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ga\core\copy.hpp">
+    <ClInclude Include="..\..\include\ga\extra\delta_product.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\util\vector.hpp">
+      <Filter>Header Files\ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\util\multivector.hpp">
+      <Filter>Header Files\ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\meet_and_join.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\util\for_each_component.hpp">
+      <Filter>Header Files\ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\util\for_each_basis_vector.hpp">
+      <Filter>Header Files\ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\trivial_copy.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\extra\fast_meet_and_join.hpp">
+      <Filter>Header Files\ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ga\core\exceptions.hpp">
       <Filter>Header Files\ga\core</Filter>
     </ClInclude>
   </ItemGroup>

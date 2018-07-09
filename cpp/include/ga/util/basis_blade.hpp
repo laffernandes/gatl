@@ -29,19 +29,19 @@ namespace ga {
 
 	// Helper for defining a scaled runtime defined basis blade type.
 	template<typename CoefficientType, grade_t FirstPossibleGrade, grade_t LastPossibleGrade = FirstPossibleGrade>
-	using scaled_basis_blade_t = clifford_expression<CoefficientType, detail::component_t<detail::stored_value, detail::dynamic_basis_blade_t<(default_bitset_t(1) << FirstPossibleGrade) | (((default_bitset_t(1) << FirstPossibleGrade) - default_bitset_t(1)) ^ ((default_bitset_t(1) << LastPossibleGrade) - default_bitset_t(1))), detail::stored_bitset> > >;
+	using scaled_basis_blade_t = clifford_expression<CoefficientType, detail::component_t<detail::stored_value, detail::dynamic_basis_blade_t<(bitset_t(1) << FirstPossibleGrade) | (((bitset_t(1) << FirstPossibleGrade) - bitset_t(1)) ^ ((bitset_t(1) << LastPossibleGrade) - bitset_t(1))), detail::stored_bitset> > >;
 
 	// Helper for defining a scaled compile-time defined basis blade type.
 	template<typename CoefficientType, index_t... Indices>
-	using scaled_constant_basis_blade_t = clifford_expression<CoefficientType, detail::component_t<detail::stored_value, detail::constant_basis_blade<detail::sum((default_bitset_t(1) << (Indices - 1))...)> > >;
+	using scaled_constant_basis_blade_t = clifford_expression<CoefficientType, detail::component_t<detail::stored_value, detail::constant_basis_blade<detail::sum((bitset_t(1) << (Indices - 1))...)> > >;
 
 	// Helper for defining an unit runtime defined basis blade type.
 	template<grade_t FirstPossibleGrade, grade_t LastPossibleGrade = FirstPossibleGrade>
-	using unit_basis_blade_t = clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::dynamic_basis_blade_t<(default_bitset_t(1) << FirstPossibleGrade) | (((default_bitset_t(1) << FirstPossibleGrade) - default_bitset_t(1)) ^ ((default_bitset_t(1) << LastPossibleGrade) - default_bitset_t(1))), detail::stored_bitset> > >;
+	using unit_basis_blade_t = clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::dynamic_basis_blade_t<(bitset_t(1) << FirstPossibleGrade) | (((bitset_t(1) << FirstPossibleGrade) - bitset_t(1)) ^ ((bitset_t(1) << LastPossibleGrade) - bitset_t(1))), detail::stored_bitset> > >;
 
 	// Helper for defining an unit compile-time defined basis blade type.
 	template<index_t... Indices>
-	using unit_constant_basis_blade_t = clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::constant_basis_blade<detail::sum((default_bitset_t(1) << (Indices - 1))...)> > >;
+	using unit_constant_basis_blade_t = clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::constant_basis_blade<detail::sum((bitset_t(1) << (Indices - 1))...)> > >;
 
 }
 

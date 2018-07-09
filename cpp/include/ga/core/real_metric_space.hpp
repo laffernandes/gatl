@@ -33,16 +33,16 @@ namespace ga {
 		struct real_metric_space : public metric_space<real_metric_space> {
 		public:
 
-			typedef real_metric_space metric_space_type;
+			using metric_space_type = real_metric_space;
 
-			constexpr static default_bitset_t basis_vectors = default_bitset_t(default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - GA_MAX_BASIS_VECTOR_INDEX));
+			constexpr static bitset_t basis_vectors = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - GA_MAX_BASIS_VECTOR_INDEX));
 			constexpr static ndims_t vector_space_dimensions = GA_MAX_BASIS_VECTOR_INDEX;
 
 		public:
 
 			template<typename BasisVectorsBitset>
 			struct metric_factor {
-				typedef detail::constant_value<1> type;
+				using type = detail::constant_value<1>;
 			};
 		};
 

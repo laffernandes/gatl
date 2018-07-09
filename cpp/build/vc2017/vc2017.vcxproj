@@ -47,7 +47,7 @@
     <ClInclude Include="..\..\include\ga5e.hpp" />
     <ClInclude Include="..\..\include\ga\core.hpp" />
     <ClInclude Include="..\..\include\ga\core\arithmetic_operators.hpp" />
-    <ClInclude Include="..\..\include\ga\core\copy.hpp" />
+    <ClInclude Include="..\..\include\ga\core\exceptions.hpp" />
     <ClInclude Include="..\..\include\ga\core\scalar.hpp" />
     <ClInclude Include="..\..\include\ga\core\clifford_expression.hpp" />
     <ClInclude Include="..\..\include\ga\core\conjugation.hpp" />
@@ -87,9 +87,13 @@
     <ClInclude Include="..\..\include\ga\extra\blade_exponential.hpp" />
     <ClInclude Include="..\..\include\ga\extra\commutator_product.hpp" />
     <ClInclude Include="..\..\include\ga\extra\default_tolerance.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\delta_product.hpp" />
     <ClInclude Include="..\..\include\ga\extra\dualization.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\fast_meet_and_join.hpp" />
     <ClInclude Include="..\..\include\ga\extra\grade.hpp" />
     <ClInclude Include="..\..\include\ga\extra\macro_for_algebra_overload.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\meet_and_join.hpp" />
+    <ClInclude Include="..\..\include\ga\extra\trivial_copy.hpp" />
     <ClInclude Include="..\..\include\ga\extra\unit.hpp" />
     <ClInclude Include="..\..\include\ga\extra\write.hpp" />
     <ClInclude Include="..\..\include\ga\extra\inverse_geometric_product.hpp" />
@@ -145,9 +149,12 @@
     <ClInclude Include="..\..\include\ga\util.hpp" />
     <ClInclude Include="..\..\include\ga\util\basis_blade.hpp" />
     <ClInclude Include="..\..\include\ga\util\basis_vector.hpp" />
-    <ClInclude Include="..\..\include\ga\util\k-vector.hpp" />
+    <ClInclude Include="..\..\include\ga\util\for_each_basis_vector.hpp" />
+    <ClInclude Include="..\..\include\ga\util\multivector.hpp" />
     <ClInclude Include="..\..\include\ga\util\macro_for_algebra_overload.hpp" />
+    <ClInclude Include="..\..\include\ga\util\for_each_component.hpp" />
     <ClInclude Include="..\..\include\ga\util\pseudoscalar.hpp" />
+    <ClInclude Include="..\..\include\ga\util\vector.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

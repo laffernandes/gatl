@@ -31,7 +31,7 @@ namespace ga {
 	template<typename CoefficientType, typename Expression, typename MetricSpaceType>
 	constexpr decltype(auto) unit(clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
 		auto const lazy = make_lazy_context(arg);
-		return lazy.eval(gp(lazy.argument<0>(), inv(sqrt(abs(sp(lazy.argument<0>(), reverse(lazy.argument<0>()), mtr))), mtr), mtr));
+		return lazy.eval(gp(lazy.argument<0>(), inv(sqrt(abs(sp(lazy.argument<0>(), reversion(lazy.argument<0>()), mtr))), mtr), mtr));
 	}
 
 }

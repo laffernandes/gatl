@@ -22,18 +22,18 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA_MODEL_CONFORMAL_POINT_HPP__
-#define __GA_MODEL_CONFORMAL_POINT_HPP__
+#ifndef __GA_MODEL_SIGNED_MINKOWSKI_POINT_HPP__
+#define __GA_MODEL_SIGNED_MINKOWSKI_POINT_HPP__
 
 namespace ga {
 
 	// Initializes a multivector representation of a point using the given coordinates expressed in the base space.
 	template<ndims_t N, typename... Types>
-	constexpr decltype(auto) point(minkowski_metric_space<N> const &mtr, Types &&... coords) {
+	constexpr decltype(auto) point(minkowski_metric_space<N> const &mtr, Types &&... coords) noexcept {
 		auto aux = detail::sum(detail::square(std::move(coords))...);
 		return vector(mtr, std::move(coords)..., (aux - c<1>) / c<2>, (aux + c<1>) / c<2>);
 	}
 
 }
 
-#endif // __GA_MODEL_CONFORMAL_POINT_HPP__
+#endif // __GA_MODEL_SIGNED_MINKOWSKI_POINT_HPP__

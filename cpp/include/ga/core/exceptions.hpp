@@ -22,22 +22,24 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA_CORE_INVOLUTION_HPP__
-#define __GA_CORE_INVOLUTION_HPP__
+#ifndef __GA_CORE_EXCEPTIONS_HPP__
+#define __GA_CORE_EXCEPTIONS_HPP__
 
 namespace ga {
 
-	template<typename CoefficientType, typename Expression>
-	constexpr decltype(auto) involution(clifford_expression<CoefficientType, Expression> const &arg) noexcept {
-		auto lazy = make_lazy_context(arg);
-		return lazy.eval(clifford_expression<default_integral_t, detail::graded_unary_minus_t<decltype(lazy)::argument_expression_t<0>, (bitset_t)0xAAAAAAAAAAAAAAAAull> >());
-	}
+	// This class defines the type of objects thrown as exceptions to report errors related to not implemented features.
+	class not_implemented_error : public std::logic_error {
+	public:
 
-	template<typename Type>
-	constexpr decltype(auto) involution(Type const &arg) noexcept {
-		return involution(scalar(arg));
-	}
+		explicit not_implemented_error(const std::string &what_arg) :
+			std::logic_error(what_arg) {
+		}
+
+		explicit not_implemented_error(const char *what_arg) :
+			std::logic_error(what_arg) {
+		}
+	};
 
 }
 
-#endif // __GA_CORE_INVOLUTION_HPP__
+#endif // __GA_CORE_EXCEPTIONS_HPP__

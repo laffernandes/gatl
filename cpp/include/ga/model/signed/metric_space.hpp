@@ -32,25 +32,25 @@ namespace ga {
 	class signed_metric_space : public metric_space<signed_metric_space<P, Q> > {
 	public:
 
-		typedef signed_metric_space metric_space_type;
+		using metric_space_type = signed_metric_space;
 
-		constexpr static default_bitset_t basis_vectors = default_bitset_t(default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - (P + Q)));
+		constexpr static bitset_t basis_vectors = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - (P + Q)));
 		constexpr static ndims_t vector_space_dimensions = P + Q;
 
 	private:
 
-		constexpr static default_bitset_t positive = default_bitset_t(default_bitset_t(~0) >> (std::numeric_limits<default_bitset_t>::digits - P));
-		constexpr static default_bitset_t negative = basis_vectors - positive;
+		constexpr static bitset_t positive = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - P));
+		constexpr static bitset_t negative = basis_vectors - positive;
 
 	public:
 
 		template<typename BasisVectorsBitset>
 		struct metric_factor {
-			typedef detail::if_else_t<
+			using type = detail::if_else_t<
 				detail::equal_t<detail::bitwise_and_t<detail::count_one_bits_t<detail::bitwise_and_t<BasisVectorsBitset, detail::constant_bitset<negative> > >, detail::constant_value<1> >, detail::constant_value<0> >,
 				detail::constant_value<1>,
 				detail::constant_value<-1>
-			> type;
+			>;
 		};
 
 		static_assert((P + Q) <= GA_MAX_BASIS_VECTOR_INDEX, "ga::signed_metric_space<P, Q> is ill-defined. It is expectated (P + Q) <= GA_MAX_BASIS_VECTOR_INDEX.");

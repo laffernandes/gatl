@@ -248,57 +248,57 @@ namespace ga {
 		};
 
 		// Specializations of lt<LeftType, RightType> with bitsets.
-		template<default_bitset_t LeftBitset, default_bitset_t RightBitset>
+		template<bitset_t LeftBitset, bitset_t RightBitset>
 		struct lt<constant_bitset<LeftBitset>, constant_bitset<RightBitset> > :
 			std::bool_constant<(LeftBitset < RightBitset)> {
 		};
 
-		template<default_bitset_t LeftBitset, tag_t RightTag, std::size_t RightIndex>
+		template<bitset_t LeftBitset, tag_t RightTag, std::size_t RightIndex>
 		struct lt<constant_bitset<LeftBitset>, get_bitset<RightTag, RightIndex> > :
 			std::true_type {
 		};
 
-		template<tag_t LeftTag, std::size_t LeftIndex, default_bitset_t RightBitset>
+		template<tag_t LeftTag, std::size_t LeftIndex, bitset_t RightBitset>
 		struct lt<get_bitset<LeftTag, LeftIndex>, constant_bitset<RightBitset> > :
 			std::false_type {
 		};
 
-		template<default_bitset_t LeftBitset, tag_t RightTag, std::size_t RightIndex>
+		template<bitset_t LeftBitset, tag_t RightTag, std::size_t RightIndex>
 		struct lt<constant_bitset<LeftBitset>, get_map_bitsets<RightTag, RightIndex> > :
 			std::true_type {
 		};
 
-		template<tag_t LeftTag, std::size_t LeftIndex, default_bitset_t RightBitset>
+		template<tag_t LeftTag, std::size_t LeftIndex, bitset_t RightBitset>
 		struct lt<get_map_bitsets<LeftTag, LeftIndex>, constant_bitset<RightBitset> > :
 			std::false_type {
 		};
 
-		template<default_bitset_t LeftBitset>
+		template<bitset_t LeftBitset>
 		struct lt<constant_bitset<LeftBitset>, stored_bitset> :
 			std::true_type {
 		};
 
-		template<default_bitset_t RightBitset>
+		template<bitset_t RightBitset>
 		struct lt<stored_bitset, constant_bitset<RightBitset> > :
 			std::false_type {
 		};
 
-		template<default_bitset_t LeftBitset>
+		template<bitset_t LeftBitset>
 		struct lt<constant_bitset<LeftBitset>, stored_map_bitsets> :
 			std::true_type {
 		};
 
-		template<default_bitset_t RightBitset>
+		template<bitset_t RightBitset>
 		struct lt<stored_map_bitsets, constant_bitset<RightBitset> > :
 			std::false_type {
 		};
 
-		template<default_bitset_t LeftBitset, name_t RightName, typename... RightArguments>
+		template<bitset_t LeftBitset, name_t RightName, typename... RightArguments>
 		struct lt<constant_bitset<LeftBitset>, function<RightName, RightArguments...> > :
 			std::true_type {
 		};
 
-		template<name_t LeftName, typename... LeftArguments, default_bitset_t RightBitset>
+		template<name_t LeftName, typename... LeftArguments, bitset_t RightBitset>
 		struct lt<function<LeftName, LeftArguments...>, constant_bitset<RightBitset> > :
 			std::false_type {
 		};
@@ -423,22 +423,22 @@ namespace ga {
 		};
 
 		// Specializations of lt<LeftType, RightType> with basis blades.
-		template<default_bitset_t LeftBasisVectors, default_bitset_t RightBasisVectors>
+		template<bitset_t LeftBasisVectors, bitset_t RightBasisVectors>
 		struct lt<constant_basis_blade<LeftBasisVectors>, constant_basis_blade<RightBasisVectors> > :
 			std::bool_constant<(possible_grades_v<constant_basis_blade<LeftBasisVectors> > < possible_grades_v<constant_basis_blade<RightBasisVectors> > || (possible_grades_v<constant_basis_blade<LeftBasisVectors> > == possible_grades_v<constant_basis_blade<RightBasisVectors> > && LeftBasisVectors < RightBasisVectors))> {
 		};
 
-		template<default_bitset_t LeftBasisVectors, default_bitset_t RightPossibleGrades, typename RightBitset>
+		template<bitset_t LeftBasisVectors, bitset_t RightPossibleGrades, typename RightBitset>
 		struct lt<constant_basis_blade<LeftBasisVectors>, dynamic_basis_blade<RightPossibleGrades, RightBitset> > :
 			std::bool_constant<(possible_grades_v<constant_basis_blade<LeftBasisVectors> > <= RightPossibleGrades)> {
 		};
 
-		template<default_bitset_t LeftPossibleGrades, typename LeftBitset, default_bitset_t RightBasisVectors>
+		template<bitset_t LeftPossibleGrades, typename LeftBitset, bitset_t RightBasisVectors>
 		struct lt<dynamic_basis_blade<LeftPossibleGrades, LeftBitset>, constant_basis_blade<RightBasisVectors> > :
 			std::bool_constant<(LeftPossibleGrades < possible_grades_v<constant_basis_blade<RightBasisVectors> >)> {
 		};
 
-		template<default_bitset_t LeftPossibleGrades, typename LeftBitset, default_bitset_t RightPossibleGrades, typename RightBitset>
+		template<bitset_t LeftPossibleGrades, typename LeftBitset, bitset_t RightPossibleGrades, typename RightBitset>
 		struct lt<dynamic_basis_blade<LeftPossibleGrades, LeftBitset>, dynamic_basis_blade<RightPossibleGrades, RightBitset> > :
 			std::bool_constant<(LeftPossibleGrades < RightPossibleGrades || (LeftPossibleGrades == RightPossibleGrades && lt_v<LeftBitset, RightBitset>))> {
 		};

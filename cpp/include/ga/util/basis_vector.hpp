@@ -29,28 +29,28 @@ namespace ga {
 
 	// Helper for defining a scaled runtime defined basis vector type.
 	template<typename CoefficientType>
-	using scaled_basis_vector_t = clifford_expression<CoefficientType, detail::component_t<detail::stored_value, detail::dynamic_basis_blade_t<default_bitset_t(2), detail::stored_bitset> > >;
+	using scaled_basis_vector_t = clifford_expression<CoefficientType, detail::component_t<detail::stored_value, detail::dynamic_basis_blade_t<bitset_t(2), detail::stored_bitset> > >;
 
 	// Helper for defining a scaled compile-time defined basis vector type.
 	template<typename CoefficientType, index_t Index>
-	using scaled_constant_basis_vector_t = clifford_expression<CoefficientType, detail::component_t<detail::stored_value, detail::constant_basis_blade<default_bitset_t(default_bitset_t(1) << (Index - 1))> > >;
+	using scaled_constant_basis_vector_t = clifford_expression<CoefficientType, detail::component_t<detail::stored_value, detail::constant_basis_blade<bitset_t(bitset_t(1) << (Index - 1))> > >;
 
 	// Helper for defining an unit runtime defined basis vector type.
-	using unit_basis_vector_t = clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::dynamic_basis_blade_t<default_bitset_t(2), detail::stored_bitset> > >;
+	using unit_basis_vector_t = clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::dynamic_basis_blade_t<bitset_t(2), detail::stored_bitset> > >;
 
 	// Helper for defining an unit compile-time defined basis vector type.
 	template<index_t Index>
-	using unit_constant_basis_vector_t = clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::constant_basis_blade<default_bitset_t(default_bitset_t(1) << (Index - 1))> > >;
+	using unit_constant_basis_vector_t = clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::constant_basis_blade<bitset_t(bitset_t(1) << (Index - 1))> > >;
 
 	// Returns a runtime defined unit basis vector.
-	constexpr unit_basis_vector_t e(index_t const index) {
+	constexpr unit_basis_vector_t e(index_t const index) noexcept {
 		assert(index > 0);
-		return unit_basis_vector_t(make_sequential_storage(default_bitset_t(default_bitset_t(1) << (index - 1))));
+		return unit_basis_vector_t(make_sequential_storage(bitset_t(bitset_t(1) << (index - 1))));
 	}
 
 	// Returns a compile-time defined unit basis vector.
 	template<typename IndexType, default_integral_t Index, typename = std::enable_if_t<std::is_constructible_v<index_t, IndexType> > >
-	constexpr unit_constant_basis_vector_t<Index> e(constant<IndexType, Index> const &) {
+	constexpr unit_constant_basis_vector_t<Index> e(constant<IndexType, Index> const &) noexcept {
 		static_assert(Index > 0, "Basis vector index out of bounds. It is expected a positive value.");
 		return unit_constant_basis_vector_t<Index>();
 	}

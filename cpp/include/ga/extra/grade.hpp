@@ -38,21 +38,21 @@ namespace ga {
 	class grade_result<scalar_clifford_expression<grade_t, Value> > final {
 	public:
 
-		typedef scalar_clifford_expression<grade_t, Value> value_type;
+		using value_type = scalar_clifford_expression<grade_t, Value>;
 
 		constexpr grade_result(grade_result const &) = default;
 		constexpr grade_result(grade_result &&) = default;
 
-		constexpr grade_result(value_type const &) {
+		constexpr grade_result(value_type const &) noexcept {
 		}
 
-		constexpr operator value_type() const {
+		constexpr operator value_type() const noexcept {
 			return value_type();
 		}
 
 		constexpr operator grade_t() const = delete;
 
-		constexpr grade_interpretation_t flag() const {
+		constexpr grade_interpretation_t flag() const noexcept {
 			return LAZY_GRADE;
 		}
 	};
@@ -61,30 +61,30 @@ namespace ga {
 	class grade_result<scalar_clifford_expression<grade_t, detail::stored_value> > final {
 	public:
 
-		typedef scalar_clifford_expression<grade_t, detail::stored_value> value_type;
+		using value_type = scalar_clifford_expression<grade_t, detail::stored_value>;
 
 		constexpr grade_result(grade_result const &) = default;
 		constexpr grade_result(grade_result &&) = default;
 
-		constexpr grade_result(value_type const &value) :
+		constexpr grade_result(value_type const &value) noexcept :
 			value_(value) {
 		}
 
-		constexpr operator value_type() const {
+		constexpr operator value_type() const noexcept {
 			return value_;
 		}
 
-		constexpr operator grade_t() const {
+		constexpr operator grade_t() const noexcept {
 			return value_;
 		}
 
-		constexpr grade_interpretation_t flag() const {
+		constexpr grade_interpretation_t flag() const noexcept {
 			return flag(*this);
 		}
 
 	private:
 
-		constexpr grade_interpretation_t flag(grade_t const grade) const {
+		constexpr grade_interpretation_t flag(grade_t const grade) const noexcept {
 			return grade >= 0 ? SINGLE_GRADE : (grade_interpretation_t)grade;
 		}
 
@@ -95,23 +95,23 @@ namespace ga {
 	class grade_result<scalar_clifford_expression<grade_t, detail::constant_value<GradeValue> > > final {
 	public:
 
-		typedef scalar_clifford_expression<grade_t, detail::constant_value<GradeValue> > value_type;
+		using value_type = scalar_clifford_expression<grade_t, detail::constant_value<GradeValue> >;
 
 		constexpr grade_result(grade_result const &) = default;
 		constexpr grade_result(grade_result &&) = default;
 
-		constexpr grade_result(value_type const &) {
+		constexpr grade_result(value_type const &) noexcept {
 		}
 
-		constexpr operator value_type() const {
+		constexpr operator value_type() const noexcept {
 			return value_type();
 		}
 
-		constexpr operator grade_t() const {
+		constexpr operator grade_t() const noexcept {
 			return static_cast<grade_t>(GradeValue);
 		}
 
-		constexpr grade_interpretation_t flag() const {
+		constexpr grade_interpretation_t flag() const noexcept {
 			return GradeValue >= 0 ? SINGLE_GRADE : (grade_interpretation_t)GradeValue;
 		}
 	};
@@ -119,7 +119,7 @@ namespace ga {
 	namespace detail {
 
 		template<typename Value>
-		constexpr decltype(auto) make_grade_result(scalar_clifford_expression<grade_t, Value> const &arg) {
+		constexpr decltype(auto) make_grade_result(scalar_clifford_expression<grade_t, Value> const &arg) noexcept {
 			return grade_result<scalar_clifford_expression<grade_t, Value> >(arg);
 		}
 
@@ -134,12 +134,12 @@ namespace ga {
 		struct deduce_grade_result<add<Argument, NextArguments...>, ToleranceValue> {
 		private:
 				
-			typedef typename deduce_grade_result_t<Argument, ToleranceValue> argument_grade;
-			typedef typename deduce_grade_result_t<add_t<NextArguments...>, ToleranceValue> next_arguments_grade;
+			using argument_grade = deduce_grade_result_t<Argument, ToleranceValue>;
+			using next_arguments_grade = deduce_grade_result_t<add_t<NextArguments...>, ToleranceValue>;
 
 		public:
 				
-			typedef if_else_t<
+			using type = if_else_t<
 				equal_t<argument_grade, constant_value<MIXED_GRADE> >,
 				constant_value<MIXED_GRADE>,
 				if_else_t<
@@ -159,41 +159,128 @@ namespace ga {
 						>
 					>
 				>
-			> type;
+			>;
 		};
 
-		//TODO Not supported yet (map)
 		template<typename Coefficient, typename BasisBlade, typename ToleranceValue>
 		struct deduce_grade_result<component<Coefficient, BasisBlade>, ToleranceValue> {
-			typedef if_else_t<
+			using type = if_else_t<
 				less_or_equal_t<absolute_t<Coefficient>, ToleranceValue>,
 				constant_value<UNDETERMINED_GRADE>,
 				count_one_bits_t<basis_vectors_t<BasisBlade> >
-			> type;
+			>;
+		};
+
+		// Largest grade deduction.
+		template<typename Expression, typename ToleranceValue>
+		struct deduce_largest_grade_result;
+
+		template<typename Expression, typename ToleranceValue>
+		using deduce_largest_grade_result_t = typename deduce_largest_grade_result<Expression, ToleranceValue>::type;
+
+		template<typename Argument, typename... NextArguments, typename ToleranceValue>
+		struct deduce_largest_grade_result<add<Argument, NextArguments...>, ToleranceValue> {
+		private:
+				
+			using argument_grade = deduce_largest_grade_result_t<Argument, ToleranceValue>;
+			using next_arguments_grade = deduce_largest_grade_result_t<add_t<NextArguments...>, ToleranceValue>;
+
+		public:
+				
+			using type = if_else_t<
+				less_or_equal_t<argument_grade, next_arguments_grade>,
+				next_arguments_grade,
+				argument_grade
+			>;
+		};
+
+		template<typename Coefficient, typename BasisBlade, typename ToleranceValue>
+		struct deduce_largest_grade_result<component<Coefficient, BasisBlade>, ToleranceValue> {
+			using type = if_else_t<
+				less_or_equal_t<absolute_t<Coefficient>, ToleranceValue>,
+				constant_value<UNDETERMINED_GRADE>,
+				count_one_bits_t<basis_vectors_t<BasisBlade> >
+			>;
 		};
 
 	}
 
-	template<typename CoefficientType, typename Expression>
-	constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg, CoefficientType const &tol) {
+	// Helper to deduce the largest possible grade value in the given Expression extracted from ga::clifford_expression<CoefficientType, Expression>.
+	template<typename Expression>
+	struct largest_possible_grade;
+
+	template<typename Expression>
+	constexpr grade_t largest_possible_grade_v = largest_possible_grade<Expression>::value;
+
+	template<typename Coefficient, typename BasisBlade, typename... NextComponents>
+	struct largest_possible_grade<detail::add<detail::component<Coefficient, BasisBlade>, NextComponents...> > {
+		constexpr static grade_t value = std::max(grade_t(detail::set_bit_index(detail::leftmost_set_bit(detail::possible_grades_v<BasisBlade>))), largest_possible_grade_v<detail::add_t<NextComponents...> >);
+	};
+
+	template<typename Coefficient, typename BasisBlade>
+	struct largest_possible_grade<detail::component<Coefficient, BasisBlade> > {
+		constexpr static grade_t value = detail::set_bit_index(detail::leftmost_set_bit(detail::possible_grades_v<BasisBlade>));
+	};
+
+	// Helper to deduce the smallest possible grade value in the given Expression extracted from ga::clifford_expression<CoefficientType, Expression>.
+	template<typename Expression>
+	struct smallest_possible_grade;
+
+	template<typename Expression>
+	constexpr grade_t smallest_possible_grade_v = smallest_possible_grade<Expression>::value;
+
+	template<typename Coefficient, typename BasisBlade, typename... NextComponents>
+	struct smallest_possible_grade<detail::add<detail::component<Coefficient, BasisBlade>, NextComponents...> > {
+		constexpr static grade_t value = std::min(grade_t(detail::set_bit_index(detail::rightmost_set_bit(detail::possible_grades_v<BasisBlade>))), smallest_possible_grade_v<detail::add_t<NextComponents...> >);
+	};
+
+	template<typename Coefficient, typename BasisBlade>
+	struct smallest_possible_grade<detail::component<Coefficient, BasisBlade> > {
+		constexpr static grade_t value = detail::set_bit_index(detail::rightmost_set_bit(detail::possible_grades_v<BasisBlade>));
+	};
+
+	// Returns the ga::grade_result<Value> structure representing the grade of the given Clifford expression.
+	template<typename CoefficientType, typename Expression, typename ToleranceType>
+	constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept {
 		auto const lazy = make_lazy_context(arg, scalar(tol));
 		return detail::make_grade_result(lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_grade_result_t<decltype(lazy)::argument_expression_t<0>, detail::coefficient_t<decltype(lazy)::argument_expression_t<1> > > >()));
 	}
 
-	template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
-	constexpr decltype(auto) grade(Type const &arg, Type const &tol) {
+	template<typename Type, typename ToleranceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+	constexpr decltype(auto) grade(Type const &arg, ToleranceType const &tol) noexcept {
 		return grade(scalar(arg), tol);
 	}
 
 	template<typename CoefficientType, typename Expression>
-	constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg) {
-		auto const lazy = make_lazy_context(arg, default_tolerance<CoefficientType>());
-		return detail::make_grade_result(lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_grade_result_t<decltype(lazy)::argument_expression_t<0>, detail::coefficient_t<decltype(lazy)::argument_expression_t<1> > > >()));
+	constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg) noexcept {
+		return grade(arg, default_tolerance<CoefficientType>());
 	}
 
 	template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
-	constexpr decltype(auto) grade(Type const &arg) {
-		return grade(scalar(arg));
+	constexpr decltype(auto) grade(Type const &arg) noexcept {
+		return grade(scalar(arg), default_tolerance<Type>());
+	}
+
+	// Returns a scalar expression with the largest grade part of a given Clifford expression such that it is not zero.
+	template<typename CoefficientType, typename Expression, typename ToleranceType>
+	constexpr decltype(auto) largest_grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept {
+		auto lazy = make_lazy_context(arg, scalar(tol));
+		return lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_largest_grade_result_t<decltype(lazy)::argument_expression_t<0>, detail::coefficient_t<decltype(lazy)::argument_expression_t<1> > > >());
+	}
+
+	template<typename Type, typename ToleranceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+	constexpr decltype(auto) largest_grade(Type const &arg, ToleranceType const &tol) noexcept {
+		return largest_grade(scalar(arg), tol);
+	}
+
+	template<typename CoefficientType, typename Expression>
+	constexpr decltype(auto) largest_grade(clifford_expression<CoefficientType, Expression> const &arg) noexcept {
+		return largest_grade(arg, default_tolerance<CoefficientType>());
+	}
+
+	template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+	constexpr decltype(auto) largest_grade(Type const &arg) noexcept {
+		return largest_grade(scalar(arg), default_tolerance<Type>());
 	}
 
 }

@@ -29,6 +29,7 @@ namespace ga {
 
 	namespace detail {
 
+		// Returns the k-grade part of the given Clifford expression.
 		template<typename Expression, typename GradeExpression>
 		struct keep_grade;
 
@@ -37,71 +38,93 @@ namespace ga {
 
 		template<typename Argument, typename... NextArguments, typename GradeExpression>
 		struct keep_grade<add<Argument, NextArguments...>, GradeExpression> {
-			typedef addition_t<
+			using type = addition_t<
 				keep_grade_t<Argument, GradeExpression>,
 				keep_grade_t<add_t<NextArguments...>, GradeExpression>
-			> type;
+			>;
 		};
 
-		template<typename Coefficient, default_bitset_t BasisVectors, default_integral_t GradeValue>
-		struct keep_grade<component<Coefficient, constant_basis_blade<BasisVectors> >, component<constant_value<GradeValue>, constant_basis_blade<default_bitset_t(0)> > > {
-			typedef std::conditional_t<
+		template<typename Coefficient, bitset_t BasisVectors, default_integral_t GradeValue>
+		struct keep_grade<component<Coefficient, constant_basis_blade<BasisVectors> >, component<constant_value<GradeValue>, constant_basis_blade<bitset_t(0)> > > {
+			using type = std::conditional_t<
 				ones(BasisVectors) == GradeValue,
 				component<Coefficient, constant_basis_blade<BasisVectors> >,
-				component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> >
-			> type;
+				component<constant_value<0>, constant_basis_blade<bitset_t(0)> >
+			>;
 		};
 
-		template<typename Coefficient, default_bitset_t PossibleGrades, typename Bitset, default_integral_t GradeValue>
-		struct keep_grade<component<Coefficient, dynamic_basis_blade<PossibleGrades, Bitset> >, component<constant_value<GradeValue>, constant_basis_blade<default_bitset_t(0)> > > {
-			typedef std::conditional_t<
-				0 <= GradeValue && GradeValue <= GA_MAX_BASIS_VECTOR_INDEX && (PossibleGrades & (default_bitset_t(1) << GradeValue)) != default_bitset_t(0),
+		template<typename Coefficient, bitset_t PossibleGrades, typename Bitset, default_integral_t GradeValue>
+		struct keep_grade<component<Coefficient, dynamic_basis_blade<PossibleGrades, Bitset> >, component<constant_value<GradeValue>, constant_basis_blade<bitset_t(0)> > > {
+			using type = std::conditional_t<
+				0 <= GradeValue && GradeValue <= GA_MAX_BASIS_VECTOR_INDEX && (PossibleGrades & (bitset_t(1) << GradeValue)) != bitset_t(0),
 				component_t<
 					if_else_t<
 						equal_t<count_one_bits_t<Bitset>, constant_value<GradeValue> >,
 						Coefficient,
 						constant_value<0>
 					>,
-					dynamic_basis_blade_t<(default_bitset_t(1) << GradeValue), Bitset>
+					dynamic_basis_blade_t<(bitset_t(1) << GradeValue), Bitset>
 				>,
-				component<constant_value<0>, constant_basis_blade<default_bitset_t(0)> >
-			> type;
+				component<constant_value<0>, constant_basis_blade<bitset_t(0)> >
+			>;
 		};
 
 		template<typename Coefficient, typename BasisBlade, typename Grade>
-		struct keep_grade<component<Coefficient, BasisBlade>, component<Grade, constant_basis_blade<default_bitset_t(0)> > > {
-			typedef component_t<
+		struct keep_grade<component<Coefficient, BasisBlade>, component<Grade, constant_basis_blade<bitset_t(0)> > > {
+			using type = component_t<
 				if_else_t<
 					equal_t<count_one_bits_t<basis_vectors_t<BasisBlade> >, Grade>,
 					Coefficient,
 					constant_value<0>
 				>,
 				BasisBlade
-			> type;
+			>;
 		};
 
 	}
 
-	template<typename CoefficientType, typename Expression, typename GradeType, default_integral_t K, typename = std::enable_if_t<std::is_constructible_v<grade_t, GradeType> > >
-	constexpr decltype(auto) take_grade(clifford_expression<CoefficientType, Expression> const &arg, constant<GradeType, K> const &k) {
+	// Returns the k-grade part of the given Clifford expression.
+	template<typename CoefficientType, typename Expression, typename GradeCoefficientType, typename GradeCoefficient, typename = std::enable_if_t<std::is_constructible_v<grade_t, GradeCoefficientType> > >
+	constexpr decltype(auto) take_grade(clifford_expression<CoefficientType, Expression> const &arg, scalar_clifford_expression<GradeCoefficientType, GradeCoefficient> const &k) noexcept {
 		auto lazy = make_lazy_context(arg, k);
 		return lazy.eval(clifford_expression<default_integral_t, detail::keep_grade_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1> > >());
 	}
 
-	template<typename Type, typename GradeType, default_integral_t K, typename = std::enable_if_t<std::is_constructible_v<grade_t, GradeType> > >
-	constexpr decltype(auto) take_grade(Type const &arg, constant<GradeType, K> const &k) {
+	template<typename Type, typename GradeCoefficientType, typename GradeCoefficient, typename = std::enable_if_t<std::is_constructible_v<grade_t, GradeCoefficientType> > >
+	constexpr decltype(auto) take_grade(Type const &arg, scalar_clifford_expression<GradeCoefficientType, GradeCoefficient> const &k) noexcept {
 		return take_grade(scalar(arg), k);
 	}
 
 	template<typename CoefficientType, typename Expression>
-	constexpr decltype(auto) take_grade(clifford_expression<CoefficientType, Expression> const &arg, grade_t const k) {
-		auto lazy = make_lazy_context(arg, scalar(k));
-		return lazy.eval(clifford_expression<default_integral_t, detail::keep_grade_t<decltype(lazy)::argument_expression_t<0>, decltype(lazy)::argument_expression_t<1> > >());
+	constexpr decltype(auto) take_grade(clifford_expression<CoefficientType, Expression> const &arg, grade_t const k) noexcept {
+		return take_grade(arg, scalar(k));
 	}
 
 	template<typename Type>
-	constexpr decltype(auto) take_grade(Type const &arg, grade_t const k) {
-		return take_grade(scalar(arg), k);
+	constexpr decltype(auto) take_grade(Type const &arg, grade_t const k) noexcept {
+		return take_grade(scalar(arg), scalar(k));
+	}
+
+	// Returns the portion of the given Clifford expression with the largest grade.
+	template<typename CoefficientType, typename Expression, typename ToleranceType>
+	constexpr decltype(auto) take_largest_grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept {
+		auto const lazy = make_lazy_context(arg, scalar(tol));
+		return lazy.eval(take_grade(lazy.argument<0>(), largest_grade(lazy.argument<0>(), lazy.argument<1>())));
+	}
+
+	template<typename CoefficientType, typename Expression>
+	constexpr decltype(auto) take_largest_grade(clifford_expression<CoefficientType, Expression> const &arg) noexcept {
+		return take_largest_grade(arg, default_tolerance<CoefficientType>());
+	}
+
+	template<typename Type, typename ToleranceType>
+	constexpr decltype(auto) take_largest_grade(Type const &arg, ToleranceType const &tol) noexcept {
+		return take_largest_grade(scalar(arg), tol);
+	}
+
+	template<typename Type>
+	constexpr decltype(auto) take_largest_grade(Type const &arg) noexcept {
+		return take_largest_grade(scalar(arg), default_tolerance<Type>());
 	}
 
 }

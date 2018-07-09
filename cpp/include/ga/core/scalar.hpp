@@ -29,26 +29,29 @@ namespace ga {
 
 	// Helper for defining a scalar value type.
 	template<typename CoefficientType>
-	using scalar_t = scalar_clifford_expression<CoefficientType, detail::stored_value>;
+	using scaled_scalar_t = scalar_clifford_expression<CoefficientType, detail::stored_value>;
+
+	// Helper for defining an unit compile-time defined scalar type.
+	using unit_scalar_t = scalar_clifford_expression<default_integral_t, detail::constant_value<1> >;
 
 	// Converts the given native value type to scalar Clifford expression.
 	template<typename ValueType, typename = std::enable_if_t<!is_clifford_expression_v<ValueType> > >
-	constexpr scalar_t<ValueType> scalar(ValueType const &arg) {
-		return scalar_t<ValueType>(make_sequential_storage(arg));
+	constexpr scaled_scalar_t<ValueType> scalar(ValueType const &arg) noexcept {
+		return scaled_scalar_t<ValueType>(make_sequential_storage(arg));
 	}
 
 	template<typename ValueType, typename = std::enable_if_t<!is_clifford_expression_v<ValueType> > >
-	constexpr scalar_t<ValueType> scalar(ValueType &&arg) {
-		return scalar_t<ValueType>(make_sequential_storage(std::move(arg)));
+	constexpr scaled_scalar_t<ValueType> scalar(ValueType &&arg) noexcept {
+		return scaled_scalar_t<ValueType>(make_sequential_storage(std::move(arg)));
 	}
 
 	template<typename CoefficientType, typename Coefficient>
-	constexpr decltype(auto) scalar(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+	constexpr decltype(auto) scalar(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) noexcept {
 		return arg;
 	}
 
 	template<typename CoefficientType, typename Coefficient>
-	constexpr decltype(auto) scalar(scalar_clifford_expression<CoefficientType, Coefficient> &&arg) {
+	constexpr decltype(auto) scalar(scalar_clifford_expression<CoefficientType, Coefficient> &&arg) noexcept {
 		return std::move(arg);
 	}
 

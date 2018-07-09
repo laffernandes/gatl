@@ -27,12 +27,12 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 #define _GA_HOMOGENEOUS_ALGEBRA_OVERLOAD(SPACE) \
 	template <typename... Types> \
-	constexpr decltype(auto) euclidean_vector(Types &&... coords) { \
+	constexpr decltype(auto) euclidean_vector(Types &&... coords) noexcept { \
 		return euclidean_vector(SPACE, std::move(coords)...); \
 	} \
 	\
 	template<typename CoefficientType, typename Expression> \
-	constexpr decltype(auto) flat_direction(clifford_expression<CoefficientType, Expression> const &flat) { \
+	constexpr decltype(auto) flat_direction(clifford_expression<CoefficientType, Expression> const &flat) noexcept { \
 		return flat_direction(flat, SPACE); \
 	} \
 	\
@@ -42,7 +42,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 	} \
 	\
 	template<typename CoefficientType, typename Expression> \
-	constexpr decltype(auto) flat_moment(clifford_expression<CoefficientType, Expression> const &flat) { \
+	constexpr decltype(auto) flat_moment(clifford_expression<CoefficientType, Expression> const &flat) noexcept { \
 		return flat_moment(flat, SPACE); \
 	} \
 	\
@@ -52,11 +52,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 	} \
 	\
 	template <typename... Types> \
-	constexpr decltype(auto) point(Types &&... coords) { \
+	constexpr decltype(auto) point(Types &&... coords) noexcept { \
 		return point(SPACE, std::move(coords)...); \
 	} \
 	template<typename DirectionCoefficientType, typename DirectionExpression, typename CoefficientType, typename Expression> \
-	constexpr decltype(auto) translate(clifford_expression<DirectionCoefficientType, DirectionExpression> const &direction, clifford_expression<CoefficientType, Expression> const &flat) { \
+	constexpr decltype(auto) translate(clifford_expression<DirectionCoefficientType, DirectionExpression> const &direction, clifford_expression<CoefficientType, Expression> const &flat) noexcept { \
 		return translate(direction, flat, SPACE); \
 	}
 

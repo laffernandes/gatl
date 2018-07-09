@@ -25,6 +25,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #ifndef __GA_CORE_HPP__
 #define __GA_CORE_HPP__
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cmath>
@@ -44,25 +45,27 @@ namespace ga {
 
 	static_assert(std::is_integral_v<decltype((GA_MAX_BASIS_VECTOR_INDEX))> && 1 <= (GA_MAX_BASIS_VECTOR_INDEX) && (GA_MAX_BASIS_VECTOR_INDEX) <= 63, "GA_MAX_BASIS_VECTOR_INDEX must be an integer value between 1 and 63, inclusive.");
 
-	typedef std::int32_t default_integral_t;
-	typedef std::double_t default_floating_point_t;
-	typedef std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 8, std::uint8_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 16, std::uint16_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 32, std::uint32_t, std::uint64_t> > > default_bitset_t;
+	using default_integral_t = std::int32_t;
+	using default_floating_point_t = std::double_t;
+
+	using bitset_t = std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 8, std::uint8_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 16, std::uint16_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 32, std::uint32_t, std::uint64_t> > >;
+
+	using grade_t = default_integral_t;
+
+	using index_t = std::uint32_t;
+	using ndims_t = std::uint32_t;
+
+	template<typename ValueType>
+	using associative_container_t = std::map<bitset_t, ValueType>;
 
 	template<typename EntryType, std::size_t Size>
-	using default_sequence_container_t = std::array<EntryType, Size>;
-		
-	template<typename ValueType>
-	using default_associative_container_t = std::map<default_bitset_t, ValueType>;
-
-	typedef default_integral_t grade_t;
-
-	typedef std::uint32_t index_t;
-	typedef std::uint32_t ndims_t;
+	using sequence_container_t = std::array<EntryType, Size>;
 
 }
 
+#include "ga/core/exceptions.hpp"
 #include "ga/core/type_traits_extension.hpp"
-	
+
 #include "ga/core/constexpr.hpp"
 
 #include "ga/core/expression.hpp"
@@ -85,8 +88,6 @@ namespace ga {
 
 #include "ga/core/constant.hpp"
 #include "ga/core/scalar.hpp"
-
-#include "ga/core/copy.hpp"
 
 #include "ga/core/conjugation.hpp"
 #include "ga/core/involution.hpp"

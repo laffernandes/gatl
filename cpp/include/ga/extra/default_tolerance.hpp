@@ -40,17 +40,17 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 namespace ga {
 
 	template<typename ValueType>
-	constexpr decltype(auto) default_tolerance() {
+	constexpr decltype(auto) default_tolerance() noexcept {
 		return c<0, ValueType>;
 	}
 
 	template<>
-	constexpr decltype(auto) default_tolerance<std::float_t>() {
+	constexpr decltype(auto) default_tolerance<std::float_t>() noexcept {
 		return scalar(GA_DEFAULT_FLT_TOLERANCE);
 	}
 
 	template<>
-	constexpr decltype(auto) default_tolerance<std::double_t>() {
+	constexpr decltype(auto) default_tolerance<std::double_t>() noexcept {
 		return scalar(GA_DEFAULT_DBL_TOLERANCE);
 	}
 

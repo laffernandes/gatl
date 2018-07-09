@@ -544,9 +544,9 @@ void test_general_metric() {
 	{
 		using namespace ga3c;
 
-		typedef conformal_metric_space<3> GeneralMetricSpace;
-		typedef detail::general_metric_mapping<GeneralMetricSpace, detail::gp_mapping> mappping;
-		typedef mappping::multiply<detail::basis_blade_t<decltype(e1)::expression_type>, detail::basis_blade_t<decltype(e2)::expression_type> > e1e2;
+		using GeneralMetricSpace = conformal_metric_space<3>;
+		using mappping = detail::general_metric_mapping<GeneralMetricSpace, detail::gp_mapping>;
+		using e1e2 = mappping::multiply<detail::basis_blade_t<decltype(e1)::expression_type>, detail::basis_blade_t<decltype(e2)::expression_type> >;
 
 		auto vp = p1 * e1 + p2 * e2 + p3 * e3;
 		auto test = sp(vp, vp);
@@ -664,7 +664,7 @@ int main() {
 		auto copy_out = 0. + 0. * e1 + 0. * (e1^e2) + 10. * e2;
 		std::cout << "out = " << copy_out << std::endl;
 
-		copy_out = copy_in;
+		trivial_copy(copy_in, copy_out);
 		std::cout << "out = " << copy_out << std::endl;
 
 		std::cout << std::endl;
@@ -698,26 +698,26 @@ int main() {
 	auto test = c<3> / c<2>;
 
 	{
-		default_bitset_t bits = 235;
+		bitset_t bits = 235;
 		std::cout << "left  = " << detail::leftmost_set_bit(bits) << std::endl;
 		std::cout << "right = " << detail::rightmost_set_bit(bits) << std::endl;
 		std::cout << std::endl;
 
 		ndims_t n = 5;
-		default_bitset_t comb = 3;
-		default_bitset_t mask = (default_bitset_t(1) << n) - 1;
+		bitset_t comb = 3;
+		bitset_t mask = (bitset_t(1) << n) - 1;
 		do {
 			std::cout << '[';
 			index_t index = 1;
-			default_bitset_t temp = comb;
-			for (default_bitset_t i = 1; temp; i *= 2, ++index) {
+			bitset_t temp = comb;
+			for (bitset_t i = 1; temp; i *= 2, ++index) {
 				if (i & temp) {
 					std::cout << index << ", ";
 					temp -= i;
 				}
 			}
 			std::cout << ']' << std::endl;
-		} while ((comb = detail::next_combination(comb, mask)) != default_bitset_t(0));
+		} while ((comb = detail::next_combination(comb, mask)) != bitset_t(0));
 	}
 
 	{
@@ -725,7 +725,26 @@ int main() {
 
 		std::cout << I << std::endl;
 		std::cout << Ie << std::endl;
+	}
 
+	{
+		using namespace ga4e;
+
+		auto a = vector(5.0, 3.2, 1.6, -4.0) ^ vector(4.6, 7.8, -9.0, 7.0) ^ e2;
+		auto b = euclidean_vector(5.0, 3.2, 1.6, -4.0) ^ e2;
+
+		auto r1 = meet_and_join(a, b);
+		auto r2 = fast_meet_and_join(a, b);
+
+		std::cout << "a = " << unit(a) << std::endl;
+		std::cout << "b = " << unit(b) << std::endl;
+		std::cout << std::endl;
+		std::cout << "meet(a, b) = " << unit(std::get<0>(r1)) << std::endl;
+		std::cout << "join(a, b) = " << unit(std::get<1>(r1)) << std::endl;
+		std::cout << std::endl;
+		std::cout << "fast_meet(a, b) = " << unit(std::get<0>(r2)) << std::endl;
+		std::cout << "fast_join(a, b) = " << unit(std::get<1>(r2)) << std::endl;
+		std::cout << std::endl;
 	}
 
 	{

@@ -26,7 +26,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #define __GA_MODEL_SIGNED_EUCLIDEAN_MACRO_FOR_ALGEBRA_DEFINITION_HPP__
 
 #define _GA_EUCLIDEAN_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, N, ...) \
-	typedef euclidean_metric_space<N> space_t; \
+	using space_t = euclidean_metric_space<N>; \
 	\
 	static space_t const SPACE; \
 	static std::array<std::string, N> const BASIS_VECTORS_NAMES = { __VA_ARGS__ }; \

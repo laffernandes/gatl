@@ -37,7 +37,7 @@ namespace ga {
 
 	// Returns the compile-time defined unit pseudoscalar of the given space.
 	template<typename MetricSpaceType>
-	constexpr unit_pseudoscalar_t<MetricSpaceType::vector_space_dimensions> pseudoscalar(metric_space<MetricSpaceType> const &) {
+	constexpr unit_pseudoscalar_t<MetricSpaceType::vector_space_dimensions> pseudoscalar(metric_space<MetricSpaceType> const &) noexcept {
 		return unit_pseudoscalar_t<MetricSpaceType::vector_space_dimensions>();
 	}
 

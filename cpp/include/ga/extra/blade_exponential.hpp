@@ -27,18 +27,18 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	template<typename CoefficientType, typename Expression, typename ToleranceCoefficient, typename MetricSpaceType>
-	constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg, scalar_clifford_expression<CoefficientType, ToleranceCoefficient> const &tol, metric_space<MetricSpaceType> const &) {
-		typedef decltype(make_lazy_context(arg, tol)) lazy_context_type;
+	template<typename CoefficientType, typename Expression, typename ToleranceType, typename MetricSpaceType>
+	constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol, metric_space<MetricSpaceType> const &) {
+		using lazy_context_type = decltype(make_lazy_context(arg, scalar(tol)));
 
-		typedef lazy_context_type::argument_expression_t<0> blade_expression;
-		typedef detail::coefficient_t<lazy_context_type::argument_expression_t<1> > tolerance_value;
+		using blade_expression = typename lazy_context_type::argument_expression_t<0>;
+		using tolerance_value = detail::coefficient_t<typename lazy_context_type::argument_expression_t<1> >;
 
-		typedef detail::coefficient_t<detail::product_t<blade_expression, blade_expression, detail::metric_space_mapping_t<MetricSpaceType, detail::sp_mapping> > > signed_squared_alpha_value;
-		typedef detail::absolute_t<signed_squared_alpha_value> squared_alpha_value;
-		typedef detail::power_t<squared_alpha_value, detail::power_t<detail::constant_value<2>, detail::constant_value<-1> > > alpha_value;
+		using signed_squared_alpha_value = detail::coefficient_t<detail::product_t<blade_expression, blade_expression, detail::metric_space_mapping_t<MetricSpaceType, detail::sp_mapping> > >;
+		using squared_alpha_value = detail::absolute_t<signed_squared_alpha_value>;
+		using alpha_value = detail::power_t<squared_alpha_value, detail::power_t<detail::constant_value<2>, detail::constant_value<-1> > >;
 
-		typedef detail::if_else_t<
+		using scalar_coefficient_value = detail::if_else_t<
 			detail::less_or_equal_t<squared_alpha_value, tolerance_value>,
 			detail::constant_value<1>,
 			detail::if_else_t<
@@ -46,9 +46,9 @@ namespace ga {
 				detail::cosine_t<alpha_value>,
 				detail::hyperbolic_cosine_t<alpha_value>
 			>
-		> scalar_coefficient_value;
+		>;
 
-		typedef detail::if_else_t<
+		using blade_weight_value = detail::if_else_t<
 			detail::less_or_equal_t<squared_alpha_value, tolerance_value>,
 			detail::constant_value<1>,
 			detail::if_else_t<
@@ -56,24 +56,19 @@ namespace ga {
 				detail::product_t<detail::sine_t<alpha_value>, detail::power_t<alpha_value, detail::constant_value<-1> >, detail::value_mapping>,
 				detail::product_t<detail::hyperbolic_sine_t<alpha_value>, detail::power_t<alpha_value, detail::constant_value<-1> >, detail::value_mapping>
 			>
-		> blade_weight_value;
+		>;
 
-		typedef detail::addition_t<
-			detail::component_t<scalar_coefficient_value, detail::constant_basis_blade<default_bitset_t(0)> >,
+		using result_expression = detail::addition_t<
+			detail::component_t<scalar_coefficient_value, detail::constant_basis_blade<bitset_t(0)> >,
 			detail::product_t<
-				detail::component_t<blade_weight_value, detail::constant_basis_blade<default_bitset_t(0)> >,
+				detail::component_t<blade_weight_value, detail::constant_basis_blade<bitset_t(0)> >,
 				blade_expression,
 				detail::exterior_product_mapping<MetricSpaceType::vector_space_dimensions>
 			>
-		> result_expression;
+		>;
 
-		auto const lazy = make_lazy_context(arg, tol);
+		lazy_context_type const lazy = make_lazy_context(arg, scalar(tol));
 		return lazy.eval(clifford_expression<default_integral_t, result_expression>());
-	}
-
-	template<typename CoefficientType, typename Expression, typename MetricSpaceType>
-	constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg, CoefficientType const &tol, metric_space<MetricSpaceType> const &) {
-		return exp(arg, scalar(tol), mtr);
 	}
 
 	template<typename CoefficientType, typename Expression, typename MetricSpaceType>
@@ -81,8 +76,8 @@ namespace ga {
 		return exp(arg, default_tolerance<CoefficientType>(), mtr);
 	}
 
-	template<typename CoefficientType, typename Coefficient, typename MetricSpaceType>
-	constexpr decltype(auto) exp(scalar_clifford_expression<CoefficientType, Coefficient> const &arg, CoefficientType const &, metric_space<MetricSpaceType> const &) {
+	template<typename CoefficientType, typename Coefficient, typename ToleranceType, typename MetricSpaceType>
+	constexpr decltype(auto) exp(scalar_clifford_expression<CoefficientType, Coefficient> const &arg, ToleranceType const &, metric_space<MetricSpaceType> const &) {
 		return exp(arg);
 	}
 
@@ -91,8 +86,8 @@ namespace ga {
 		return exp(arg);
 	}
 
-	template<typename Type, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
-	constexpr decltype(auto) exp(Type const &arg, Type const &, metric_space<MetricSpaceType> const &) {
+	template<typename Type, typename ToleranceType, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+	constexpr decltype(auto) exp(Type const &arg, ToleranceType const &, metric_space<MetricSpaceType> const &) {
 		return exp(arg);
 	}
 
@@ -101,8 +96,8 @@ namespace ga {
 		return exp(arg);
 	}
 
-	template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
-	constexpr decltype(auto) exp(Type const &arg, Type const &) {
+	template<typename Type, typename ToleranceType, typename = std::enable_if_t<!(is_clifford_expression_v<Type> || is_metric_space_v<ToleranceType>) > >
+	constexpr decltype(auto) exp(Type const &arg, ToleranceType const &) {
 		return exp(arg);
 	}
 

@@ -38,7 +38,7 @@ namespace ga {
 
 		template<typename Expression, typename... NextExpressions>
 		struct greater_id<Expression, NextExpressions...> {
-			constexpr static tag_t value = greater(greater_id_v<Expression>, greater_id_v<NextExpressions...>); // recursion
+			constexpr static tag_t value = std::max(greater_id_v<Expression>, greater_id_v<NextExpressions...>); // recursion
 		};
 
 		template<>
@@ -71,14 +71,14 @@ namespace ga {
 			constexpr static tag_t value = Tag;
 		};
 
-		template<default_bitset_t PossibleGrades, typename Bitset>
+		template<bitset_t PossibleGrades, typename Bitset>
 		struct greater_id<dynamic_basis_blade<PossibleGrades, Bitset> > {
 			constexpr static tag_t value = greater_id_v<Bitset>;
 		};
 
 		template<typename Coefficient, typename BasisBlade>
 		struct greater_id<component<Coefficient, BasisBlade> > {
-			constexpr static tag_t value = greater(greater_id_v<Coefficient>, greater_id_v<BasisBlade>);
+			constexpr static tag_t value = std::max(greater_id_v<Coefficient>, greater_id_v<BasisBlade>);
 		};
 
 		template<name_t Name, typename... Arguments>
@@ -95,32 +95,32 @@ namespace ga {
 
 		template<typename Expression, tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
 		struct tag_variables {
-			typedef Expression type; // default
+			using type = Expression; // default
 		};
 
 		template<tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
 		struct tag_variables<stored_value, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
-			typedef get_value<Tag, BaseValueIndex> type;
+			using type = get_value<Tag, BaseValueIndex>;
 		};
 
 		template<tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
 		struct tag_variables<stored_bitset, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
-			typedef get_bitset<Tag, BaseBitsetIndex> type;
+			using type = get_bitset<Tag, BaseBitsetIndex>;
 		};
 
-		template<default_bitset_t PossibleGrades, typename Bitset, tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
+		template<bitset_t PossibleGrades, typename Bitset, tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
 		struct tag_variables<dynamic_basis_blade<PossibleGrades, Bitset>, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
-			typedef dynamic_basis_blade_t<PossibleGrades, tag_variables_t<Bitset, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> > type;
+			using type = dynamic_basis_blade_t<PossibleGrades, tag_variables_t<Bitset, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> >;
 		};
 
 		template<typename Coefficient, typename BasisBlade, tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
 		struct tag_variables<component<Coefficient, BasisBlade>, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
-			typedef component_t<tag_variables_t<Coefficient, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex>, tag_variables_t<BasisBlade, Tag, BaseValueIndex + count_stored_values_v<Coefficient>, BaseBitsetIndex + count_stored_bitsets_v<Coefficient>, BaseMapIndex + count_stored_maps_v<Coefficient> > > type;
+			using type = component_t<tag_variables_t<Coefficient, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex>, tag_variables_t<BasisBlade, Tag, BaseValueIndex + count_stored_values_v<Coefficient>, BaseBitsetIndex + count_stored_bitsets_v<Coefficient>, BaseMapIndex + count_stored_maps_v<Coefficient> > >;
 		};
 
-		template<default_bitset_t PossibleGrades, tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
+		template<bitset_t PossibleGrades, tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
 		struct tag_variables<component<stored_map_values, dynamic_basis_blade<PossibleGrades, stored_map_bitsets> >, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
-			typedef component_t<get_map_values<Tag, BaseMapIndex>, dynamic_basis_blade<PossibleGrades, get_map_bitsets<Tag, BaseMapIndex> > > type;
+			using type = component_t<get_map_values<Tag, BaseMapIndex>, dynamic_basis_blade<PossibleGrades, get_map_bitsets<Tag, BaseMapIndex> > >;
 		};
 
 		template<tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex, typename Function, typename... Arguments>
@@ -128,17 +128,17 @@ namespace ga {
 
 		template<tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex, name_t Name, typename... FunctionArguments, typename Argument, typename... NextArguments>
 		struct _tag_variables_in_function<Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex, function<Name, FunctionArguments...>, Argument, NextArguments...> {
-			typedef typename _tag_variables_in_function<Tag, BaseValueIndex + count_stored_values_v<Argument>, BaseBitsetIndex + count_stored_bitsets_v<Argument>, BaseMapIndex + count_stored_maps_v<Argument>, function<Name, FunctionArguments..., tag_variables_t<Argument, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> >, NextArguments...>::type type;
+			using type = typename _tag_variables_in_function<Tag, BaseValueIndex + count_stored_values_v<Argument>, BaseBitsetIndex + count_stored_bitsets_v<Argument>, BaseMapIndex + count_stored_maps_v<Argument>, function<Name, FunctionArguments..., tag_variables_t<Argument, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> >, NextArguments...>::type;
 		};
 
 		template<tag_t Tag, std::size_t ValueIndexEnd, std::size_t BitsetIndexEnd, std::size_t MapIndexEnd, name_t Name, typename... FunctionArguments>
 		struct _tag_variables_in_function<Tag, ValueIndexEnd, BitsetIndexEnd, MapIndexEnd, function<Name, FunctionArguments...> > {
-			typedef function<Name, FunctionArguments...> type;
+			using type = function<Name, FunctionArguments...>;
 		};
 
 		template<name_t Name, typename... Arguments, tag_t Tag, std::size_t BaseValueIndex, std::size_t BaseBitsetIndex, std::size_t BaseMapIndex>
 		struct tag_variables<function<Name, Arguments...>, Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex> {
-			typedef typename _tag_variables_in_function<Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex, function<Name>, Arguments...>::type type;
+			using type = typename _tag_variables_in_function<Tag, BaseValueIndex, BaseBitsetIndex, BaseMapIndex, function<Name>, Arguments...>::type;
 		};
 
 		// Evaluates the given (or the collection of) clifford_expression<...>.
@@ -155,7 +155,7 @@ namespace ga {
 		struct eval_clifford_expressions {
 			template<typename... InputTypes>
 			struct coefficient_type {
-				typedef std::common_type_t<typename eval_clifford_expression<LowerTag, UpperTag, Expression>::template coefficient_type<InputTypes...>::type, typename eval_clifford_expressions<LowerTag, UpperTag, NextExpressions...>::template coefficient_type<InputTypes...>::type> type;
+				using type = std::common_type_t<typename eval_clifford_expression<LowerTag, UpperTag, Expression>::template coefficient_type<InputTypes...>::type, typename eval_clifford_expressions<LowerTag, UpperTag, NextExpressions...>::template coefficient_type<InputTypes...>::type>;
 			};
 
 			// expression_type is not defined here.
@@ -171,7 +171,7 @@ namespace ga {
 		struct eval_clifford_expressions<LowerTag, UpperTag, Expression> {
 			template<typename... InputTypes>
 			struct coefficient_type {
-				typedef typename eval_clifford_expression<LowerTag, UpperTag, Expression>::template coefficient_type<InputTypes...>::type type;
+				using type = typename eval_clifford_expression<LowerTag, UpperTag, Expression>::template coefficient_type<InputTypes...>::type;
 			};
 
 			// expression_type is not defined here.
@@ -186,13 +186,13 @@ namespace ga {
 		struct _eval_clifford_expression_do_nothing {
 			template<typename... InputTypes>
 			struct coefficient_type {
-				typedef default_integral_t type;
+				using type = default_integral_t;
 			};
 
-			typedef Expression expression_type;
+			using expression_type = Expression ;
 
 			template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-			constexpr static void run(ValueItr const &, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &) {
+			constexpr static void run(ValueItr const &, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &) noexcept {
 				// Do nothing.
 			}
 		};
@@ -201,10 +201,10 @@ namespace ga {
 		struct _eval_clifford_expression_move {
 			template<typename... InputTypes>
 			struct coefficient_type {
-				typedef typename eval_clifford_expressions<LowerTag, UpperTag, Expressions...>::template coefficient_type<InputTypes...>::type type;
+				using type = typename eval_clifford_expressions<LowerTag, UpperTag, Expressions...>::template coefficient_type<InputTypes...>::type;
 			};
 
-			typedef ExpressionType expression_type;
+			using expression_type = ExpressionType;
 
 			template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
 			constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
@@ -216,13 +216,13 @@ namespace ga {
 		struct _eval_clifford_expression_store_value {
 			template<typename... InputTypes>
 			struct coefficient_type {
-				typedef decltype(Expression::eval<LowerTag, UpperTag>(std::declval<std::tuple<InputTypes...> >())) type;
+				using type = decltype(Expression::eval<LowerTag, UpperTag>(std::declval<std::tuple<InputTypes...> >()));
 			};
 
-			typedef stored_value expression_type;
+			using expression_type = stored_value;
 
 			template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-			constexpr static void run(ValueItr &value_itr, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &args) {
+			constexpr static void run(ValueItr &value_itr, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &args) noexcept {
 				*value_itr = Expression::eval<LowerTag, UpperTag>(args);
 				std::advance(value_itr, 1);
 			}
@@ -232,14 +232,15 @@ namespace ga {
 		struct _eval_clifford_expression_store_map_values {
 			template<typename... InputTypes>
 			struct coefficient_type {
-				typedef nullptr_t type; //TODO Not supported yet (map)
+				using type = nullptr_t; //TODO Not supported yet (map)
 			};
 
-			typedef stored_map_values expression_type;
+			using expression_type = stored_map_values;
 
 			template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-			constexpr static void run(ValueItr const &, BitsetItr const &, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+			constexpr static void run(ValueItr const &, BitsetItr const &, MapIts &map_itr, std::tuple<InputTypes...> const &args) noexcept {
 				//TODO Not supported yet (map)
+				throw not_implemented_error("Sorry! The use of ga::clifford_expresion<CoefficientType, Expression> with ga::associative_container_t<ValueType> is not supported yet.");
 			}
 		};
 
@@ -247,13 +248,13 @@ namespace ga {
 		struct _eval_clifford_expression_store_bitset {
 			template<typename... InputTypes>
 			struct coefficient_type {
-				typedef default_integral_t type;
+				using type = default_integral_t;
 			};
 
-			typedef stored_bitset expression_type;
+			using expression_type = stored_bitset;
 
 			template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-			constexpr static void run(ValueItr const &, BitsetItr &bitset_itr, MapIts const &, std::tuple<InputTypes...> const &args) {
+			constexpr static void run(ValueItr const &, BitsetItr &bitset_itr, MapIts const &, std::tuple<InputTypes...> const &args) noexcept {
 				*bitset_itr = Expression::eval<LowerTag, UpperTag>(args);
 				std::advance(bitset_itr, 1);
 			}
@@ -263,14 +264,15 @@ namespace ga {
 		struct _eval_clifford_expression_store_map_bitsets {
 			template<typename... InputTypes>
 			struct coefficient_type {
-				typedef nullptr_t type; //TODO Not supported yet (map)
+				using type = nullptr_t; //TODO Not supported yet (map)
 			};
 
-			typedef stored_map_bitsets expression_type;
+			using expression_type = stored_map_bitsets;
 
 			template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-			constexpr static void run(ValueItr const &, BitsetItr const &, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+			constexpr static void run(ValueItr const &, BitsetItr const &, MapIts &map_itr, std::tuple<InputTypes...> const &args) noexcept {
 				//TODO Not supported yet (map)
+				throw not_implemented_error("Sorry! The use of ga::clifford_expresion<CoefficientType, Expression> with ga::associative_container_t<ValueType> is not supported yet.");
 			}
 		};
 
@@ -314,7 +316,7 @@ namespace ga {
 			> {
 		};
 
-		template<tag_t LowerTag, tag_t UpperTag, default_bitset_t PossibleGrades, typename Bitset>
+		template<tag_t LowerTag, tag_t UpperTag, bitset_t PossibleGrades, typename Bitset>
 		struct eval_clifford_expression<LowerTag, UpperTag, dynamic_basis_blade<PossibleGrades, Bitset> > :
 			_eval_clifford_expression_move<LowerTag, UpperTag, dynamic_basis_blade_t<PossibleGrades, eval_expression_t<LowerTag, UpperTag, Bitset> >, Bitset> {
 		};
@@ -450,7 +452,7 @@ namespace ga {
 		
 		template<tag_t LowerTag, tag_t UpperTag, typename CoefficientType, typename Expression, typename... InputTypes>
 		constexpr static decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &expression, std::tuple<InputTypes...> const &args) {
-			typedef clifford_expression<eval_coefficient_t<LowerTag, UpperTag, Expression, std::remove_const_t<std::remove_reference_t<InputTypes> >...>, eval_expression_t<LowerTag, UpperTag, Expression> > result_type;
+			using result_type = clifford_expression<eval_coefficient_t<LowerTag, UpperTag, Expression, std::remove_const_t<std::remove_reference_t<InputTypes> >...>, eval_expression_t<LowerTag, UpperTag, Expression> >;
 
 			typename result_type::value_storage_type values;
 			typename result_type::bitset_storage_type bitsets;
@@ -473,23 +475,23 @@ namespace ga {
 		class _super_lazy_context_input {
 		public:
 
-			typedef clifford_expression<InputCoefficientType, InputExpression> input_type;
+			using input_type = clifford_expression<InputCoefficientType, InputExpression>;
 
 			constexpr _super_lazy_context_input(_super_lazy_context_input const &) = default;
 			constexpr _super_lazy_context_input(_super_lazy_context_input &&) = default;
 
-			constexpr _super_lazy_context_input(input_type const &input) :
+			constexpr _super_lazy_context_input(input_type const &input) noexcept :
 				input_(input) {
 			}
 
 			constexpr _super_lazy_context_input & operator=(_super_lazy_context_input const &) = delete;
 			constexpr _super_lazy_context_input & operator=(_super_lazy_context_input &&) = delete;
 
-			constexpr decltype(auto) get_as_tuple() const {
+			constexpr decltype(auto) get_as_tuple() const noexcept {
 				return std::tie(input_);
 			}
 
-			constexpr static bool is_stored() {
+			constexpr static bool is_stored() noexcept {
 				return true;
 			}
 
@@ -502,22 +504,22 @@ namespace ga {
 		class _super_lazy_context_input<ReverseIndex, InputCoefficientType, InputExpression, false> {
 		public:
 
-			typedef clifford_expression<InputCoefficientType, InputExpression> input_type;
+			using input_type = clifford_expression<InputCoefficientType, InputExpression>;
 
 			constexpr _super_lazy_context_input(_super_lazy_context_input const &) = default;
 			constexpr _super_lazy_context_input(_super_lazy_context_input &&) = default;
 
-			constexpr _super_lazy_context_input(clifford_expression<InputCoefficientType, InputExpression> const &) {
+			constexpr _super_lazy_context_input(clifford_expression<InputCoefficientType, InputExpression> const &) noexcept {
 			}
 
 			constexpr _super_lazy_context_input & operator=(_super_lazy_context_input const &) = delete;
 			constexpr _super_lazy_context_input & operator=(_super_lazy_context_input &&) = delete;
 
-			constexpr decltype(auto) get_as_tuple() const {
+			constexpr decltype(auto) get_as_tuple() const noexcept {
 				return std::make_tuple();
 			}
 
-			constexpr static bool is_stored() {
+			constexpr static bool is_stored() noexcept {
 				return false;
 			}
 		};
@@ -528,29 +530,29 @@ namespace ga {
 			private _super_lazy_context<_super_lazy_context_input<sizeof...(OtherInputExpressions), InputCoefficientType, InputExpression>::is_stored() ? BaseTag + 1 : BaseTag, clifford_expression<OtherInputCoefficientTypes, OtherInputExpressions>...> {
 		private:
 
-			typedef _super_lazy_context_input<sizeof...(OtherInputExpressions), InputCoefficientType, InputExpression> super_input;
-			typedef _super_lazy_context<super_input::is_stored() ? BaseTag + 1 : BaseTag, clifford_expression<OtherInputCoefficientTypes, OtherInputExpressions>...> super_recursive;
+			using super_input = _super_lazy_context_input<sizeof...(OtherInputExpressions), InputCoefficientType, InputExpression>;
+			using super_recursive = _super_lazy_context<super_input::is_stored() ? BaseTag + 1 : BaseTag, clifford_expression<OtherInputCoefficientTypes, OtherInputExpressions>...>;
 
 		public:
 
 			template<std::size_t Index>
 			struct argument {
-				typedef typename super_recursive::template argument<Index - 1>::type type;
+				using type = typename super_recursive::template argument<Index - 1>::type;
 			};
 
 			template<>
 			struct argument<0> {
-				typedef std::conditional_t<
+				using type = std::conditional_t<
 					super_input::is_stored(),
 					clifford_expression<InputCoefficientType, tag_variables_t<InputExpression, BaseTag + 1, 0, 0, 0> >,
 					typename super_input::input_type
-				> type;
+				>;
 			};
 
 			constexpr _super_lazy_context(_super_lazy_context const &) = default;
 			constexpr _super_lazy_context(_super_lazy_context &&) = default;
 
-			constexpr _super_lazy_context(clifford_expression<InputCoefficientType, InputExpression> const &input, clifford_expression<OtherInputCoefficientTypes, OtherInputExpressions> const &... other_inputs) :
+			constexpr _super_lazy_context(clifford_expression<InputCoefficientType, InputExpression> const &input, clifford_expression<OtherInputCoefficientTypes, OtherInputExpressions> const &... other_inputs) noexcept :
 				super_input(input),
 				super_recursive(other_inputs...) {
 			}
@@ -558,11 +560,11 @@ namespace ga {
 			constexpr _super_lazy_context & operator=(_super_lazy_context const &) = delete;
 			constexpr _super_lazy_context & operator=(_super_lazy_context &&) = delete;
 
-			constexpr decltype(auto) stored_inputs_tuple() const {
+			constexpr decltype(auto) stored_inputs_tuple() const noexcept {
 				return std::tuple_cat(super_input::get_as_tuple(), super_recursive::stored_inputs_tuple());
 			}
 
-			constexpr static std::size_t stored_inputs_count() {
+			constexpr static std::size_t stored_inputs_count() noexcept {
 				return (super_input::is_stored() ? 1 : 0) + super_recursive::stored_inputs_count();
 			}
 		};
@@ -578,11 +580,11 @@ namespace ga {
 			constexpr _super_lazy_context & operator=(_super_lazy_context const &) = delete;
 			constexpr _super_lazy_context & operator=(_super_lazy_context &&) = delete;
 
-			constexpr decltype(auto) stored_inputs_tuple() const {
+			constexpr decltype(auto) stored_inputs_tuple() const noexcept {
 				return std::make_tuple();
 			}
 
-			constexpr static std::size_t stored_inputs_count() {
+			constexpr static std::size_t stored_inputs_count() noexcept {
 				return 0;
 			}
 		};
@@ -600,7 +602,7 @@ namespace ga {
 
 		constexpr static detail::tag_t base_id = detail::greater_id_v<InputExpressions...>;
 		
-		typedef detail::_super_lazy_context<base_id, clifford_expression<InputCoefficientTypes, InputExpressions>...> super;
+		using super = detail::_super_lazy_context<base_id, clifford_expression<InputCoefficientTypes, InputExpressions>...>;
 
 	public:
 
@@ -616,7 +618,7 @@ namespace ga {
 		constexpr lazy_context(lazy_context const &) = default;
 		constexpr lazy_context(lazy_context &&) = default;
 
-		constexpr lazy_context(clifford_expression<InputCoefficientTypes, InputExpressions> const &... inputs) :
+		constexpr lazy_context(clifford_expression<InputCoefficientTypes, InputExpressions> const &... inputs) noexcept :
 			super(inputs...) {
 		}
 
@@ -624,7 +626,7 @@ namespace ga {
 		constexpr lazy_context & operator=(lazy_context &&) = delete;
 
 		template<std::size_t Index>
-		constexpr static decltype(auto) argument() {
+		constexpr static decltype(auto) argument() noexcept {
 			return argument_t<Index>();
 		}
 
@@ -634,13 +636,13 @@ namespace ga {
 		}
 
 		template<typename CoefficientType, typename Expression, typename = std::enable_if_t<super::stored_inputs_count() == 0> >
-		constexpr decltype(auto) eval(clifford_expression<CoefficientType, Expression> &&) const {
+		constexpr decltype(auto) eval(clifford_expression<CoefficientType, Expression> &&) const noexcept {
 			return clifford_expression<CoefficientType, Expression>();
 		}
 	};
 
 	template<typename... InputTypes>
-	constexpr decltype(auto) make_lazy_context(InputTypes const &... inputs) {
+	constexpr decltype(auto) make_lazy_context(InputTypes const &... inputs) noexcept {
 		return lazy_context<InputTypes...>(inputs...);
 	}
 

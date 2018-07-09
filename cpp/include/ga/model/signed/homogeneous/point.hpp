@@ -29,7 +29,7 @@ namespace ga {
 
 	// Initializes a multivector representation of a point using the given coordinates expressed in the base space.
 	template<ndims_t N, typename... Types>
-	constexpr decltype(auto) point(homogeneous_metric_space<N> const &mtr, Types &&... coords) {
+	constexpr decltype(auto) point(homogeneous_metric_space<N> const &mtr, Types &&... coords) noexcept {
 		return vector(mtr, std::move(coords)..., c<1>);
 	}
 

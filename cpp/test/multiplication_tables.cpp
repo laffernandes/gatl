@@ -61,14 +61,14 @@ void multiplication_table(std::ostream &os, ga::metric_space<MetricSpaceType> co
 	_multiplication_table_rows<(1 << MetricSpaceType::vector_space_dimensions) - 1>::run(os, mtr, prod);
 }
 
-template<ga::ndims_t N, ga::default_bitset_t Rows, ga::default_bitset_t Cols>
+template<ga::ndims_t N, ga::bitset_t Rows, ga::bitset_t Cols>
 struct _determinants_cols {
 private:
 
 	template<typename GeneralMetricSpaceType>
-	static void print_bitset(std::ostream &os, ga::metric_space<GeneralMetricSpaceType> const &mtr, ga::default_bitset_t const bitset) {
+	static void print_bitset(std::ostream &os, ga::metric_space<GeneralMetricSpaceType> const &mtr, ga::bitset_t const bitset) {
 		for (ga::ndims_t index = 0; index != GeneralMetricSpaceType::vector_space_dimensions; ++index) {
-			if ((bitset & (ga::default_bitset_t(1) << index)) != ga::default_bitset_t(0)) {
+			if ((bitset & (ga::bitset_t(1) << index)) != ga::bitset_t(0)) {
 				os << "1";
 			}
 			else {
@@ -91,14 +91,14 @@ public:
 	}
 };
 
-template<ga::ndims_t N, ga::default_bitset_t Rows>
-struct _determinants_cols<N, Rows, ga::default_bitset_t(0)> {
+template<ga::ndims_t N, ga::bitset_t Rows>
+struct _determinants_cols<N, Rows, ga::bitset_t(0)> {
 	template<typename GeneralMetricSpaceType>
 	static void run(std::ostream const &, ga::metric_space<GeneralMetricSpaceType> const &) {
 	}
 };
 
-template<ga::ndims_t N, ga::default_bitset_t Rows>
+template<ga::ndims_t N, ga::bitset_t Rows>
 struct _determinants_rows {
 	template<typename GeneralMetricSpaceType>
 	static void run(std::ostream &os, ga::metric_space<GeneralMetricSpaceType> const &mtr) {
@@ -108,7 +108,7 @@ struct _determinants_rows {
 };
 
 template<ga::ndims_t N>
-struct _determinants_rows<N, ga::default_bitset_t(0)> {
+struct _determinants_rows<N, ga::bitset_t(0)> {
 	template<typename GeneralMetricSpaceType>
 	static void run(std::ostream const &, ga::metric_space<GeneralMetricSpaceType> const &) {
 	}
@@ -139,14 +139,14 @@ template<ga::ndims_t N>
 class general_euclidean_metric_space : public ga::metric_space<general_euclidean_metric_space<N> > {
 public:
 
-	typedef general_euclidean_metric_space metric_space_type;
+	using metric_space_type = general_euclidean_metric_space;
 
-	constexpr static ga::default_bitset_t basis_vectors = ga::default_bitset_t(ga::default_bitset_t(~0) >> (std::numeric_limits<ga::default_bitset_t>::digits - N));
+	constexpr static ga::bitset_t basis_vectors = ga::bitset_t(ga::bitset_t(~0) >> (std::numeric_limits<ga::bitset_t>::digits - N));
 	constexpr static ga::ndims_t vector_space_dimensions = N;
 
 	template<typename RowIndex, typename ColIndex>
 	struct entry {
-		typedef ga::detail::if_else_t<ga::detail::equal_t<RowIndex, ColIndex>, ga::detail::constant_value<1>, ga::detail::constant_value<0> > type;
+		using type = ga::detail::if_else_t<ga::detail::equal_t<RowIndex, ColIndex>, ga::detail::constant_value<1>, ga::detail::constant_value<0> >;
 	};
 };
 

@@ -53,7 +53,7 @@ namespace ga {
 			std::true_type {
 		};
 
-		template<default_bitset_t Bitset>
+		template<bitset_t Bitset>
 		struct can_be_stored<constant_bitset<Bitset> > :
 			std::true_type {
 		};
@@ -68,12 +68,12 @@ namespace ga {
 			std::true_type {
 		};
 
-		template<default_bitset_t Bitset>
+		template<bitset_t Bitset>
 		struct can_be_stored<constant_basis_blade<Bitset> > :
 			std::true_type {
 		};
 
-		template<default_bitset_t PossibleGrades, typename Bitset>
+		template<bitset_t PossibleGrades, typename Bitset>
 		struct can_be_stored<dynamic_basis_blade<PossibleGrades, Bitset> > :
 			std::bool_constant<can_be_stored_v<Bitset> > {
 		};
@@ -99,12 +99,12 @@ namespace ga {
 			std::true_type {
 		};
 
-		template<default_bitset_t Bitset>
+		template<bitset_t Bitset>
 		struct is_constant_expression<constant_bitset<Bitset> > :
 			std::true_type {
 		};
 
-		template<default_bitset_t Bitset>
+		template<bitset_t Bitset>
 		struct is_constant_expression<constant_basis_blade<Bitset> > :
 			std::true_type {
 		};
@@ -126,7 +126,7 @@ namespace ga {
 		};
 
 		template<typename Coefficient>
-		struct is_scalar_component<component<Coefficient, constant_basis_blade<default_bitset_t(0)> > > :
+		struct is_scalar_component<component<Coefficient, constant_basis_blade<bitset_t(0)> > > :
 			std::true_type {
 		};
 
@@ -159,7 +159,7 @@ namespace ga {
 			std::true_type {
 		};
 
-		template<default_bitset_t PossibleGrades, typename Bitset>
+		template<bitset_t PossibleGrades, typename Bitset>
 		struct has_stored_entries<dynamic_basis_blade<PossibleGrades, Bitset> > :
 			std::bool_constant<has_stored_entries_v<Bitset> > {
 		};
@@ -566,28 +566,28 @@ namespace ga {
 		};
 		
 		// Specializations of possible_grades<BasisVectors>.
-		template<default_bitset_t BasisVectors>
+		template<bitset_t BasisVectors>
 		struct possible_grades<constant_basis_blade<BasisVectors> > {
-			constexpr static default_bitset_t value = default_bitset_t(1) << ones(BasisVectors);
+			constexpr static bitset_t value = bitset_t(1) << ones(BasisVectors);
 		};
 
-		template<default_bitset_t PossibleGrades, typename Bitset>
+		template<bitset_t PossibleGrades, typename Bitset>
 		struct possible_grades<dynamic_basis_blade<PossibleGrades, Bitset> > {
-			constexpr static default_bitset_t value = PossibleGrades;
+			constexpr static bitset_t value = PossibleGrades;
 		};
 
 		// Returns the basis blade type that best fit input arguments.
-		template<default_bitset_t PossibleGrades, typename BasisVectors>
+		template<bitset_t PossibleGrades, typename BasisVectors>
 		struct deduce_basis_blade {
-			typedef dynamic_basis_blade_t<PossibleGrades, BasisVectors> type;
+			using type = dynamic_basis_blade_t<PossibleGrades, BasisVectors>;
 		};
 
-		template<default_bitset_t PossibleGrades, default_bitset_t BasisVectors>
+		template<bitset_t PossibleGrades, bitset_t BasisVectors>
 		struct deduce_basis_blade<PossibleGrades, constant_bitset<BasisVectors> > {
-			typedef constant_basis_blade<BasisVectors> type;
+			using type = constant_basis_blade<BasisVectors>;
 		};
 
-		template<default_bitset_t PossibleGrades, typename BasisVectors>
+		template<bitset_t PossibleGrades, typename BasisVectors>
 		using deduce_basis_blade_t = typename deduce_basis_blade<PossibleGrades, BasisVectors>::type;
 
 		// Returns the coefficient of a given set of components.
@@ -596,7 +596,7 @@ namespace ga {
 
 		template<typename Coefficient, typename BasisBlade>
 		struct coefficient<component<Coefficient, BasisBlade> > {
-			typedef Coefficient type;
+			using type = Coefficient;
 		};
 
 		template<typename Component>
@@ -608,7 +608,7 @@ namespace ga {
 
 		template<typename Coefficient, typename BasisBlade>
 		struct basis_blade<component<Coefficient, BasisBlade> > {
-			typedef BasisBlade type;
+			using type = BasisBlade;
 		};
 
 		template<typename Component>
@@ -618,14 +618,14 @@ namespace ga {
 		template<typename BasisBlade>
 		struct basis_vectors;
 
-		template<default_bitset_t BasisVectors>
+		template<bitset_t BasisVectors>
 		struct basis_vectors<constant_basis_blade<BasisVectors> > {
-			typedef constant_bitset<BasisVectors> type;
+			using type = constant_bitset<BasisVectors>;
 		};
 
-		template<default_bitset_t PossibleGrades, typename Bitset>
+		template<bitset_t PossibleGrades, typename Bitset>
 		struct basis_vectors<dynamic_basis_blade<PossibleGrades, Bitset> > {
-			typedef Bitset type;
+			using type = Bitset;
 		};
 
 		template<typename BasisBlade>
@@ -644,37 +644,37 @@ namespace ga {
 
 		template<typename Bitset, std::size_t Index>
 		struct indirect_element_bitset {
-			typedef indirect_element_bitset_t<bitwise_xor_t<Bitset, rightmost_one_t<Bitset> >, Index - 1> type;
+			using type = indirect_element_bitset_t<bitwise_xor_t<Bitset, rightmost_one_t<Bitset> >, Index - 1>;
 		};
 
 		template<typename Bitset>
 		struct indirect_element_bitset<Bitset, 0> {
-			typedef rightmost_one_t<Bitset> type;
+			using type = rightmost_one_t<Bitset>;
 		};
 
 		// Returns the indirect subset of a given bitset.
-		template<typename Bitset, default_bitset_t IndirectElements>
+		template<typename Bitset, bitset_t IndirectElements>
 		struct indirect_subset;
 
-		template<typename Bitset, default_bitset_t IndirectElements>
+		template<typename Bitset, bitset_t IndirectElements>
 		using indirect_subset_t = typename indirect_subset<Bitset, IndirectElements>::type;
 
-		template<typename Bitset, default_bitset_t IndirectElements>
+		template<typename Bitset, bitset_t IndirectElements>
 		struct indirect_subset {
 		private:
 
-			constexpr static default_bitset_t current_indirect_element = rightmost_set_bit(IndirectElements);
+			constexpr static bitset_t current_indirect_element = rightmost_set_bit(IndirectElements);
 
-			typedef indirect_element_bitset_t<Bitset, set_bit_index(current_indirect_element)> current_element;
+			using current_element = indirect_element_bitset_t<Bitset, set_bit_index(current_indirect_element)>;
 
 		public:
 
-			typedef bitwise_or_t<current_element, indirect_subset_t<Bitset, IndirectElements ^ current_indirect_element> > type;
+			using type = bitwise_or_t<current_element, indirect_subset_t<Bitset, IndirectElements ^ current_indirect_element> >;
 		};
 
 		template<typename Bitset>
-		struct indirect_subset<Bitset, default_bitset_t(0)> {
-			typedef constant_bitset<default_bitset_t(0)> type;
+		struct indirect_subset<Bitset, bitset_t(0)> {
+			using type = constant_bitset<bitset_t(0)>;
 		};
 
 	}

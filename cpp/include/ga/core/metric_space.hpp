@@ -31,7 +31,7 @@ namespace ga {
 	template<typename MetricSpaceType>
 	class metric_space {
 
-		typedef MetricSpaceType metric_space_type;
+		using metric_space_type = MetricSpaceType;
 
 	protected:
 
@@ -70,6 +70,15 @@ namespace ga {
 	struct is_general_metric_space<metric_space<MetricSpaceType> > :
 		std::bool_constant<is_general_metric_space_v<MetricSpaceType> > {
 	};
+
+	// Returns whether the given type is a metric space type.
+	template<typename Type>
+	struct is_metric_space :
+		std::bool_constant<is_orthogonal_metric_space_v<Type> || is_general_metric_space_v<Type> > {
+	};
+
+	template<typename Type>
+	constexpr bool is_metric_space_v = is_metric_space<Type>::value;
 
 }
 
