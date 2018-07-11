@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ga">
+      <UniqueIdentifier>{3d4d147e-b460-4d3b-b779-115ccb7f249d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ga\core">
+      <UniqueIdentifier>{ac1aea35-cc2f-44e0-ad82-809f2686451c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ga\extra">
+      <UniqueIdentifier>{28fff763-8ac7-4e00-99de-1229538ba705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ga\util">
+      <UniqueIdentifier>{630fbf0c-edf5-402f-8bd4-e10252e0deb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ga\model">
+      <UniqueIdentifier>{3637609c-aeb6-465b-b0df-8fbca170abec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ga\model\conformal">
+      <UniqueIdentifier>{887b1d4b-3496-4d7b-8698-d0ec8765a7fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ga\model\signed">
+      <UniqueIdentifier>{8692e573-a61f-4611-a98d-990b9b8cac39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ga\model\signed\euclidean">
+      <UniqueIdentifier>{69058755-c7d5-420e-ad02-e9e6e03768b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ga\model\signed\homogeneous">
+      <UniqueIdentifier>{264a187a-5341-4f14-b55f-29b73b5beda8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ga\model\signed\minkowski">
+      <UniqueIdentifier>{44ab8e07-351a-4c85-8d2d-34048b1d7928}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core.hpp">
+      <Filter>ga</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra.hpp">
+      <Filter>ga</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\util.hpp">
+      <Filter>ga</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\arithmetic_operators.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\clifford_expression.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\conjugation.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\constant.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\constexpr.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\dot_product.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\exceptions.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\expression.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\expression_addition.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\expression_graded_unary_minus.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\expression_power.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\expression_product.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\expression_relational_operators.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\expression_traits.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\exterior_product_mapping.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\general_metric_mapping.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\geometric_product.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\hestenes_inner_product.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\involution.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\lazy_context.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\left_contraction.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\macro_for_algebra_overload.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\mapping.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\math.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\metric_space.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\orthogonal_metric_mapping.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\outer_product.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\real_metric_space.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\regressive_product.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\regressive_product_mapping.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\reversion.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\right_contraction.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\scalar.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\scalar_product.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\core\type_traits_extension.hpp">
+      <Filter>ga\core</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\apply_versor.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\arithmetic_operators.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\blade_exponential.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\commutator_product.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\default_tolerance.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\delta_product.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\dualization.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\fast_meet_and_join.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\grade.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\inverse_geometric_product.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\macro_for_algebra_overload.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\meet_and_join.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\reverse_norm.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\take_grade.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\trivial_copy.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\unit.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\versor_inverse.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\write.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\util\basis_blade.hpp">
+      <Filter>ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\util\basis_vector.hpp">
+      <Filter>ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\util\for_each_basis_vector.hpp">
+      <Filter>ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\util\for_each_component.hpp">
+      <Filter>ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\util\macro_for_algebra_overload.hpp">
+      <Filter>ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\util\multivector.hpp">
+      <Filter>ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\util\pseudoscalar.hpp">
+      <Filter>ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\util\vector.hpp">
+      <Filter>ga\util</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal.hpp">
+      <Filter>ga\model</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\euclidean.hpp">
+      <Filter>ga\model</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\homogeneous.hpp">
+      <Filter>ga\model</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\minkowski.hpp">
+      <Filter>ga\model</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\euclidean_vector.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\flat_direction.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\flat_location.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\macro_for_algebra_definition.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\macro_for_algebra_overload.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\metric_space.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\point.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\round_direction.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\round_location.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\round_size_sqr.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\tangent_direction.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\conformal\tangent_location.hpp">
+      <Filter>ga\model\conformal</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\macro_for_algebra_definition.hpp">
+      <Filter>ga\model\signed</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\metric_space.hpp">
+      <Filter>ga\model\signed</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\euclidean\euclidean_vector.hpp">
+      <Filter>ga\model\signed\euclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\euclidean\macro_for_algebra_definition.hpp">
+      <Filter>ga\model\signed\euclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\euclidean\macro_for_algebra_overload.hpp">
+      <Filter>ga\model\signed\euclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\euclidean\metric_space.hpp">
+      <Filter>ga\model\signed\euclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\euclidean\orthogonal_projection.hpp">
+      <Filter>ga\model\signed\euclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\euclidean\rejection.hpp">
+      <Filter>ga\model\signed\euclidean</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\homogeneous\euclidean_vector.hpp">
+      <Filter>ga\model\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\homogeneous\flat_direction.hpp">
+      <Filter>ga\model\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\homogeneous\flat_moment.hpp">
+      <Filter>ga\model\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\homogeneous\flat_support_vector.hpp">
+      <Filter>ga\model\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\homogeneous\flat_unit_support_point.hpp">
+      <Filter>ga\model\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\homogeneous\macro_for_algebra_definition.hpp">
+      <Filter>ga\model\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\homogeneous\macro_for_algebra_overload.hpp">
+      <Filter>ga\model\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\homogeneous\metric_space.hpp">
+      <Filter>ga\model\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\homogeneous\point.hpp">
+      <Filter>ga\model\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\homogeneous\translation.hpp">
+      <Filter>ga\model\signed\homogeneous</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\euclidean_vector.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\flat_direction.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\flat_location.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\macro_for_algebra_definition.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\macro_for_algebra_overload.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\metric_space.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\point.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\round_direction.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\round_location.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\round_size_sqr.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\tangent_direction.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\model\signed\minkowski\tangent_location.hpp">
+      <Filter>ga\model\signed\minkowski</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga1c.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga1e.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga1h.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga1m.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga2c.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga2e.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga2h.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga2m.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga3c.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga3e.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga3h.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga3m.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga4e.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga4h.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga5e.hpp" />
+  </ItemGroup>
+</Project>

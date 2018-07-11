@@ -61,7 +61,6 @@ namespace ga {
 			inline static bool run(ValueCItr const &, BitsetCItr const &, MapCIts const &, Function f) noexcept(noexcept(f)) {
 				bool keep_going = true;
 				f(BasisVectors, static_cast<ValueType>(Coefficient::eval<0, 0>(std::make_tuple())), entry_source_t::COMPILE_TIME_DEFINED_ENTRY, entry_source_t::COMPILE_TIME_DEFINED_ENTRY, keep_going);
-				++value_citr;
 				return keep_going;
 			}
 		};

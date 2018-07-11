@@ -451,7 +451,7 @@ namespace ga {
 		};
 		
 		template<tag_t LowerTag, tag_t UpperTag, typename CoefficientType, typename Expression, typename... InputTypes>
-		constexpr static decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &expression, std::tuple<InputTypes...> const &args) {
+		constexpr static decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &, std::tuple<InputTypes...> const &args) {
 			using result_type = clifford_expression<eval_coefficient_t<LowerTag, UpperTag, Expression, std::remove_const_t<std::remove_reference_t<InputTypes> >...>, eval_expression_t<LowerTag, UpperTag, Expression> >;
 
 			typename result_type::value_storage_type values;
