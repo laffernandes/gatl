@@ -28,8 +28,12 @@ enable_testing()
 
 find_package(GTest REQUIRED)
 
+set(target_prefix gatl_test_)
+
 set(test_groups
   core_products
+  miscellaneous
+  sign_change_operations
 )
 
 include_directories(${GTEST_INCLUDE_DIRS} "${PROJECT_SOURCE_DIR}/../../include")
@@ -38,9 +42,9 @@ foreach(test_group ${test_groups})
   file(GLOB test_filenames RELATIVE "${PROJECT_SOURCE_DIR}/${test_group}" ${PROJECT_SOURCE_DIR}/${test_group}/*.cpp)
   foreach(test_filename ${test_filenames})
     string(REPLACE ".cpp" "" test_name ${test_filename})
-    add_executable(${test_group}_${test_name} "${PROJECT_SOURCE_DIR}/${test_group}/${test_filename}")
-	target_include_directories(${test_group}_${test_name} PUBLIC ${PROJECT_SOURCE_DIR}/${test_group})
-    target_link_libraries(${test_group}_${test_name} ${GTEST_BOTH_LIBRARIES})
-    add_test(${test_group}_${test_name} ${test_group}_${test_name})
+    add_executable(${target_prefix}${test_group}_${test_name} "${PROJECT_SOURCE_DIR}/${test_group}/${test_filename}")
+	target_include_directories(${target_prefix}${test_group}_${test_name} PUBLIC ${PROJECT_SOURCE_DIR}/${test_group})
+    target_link_libraries(${target_prefix}${test_group}_${test_name} ${GTEST_BOTH_LIBRARIES})
+    add_test(${target_prefix}${test_group}_${test_name} ${target_prefix}${test_group}_${test_name})
   endforeach()
 endforeach()
