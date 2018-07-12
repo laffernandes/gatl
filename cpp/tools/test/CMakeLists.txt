@@ -34,6 +34,7 @@ set(test_groups
   core_products
   miscellaneous
   sign_change_operations
+  size
 )
 
 include_directories(${GTEST_INCLUDE_DIRS} "${PROJECT_SOURCE_DIR}/../../include")
