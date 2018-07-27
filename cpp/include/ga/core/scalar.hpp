@@ -41,8 +41,8 @@ namespace ga {
 	}
 
 	template<typename ValueType, typename = std::enable_if_t<!is_clifford_expression_v<ValueType> > >
-	constexpr scaled_scalar_t<ValueType> scalar(ValueType &&arg) noexcept {
-		return scaled_scalar_t<ValueType>(make_sequential_storage(std::move(arg)));
+	constexpr decltype(auto) scalar(ValueType &&arg) noexcept {
+		return scaled_scalar_t<std::remove_cv_t<std::remove_reference_t<ValueType> > >(make_sequential_storage(std::move(arg)));
 	}
 
 	template<typename CoefficientType, typename Coefficient>

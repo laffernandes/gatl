@@ -379,5 +379,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga4e.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga4h.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga5e.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\tests.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\plunge.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\fast_plunge.hpp" />
   </ItemGroup>
 </Project>

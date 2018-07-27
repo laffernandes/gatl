@@ -79,8 +79,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\inverse_geometric_product.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\macro_for_algebra_overload.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\meet_and_join.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\fast_plunge.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\plunge.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\reverse_norm.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\take_grade.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\tests.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\trivial_copy.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\unit.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\versor_inverse.hpp" />

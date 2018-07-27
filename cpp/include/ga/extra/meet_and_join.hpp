@@ -29,7 +29,7 @@ namespace ga {
 
 	namespace detail {
 
-		// Returns a std::tuple<T1, T1> structure where T1 is the meet and T2 is the join of the given pair of blades. This implementation assumes that the grade of the left-hand side argument is lower or equal to the grade of the right-hand side argument.
+		// Returns a std::tuple<T1, T2> structure where T1 is the meet and T2 is the join of the given pair of blades. This implementation assumes that the grade of the left-hand side argument is lower or equal to the grade of the right-hand side argument.
 		template<ndims_t N, typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType>
 		constexpr decltype(auto) _meet_and_join_impl(bool const extra_sign_change, clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, grade_t const grade_lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, grade_t const grade_rhs, ToleranceType const &tol) {
 			using delta_type = decltype(dp(lhs, rhs, real_metric_space()));
@@ -38,10 +38,6 @@ namespace ga {
 			using join_type = full_multivector_t<value_type, N, std::max(smallest_possible_grade_v<LeftExpression>, smallest_possible_grade_v<RightExpression>), N>;
 
 			constexpr auto em = real_metric_space(); // Euclidean metric
-
-			auto is_zero = [&](auto const &arg) {
-				return for_each_component(arg, [&](bitset_t const, value_type const &value, entry_source_t const, entry_source_t const, bool &keep_going) { keep_going = std::abs(value) <= (value_type)tol; });
-			};
 
 			auto project_vector = [&](auto const &vector, auto const &blade, auto const &inv_blade) {
 				auto const lazy = make_lazy_context(vector, blade, inv_blade);
@@ -90,7 +86,7 @@ namespace ga {
 					auto const d = project_vector(f, dual_delta, inv_dual_delta); // dual delta factor
 
 					auto const p = project_vector(d, lhs, inv_lhs); // projection
-					if (!is_zero(p)) {
+					if (!is_zero(p, tol)) {
 						checked_trivial_copy(op(meet, p, em), meet, tol);
 						++current_grade_meet;
 						if (current_grade_meet == grade_meet) {
@@ -101,7 +97,7 @@ namespace ga {
 					}
 
 					auto const r = d - p; // rejection
-					if (!is_zero(r)) {
+					if (!is_zero(r, tol)) {
 						checked_trivial_copy(lcont(r, join, em), join, tol);
 						--current_grade_join;
 						if (current_grade_join == grade_join) {
@@ -127,7 +123,7 @@ namespace ga {
 
 	}
 
-	// Returns a std::tuple<T1, T1> structure where T1 is the meet and T2 is the join of the given pair of blades. This function does not allow lazy evaluation with arguments from a lazy context.
+	// Returns a std::tuple<T1, T2> structure where T1 is the meet and T2 is the join of the given pair of blades. This function does not allow lazy evaluation with arguments from a lazy context.
 	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType, typename MetricSpaceType>
 	constexpr decltype(auto) meet_and_join(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) {
 		auto const tol_ = scalar(tol);

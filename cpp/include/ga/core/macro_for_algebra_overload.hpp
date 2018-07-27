@@ -36,6 +36,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 		return gp(lhs, rhs, SPACE); \
 	} \
 	\
+	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression > \
+	constexpr decltype(auto) operator*(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept { \
+		return gp(lhs, rhs, SPACE); \
+	} \
+	\
 	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
 	constexpr decltype(auto) hip(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept { \
 		return hip(lhs, rhs, SPACE); \

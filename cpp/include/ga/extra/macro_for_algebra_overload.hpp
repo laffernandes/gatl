@@ -91,6 +91,16 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 		return fast_meet_and_join(lhs, rhs, default_tolerance<std::common_type_t<LeftCoefficientType, RightCoefficientType> >(), SPACE); \
 	} \
 	\
+	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType> \
+	constexpr decltype(auto) fast_plunge(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, ToleranceType const &tol) { \
+		return fast_plunge(lhs, rhs, tol, SPACE); \
+	} \
+	\
+	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
+	constexpr decltype(auto) fast_plunge(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+		return fast_plunge(lhs, rhs, default_tolerance<std::common_type_t<LeftCoefficientType, RightCoefficientType> >(), SPACE); \
+	} \
+	\
 	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
 	constexpr decltype(auto) igp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 		return igp(lhs, rhs, SPACE); \
@@ -101,6 +111,21 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 		return inv(arg, SPACE); \
 	} \
 	\
+	template<typename CoefficientType, typename Expression, typename ToleranceType> \
+	constexpr bool is_invertible(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept{ \
+		return is_invertible(arg, tol, SPACE); \
+	} \
+	\
+	template<typename CoefficientType, typename Expression, typename ToleranceType> \
+	constexpr bool is_null(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept{ \
+		return is_null(arg, tol, SPACE); \
+	} \
+	\
+	template<typename CoefficientType, typename Expression, typename ToleranceType> \
+	constexpr bool is_unit(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept { \
+		return is_unit(arg, tol, SPACE); \
+	} \
+	\
 	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType> \
 	constexpr decltype(auto) meet_and_join(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, ToleranceType const &tol) { \
 		return meet_and_join(lhs, rhs, tol, SPACE); \
@@ -109,6 +134,16 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
 	constexpr decltype(auto) meet_and_join(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
 		return meet_and_join(lhs, rhs, default_tolerance<std::common_type_t<LeftCoefficientType, RightCoefficientType> >(), SPACE); \
+	} \
+	\
+	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType> \
+	constexpr decltype(auto) plunge(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, ToleranceType const &tol) { \
+		return plunge(lhs, rhs, tol, SPACE); \
+	} \
+	\
+	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
+	constexpr decltype(auto) plunge(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+		return plunge(lhs, rhs, default_tolerance<std::common_type_t<LeftCoefficientType, RightCoefficientType> >(), SPACE); \
 	} \
 	\
 	template<typename CoefficientType, typename Expression> \

@@ -48,7 +48,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #include "ga/extra/trivial_copy.hpp"
 
 #include "ga/extra/fast_meet_and_join.hpp"
+#include "ga/extra/fast_plunge.hpp"
 #include "ga/extra/meet_and_join.hpp"
+#include "ga/extra/plunge.hpp"
+
+#include "ga/extra/tests.hpp"
 
 #include "ga/extra/write.hpp"
 

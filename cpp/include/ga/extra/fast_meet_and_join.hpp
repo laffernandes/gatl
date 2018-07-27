@@ -38,10 +38,6 @@ namespace ga {
 
 			constexpr auto em = real_metric_space(); // Euclidean metric
 
-			auto is_zero = [&](auto const &arg) {
-				return for_each_component(arg, [&](bitset_t const, value_type const &value, entry_source_t const, entry_source_t const, bool &keep_going) { keep_going = std::abs(value) <= (value_type)tol; });
-			};
-
 			auto project_vector = [&](auto const &vector, auto const &blade, auto const &inv_blade) {
 				auto const lazy = make_lazy_context(vector, blade, inv_blade);
 				return lazy.eval(take_grade(lcont(lcont(lazy.argument<0>(), lazy.argument<2>(), em), lazy.argument<1>(), em), c<1>));
@@ -92,7 +88,7 @@ namespace ga {
 
 				auto const next_join = op(join, unit(project_vector(f, rhs, inv_largest), em), em);
 
-				if (!is_zero(next_join)) {
+				if (!is_zero(next_join, tol)) {
 					checked_trivial_copy(unit(next_join, em), join, tol);
 					++current_grade_join;
 					keep_going = current_grade_join <= N;
@@ -123,7 +119,7 @@ namespace ga {
 		return fast_join(lhs, rhs, default_tolerance<std::common_type_t<LeftCoefficientType, RightCoefficientType> >(), mtr);
 	}
 
-	// Returns a std::tuple<T1, T1> structure where T1 is the meet and T2 is the join of the given pair of blades. This function does not allow lazy evaluation with arguments from a lazy context. The algorithm is described in D. Fontijne (2008), "Efficient algorithms for factorization and join of blades", In Proc. of the AGACSE, Springer.
+	// Returns a std::tuple<T1, T2> structure where T1 is the meet and T2 is the join of the given pair of blades. This function does not allow lazy evaluation with arguments from a lazy context. The algorithm is described in D. Fontijne (2008), "Efficient algorithms for factorization and join of blades", In Proc. of the AGACSE, Springer.
 	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType, typename MetricSpaceType>
 	constexpr decltype(auto) fast_meet_and_join(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) {
 		auto const join = fast_join(lhs, rhs, scalar(tol), mtr);
