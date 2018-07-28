@@ -451,32 +451,64 @@ namespace ga {
 
 		// Specializations of lt<LeftType, RightType> with functions.
 		template<typename... Arguments>
-		struct _lt_arguments_list {
+		struct _arguments_list {
 		};
 
 		template<typename LeftArgument, typename... LeftNextArguments, typename RightArgument, typename... RightNextArguments>
-		struct lt<_lt_arguments_list<LeftArgument, LeftNextArguments...>, _lt_arguments_list<RightArgument, RightNextArguments...> > :
-			std::bool_constant<(lt_v<LeftArgument, RightArgument> || (eq_v<LeftArgument, RightArgument> && lt_v<_lt_arguments_list<LeftNextArguments...>, _lt_arguments_list<RightNextArguments...> >))> {
+		struct lt<_arguments_list<LeftArgument, LeftNextArguments...>, _arguments_list<RightArgument, RightNextArguments...> > :
+			std::conditional_t<
+				is_constant_expression_v<LeftArgument>,
+				std::conditional_t<
+					is_constant_expression_v<RightArgument>,
+					lt_t<_arguments_list<LeftNextArguments...>, _arguments_list<RightNextArguments...> >,
+					lt_t<_arguments_list<LeftNextArguments...>, _arguments_list<RightArgument, RightNextArguments...> >
+				>,
+				std::conditional_t<
+					is_constant_expression_v<RightArgument>,
+					lt_t<_arguments_list<LeftArgument, LeftNextArguments...>, _arguments_list<RightNextArguments...> >,
+					std::bool_constant<(lt_v<LeftArgument, RightArgument> || (eq_v<LeftArgument, RightArgument> && lt_v<_arguments_list<LeftNextArguments...>, _arguments_list<RightNextArguments...> >))>
+				>
+			> {
 		};
 
 		template<typename LeftArgument, typename RightArgument, typename... RightNextArguments>
-		struct lt<_lt_arguments_list<LeftArgument>, _lt_arguments_list<RightArgument, RightNextArguments...> > :
-			le_t<LeftArgument, RightArgument> {
+		struct lt<_arguments_list<LeftArgument>, _arguments_list<RightArgument, RightNextArguments...> > :
+			std::conditional_t<
+				is_constant_expression_v<LeftArgument>,
+				std::true_type,
+				std::conditional_t<
+					is_constant_expression_v<RightArgument>,
+					lt_t<_arguments_list<LeftArgument>, _arguments_list<RightNextArguments...> >,
+					le_t<LeftArgument, RightArgument>
+				>
+			> {
 		};
 
 		template<typename LeftArgument, typename... LeftNextArguments, typename RightArgument>
-		struct lt<_lt_arguments_list<LeftArgument, LeftNextArguments...>, _lt_arguments_list<RightArgument> > :
-			lt_t<LeftArgument, RightArgument> {
+		struct lt<_arguments_list<LeftArgument, LeftNextArguments...>, _arguments_list<RightArgument> > :
+			std::conditional_t<
+				is_constant_expression_v<LeftArgument>,
+				std::conditional_t<
+					is_constant_expression_v<RightArgument>,
+					lt_t<LeftArgument, RightArgument>,
+					lt_t<_arguments_list<LeftNextArguments...>, _arguments_list<RightArgument> >
+				>,
+				std::conditional_t<
+					is_constant_expression_v<RightArgument>,
+					std::false_type,
+					lt_t<LeftArgument, RightArgument>
+				>
+			> {
 		};
 
 		template<typename LeftArgument, typename RightArgument>
-		struct lt<_lt_arguments_list<LeftArgument>, _lt_arguments_list<RightArgument> > :
+		struct lt<_arguments_list<LeftArgument>, _arguments_list<RightArgument> > :
 			lt_t<LeftArgument, RightArgument> {
 		};
 
 		template<name_t LeftName, typename... LeftArguments, name_t RightName, typename... RightArguments>
 		struct lt<function<LeftName, LeftArguments...>, function<RightName, RightArguments...> > :
-			std::bool_constant<(LeftName < RightName || (LeftName == RightName && lt_v<_lt_arguments_list<LeftArguments...>, _lt_arguments_list<RightArguments...> >))> {
+			std::bool_constant<(LeftName < RightName || (LeftName == RightName && lt_v<_arguments_list<LeftArguments...>, _arguments_list<RightArguments...> >))> {
 		};
 
 	}
