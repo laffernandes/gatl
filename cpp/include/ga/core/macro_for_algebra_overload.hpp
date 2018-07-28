@@ -31,6 +31,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 		return dot(lhs, rhs, SPACE); \
 	} \
 	\
+	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression > \
+	constexpr decltype(auto) operator|(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept { \
+		return dot(lhs, rhs, SPACE); \
+	} \
+	\
 	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
 	constexpr decltype(auto) gp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept { \
 		return gp(lhs, rhs, SPACE); \
@@ -51,6 +56,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 		return lcont(lhs, rhs, SPACE); \
 	} \
 	\
+	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression > \
+	constexpr decltype(auto) operator<(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept { \
+		return lcont(lhs, rhs, SPACE); \
+	} \
+	\
 	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
 	constexpr decltype(auto) op(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept { \
 		return op(lhs, rhs, SPACE); \
@@ -63,6 +73,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 	\
 	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
 	constexpr decltype(auto) rcont(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept { \
+		return rcont(lhs, rhs, SPACE); \
+	} \
+	\
+	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression > \
+	constexpr decltype(auto) operator>(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept { \
 		return rcont(lhs, rhs, SPACE); \
 	} \
 	\
