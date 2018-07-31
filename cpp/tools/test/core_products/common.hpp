@@ -28,7 +28,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #include <ga.hpp>
 #include <gtest/gtest.h>
 
-//TODO Falta implementar esses casos de teste: rp, + (unary), - (unary), + (binary), - (binary), *, ^, conjugation, involution, reversion, math
+//TODO Falta implementar esses casos de teste: rp, *, ^, conjugation, involution, reversion, math
 
 template<ga::ndims_t N>
 using runtime_entry_t = ga::scaled_basis_blade_t<double, 0, N>;
@@ -44,12 +44,6 @@ ga::bitset_t get_bitset(ga::clifford_expression<CoefficientType, ga::detail::com
 template<typename CoefficientType, typename Coefficient, ga::bitset_t PossibleGrades>
 ga::bitset_t get_bitset(ga::clifford_expression<CoefficientType, ga::detail::component<Coefficient, ga::detail::dynamic_basis_blade<PossibleGrades, ga::detail::stored_bitset> > > const &arg) {
 	return *arg.bitsets().begin();
-}
-
-template<typename CoefficientType, typename Expression>
-bool is_zero(ga::clifford_expression<CoefficientType, Expression> const &arg) {
-	CoefficientType const tol = ga::default_tolerance<CoefficientType>();
-	return ga::for_each_component(arg, [&](ga::bitset_t const, CoefficientType const &value, ga::entry_source_t const, ga::entry_source_t const, bool &keep_going) { keep_going = std::abs(value) <= tol; });
 }
 
 template<typename Product, typename Truth, typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression>

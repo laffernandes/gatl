@@ -31,10 +31,13 @@ find_package(GTest REQUIRED)
 set(target_prefix gatl_test_)
 
 set(test_groups
+  core_operations
   core_products
+  extra
   miscellaneous
   sign_change_operations
   size
+  util
 )
 
 include_directories(${GTEST_INCLUDE_DIRS} "${PROJECT_SOURCE_DIR}/../../include")

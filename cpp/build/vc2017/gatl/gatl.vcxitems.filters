@@ -385,6 +385,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\plunge.hpp">
       <Filter>ga\extra</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\fast_plunge.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\include\ga\extra\fast_plunge.hpp">
+      <Filter>ga\extra</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
