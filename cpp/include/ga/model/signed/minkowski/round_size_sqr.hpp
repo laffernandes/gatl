@@ -31,8 +31,8 @@ namespace ga {
 	template<typename CoefficientType, typename Expression, ndims_t N>
 	constexpr decltype(auto) round_size_sqr(clifford_expression<CoefficientType, Expression> const &round, minkowski_metric_space<N> const &mtr) {
 		auto const lazy = make_lazy_context(round);
-		auto aux = lcont(e(c<N + 1>) + e(c<N + 2>), lazy.argument<0>(), mtr);
-		return lazy.eval(sp(sp(lazy.argument<0>(), involution(lazy.argument<0>()), mtr), inv(sp(aux, aux, mtr), mtr), mtr));
+		auto aux = lcont(e(c<N + 1>) + e(c<N + 2>), lazy.template argument<0>(), mtr);
+		return lazy.eval(sp(sp(lazy.template argument<0>(), involution(lazy.template argument<0>()), mtr), inv(sp(aux, aux, mtr), mtr), mtr));
 	}
 
 }

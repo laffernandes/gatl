@@ -60,10 +60,7 @@ namespace ga {
 			struct multiply {
 			private:
 
-#pragma warning( push )
-#pragma warning( disable: 4293 )
-				static_assert(((possible_grades_v<LeftBasisBlade> | possible_grades_v<RightBasisBlade>) >> (VectorSpaceDimensions + 1)) == bitset_t(0), "The possible grades exceed the number of dimensions of the vectors space.");
-#pragma warning( pop )
+				static_assert(safe_rshift(possible_grades_v<LeftBasisBlade> | possible_grades_v<RightBasisBlade>, VectorSpaceDimensions + 1) == bitset_t(0), "The possible grades exceed the number of dimensions of the vectors space.");
 
 				constexpr static bitset_t result_possible_grades = possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade> >::value;
 

@@ -44,7 +44,7 @@ namespace ga {
 			using other_rows_basis_vectors = bitwise_xor_t<RowBasisVectors, row1_basis_vector>;
 			using row1 = addition_t<constant_value<1>, count_one_bits_t<bitwise_dec_t<row1_basis_vector> > >;
 
-			template<index_t ColumnIndex>
+			template<index_t ColumnIndex, typename _Dummy = void>
 			struct sum {
 			private:
 
@@ -67,8 +67,8 @@ namespace ga {
 				>;
 			};
 
-			template<>
-			struct sum<1> {
+			template<typename _Dummy>
+			struct sum<1, _Dummy> {
 			private:
 
 				using col1_basis_vector = rightmost_one_t<ColumnBasisVectors>;
@@ -139,10 +139,7 @@ namespace ga {
 			struct multiply {
 			private:
 
-#pragma warning( push )
-#pragma warning( disable: 4293 )
-				static_assert(((possible_grades_v<LeftBasisBlade> | possible_grades_v<RightBasisBlade>) >> (GeneralMetricSpace::vector_space_dimensions + 1)) == bitset_t(0), "The possible grades exceed the number of dimensions of the vectors space.");
-#pragma warning( pop )
+				static_assert(safe_rshift(possible_grades_v<LeftBasisBlade> | possible_grades_v<RightBasisBlade>, GeneralMetricSpace::vector_space_dimensions + 1) == bitset_t(0), "The possible grades exceed the number of dimensions of the vectors space.");
 
 				constexpr static bitset_t candidate_possible_grades = GradedProduct::template possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade>, GeneralMetricSpace::vector_space_dimensions>::value;
 				
@@ -225,13 +222,13 @@ namespace ga {
 				};
 
 				// Summation indexed by the combination of k basis vectors used to index the columns of the metric matrix on the evaluation of the interior product.
-				template<bitset_t ColumnBasisVectors>
+				template<bitset_t ColumnBasisVectors, typename _Dummy = void>
 				struct columns_summation;
 				
 				template<bitset_t ColumnBasisVectors>
 				using columns_summation_t = typename columns_summation<ColumnBasisVectors>::type;
 
-				template<bitset_t ColumnBasisVectors>
+				template<bitset_t ColumnBasisVectors, typename _Dummy>
 				struct columns_summation {
 					using type = addition_t<
 						product_t<
@@ -243,19 +240,19 @@ namespace ga {
 					>;
 				};
 
-				template<>
-				struct columns_summation<bitset_t(0)> {
+				template<typename _Dummy>
+				struct columns_summation<bitset_t(0), _Dummy> {
 					using type = component_t<constant_value<0>, constant_basis_blade<bitset_t(0)> >;
 				};
 
 				// Summation indexed by the order of the generalized Grassmann product. It is actually the Clifford product of two scaled basis blades.
-				template<default_integral_t Order>
+				template<default_integral_t Order, typename _Dummy = void>
 				struct order_summation;
 
 				template<default_integral_t Order>
 				using order_summation_t = typename order_summation<Order>::type;
 
-				template<default_integral_t Order>
+				template<default_integral_t Order, typename _Dummy>
 				struct order_summation {
 					using type = addition_t<
 						order_summation_t<Order - 1>,
@@ -280,8 +277,8 @@ namespace ga {
 					>;
 				};
 
-				template<>
-				struct order_summation<0> {
+				template<typename _Dummy>
+				struct order_summation<0, _Dummy> {
 					using type = result_component_t<
 						product_t<
 							product_t<

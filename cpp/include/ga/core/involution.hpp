@@ -30,7 +30,7 @@ namespace ga {
 	template<typename CoefficientType, typename Expression>
 	constexpr decltype(auto) involution(clifford_expression<CoefficientType, Expression> const &arg) noexcept {
 		auto lazy = make_lazy_context(arg);
-		return lazy.eval(clifford_expression<default_integral_t, detail::graded_unary_minus_t<decltype(lazy)::argument_expression_t<0>, (bitset_t)0xAAAAAAAAAAAAAAAAull> >());
+		return lazy.eval(clifford_expression<default_integral_t, detail::graded_unary_minus_t<typename decltype(lazy)::template argument_expression_t<0>, (bitset_t)0xAAAAAAAAAAAAAAAAull> >());
 	}
 
 	template<typename Type>

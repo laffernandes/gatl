@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.10)
 
 project(GATL-Test)
 
@@ -47,7 +47,8 @@ foreach(test_group ${test_groups})
   foreach(test_filename ${test_filenames})
     string(REPLACE ".cpp" "" test_name ${test_filename})
     add_executable(${target_prefix}${test_group}_${test_name} "${PROJECT_SOURCE_DIR}/${test_group}/${test_filename}")
-	target_include_directories(${target_prefix}${test_group}_${test_name} PUBLIC ${PROJECT_SOURCE_DIR}/${test_group})
+    set_target_properties(${target_prefix}${test_group}_${test_name} PROPERTIES CXX_STANDARD 17)
+	  target_include_directories(${target_prefix}${test_group}_${test_name} PUBLIC ${PROJECT_SOURCE_DIR}/${test_group})
     target_link_libraries(${target_prefix}${test_group}_${test_name} ${GTEST_BOTH_LIBRARIES})
     add_test(${target_prefix}${test_group}_${test_name} ${target_prefix}${test_group}_${test_name})
   endforeach()

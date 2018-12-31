@@ -31,8 +31,8 @@ namespace ga {
 	class bad_checked_copy : public std::exception {
 	public:
 
-		constexpr bad_checked_copy() noexcept :
-			std::exception("bad checked copy", 1) {
+		virtual const char* what() const noexcept {
+			return "bad checked copy";
 		}
 	};
 
@@ -246,7 +246,7 @@ namespace ga {
 		struct _trivial_assign<component<InputConstantCoefficient, constant_basis_blade<CommonBasisVectors> >, component<stored_value, constant_basis_blade<CommonBasisVectors> > > {
 			template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
 			constexpr static void run(InputValueCItr const &, InputBitsetCItr const &, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr const &, ResultMapItr const &) {
-				*result_value_itr = InputConstantCoefficient::eval<0, 0>(std::make_tuple());
+				*result_value_itr = InputConstantCoefficient::template eval<0, 0>(std::make_tuple());
 				std::advance(result_value_itr, 1);
 			}
 		};
@@ -280,7 +280,7 @@ namespace ga {
 
 			template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
 			constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
-				*result_value_itr = InputConstantCoefficient::eval<0, 0>(std::make_tuple());
+				*result_value_itr = InputConstantCoefficient::template eval<0, 0>(std::make_tuple());
 				std::advance(result_value_itr, 1);
 
 				*result_bitset_itr = *input_bitset_itr;
@@ -312,7 +312,7 @@ namespace ga {
 			template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
 			constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
 				result_map_itr->clear();
-				result_map_itr->emplace(*input_bitset_itr, InputConstantCoefficient::eval<0, 0>(std::make_tuple()));
+				result_map_itr->emplace(*input_bitset_itr, InputConstantCoefficient::template eval<0, 0>(std::make_tuple()));
 				std::advance(input_bitset_itr, 1);
 				std::advance(result_map_itr, 1);
 			}

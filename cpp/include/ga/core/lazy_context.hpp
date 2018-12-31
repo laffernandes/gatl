@@ -216,14 +216,14 @@ namespace ga {
 		struct _eval_clifford_expression_store_value {
 			template<typename... InputTypes>
 			struct coefficient_type {
-				using type = decltype(Expression::eval<LowerTag, UpperTag>(std::declval<std::tuple<InputTypes...> >()));
+				using type = decltype(Expression::template eval<LowerTag, UpperTag>(std::declval<std::tuple<InputTypes...> >()));
 			};
 
 			using expression_type = stored_value;
 
 			template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
 			constexpr static void run(ValueItr &value_itr, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &args) noexcept {
-				*value_itr = Expression::eval<LowerTag, UpperTag>(args);
+				*value_itr = Expression::template eval<LowerTag, UpperTag>(args);
 				std::advance(value_itr, 1);
 			}
 		};
@@ -255,7 +255,7 @@ namespace ga {
 
 			template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
 			constexpr static void run(ValueItr const &, BitsetItr &bitset_itr, MapIts const &, std::tuple<InputTypes...> const &args) noexcept {
-				*bitset_itr = Expression::eval<LowerTag, UpperTag>(args);
+				*bitset_itr = Expression::template eval<LowerTag, UpperTag>(args);
 				std::advance(bitset_itr, 1);
 			}
 		};
@@ -535,13 +535,13 @@ namespace ga {
 
 		public:
 
-			template<std::size_t Index>
+			template<std::size_t Index, typename _Dummy = void>
 			struct argument {
 				using type = typename super_recursive::template argument<Index - 1>::type;
 			};
 
-			template<>
-			struct argument<0> {
+			template<typename _Dummy>
+			struct argument<0, _Dummy> {
 				using type = std::conditional_t<
 					super_input::is_stored(),
 					clifford_expression<InputCoefficientType, tag_variables_t<InputExpression, BaseTag + 1, 0, 0, 0> >,
@@ -610,10 +610,10 @@ namespace ga {
 		using argument_t = typename super::template argument<Index>::type;
 
 		template<std::size_t Index>
-		using argument_coefficient_t = typename super::template argument<Index>::type::coefficient_type;
+		using argument_coefficient_t = typename argument_t<Index>::coefficient_type;
 
 		template<std::size_t Index>
-		using argument_expression_t = typename super::template argument<Index>::type::expression_type;
+		using argument_expression_t = typename argument_t<Index>::expression_type;
 
 		constexpr lazy_context(lazy_context const &) = default;
 		constexpr lazy_context(lazy_context &&) = default;

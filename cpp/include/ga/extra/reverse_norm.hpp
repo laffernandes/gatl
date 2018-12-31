@@ -30,7 +30,7 @@ namespace ga {
 	template<typename CoefficientType, typename Expression, typename MetricSpaceType>
 	constexpr decltype(auto) rnorm_sqr(clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) noexcept {
 		auto const lazy = make_lazy_context(arg);
-		return lazy.eval(sp(lazy.argument<0>(), reversion(lazy.argument<0>()), mtr));
+		return lazy.eval(sp(lazy.template argument<0>(), reversion(lazy.template argument<0>()), mtr));
 	}
 
 	template<typename CoefficientType, typename Coefficient>
@@ -51,7 +51,7 @@ namespace ga {
 	template<typename CoefficientType, typename Expression, typename MetricSpaceType>
 	constexpr decltype(auto) rnorm(clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
 		auto const lazy = make_lazy_context(arg);
-		return lazy.eval(sqrt(sp(lazy.argument<0>(), reversion(lazy.argument<0>()), mtr)));
+		return lazy.eval(sqrt(sp(lazy.template argument<0>(), reversion(lazy.template argument<0>()), mtr)));
 	}
 
 	template<typename CoefficientType, typename Coefficient>

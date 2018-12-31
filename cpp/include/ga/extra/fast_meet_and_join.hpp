@@ -40,7 +40,7 @@ namespace ga {
 
 			auto project_vector = [&](auto const &vector, auto const &blade, auto const &inv_blade) {
 				auto const lazy = make_lazy_context(vector, blade, inv_blade);
-				return lazy.eval(take_grade(lcont(lcont(lazy.argument<0>(), lazy.argument<2>(), em), lazy.argument<1>(), em), c<1>));
+				return lazy.eval(take_grade(lcont(lcont(lazy.template argument<0>(), lazy.template argument<2>(), em), lazy.template argument<1>(), em), c<1>));
 			};
 
 			join_type join; // initialized with zeros

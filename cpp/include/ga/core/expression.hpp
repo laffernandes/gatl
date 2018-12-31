@@ -471,8 +471,8 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static default_integral_t eval(std::tuple<InputTypes...> const &args) {
-				bitset_t lhs = LeftBitset::eval<LowerTag, UpperTag>(args);
-				bitset_t const rhs = RightBitset::eval<LowerTag, UpperTag>(args);
+				bitset_t lhs = LeftBitset::template eval<LowerTag, UpperTag>(args);
+				bitset_t const rhs = RightBitset::template eval<LowerTag, UpperTag>(args);
 				lhs >>= 1;
 				int changes = 0;
 				while (lhs != bitset_t(0)) {
@@ -495,7 +495,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static default_integral_t eval(std::tuple<InputTypes...> const &args) {
-				return ones(Bitset::eval<LowerTag, UpperTag>(args));
+				return ones(Bitset::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 
@@ -515,7 +515,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return LeftBitset::eval<LowerTag, UpperTag>(args) << RightValue::eval<LowerTag, UpperTag>(args);
+				return LeftBitset::template eval<LowerTag, UpperTag>(args) << RightValue::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -531,7 +531,7 @@ namespace ga {
 				
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static bitset_t eval(std::tuple<InputTypes...> const &args) {
-				return -Bitset::eval<LowerTag, UpperTag>(args);
+				return -Bitset::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -552,7 +552,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static bitset_t eval(std::tuple<InputTypes...> const &args) {
-				return Bitset::eval<LowerTag, UpperTag>(args) - bitset_t(1);
+				return Bitset::template eval<LowerTag, UpperTag>(args) - bitset_t(1);
 			}
 		};
 
@@ -576,7 +576,7 @@ namespace ga {
 				
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return LeftType::eval<LowerTag, UpperTag>(args) & RightType::eval<LowerTag, UpperTag>(args);
+				return LeftType::template eval<LowerTag, UpperTag>(args) & RightType::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -605,7 +605,7 @@ namespace ga {
 				
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return LeftType::eval<LowerTag, UpperTag>(args) | RightType::eval<LowerTag, UpperTag>(args);
+				return LeftType::template eval<LowerTag, UpperTag>(args) | RightType::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -634,7 +634,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return LeftType::eval<LowerTag, UpperTag>(args) ^ RightType::eval<LowerTag, UpperTag>(args);
+				return LeftType::template eval<LowerTag, UpperTag>(args) ^ RightType::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -663,7 +663,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static bool eval(std::tuple<InputTypes...> const &args) {
-				return LeftType::eval<LowerTag, UpperTag>(args) == RightType::eval<LowerTag, UpperTag>(args);
+				return LeftType::template eval<LowerTag, UpperTag>(args) == RightType::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -678,7 +678,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static bool eval(std::tuple<InputTypes...> const &args) {
-				return LeftType::eval<LowerTag, UpperTag>(args) <= RightType::eval<LowerTag, UpperTag>(args);
+				return LeftType::template eval<LowerTag, UpperTag>(args) <= RightType::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -703,7 +703,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static bool eval(std::tuple<InputTypes...> const &args) {
-				return LeftType::eval<LowerTag, UpperTag>(args) && RightType::eval<LowerTag, UpperTag>(args);
+				return LeftType::template eval<LowerTag, UpperTag>(args) && RightType::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -754,7 +754,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static bool eval(std::tuple<InputTypes...> const &args) {
-				return LeftType::eval<LowerTag, UpperTag>(args) || RightType::eval<LowerTag, UpperTag>(args);
+				return LeftType::template eval<LowerTag, UpperTag>(args) || RightType::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -809,7 +809,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return Test::eval<LowerTag, UpperTag>(args) ? TrueValue::eval<LowerTag, UpperTag>(args) : FalseValue::eval<LowerTag, UpperTag>(args);
+				return Test::template eval<LowerTag, UpperTag>(args) ? TrueValue::template eval<LowerTag, UpperTag>(args) : FalseValue::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -838,7 +838,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return abs(Value::eval<LowerTag, UpperTag>(args));
+				return abs(Value::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 
@@ -849,7 +849,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return exp(Value::eval<LowerTag, UpperTag>(args));
+				return exp(Value::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 
@@ -865,7 +865,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return log(Value::eval<LowerTag, UpperTag>(args));
+				return log(Value::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 
@@ -881,7 +881,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return cos(Value::eval<LowerTag, UpperTag>(args));
+				return cos(Value::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 
@@ -892,7 +892,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return sin(Value::eval<LowerTag, UpperTag>(args));
+				return sin(Value::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 
@@ -903,7 +903,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return tan(Value::eval<LowerTag, UpperTag>(args));
+				return tan(Value::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 
@@ -914,7 +914,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return cosh(Value::eval<LowerTag, UpperTag>(args));
+				return cosh(Value::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 
@@ -925,7 +925,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return sinh(Value::eval<LowerTag, UpperTag>(args));
+				return sinh(Value::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 
@@ -936,7 +936,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return tanh(Value::eval<LowerTag, UpperTag>(args));
+				return tanh(Value::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 
@@ -947,7 +947,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return pow(LeftArgument::eval<LowerTag, UpperTag>(args), RightArgument::eval<LowerTag, UpperTag>(args));
+				return pow(LeftArgument::template eval<LowerTag, UpperTag>(args), RightArgument::template eval<LowerTag, UpperTag>(args));
 			}
 
 			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
@@ -961,7 +961,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return 1 / cast_to_floating_point(LeftArgument::eval<LowerTag, UpperTag>(args));
+				return 1 / cast_to_floating_point(LeftArgument::template eval<LowerTag, UpperTag>(args));
 			}
 
 			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
@@ -973,7 +973,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return square(LeftArgument::eval<LowerTag, UpperTag>(args));
+				return square(LeftArgument::template eval<LowerTag, UpperTag>(args));
 			}
 
 			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
@@ -985,7 +985,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return sqrt(LeftArgument::eval<LowerTag, UpperTag>(args));
+				return sqrt(LeftArgument::template eval<LowerTag, UpperTag>(args));
 			}
 
 			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
@@ -997,7 +997,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return cbrt(LeftArgument::eval<LowerTag, UpperTag>(args));
+				return cbrt(LeftArgument::template eval<LowerTag, UpperTag>(args));
 			}
 
 			static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
@@ -1010,7 +1010,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return Argument::eval<LowerTag, UpperTag>(args) * mul_t<NextArguments...>::eval<LowerTag, UpperTag>(args);
+				return Argument::template eval<LowerTag, UpperTag>(args) * mul_t<NextArguments...>::template eval<LowerTag, UpperTag>(args);
 			}
 
 			static_assert(!is_any_v<constant_value<0>, Argument, NextArguments...>, "The argument ga::detail::constant_value<0> is invalid.");
@@ -1023,7 +1023,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return -mul_t<NextArguments...>::eval<LowerTag, UpperTag>(args);
+				return -mul_t<NextArguments...>::template eval<LowerTag, UpperTag>(args);
 			}
 
 			static_assert(!is_any_v<constant_value<0>, NextArguments...>, "The argument ga::detail::constant_value<0> is invalid.");
@@ -1036,7 +1036,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return LeftArgument::eval<LowerTag, UpperTag>(args) / RightArgument::eval<LowerTag, UpperTag>(args);
+				return LeftArgument::template eval<LowerTag, UpperTag>(args) / RightArgument::template eval<LowerTag, UpperTag>(args);
 			}
 
 			static_assert(!is_any_v<constant_value<0>, LeftArgument>, "The argument ga::detail::constant_value<0> is invalid.");
@@ -1049,7 +1049,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return -power<RightArgument, constant_value<-1> >::eval<LowerTag, UpperTag>(args);
+				return -power<RightArgument, constant_value<-1> >::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -1070,7 +1070,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return Argument::eval<LowerTag, UpperTag>(args) + add_t<NextArguments...>::eval<LowerTag, UpperTag>(args);
+				return Argument::template eval<LowerTag, UpperTag>(args) + add_t<NextArguments...>::template eval<LowerTag, UpperTag>(args);
 			}
 
 			static_assert(!is_any_v<constant_value<0>, Argument, NextArguments...>, "The argument ga::detail::constant_value<0> is invalid.");
@@ -1082,7 +1082,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return LeftArgument::eval<LowerTag, UpperTag>(args) - mul_t<RightArguments...>::eval<LowerTag, UpperTag>(args);
+				return LeftArgument::template eval<LowerTag, UpperTag>(args) - mul_t<RightArguments...>::template eval<LowerTag, UpperTag>(args);
 			}
 
 			static_assert(!is_any_v<constant_value<0>, LeftArgument>, "The argument ga::detail::constant_value<0> is invalid.");
@@ -1094,7 +1094,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return add_t<RightArguments...>::eval<LowerTag, UpperTag>(args) - mul_t<LeftArguments...>::eval<LowerTag, UpperTag>(args);
+				return add_t<RightArguments...>::template eval<LowerTag, UpperTag>(args) - mul_t<LeftArguments...>::template eval<LowerTag, UpperTag>(args);
 			}
 		};
 
@@ -1104,7 +1104,7 @@ namespace ga {
 
 			template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
 			constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-				return -(mul_t<LeftArguments...>::eval<LowerTag, UpperTag>(args) + mul_t<RightArguments...>::eval<LowerTag, UpperTag>(args));
+				return -(mul_t<LeftArguments...>::template eval<LowerTag, UpperTag>(args) + mul_t<RightArguments...>::template eval<LowerTag, UpperTag>(args));
 			}
 		};
 

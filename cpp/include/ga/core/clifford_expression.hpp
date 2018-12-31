@@ -651,7 +651,7 @@ namespace ga {
 		struct _clifford_expression_to_native<component<Coefficient, constant_basis_blade<bitset_t(0)> >, true> {
 			template<typename ValueCItr>
 			constexpr static decltype(auto) eval(ValueCItr const &) noexcept {
-				return Coefficient::eval<0, 0>(std::tuple<>());
+				return Coefficient::template eval<0, 0>(std::tuple<>());
 			}
 		};
 

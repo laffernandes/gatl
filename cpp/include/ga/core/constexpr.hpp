@@ -149,6 +149,11 @@ namespace ga {
 			return std::move(arg) + sum(std::move(next_args)...);
 		}
 
+		template<typename LeftType, typename RightType>
+		constexpr LeftType safe_rshift(LeftType const lhs, RightType const rhs) noexcept {
+			return (sizeof(LeftType) * 8) > rhs ? lhs >> rhs : LeftType(0);
+		}
+
 	}
 
 }

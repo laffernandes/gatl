@@ -3,3 +3,5 @@
 /cpp/build/vc2017/gatl/.vs
 /cpp/build/vc2017/test
 /cpp/build/vc2017/example
+/cpp/tools/example/build
+/cpp/tools/test/build

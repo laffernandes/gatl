@@ -31,8 +31,8 @@ namespace ga {
 	constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol, metric_space<MetricSpaceType> const &) {
 		using lazy_context_type = decltype(make_lazy_context(arg, scalar(tol)));
 
-		using blade_expression = typename lazy_context_type::argument_expression_t<0>;
-		using tolerance_value = detail::coefficient_t<typename lazy_context_type::argument_expression_t<1> >;
+		using blade_expression = typename lazy_context_type::template argument_expression_t<0>;
+		using tolerance_value = detail::coefficient_t<typename lazy_context_type::template argument_expression_t<1> >;
 
 		using signed_squared_alpha_value = detail::coefficient_t<detail::product_t<blade_expression, blade_expression, detail::metric_space_mapping_t<MetricSpaceType, detail::sp_mapping> > >;
 		using squared_alpha_value = detail::absolute_t<signed_squared_alpha_value>;

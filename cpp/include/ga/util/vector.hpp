@@ -95,7 +95,7 @@ namespace ga {
 			}
 
 			template<typename ValueType, std::size_t Size>
-			constexpr static decltype(auto) to_values_tuple(sequential_storage<ValueType, Size> &&) noexcept {
+			constexpr static decltype(auto) to_values_tuple(sequential_storage<ValueType, Size> &&values) noexcept {
 				return to_values_tuple(std::move(values), build_indices_t<Size>());
 			}
 

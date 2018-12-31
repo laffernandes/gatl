@@ -243,7 +243,7 @@ namespace ga {
 	template<typename CoefficientType, typename Expression, typename ToleranceType>
 	constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept {
 		auto const lazy = make_lazy_context(arg, scalar(tol));
-		return detail::make_grade_result(lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_grade_result_t<decltype(lazy)::argument_expression_t<0>, detail::coefficient_t<decltype(lazy)::argument_expression_t<1> > > >()));
+		return detail::make_grade_result(lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_grade_result_t<typename decltype(lazy)::template argument_expression_t<0>, detail::coefficient_t<typename decltype(lazy)::template argument_expression_t<1> > > >()));
 	}
 
 	template<typename Type, typename ToleranceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
@@ -265,7 +265,7 @@ namespace ga {
 	template<typename CoefficientType, typename Expression, typename ToleranceType>
 	constexpr decltype(auto) largest_grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept {
 		auto lazy = make_lazy_context(arg, scalar(tol));
-		return lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_largest_grade_result_t<decltype(lazy)::argument_expression_t<0>, detail::coefficient_t<decltype(lazy)::argument_expression_t<1> > > >());
+		return lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_largest_grade_result_t<typename decltype(lazy)::template argument_expression_t<0>, detail::coefficient_t<typename decltype(lazy)::template argument_expression_t<1> > > >());
 	}
 
 	template<typename Type, typename ToleranceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >

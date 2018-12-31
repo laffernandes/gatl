@@ -31,7 +31,7 @@ namespace ga {
 	template<typename CoefficientType, typename Expression, ndims_t N>
 	constexpr decltype(auto) round_location(clifford_expression<CoefficientType, Expression> const &round, minkowski_metric_space<N> const &mtr) {
 		auto const lazy = make_lazy_context(round);
-		return lazy.eval(gp(lazy.argument<0>(), inv(lcont(-(e(c<N + 1>) + e(c<N + 2>)), lazy.argument<0>(), mtr), mtr), mtr));
+		return lazy.eval(gp(lazy.template argument<0>(), inv(lcont(-(e(c<N + 1>) + e(c<N + 2>)), lazy.template argument<0>(), mtr), mtr), mtr));
 	}
 
 }
