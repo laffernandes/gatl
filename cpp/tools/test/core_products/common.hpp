@@ -28,7 +28,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #include <ga.hpp>
 #include <gtest/gtest.h>
 
-//TODO Falta implementar esses casos de teste: rp, *, ^, conjugation, involution, reversion, math
+//TODO Missing testing cases: rp, *, ^, conjugation, involution, reversion, math
 
 template<ga::ndims_t N>
 using runtime_entry_t = ga::scaled_basis_blade_t<double, 0, N>;

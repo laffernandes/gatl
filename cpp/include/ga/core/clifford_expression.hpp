@@ -174,7 +174,10 @@ namespace ga {
 
 			using entry_type = EntryType;
 
-			constexpr sequential_storage() = default;
+			constexpr sequential_storage() noexcept :
+				entries_{} {
+			}
+
 			constexpr sequential_storage(sequential_storage const &) = default;
 			constexpr sequential_storage(sequential_storage &&) = default;
 

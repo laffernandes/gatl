@@ -44,7 +44,7 @@ namespace ga {
 		return is_versor(arg, tol, mtr); // All invertible blades are also versors; and all versors are invertible.
 	}
 
-	//TODO Omitir tol?
+	//TODO Should I omit the tol argument?
 
 	// Returns whether the given Clifford expression is a null multivector up to an assumed numerical error.
 	template<typename CoefficientType, typename Expression, typename ToleranceType, typename MetricSpaceType>
@@ -52,7 +52,7 @@ namespace ga {
 		return is_zero(rnorm_sqr(arg, mtr), tol);
 	}
 
-	//TODO Omitir tol?
+	//TODO Should I omit the tol argument?
 
 	// Returns whether the given Clifford expression is a unit multivector up to an assumed numerical error.
 	template<typename CoefficientType, typename Expression, typename ToleranceType, typename MetricSpaceType>
@@ -60,7 +60,7 @@ namespace ga {
 		return is_zero(abs(rnorm_sqr(arg, mtr)) - c<1>, tol);
 	}
 
-	//TODO Omitir tol?
+	//TODO Should I omit the tol argument?
 
 }
 

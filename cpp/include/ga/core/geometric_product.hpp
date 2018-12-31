@@ -29,7 +29,7 @@ namespace ga {
 
 	namespace detail {
 
-		//TODO � poss�vel melhorar?
+		//TODO Is it possible to improve the code below?
 
 		struct gp_mapping {
 		private:

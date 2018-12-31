@@ -29,7 +29,7 @@ namespace ga {
 
 	namespace detail {
 
-		//TODO � poss�vel melhorar?
+		//TODO Is it possible to improve the code below?
 
 		// The implementation of the mapping concept for the regressive product.
 		template<ndims_t VectorSpaceDimensions>
