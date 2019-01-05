@@ -27,44 +27,44 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	namespace detail {
+    namespace detail {
 
-		// Returns true if T and any element in Rest has the same type with the same const-volatile qualifications or false otherwise.
-		template<typename T, typename... Rest>
-		constexpr bool is_any_v = std::disjunction_v<std::bool_constant<std::is_same_v<T, Rest> >...>;
+        // Returns true if T and any element in Rest has the same type with the same const-volatile qualifications or false otherwise.
+        template<typename T, typename... Rest>
+        constexpr bool is_any_v = std::disjunction_v<std::bool_constant<std::is_same_v<T, Rest> >...>;
 
-		// A set of indices.
-		template<std::size_t... Indices>
-		struct indices {
-			using next = indices<Indices..., sizeof...(Indices)>;
-		};
+        // A set of indices.
+        template<std::size_t... Indices>
+        struct indices {
+            using next = indices<Indices..., sizeof...(Indices)>;
+        };
 
-		// Helper structure to build a set of indices.
-		template<std::size_t Size>
-		struct build_indices {
-			using type = typename build_indices<Size - 1>::type::next;
-		};
+        // Helper structure to build a set of indices.
+        template<std::size_t Size>
+        struct build_indices {
+            using type = typename build_indices<Size - 1>::type::next;
+        };
 
-		template<>
-		struct build_indices<0> {
-			using type = indices<>;
-		};
+        template<>
+        struct build_indices<0> {
+            using type = indices<>;
+        };
 
-		template<std::size_t Size>
-		using build_indices_t = typename build_indices<Size>::type;
+        template<std::size_t Size>
+        using build_indices_t = typename build_indices<Size>::type;
 
-		// Helper function to convert a tuple into a list-initialization structure.
-		template<typename Tuple, std::size_t... Indices>
-		constexpr decltype(auto) _to_list_initialization(Tuple &&tuple, indices<Indices...>) noexcept {
-			return { std::get<Indices>(std::move(tuple))... };
-		}
+        // Helper function to convert a tuple into a list-initialization structure.
+        template<typename Tuple, std::size_t... Indices>
+        constexpr decltype(auto) _to_list_initialization(Tuple &&tuple, indices<Indices...>) noexcept {
+            return { std::get<Indices>(std::move(tuple))... };
+        }
 
-		template<typename Tuple>
-		constexpr decltype(auto) to_list_initialization(Tuple &&tuple) noexcept {
-			return _to_list_initialization(std::move(tuple), build_indices_t<std::tuple_size_v<std::remove_cv_t<std::remove_reference_t<Tuple> > > >());
-		}
+        template<typename Tuple>
+        constexpr decltype(auto) to_list_initialization(Tuple &&tuple) noexcept {
+            return _to_list_initialization(std::move(tuple), build_indices_t<std::tuple_size_v<std::remove_cv_t<std::remove_reference_t<Tuple> > > >());
+        }
 
-	}
+    }
 
 }
 

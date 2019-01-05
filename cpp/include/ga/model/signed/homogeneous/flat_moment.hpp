@@ -27,12 +27,12 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	// Returns the moment parameter of a given k-flat.
-	template<typename CoefficientType, typename Expression, ndims_t N>
-	constexpr decltype(auto) flat_moment(clifford_expression<CoefficientType, Expression> const &flat, homogeneous_metric_space<N> const &mtr) noexcept {
-		auto const lazy = make_lazy_context(flat);
-		return lazy.eval(lcont(e(c<N + 1>), op(e(c<N + 1>), lazy.template argument<0>(), mtr), mtr));
-	}
+    // Returns the moment parameter of a given k-flat.
+    template<typename CoefficientType, typename Expression, ndims_t N>
+    constexpr decltype(auto) flat_moment(clifford_expression<CoefficientType, Expression> const &flat, homogeneous_metric_space<N> const &mtr) noexcept {
+        auto const lazy = make_lazy_context(flat);
+        return lazy.eval(lcont(e(c<N + 1>), op(e(c<N + 1>), lazy.template argument<0>(), mtr), mtr));
+    }
 
 }
 

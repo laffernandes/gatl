@@ -32,59 +32,59 @@ auto ej = e(2);
 auto ek = e(3);
 
 TEST(Extra, TakeGrade1) {
-	EXPECT_TRUE(is_zero(take_grade(e1, c<0>) - take_grade(e1, 0)));
-	EXPECT_TRUE(is_zero(take_grade(e1, c<1>) - take_grade(e1, 1)));
-	EXPECT_TRUE(is_zero(take_grade(e1, c<2>) - take_grade(e1, 2)));
+    EXPECT_TRUE(is_zero(take_grade(e1, c<0>) - take_grade(e1, 0)));
+    EXPECT_TRUE(is_zero(take_grade(e1, c<1>) - take_grade(e1, 1)));
+    EXPECT_TRUE(is_zero(take_grade(e1, c<2>) - take_grade(e1, 2)));
 }
 
 TEST(Extra, TakeGrade2) {
-	EXPECT_TRUE(is_zero(take_grade(e1^e2, c<0>) - take_grade(e1^e2, 0)));
-	EXPECT_TRUE(is_zero(take_grade(e1^e2, c<1>) - take_grade(e1^e2, 1)));
-	EXPECT_TRUE(is_zero(take_grade(e1^e2, c<2>) - take_grade(e1^e2, 2)));
+    EXPECT_TRUE(is_zero(take_grade(e1^e2, c<0>) - take_grade(e1^e2, 0)));
+    EXPECT_TRUE(is_zero(take_grade(e1^e2, c<1>) - take_grade(e1^e2, 1)));
+    EXPECT_TRUE(is_zero(take_grade(e1^e2, c<2>) - take_grade(e1^e2, 2)));
 }
 
 TEST(Extra, TakeGrade3) {
-	EXPECT_TRUE(is_zero(take_grade(ei, c<0>) - take_grade(e1, c<0>)));
-	EXPECT_TRUE(is_zero(take_grade(ej, c<1>) - take_grade(e2, c<1>)));
-	EXPECT_TRUE(is_zero(take_grade(ek, c<2>) - take_grade(e3, c<2>)));
+    EXPECT_TRUE(is_zero(take_grade(ei, c<0>) - take_grade(e1, c<0>)));
+    EXPECT_TRUE(is_zero(take_grade(ej, c<1>) - take_grade(e2, c<1>)));
+    EXPECT_TRUE(is_zero(take_grade(ek, c<2>) - take_grade(e3, c<2>)));
 }
 
 TEST(Extra, TakeGrade4) {
-	EXPECT_TRUE(is_zero(take_grade(ei^ej, c<0>) - take_grade(e1^e2, c<0>)));
-	EXPECT_TRUE(is_zero(take_grade(ei^ej, c<1>) - take_grade(e1^e2, c<1>)));
-	EXPECT_TRUE(is_zero(take_grade(ei^ej, c<2>) - take_grade(e1^e2, c<2>)));
+    EXPECT_TRUE(is_zero(take_grade(ei^ej, c<0>) - take_grade(e1^e2, c<0>)));
+    EXPECT_TRUE(is_zero(take_grade(ei^ej, c<1>) - take_grade(e1^e2, c<1>)));
+    EXPECT_TRUE(is_zero(take_grade(ei^ej, c<2>) - take_grade(e1^e2, c<2>)));
 }
 
 TEST(Extra, TakeGrade5) {
-	EXPECT_TRUE(is_zero(take_grade(ei^ej, c<0>) - take_grade(ei^ej, 0)));
-	EXPECT_TRUE(is_zero(take_grade(ei^ej, c<1>) - take_grade(ei^ej, 1)));
-	EXPECT_TRUE(is_zero(take_grade(ei^ej, c<2>) - take_grade(ei^ej, 2)));
+    EXPECT_TRUE(is_zero(take_grade(ei^ej, c<0>) - take_grade(ei^ej, 0)));
+    EXPECT_TRUE(is_zero(take_grade(ei^ej, c<1>) - take_grade(ei^ej, 1)));
+    EXPECT_TRUE(is_zero(take_grade(ei^ej, c<2>) - take_grade(ei^ej, 2)));
 }
 
 TEST(Extra, TakeGrade6) {
-	EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), c<0>) - c<1>));
-	EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), c<1>) - (e1 + e2 + e3)));
-	EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), c<2>) - ((e1^e2) + (e1^e3) + (e2^e3))));
-	EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), c<3>) - (e1^e2^e3)));
+    EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), c<0>) - c<1>));
+    EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), c<1>) - (e1 + e2 + e3)));
+    EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), c<2>) - ((e1^e2) + (e1^e3) + (e2^e3))));
+    EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), c<3>) - (e1^e2^e3)));
 }
 
 TEST(Extra, TakeGrade7) {
-	EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), 0) - c<1>));
-	EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), 1) - (e1 + e2 + e3)));
-	EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), 2) - ((e1^e2) + (e1^e3) + (e2^e3))));
-	EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), 3) - (e1^e2^e3)));
+    EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), 0) - c<1>));
+    EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), 1) - (e1 + e2 + e3)));
+    EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), 2) - ((e1^e2) + (e1^e3) + (e2^e3))));
+    EXPECT_TRUE(is_zero(take_grade(c<1> + e1 + e2 + e3 + (e1^e2) + (e1^e3) + (e2^e3) + (e1^e2^e3), 3) - (e1^e2^e3)));
 }
 
 TEST(Extra, TakeGrade8) {
-	EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), c<0>) - c<1>));
-	EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), c<1>) - (e1 + e2 + e3)));
-	EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), c<2>) - ((e1^e2) + (e1^e3) + (e2^e3))));
-	EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), c<3>) - (e1^e2^e3)));
+    EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), c<0>) - c<1>));
+    EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), c<1>) - (e1 + e2 + e3)));
+    EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), c<2>) - ((e1^e2) + (e1^e3) + (e2^e3))));
+    EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), c<3>) - (e1^e2^e3)));
 }
 
 TEST(Extra, TakeGrade9) {
-	EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), 0) - c<1>));
-	EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), 1) - (e1 + e2 + e3)));
-	EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), 2) - ((e1^e2) + (e1^e3) + (e2^e3))));
-	EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), 3) - (e1^e2^e3)));
+    EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), 0) - c<1>));
+    EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), 1) - (e1 + e2 + e3)));
+    EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), 2) - ((e1^e2) + (e1^e3) + (e2^e3))));
+    EXPECT_TRUE(is_zero(take_grade(1 + ei + ej + ek + (ei^ej) + (ei^ek) + (ej^ek) + (ei^ej^ek), 3) - (e1^e2^e3)));
 }

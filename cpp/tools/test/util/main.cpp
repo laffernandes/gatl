@@ -29,28 +29,28 @@ using namespace ga3e;
 
 template<typename CoefficientType, typename Expression>
 std::string to_string(ga::clifford_expression<CoefficientType, Expression> const &arg) {
-	std::stringstream ss;
-	ss << arg;
-	return ss.str();
+    std::stringstream ss;
+    ss << arg;
+    return ss.str();
 }
 
 TEST(Util, Vector1) {
-	auto v = vector(c<0>, c<0>, c<0>);
+    auto v = vector(c<0>, c<0>, c<0>);
 
-	EXPECT_EQ(to_string(v), "<0> * <1>");
-	EXPECT_EQ(sizeof(v), 1);
+    EXPECT_EQ(to_string(v), "<0> * <1>");
+    EXPECT_EQ(sizeof(v), 1);
 }
 
 TEST(Util, Vector2) {
-	auto v = vector(c<0>, c<0>, 10.5);
+    auto v = vector(c<0>, c<0>, 10.5);
 
-	EXPECT_EQ(to_string(v), "10.5 * <e3>");
-	EXPECT_EQ(sizeof(v), sizeof(double));
+    EXPECT_EQ(to_string(v), "10.5 * <e3>");
+    EXPECT_EQ(sizeof(v), sizeof(double));
 }
 
 TEST(Util, Vector3) {
-	auto v = vector(c<4>, c<0>, 10.5);
+    auto v = vector(c<4>, c<0>, 10.5);
 
-	EXPECT_EQ(to_string(v), "<4> * <e1> + 10.5 * <e3>");
-	EXPECT_EQ(sizeof(v), sizeof(double));
+    EXPECT_EQ(to_string(v), "<4> * <e1> + 10.5 * <e3>");
+    EXPECT_EQ(sizeof(v), sizeof(double));
 }

@@ -33,19 +33,19 @@ constexpr std::size_t SIZE = 1 << N;
 auto prod = [](auto const &lhs, auto const &rhs) { return dot(lhs, rhs); };
 
 auto truth = [](auto const &lhs, auto const &rhs) {
-	grade_t const lhs_grade = grade(lhs);
-	grade_t const rhs_grade = grade(rhs);
-	return take_grade(gp(lhs, rhs), std::abs(lhs_grade - rhs_grade));
+    grade_t const lhs_grade = grade(lhs);
+    grade_t const rhs_grade = grade(rhs);
+    return take_grade(gp(lhs, rhs), std::abs(lhs_grade - rhs_grade));
 };
 
 TEST(MultiplicationTable, CompileTimeVSCompileTime) {
-	EXPECT_TRUE(compile_time_vs_compile_time<N>(prod, truth));
+    EXPECT_TRUE(compile_time_vs_compile_time<N>(prod, truth));
 }
 
 TEST(MultiplicationTable, CompileTimeVSRuntime) {
-	EXPECT_TRUE(compile_time_vs_runtime<N>(prod, truth));
+    EXPECT_TRUE(compile_time_vs_runtime<N>(prod, truth));
 }
 
 TEST(MultiplicationTable, RuntimeVSRuntime) {
-	EXPECT_TRUE(runtime_vs_runtime<N>(prod, truth));
+    EXPECT_TRUE(runtime_vs_runtime<N>(prod, truth));
 }

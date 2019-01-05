@@ -26,19 +26,19 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #define __GA_MODEL_SIGNED_EUCLIDEAN_MACRO_FOR_ALGEBRA_OVERLOAD_HPP__
 
 #define _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(SPACE) \
-	template <typename... Types> \
-	constexpr decltype(auto) euclidean_vector(Types &&... coords) noexcept { \
-		return euclidean_vector(SPACE, std::move(coords)...); \
-	} \
-	\
-	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
-	constexpr decltype(auto) project(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
-		return project(lhs, rhs, SPACE); \
-	} \
-	\
-	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
-	constexpr decltype(auto) reject(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
-		return reject(lhs, rhs, SPACE); \
-	}
+    template <typename... Types> \
+    constexpr decltype(auto) euclidean_vector(Types &&... coords) noexcept { \
+        return euclidean_vector(SPACE, std::move(coords)...); \
+    } \
+    \
+    template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
+    constexpr decltype(auto) project(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+        return project(lhs, rhs, SPACE); \
+    } \
+    \
+    template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
+    constexpr decltype(auto) reject(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+        return reject(lhs, rhs, SPACE); \
+    }
 
 #endif // __GA_MODEL_SIGNED_EUCLIDEAN_MACRO_FOR_ALGEBRA_OVERLOAD_HPP__

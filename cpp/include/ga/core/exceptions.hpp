@@ -27,18 +27,18 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	// This class defines the type of objects thrown as exceptions to report errors related to not implemented features.
-	class not_implemented_error : public std::logic_error {
-	public:
+    // This class defines the type of objects thrown as exceptions to report errors related to not implemented features.
+    class not_implemented_error : public std::logic_error {
+    public:
 
-		explicit not_implemented_error(const std::string &what_arg) :
-			std::logic_error(what_arg) {
-		}
+        explicit not_implemented_error(const std::string &what_arg) :
+            std::logic_error(what_arg) {
+        }
 
-		explicit not_implemented_error(const char *what_arg) :
-			std::logic_error(what_arg) {
-		}
-	};
+        explicit not_implemented_error(const char *what_arg) :
+            std::logic_error(what_arg) {
+        }
+    };
 
 }
 

@@ -26,13 +26,13 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #define __GA_UTIL_MACRO_FOR_ALGEBRA_OVERLOAD_HPP__
 
 #define _GA_UTIL_OVERLOAD(SPACE) \
-	constexpr decltype(auto) pseudoscalar() noexcept { \
-		return pseudoscalar(SPACE); \
-	} \
-	\
-	template<typename... Types> \
-	constexpr decltype(auto) vector(Types &&... coords) noexcept { \
-		return ga::vector(SPACE, std::move(coords)...); \
-	}
+    constexpr decltype(auto) pseudoscalar() noexcept { \
+        return pseudoscalar(SPACE); \
+    } \
+    \
+    template<typename... Types> \
+    constexpr decltype(auto) vector(Types &&... coords) noexcept { \
+        return ga::vector(SPACE, std::move(coords)...); \
+    }
 
 #endif // __GA_UTIL_MACRO_FOR_ALGEBRA_OVERLOAD_HPP__

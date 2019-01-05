@@ -27,40 +27,40 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	// Orthogonal metric space with signature (P,Q).
-	template<ndims_t P, ndims_t Q>
-	class signed_metric_space : public metric_space<signed_metric_space<P, Q> > {
-	public:
+    // Orthogonal metric space with signature (P,Q).
+    template<ndims_t P, ndims_t Q>
+    class signed_metric_space : public metric_space<signed_metric_space<P, Q> > {
+    public:
 
-		using metric_space_type = signed_metric_space;
+        using metric_space_type = signed_metric_space;
 
-		constexpr static bitset_t basis_vectors = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - (P + Q)));
-		constexpr static ndims_t vector_space_dimensions = P + Q;
+        constexpr static bitset_t basis_vectors = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - (P + Q)));
+        constexpr static ndims_t vector_space_dimensions = P + Q;
 
-	private:
+    private:
 
-		constexpr static bitset_t positive = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - P));
-		constexpr static bitset_t negative = basis_vectors - positive;
+        constexpr static bitset_t positive = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - P));
+        constexpr static bitset_t negative = basis_vectors - positive;
 
-	public:
+    public:
 
-		template<typename BasisVectorsBitset>
-		struct metric_factor {
-			using type = detail::if_else_t<
-				detail::equal_t<detail::bitwise_and_t<detail::count_one_bits_t<detail::bitwise_and_t<BasisVectorsBitset, detail::constant_bitset<negative> > >, detail::constant_value<1> >, detail::constant_value<0> >,
-				detail::constant_value<1>,
-				detail::constant_value<-1>
-			>;
-		};
+        template<typename BasisVectorsBitset>
+        struct metric_factor {
+            using type = detail::if_else_t<
+                detail::equal_t<detail::bitwise_and_t<detail::count_one_bits_t<detail::bitwise_and_t<BasisVectorsBitset, detail::constant_bitset<negative> > >, detail::constant_value<1> >, detail::constant_value<0> >,
+                detail::constant_value<1>,
+                detail::constant_value<-1>
+            >;
+        };
 
-		static_assert((P + Q) <= GA_MAX_BASIS_VECTOR_INDEX, "ga::signed_metric_space<P, Q> is ill-defined. It is expectated (P + Q) <= GA_MAX_BASIS_VECTOR_INDEX.");
-	};
+        static_assert((P + Q) <= GA_MAX_BASIS_VECTOR_INDEX, "ga::signed_metric_space<P, Q> is ill-defined. It is expectated (P + Q) <= GA_MAX_BASIS_VECTOR_INDEX.");
+    };
 
-	// Specialization of is_orthogonal_metric_space<MetricSpaceType>.
-	template<ndims_t P, ndims_t Q>
-	struct is_orthogonal_metric_space<signed_metric_space<P, Q> > :
-		std::true_type {
-	};
+    // Specialization of is_orthogonal_metric_space<MetricSpaceType>.
+    template<ndims_t P, ndims_t Q>
+    struct is_orthogonal_metric_space<signed_metric_space<P, Q> > :
+        std::true_type {
+    };
 
 }
 

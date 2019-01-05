@@ -31,26 +31,26 @@ constexpr ga::ndims_t N = space_t::vector_space_dimensions;
 constexpr std::size_t SIZE = 1 << N;
 
 std::array<std::array<table_entry_t<N>, SIZE>, SIZE> const table = { {
-	{        1,       e1,        e2,  e1^e2,       e3,     e1^e3,    e2^e3, e1^e2^e3 },
-	{       e1,        1,     e1^e2,     e2,    e1^e3,        e3, e1^e2^e3,    e2^e3 },
+    {        1,       e1,        e2,  e1^e2,       e3,     e1^e3,    e2^e3, e1^e2^e3 },
+    {       e1,        1,     e1^e2,     e2,    e1^e3,        e3, e1^e2^e3,    e2^e3 },
     {       e2,   -e1^e2,         1,    -e1,    e2^e3, -e1^e2^e3,       e3,   -e1^e3 },
     {    e1^e2,      -e2,        e1,     -1, e1^e2^e3,    -e2^e3,    e1^e3,      -e3 },
     {    e1^e3,      -e3, -e1^e2^e3,  e2^e3,       e1,        -1,   -e1^e2,       e2 },
-	{    e2^e3, e1^e2^e3,       -e3, -e1^e3,       e2,     e1^e2,       -1,      -e1 },
-	{ e1^e2^e3,    e2^e3,    -e1^e3,    -e3,    e1^e2,        e2,      -e1,       -1 }
+    {    e2^e3, e1^e2^e3,       -e3, -e1^e3,       e2,     e1^e2,       -1,      -e1 },
+    { e1^e2^e3,    e2^e3,    -e1^e3,    -e3,    e1^e2,        e2,      -e1,       -1 }
 } };
 
 auto prod = [](auto const &lhs, auto const &rhs) { return gp(lhs, rhs); };
 auto truth = [&](auto const &lhs, auto const &rhs) { return table[(std::size_t)get_bitset(lhs)][(std::size_t)get_bitset(rhs)]; };
 
 TEST(MultiplicationTable, CompileTimeVSCompileTime) {
-	EXPECT_TRUE(compile_time_vs_compile_time<N>(prod, truth));
+    EXPECT_TRUE(compile_time_vs_compile_time<N>(prod, truth));
 }
 
 TEST(MultiplicationTable, CompileTimeVSRuntime) {
-	EXPECT_TRUE(compile_time_vs_runtime<N>(prod, truth));
+    EXPECT_TRUE(compile_time_vs_runtime<N>(prod, truth));
 }
 
 TEST(MultiplicationTable, RuntimeVSRuntime) {
-	EXPECT_TRUE(runtime_vs_runtime<N>(prod, truth));
+    EXPECT_TRUE(runtime_vs_runtime<N>(prod, truth));
 }

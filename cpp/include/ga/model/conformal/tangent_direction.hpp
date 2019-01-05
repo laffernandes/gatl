@@ -27,12 +27,12 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	// Returns the direction parameter of a given tangent.
-	template<typename CoefficientType, typename Expression, ndims_t N>
-	constexpr decltype(auto) tangent_direction(clifford_expression<CoefficientType, Expression> const &tangent, conformal_metric_space<N> const &mtr) noexcept {
-		auto const lazy = make_lazy_context(tangent);
-		return lazy.eval(op(lcont(-e(c<N + 2>), lazy.template argument<0>(), mtr), e(c<N + 2>), mtr));
-	}
+    // Returns the direction parameter of a given tangent.
+    template<typename CoefficientType, typename Expression, ndims_t N>
+    constexpr decltype(auto) tangent_direction(clifford_expression<CoefficientType, Expression> const &tangent, conformal_metric_space<N> const &mtr) noexcept {
+        auto const lazy = make_lazy_context(tangent);
+        return lazy.eval(op(lcont(-e(c<N + 2>), lazy.template argument<0>(), mtr), e(c<N + 2>), mtr));
+    }
 
 }
 

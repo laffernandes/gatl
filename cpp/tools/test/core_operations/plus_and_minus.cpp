@@ -29,32 +29,32 @@ using namespace ga3e;
 
 template<typename CoefficientType, typename Expression>
 std::string to_string(ga::clifford_expression<CoefficientType, Expression> const &arg) {
-	std::stringstream ss;
-	ss << arg;
-	return ss.str();
+    std::stringstream ss;
+    ss << arg;
+    return ss.str();
 }
 
 TEST(PlusAndMinus, UnaryPlus) {
-	EXPECT_EQ(to_string(+e(1)), "<1> * e1");
-	EXPECT_EQ(to_string(+e(c<2>)), "<1> * <e2>");
+    EXPECT_EQ(to_string(+e(1)), "<1> * e1");
+    EXPECT_EQ(to_string(+e(c<2>)), "<1> * <e2>");
 }
 
 TEST(PlusAndMinus, UnaryMinus) {
-	EXPECT_EQ(to_string(-e(1)), "<-1> * e1");
-	EXPECT_EQ(to_string(-e(c<2>)), "<-1> * <e2>");
+    EXPECT_EQ(to_string(-e(1)), "<-1> * e1");
+    EXPECT_EQ(to_string(-e(c<2>)), "<-1> * <e2>");
 }
 
 TEST(PlusAndMinus, BinaryPlus) {
-	EXPECT_EQ(to_string(e(c<1>) + e(c<2>)), "<1> * <e1> + <1> * <e2>");
-	EXPECT_EQ(to_string(c<5> + e(c<1>) + e(c<2>) + e(c<1>)), "<5> * <1> + <2> * <e1> + <1> * <e2>");
-	EXPECT_EQ(to_string(5.0 + e(c<1>) + e(c<2>)), "5 * <1> + <1> * <e1> + <1> * <e2>");
-	EXPECT_EQ(to_string(e(c<1>) + 5.0 + e(c<1>) + e(c<2>) + e(c<1>)), "5 * <1> + <3> * <e1> + <1> * <e2>");
+    EXPECT_EQ(to_string(e(c<1>) + e(c<2>)), "<1> * <e1> + <1> * <e2>");
+    EXPECT_EQ(to_string(c<5> + e(c<1>) + e(c<2>) + e(c<1>)), "<5> * <1> + <2> * <e1> + <1> * <e2>");
+    EXPECT_EQ(to_string(5.0 + e(c<1>) + e(c<2>)), "5 * <1> + <1> * <e1> + <1> * <e2>");
+    EXPECT_EQ(to_string(e(c<1>) + 5.0 + e(c<1>) + e(c<2>) + e(c<1>)), "5 * <1> + <3> * <e1> + <1> * <e2>");
 }
 
 TEST(PlusAndMinus, BinaryMinus) {
-	EXPECT_EQ(to_string(e(c<1>) - e(c<2>)), "<1> * <e1> + <-1> * <e2>");
-	EXPECT_EQ(to_string(e(c<2>) - e(c<1>)), "<-1> * <e1> + <1> * <e2>");
-	EXPECT_EQ(to_string(c<5> - e(c<1>) + e(c<2>) + e(c<1>)), "<5> * <1> + <1> * <e2>");
-	EXPECT_EQ(to_string(5.0 - e(c<1>) - e(c<2>)), "5 * <1> + <-1> * <e1> + <-1> * <e2>");
-	EXPECT_EQ(to_string(e(c<1>) - 5.0 - e(c<2>) - e(c<2>) - e(c<3>)), "(-5) * <1> + <1> * <e1> + <-2> * <e2> + <-1> * <e3>");
+    EXPECT_EQ(to_string(e(c<1>) - e(c<2>)), "<1> * <e1> + <-1> * <e2>");
+    EXPECT_EQ(to_string(e(c<2>) - e(c<1>)), "<-1> * <e1> + <1> * <e2>");
+    EXPECT_EQ(to_string(c<5> - e(c<1>) + e(c<2>) + e(c<1>)), "<5> * <1> + <1> * <e2>");
+    EXPECT_EQ(to_string(5.0 - e(c<1>) - e(c<2>)), "5 * <1> + <-1> * <e1> + <-1> * <e2>");
+    EXPECT_EQ(to_string(e(c<1>) - 5.0 - e(c<2>) - e(c<2>) - e(c<3>)), "(-5) * <1> + <1> * <e1> + <-2> * <e2> + <-1> * <e3>");
 }

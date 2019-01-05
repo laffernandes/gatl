@@ -24,6 +24,9 @@ cmake_minimum_required(VERSION 3.10)
 
 project(GATL-Example)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(target_prefix gatl_example_)
 
 set(example_groups
@@ -37,7 +40,6 @@ foreach(example_group ${example_groups})
   foreach(example_filename ${example_filenames})
     string(REPLACE ".cpp" "" example_name ${example_filename})
     add_executable(${target_prefix}${example_group}_${example_name} "${PROJECT_SOURCE_DIR}/${example_group}/${example_filename}")
-    set_target_properties(${target_prefix}${example_group}_${example_name} PROPERTIES CXX_STANDARD 17)
     target_include_directories(${target_prefix}${example_group}_${example_name} PUBLIC ${PROJECT_SOURCE_DIR}/${example_group})
     target_link_libraries(${target_prefix}${example_group}_${example_name})
   endforeach()

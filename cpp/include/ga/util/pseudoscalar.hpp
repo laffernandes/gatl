@@ -27,19 +27,19 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	// Helper for defining a scaled compile-time defined pseudoscalar type.
-	template<typename CoefficientType, ndims_t N>
-	using scaled_pseudoscalar_t = clifford_expression<CoefficientType, detail::component_t<detail::stored_value, detail::constant_basis_blade<detail::first_combination(N)> > >;
+    // Helper for defining a scaled compile-time defined pseudoscalar type.
+    template<typename CoefficientType, ndims_t N>
+    using scaled_pseudoscalar_t = clifford_expression<CoefficientType, detail::component_t<detail::stored_value, detail::constant_basis_blade<detail::first_combination(N)> > >;
 
-	// Helper for defining an unit compile-time defined pseudoscalar type.
-	template<ndims_t N>
-	using unit_pseudoscalar_t = clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::constant_basis_blade<detail::first_combination(N)> > >;
+    // Helper for defining an unit compile-time defined pseudoscalar type.
+    template<ndims_t N>
+    using unit_pseudoscalar_t = clifford_expression<default_integral_t, detail::component_t<detail::constant_value<1>, detail::constant_basis_blade<detail::first_combination(N)> > >;
 
-	// Returns the compile-time defined unit pseudoscalar of the given space.
-	template<typename MetricSpaceType>
-	constexpr unit_pseudoscalar_t<MetricSpaceType::vector_space_dimensions> pseudoscalar(metric_space<MetricSpaceType> const &) noexcept {
-		return unit_pseudoscalar_t<MetricSpaceType::vector_space_dimensions>();
-	}
+    // Returns the compile-time defined unit pseudoscalar of the given space.
+    template<typename MetricSpaceType>
+    constexpr unit_pseudoscalar_t<MetricSpaceType::vector_space_dimensions> pseudoscalar(metric_space<MetricSpaceType> const &) noexcept {
+        return unit_pseudoscalar_t<MetricSpaceType::vector_space_dimensions>();
+    }
 
 }
 

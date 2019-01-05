@@ -28,6 +28,9 @@ enable_testing()
 
 find_package(GTest REQUIRED)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(target_prefix gatl_test_)
 
 set(test_groups
@@ -47,8 +50,7 @@ foreach(test_group ${test_groups})
   foreach(test_filename ${test_filenames})
     string(REPLACE ".cpp" "" test_name ${test_filename})
     add_executable(${target_prefix}${test_group}_${test_name} "${PROJECT_SOURCE_DIR}/${test_group}/${test_filename}")
-    set_target_properties(${target_prefix}${test_group}_${test_name} PROPERTIES CXX_STANDARD 17)
-	  target_include_directories(${target_prefix}${test_group}_${test_name} PUBLIC ${PROJECT_SOURCE_DIR}/${test_group})
+    target_include_directories(${target_prefix}${test_group}_${test_name} PUBLIC ${PROJECT_SOURCE_DIR}/${test_group})
     target_link_libraries(${target_prefix}${test_group}_${test_name} ${GTEST_BOTH_LIBRARIES})
     add_test(${target_prefix}${test_group}_${test_name} ${target_prefix}${test_group}_${test_name})
   endforeach()

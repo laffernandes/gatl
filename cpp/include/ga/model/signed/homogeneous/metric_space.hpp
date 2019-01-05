@@ -27,9 +27,9 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	// Homogeneous metric space.
-	template<ndims_t N>
-	using homogeneous_metric_space = signed_metric_space<N + 1, 0>;
+    // Homogeneous metric space.
+    template<ndims_t N>
+    using homogeneous_metric_space = signed_metric_space<N + 1, 0>;
 
 }
 

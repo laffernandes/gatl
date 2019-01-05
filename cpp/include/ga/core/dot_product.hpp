@@ -27,97 +27,97 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	namespace detail {
+    namespace detail {
 
-		struct dot_mapping {
-		private:
+        struct dot_mapping {
+        private:
 
-			template<bitset_t LeftPossibleGrades, bitset_t RightPossibleGrades>
-			struct _possible_grades_result {
-			private:
+            template<bitset_t LeftPossibleGrades, bitset_t RightPossibleGrades>
+            struct _possible_grades_result {
+            private:
 
-				constexpr static bitset_t left_grade_bitset = rightmost_set_bit(LeftPossibleGrades);
-				constexpr static bitset_t possible_grades = RightPossibleGrades / left_grade_bitset;
+                constexpr static bitset_t left_grade_bitset = rightmost_set_bit(LeftPossibleGrades);
+                constexpr static bitset_t possible_grades = RightPossibleGrades / left_grade_bitset;
 
-			public:
+            public:
 
-				constexpr static bitset_t value = _possible_grades_result<(possible_grades != bitset_t(0) ? LeftPossibleGrades ^ left_grade_bitset : bitset_t(0)), RightPossibleGrades>::value | possible_grades;
-			};
+                constexpr static bitset_t value = _possible_grades_result<(possible_grades != bitset_t(0) ? LeftPossibleGrades ^ left_grade_bitset : bitset_t(0)), RightPossibleGrades>::value | possible_grades;
+            };
 
-			template<bitset_t RightPossibleGrades>
-			struct _possible_grades_result<bitset_t(0), RightPossibleGrades> {
-				constexpr static bitset_t value = bitset_t(0);
-			};
+            template<bitset_t RightPossibleGrades>
+            struct _possible_grades_result<bitset_t(0), RightPossibleGrades> {
+                constexpr static bitset_t value = bitset_t(0);
+            };
 
-		public:
+        public:
 
-			template<typename LeftGrade, typename RightGrade, typename ResultGrade>
-			struct are_valid_grades {
-				using type = if_else_t<
-					less_or_equal_t<LeftGrade, RightGrade>,
-					equal_t<ResultGrade, addition_t<RightGrade, product_t<constant_value<-1>, LeftGrade, value_mapping> > >,
-					equal_t<ResultGrade, addition_t<LeftGrade, product_t<constant_value<-1>, RightGrade, value_mapping> > >
-				>;
-			};
+            template<typename LeftGrade, typename RightGrade, typename ResultGrade>
+            struct are_valid_grades {
+                using type = if_else_t<
+                    less_or_equal_t<LeftGrade, RightGrade>,
+                    equal_t<ResultGrade, addition_t<RightGrade, product_t<constant_value<-1>, LeftGrade, value_mapping> > >,
+                    equal_t<ResultGrade, addition_t<LeftGrade, product_t<constant_value<-1>, RightGrade, value_mapping> > >
+                >;
+            };
 
-			template<bitset_t LeftPossibleGrades, bitset_t RightPossibleGrades, ndims_t VectorSpaceDimensions>
-			struct possible_grades_result {
-				constexpr static bitset_t value = _possible_grades_result<LeftPossibleGrades, RightPossibleGrades>::value | _possible_grades_result<RightPossibleGrades, LeftPossibleGrades>::value;
-			};
-		};
+            template<bitset_t LeftPossibleGrades, bitset_t RightPossibleGrades, ndims_t VectorSpaceDimensions>
+            struct possible_grades_result {
+                constexpr static bitset_t value = _possible_grades_result<LeftPossibleGrades, RightPossibleGrades>::value | _possible_grades_result<RightPossibleGrades, LeftPossibleGrades>::value;
+            };
+        };
 
-	}
+    }
 
-	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename MetricSpaceType>
-	constexpr decltype(auto) dot(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &mtr) noexcept {
-		auto lazy = make_lazy_context(lhs, rhs);
-		return lazy.eval(clifford_expression<default_integral_t, detail::product_t<typename decltype(lazy)::template argument_expression_t<0>, typename decltype(lazy)::template argument_expression_t<1>, detail::metric_space_mapping_t<MetricSpaceType, detail::dot_mapping> > >());
-	}
+    template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename MetricSpaceType>
+    constexpr decltype(auto) dot(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &mtr) noexcept {
+        auto lazy = make_lazy_context(lhs, rhs);
+        return lazy.eval(clifford_expression<default_integral_t, detail::product_t<typename decltype(lazy)::template argument_expression_t<0>, typename decltype(lazy)::template argument_expression_t<1>, detail::metric_space_mapping_t<MetricSpaceType, detail::dot_mapping> > >());
+    }
 
-	template<typename LeftCoefficientType, typename LeftCoefficient, typename RightCoefficientType, typename RightExpression>
-	constexpr decltype(auto) dot(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept {
-		return dot(lhs, rhs, detail::real_metric_space());
-	}
+    template<typename LeftCoefficientType, typename LeftCoefficient, typename RightCoefficientType, typename RightExpression>
+    constexpr decltype(auto) dot(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept {
+        return dot(lhs, rhs, detail::real_metric_space());
+    }
 
-	template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightCoefficient>
-	constexpr decltype(auto) dot(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) noexcept {
-		return dot(lhs, rhs, detail::real_metric_space());
-	}
+    template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightCoefficient>
+    constexpr decltype(auto) dot(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) noexcept {
+        return dot(lhs, rhs, detail::real_metric_space());
+    }
 
-	template<typename LeftCoefficientType, typename LeftCoefficient, typename RightCoefficientType, typename RightCoefficient>
-	constexpr decltype(auto) dot(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) noexcept {
-		return dot(lhs, rhs, detail::real_metric_space());
-	}
+    template<typename LeftCoefficientType, typename LeftCoefficient, typename RightCoefficientType, typename RightCoefficient>
+    constexpr decltype(auto) dot(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) noexcept {
+        return dot(lhs, rhs, detail::real_metric_space());
+    }
 
-	template<typename LeftCoefficientType, typename LeftExpression, typename RightType, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<RightType> > >
-	constexpr decltype(auto) dot(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &) noexcept {
-		return dot(lhs, scalar(rhs), detail::real_metric_space());
-	}
+    template<typename LeftCoefficientType, typename LeftExpression, typename RightType, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<RightType> > >
+    constexpr decltype(auto) dot(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &) noexcept {
+        return dot(lhs, scalar(rhs), detail::real_metric_space());
+    }
 
-	template<typename LeftCoefficientType, typename LeftExpression, typename RightType, typename = std::enable_if_t<!is_clifford_expression_v<RightType> > >
-	constexpr decltype(auto) dot(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs) noexcept {
-		return dot(lhs, scalar(rhs), detail::real_metric_space());
-	}
+    template<typename LeftCoefficientType, typename LeftExpression, typename RightType, typename = std::enable_if_t<!is_clifford_expression_v<RightType> > >
+    constexpr decltype(auto) dot(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs) noexcept {
+        return dot(lhs, scalar(rhs), detail::real_metric_space());
+    }
 
-	template<typename LeftType, typename RightCoefficientType, typename RightExpression, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
-	constexpr decltype(auto) dot(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &) noexcept {
-		return dot(scalar(lhs), rhs, detail::real_metric_space());
-	}
+    template<typename LeftType, typename RightCoefficientType, typename RightExpression, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
+    constexpr decltype(auto) dot(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &) noexcept {
+        return dot(scalar(lhs), rhs, detail::real_metric_space());
+    }
 
-	template<typename LeftType, typename RightCoefficientType, typename RightExpression, typename = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
-	constexpr decltype(auto) dot(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept {
-		return dot(scalar(lhs), rhs, detail::real_metric_space());
-	}
+    template<typename LeftType, typename RightCoefficientType, typename RightExpression, typename = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
+    constexpr decltype(auto) dot(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept {
+        return dot(scalar(lhs), rhs, detail::real_metric_space());
+    }
 
-	template<typename LeftType, typename RightType, typename MetricSpaceType, typename = std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>)> >
-	constexpr decltype(auto) dot(LeftType const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &) noexcept {
-		return dot(scalar(lhs), scalar(rhs), detail::real_metric_space());
-	}
+    template<typename LeftType, typename RightType, typename MetricSpaceType, typename = std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>)> >
+    constexpr decltype(auto) dot(LeftType const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &) noexcept {
+        return dot(scalar(lhs), scalar(rhs), detail::real_metric_space());
+    }
 
-	template<typename LeftType, typename RightType, typename = std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>)> >
-	constexpr decltype(auto) dot(LeftType const &lhs, RightType const &rhs) noexcept {
-		return dot(scalar(lhs), scalar(rhs), detail::real_metric_space());
-	}
+    template<typename LeftType, typename RightType, typename = std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>)> >
+    constexpr decltype(auto) dot(LeftType const &lhs, RightType const &rhs) noexcept {
+        return dot(scalar(lhs), scalar(rhs), detail::real_metric_space());
+    }
 
 }
 

@@ -27,9 +27,9 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	// Euclidean metric space.
-	template<ndims_t N>
-	using euclidean_metric_space = signed_metric_space<N, 0>;
+    // Euclidean metric space.
+    template<ndims_t N>
+    using euclidean_metric_space = signed_metric_space<N, 0>;
 
 }
 

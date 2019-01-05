@@ -27,31 +27,31 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	// Conformal metric space.
-	template<ndims_t N>
-	class conformal_metric_space : public metric_space<conformal_metric_space<N> > {
-	public:
+    // Conformal metric space.
+    template<ndims_t N>
+    class conformal_metric_space : public metric_space<conformal_metric_space<N> > {
+    public:
 
-		using metric_space_type = conformal_metric_space;
+        using metric_space_type = conformal_metric_space;
 
-		constexpr static bitset_t basis_vectors = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - (N + 2)));
-		constexpr static ndims_t vector_space_dimensions = N + 2;
+        constexpr static bitset_t basis_vectors = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - (N + 2)));
+        constexpr static ndims_t vector_space_dimensions = N + 2;
 
-		template<typename RowIndex, typename ColIndex>
-		struct entry {
-			using type = detail::if_else_t<
-				detail::equal_t<RowIndex, ColIndex>,
-				detail::if_else_t<detail::less_or_equal_t<RowIndex, detail::constant_value<N> >, detail::constant_value<1>, detail::constant_value<0> >,
-				detail::if_else_t<detail::logical_or_t<detail::less_or_equal_t<RowIndex, detail::constant_value<N> >, detail::less_or_equal_t<ColIndex, detail::constant_value<N> > >, detail::constant_value<0>, detail::constant_value<-1> >
-			>;
-		};
-	};
+        template<typename RowIndex, typename ColIndex>
+        struct entry {
+            using type = detail::if_else_t<
+                detail::equal_t<RowIndex, ColIndex>,
+                detail::if_else_t<detail::less_or_equal_t<RowIndex, detail::constant_value<N> >, detail::constant_value<1>, detail::constant_value<0> >,
+                detail::if_else_t<detail::logical_or_t<detail::less_or_equal_t<RowIndex, detail::constant_value<N> >, detail::less_or_equal_t<ColIndex, detail::constant_value<N> > >, detail::constant_value<0>, detail::constant_value<-1> >
+            >;
+        };
+    };
 
-	// Specialization of is_general_metric_space<MetricSpaceType>.
-	template<ndims_t N>
-	struct is_general_metric_space<conformal_metric_space<N> > :
-		std::true_type {
-	};
+    // Specialization of is_general_metric_space<MetricSpaceType>.
+    template<ndims_t N>
+    struct is_general_metric_space<conformal_metric_space<N> > :
+        std::true_type {
+    };
 
 }
 

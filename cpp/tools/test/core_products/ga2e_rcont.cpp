@@ -34,13 +34,13 @@ auto prod = [](auto const &lhs, auto const &rhs) { return rcont(lhs, rhs); };
 auto truth = [](auto const &lhs, auto const &rhs) { return take_grade(gp(lhs, rhs), grade(rhs) - grade(lhs)); };
 
 TEST(MultiplicationTable, CompileTimeVSCompileTime) {
-	EXPECT_TRUE(compile_time_vs_compile_time<N>(prod, truth));
+    EXPECT_TRUE(compile_time_vs_compile_time<N>(prod, truth));
 }
 
 TEST(MultiplicationTable, CompileTimeVSRuntime) {
-	EXPECT_TRUE(compile_time_vs_runtime<N>(prod, truth));
+    EXPECT_TRUE(compile_time_vs_runtime<N>(prod, truth));
 }
 
 TEST(MultiplicationTable, RuntimeVSRuntime) {
-	EXPECT_TRUE(runtime_vs_runtime<N>(prod, truth));
+    EXPECT_TRUE(runtime_vs_runtime<N>(prod, truth));
 }

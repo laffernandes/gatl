@@ -28,10 +28,10 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 using namespace ga3e;
 
 TEST(Extra, TrivialCopy) {
-	auto copy_in = 5 + 3 * e1 + 7 * (e1^e2);
-	auto copy_out = 0. + 0. * e1 + 0. * (e1^e2) + 10. * e2;
+    auto copy_in = 5 + 3 * e1 + 7 * (e1^e2);
+    auto copy_out = 0. + 0. * e1 + 0. * (e1^e2) + 10. * e2;
 
-	trivial_copy(copy_in, copy_out);
-	
-	EXPECT_TRUE(is_zero(copy_in - copy_out));
+    trivial_copy(copy_in, copy_out);
+    
+    EXPECT_TRUE(is_zero(copy_in - copy_out));
 }

@@ -27,32 +27,32 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	namespace detail {
+    namespace detail {
 
-		// Helper for metric space of real numbers (it is used with scalar expressions).
-		struct real_metric_space : public metric_space<real_metric_space> {
-		public:
+        // Helper for metric space of real numbers (it is used with scalar expressions).
+        struct real_metric_space : public metric_space<real_metric_space> {
+        public:
 
-			using metric_space_type = real_metric_space;
+            using metric_space_type = real_metric_space;
 
-			constexpr static bitset_t basis_vectors = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - GA_MAX_BASIS_VECTOR_INDEX));
-			constexpr static ndims_t vector_space_dimensions = GA_MAX_BASIS_VECTOR_INDEX;
+            constexpr static bitset_t basis_vectors = bitset_t(bitset_t(~0) >> (std::numeric_limits<bitset_t>::digits - GA_MAX_BASIS_VECTOR_INDEX));
+            constexpr static ndims_t vector_space_dimensions = GA_MAX_BASIS_VECTOR_INDEX;
 
-		public:
+        public:
 
-			template<typename BasisVectorsBitset>
-			struct metric_factor {
-				using type = detail::constant_value<1>;
-			};
-		};
+            template<typename BasisVectorsBitset>
+            struct metric_factor {
+                using type = detail::constant_value<1>;
+            };
+        };
 
-	}
+    }
 
-	// Specialization of is_orthogonal_metric_space<MetricSpaceType>.
-	template<>
-	struct is_orthogonal_metric_space<detail::real_metric_space> :
-		std::true_type {
-	};
+    // Specialization of is_orthogonal_metric_space<MetricSpaceType>.
+    template<>
+    struct is_orthogonal_metric_space<detail::real_metric_space> :
+        std::true_type {
+    };
 
 }
 

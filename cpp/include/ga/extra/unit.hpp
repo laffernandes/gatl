@@ -27,12 +27,12 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	// Computes the unit multivector under reverse norm.
-	template<typename CoefficientType, typename Expression, typename MetricSpaceType>
-	constexpr decltype(auto) unit(clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
-		auto const lazy = make_lazy_context(arg);
-		return lazy.eval(gp(lazy.template argument<0>(), inv(sqrt(abs(sp(lazy.template argument<0>(), reversion(lazy.template argument<0>()), mtr))), mtr), mtr));
-	}
+    // Computes the unit multivector under reverse norm.
+    template<typename CoefficientType, typename Expression, typename MetricSpaceType>
+    constexpr decltype(auto) unit(clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
+        auto const lazy = make_lazy_context(arg);
+        return lazy.eval(gp(lazy.template argument<0>(), inv(sqrt(abs(sp(lazy.template argument<0>(), reversion(lazy.template argument<0>()), mtr))), mtr), mtr));
+    }
 
 }
 

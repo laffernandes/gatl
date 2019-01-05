@@ -27,12 +27,12 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	// Returns the support vector parameter of a given k-flat.
-	template<typename CoefficientType, typename Expression, ndims_t N>
-	constexpr decltype(auto) flat_support_vector(clifford_expression<CoefficientType, Expression> const &flat, homogeneous_metric_space<N> const &mtr) {
-		auto const lazy = make_lazy_context(flat);
-		return lazy.eval(gp(lcont(e(c<N + 1>), op(e(c<N + 1>), lazy.template argument<0>(), mtr), mtr), inv(lcont(e(c<N + 1>), lazy.template argument<0>(), mtr), mtr), mtr));
-	}
+    // Returns the support vector parameter of a given k-flat.
+    template<typename CoefficientType, typename Expression, ndims_t N>
+    constexpr decltype(auto) flat_support_vector(clifford_expression<CoefficientType, Expression> const &flat, homogeneous_metric_space<N> const &mtr) {
+        auto const lazy = make_lazy_context(flat);
+        return lazy.eval(gp(lcont(e(c<N + 1>), op(e(c<N + 1>), lazy.template argument<0>(), mtr), mtr), inv(lcont(e(c<N + 1>), lazy.template argument<0>(), mtr), mtr), mtr));
+    }
 
 }
 

@@ -28,28 +28,28 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 using namespace ga3e;
 
 TEST(Extra, Grade0) {
-	EXPECT_EQ(grade(8.0), 0);
-	EXPECT_EQ(grade(c<1>), 0);
+    EXPECT_EQ(grade(8.0), 0);
+    EXPECT_EQ(grade(c<1>), 0);
 }
 
 TEST(Extra, Grade1) {
-	EXPECT_EQ(grade(e1), 1);
+    EXPECT_EQ(grade(e1), 1);
 }
 
 TEST(Extra, Grade2) {
-	EXPECT_EQ(grade(e1^e2), 2);
-	EXPECT_EQ(grade((e1^e2) + (e1^e3)), 2);
-	EXPECT_EQ(grade((e(1)^e2) + (e1^e3)), 2);
-	EXPECT_EQ(grade((9.0 * e1^e2) + (e1^e3)), 2);
-	EXPECT_EQ(grade((9 * e(1)^e2) + (e1^e3)), 2);
+    EXPECT_EQ(grade(e1^e2), 2);
+    EXPECT_EQ(grade((e1^e2) + (e1^e3)), 2);
+    EXPECT_EQ(grade((e(1)^e2) + (e1^e3)), 2);
+    EXPECT_EQ(grade((9.0 * e1^e2) + (e1^e3)), 2);
+    EXPECT_EQ(grade((9 * e(1)^e2) + (e1^e3)), 2);
 }
 
 TEST(Extra, Grade3) {
-	EXPECT_EQ(grade(c<5, double> - e1), MIXED_GRADE);
-	EXPECT_EQ(grade(5.0 - e1), MIXED_GRADE);
+    EXPECT_EQ(grade(c<5, double> - e1), MIXED_GRADE);
+    EXPECT_EQ(grade(5.0 - e1), MIXED_GRADE);
 }
 
 TEST(Extra, Grade4) {
-	EXPECT_EQ(grade(c<0>), UNDETERMINED_GRADE);
-	EXPECT_EQ(grade(0 * e1), UNDETERMINED_GRADE);
+    EXPECT_EQ(grade(c<0>), UNDETERMINED_GRADE);
+    EXPECT_EQ(grade(0 * e1), UNDETERMINED_GRADE);
 }

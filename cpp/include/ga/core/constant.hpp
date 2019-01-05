@@ -27,11 +27,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-	template<typename CoefficientType, default_integral_t Value>
-	using constant = scalar_clifford_expression<CoefficientType, detail::constant_value<Value> >;
+    template<typename CoefficientType, default_integral_t Value>
+    using constant = scalar_clifford_expression<CoefficientType, detail::constant_value<Value> >;
 
-	template<default_integral_t Value, typename CoefficientType = default_integral_t>
-	constexpr auto c = constant<CoefficientType, Value>();
+    template<default_integral_t Value, typename CoefficientType = default_integral_t>
+    constexpr auto c = constant<CoefficientType, Value>();
 
 }
 
