@@ -49,28 +49,6 @@ namespace ga {
         return apply_even_versor(scalar(versor), scalar(arg), mtr);
     }
 
-    // Apply an even unit versor (i.e., an orthogonal transformation) to a Clifford expression.
-    template<typename VersorCoefficientType, typename VersorExpression, typename CoefficientType, typename Expression, typename MetricSpaceType>
-    constexpr decltype(auto) apply_even_unit_versor(clifford_expression<VersorCoefficientType, VersorExpression> const &versor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
-        auto const lazy = make_lazy_context(versor, arg);
-        return lazy.eval(gp(gp(lazy.template argument<0>(), lazy.template argument<1>(), mtr), reverse(lazy.template argument<0>(), mtr), mtr));
-    }
-
-    template<typename VersorCoefficientType, typename VersorExpression, typename Type, typename MetricSpaceType>
-    constexpr decltype(auto) apply_even_unit_versor(clifford_expression<VersorCoefficientType, VersorExpression> const &versor, Type const &arg, metric_space<MetricSpaceType> const &mtr) {
-        return apply_even_unit_versor(versor, scalar(arg), mtr);
-    }
-
-    template<typename VersorType, typename CoefficientType, typename Expression, typename MetricSpaceType>
-    constexpr decltype(auto) apply_even_unit_versor(VersorType const &versor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
-        return apply_even_unit_versor(scalar(versor), arg, mtr);
-    }
-
-    template<typename VersorType, typename Type, typename MetricSpaceType>
-    constexpr decltype(auto) apply_even_unit_versor(VersorType const &versor, Type const &arg, metric_space<MetricSpaceType> const &mtr) {
-        return apply_even_unit_versor(scalar(versor), scalar(arg), mtr);
-    }
-
     // Apply an odd versor (i.e., an orthogonal transformation) to a Clifford expression.
     template<typename VersorCoefficientType, typename VersorExpression, typename CoefficientType, typename Expression, typename MetricSpaceType>
     constexpr decltype(auto) apply_odd_versor(clifford_expression<VersorCoefficientType, VersorExpression> const &versor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
@@ -93,26 +71,26 @@ namespace ga {
         return apply_odd_versor(scalar(versor), scalar(arg), mtr);
     }
 
-    // Apply an odd unit versor (i.e., an orthogonal transformation) to a Clifford expression.
+    // Apply a rotor (i.e., an even unit versor) to a Clifford expression.
     template<typename VersorCoefficientType, typename VersorExpression, typename CoefficientType, typename Expression, typename MetricSpaceType>
-    constexpr decltype(auto) apply_odd_unit_versor(clifford_expression<VersorCoefficientType, VersorExpression> const &versor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
+    constexpr decltype(auto) apply_rotor(clifford_expression<VersorCoefficientType, VersorExpression> const &versor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
         auto const lazy = make_lazy_context(versor, arg);
-        return lazy.eval(gp(gp(lazy.template argument<0>(), involution(lazy.template argument<1>()), mtr), reverse(lazy.template argument<0>(), mtr), mtr));
+        return lazy.eval(gp(gp(lazy.template argument<0>(), lazy.template argument<1>(), mtr), reverse(lazy.template argument<0>(), mtr), mtr));
     }
 
     template<typename VersorCoefficientType, typename VersorExpression, typename Type, typename MetricSpaceType>
-    constexpr decltype(auto) apply_odd_unit_versor(clifford_expression<VersorCoefficientType, VersorExpression> const &versor, Type const &arg, metric_space<MetricSpaceType> const &mtr) {
-        return apply_odd_unit_versor(versor, scalar(arg), mtr);
+    constexpr decltype(auto) apply_rotor(clifford_expression<VersorCoefficientType, VersorExpression> const &versor, Type const &arg, metric_space<MetricSpaceType> const &mtr) {
+        return apply_rotor(versor, scalar(arg), mtr);
     }
 
     template<typename VersorType, typename CoefficientType, typename Expression, typename MetricSpaceType>
-    constexpr decltype(auto) apply_odd_unit_versor(VersorType const &versor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
-        return apply_odd_unit_versor(scalar(versor), arg, mtr);
+    constexpr decltype(auto) apply_rotor(VersorType const &versor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
+        return apply_rotor(scalar(versor), arg, mtr);
     }
 
     template<typename VersorType, typename Type, typename MetricSpaceType>
-    constexpr decltype(auto) apply_odd_unit_versor(VersorType const &versor, Type const &arg, metric_space<MetricSpaceType> const &mtr) {
-        return apply_odd_unit_versor(scalar(versor), scalar(arg), mtr);
+    constexpr decltype(auto) apply_rotor(VersorType const &versor, Type const &arg, metric_space<MetricSpaceType> const &mtr) {
+        return apply_rotor(scalar(versor), scalar(arg), mtr);
     }
 
 }

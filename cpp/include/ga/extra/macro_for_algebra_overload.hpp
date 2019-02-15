@@ -32,18 +32,13 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
     } \
     \
     template<typename VersorType, typename Type> \
-    constexpr decltype(auto) apply_even_unit_versor(VersorType const &versor, Type const &arg) { \
-        return apply_even_unit_versor(versor, arg, SPACE); \
-    } \
-    \
-    template<typename VersorType, typename Type> \
     constexpr decltype(auto) apply_odd_versor(VersorType const &versor, Type const &arg) { \
         return apply_odd_versor(versor, arg, SPACE); \
     } \
     \
     template<typename VersorType, typename Type> \
-    constexpr decltype(auto) apply_odd_unit_versor(VersorType const &versor, Type const &arg) { \
-        return apply_odd_unit_versor(versor, arg, SPACE); \
+    constexpr decltype(auto) apply_rotor(VersorType const &versor, Type const &arg) { \
+        return apply_rotor(versor, arg, SPACE); \
     } \
     \
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
