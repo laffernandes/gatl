@@ -75,7 +75,7 @@ namespace ga {
     template<typename VersorCoefficientType, typename VersorExpression, typename CoefficientType, typename Expression, typename MetricSpaceType>
     constexpr decltype(auto) apply_rotor(clifford_expression<VersorCoefficientType, VersorExpression> const &versor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
         auto const lazy = make_lazy_context(versor, arg);
-        return lazy.eval(gp(gp(lazy.template argument<0>(), lazy.template argument<1>(), mtr), reverse(lazy.template argument<0>(), mtr), mtr));
+        return lazy.eval(gp(gp(lazy.template argument<0>(), lazy.template argument<1>(), mtr), reversion(lazy.template argument<0>()), mtr));
     }
 
     template<typename VersorCoefficientType, typename VersorExpression, typename Type, typename MetricSpaceType>
