@@ -5,3 +5,5 @@
 /cpp/build/vc2017/example
 /cpp/tools/example/build
 /cpp/tools/test/build
+/.vscode
+/cpp/tools/example/.vscode

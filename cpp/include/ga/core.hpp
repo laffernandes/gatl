@@ -52,8 +52,8 @@ namespace ga {
 
     using grade_t = default_integral_t;
 
-    using index_t = std::uint32_t;
-    using ndims_t = std::uint32_t;
+    using index_t = std::uint64_t;
+    using ndims_t = std::uint64_t;
 
     template<typename ValueType>
     using associative_container_t = std::map<bitset_t, ValueType>;
@@ -76,6 +76,7 @@ namespace ga {
 
 #include "ga/core/mapping.hpp"
 
+#include "ga/core/rules.hpp"
 #include "ga/core/expression_relational_operators.hpp"
 #include "ga/core/expression_addition.hpp"
 #include "ga/core/expression_product.hpp"
