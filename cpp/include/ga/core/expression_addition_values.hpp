@@ -82,44 +82,44 @@ namespace ga {
         struct _addition_values_rule_zero {
 
             // Default
-            template<typename LeftExpression, typename RightExpression>
+            template<typename LeftExpression, typename RightExpression, typename _Dummy = void>
             struct condition {
                 constexpr static bool value = false;
             };
 
-            template<typename LeftExpression, typename RightExpression>
+            template<typename LeftExpression, typename RightExpression, typename _Dummy = void>
             struct result;
 
             // 0 + something => something
-            template<typename RightExpression>
-            struct condition<constant_value<0>, RightExpression> {
+            template<typename RightExpression, typename _Dummy>
+            struct condition<constant_value<0>, RightExpression, _Dummy> {
                 constexpr static bool value = true;
             };
 
-            template<typename RightExpression>
-            struct result<constant_value<0>, RightExpression> {
+            template<typename RightExpression, typename _Dummy>
+            struct result<constant_value<0>, RightExpression, _Dummy> {
                 using type = RightExpression;
             };
 
             // something + 0 => something
-            template<typename LeftExpression>
-            struct condition<LeftExpression, constant_value<0> > {
+            template<typename LeftExpression, typename _Dummy>
+            struct condition<LeftExpression, constant_value<0>, _Dummy> {
                 constexpr static bool value = true;
             };
 
-            template<typename LeftExpression>
-            struct result<LeftExpression, constant_value<0> > {
+            template<typename LeftExpression, typename _Dummy>
+            struct result<LeftExpression, constant_value<0>, _Dummy> {
                 using type = LeftExpression;
             };
 
             // 0 + 0 => 0
-            template<>
-            struct condition<constant_value<0>, constant_value<0> > {
+            template<typename _Dummy>
+            struct condition<constant_value<0>, constant_value<0>, _Dummy> {
                 constexpr static bool value = true;
             };
 
-            template<>
-            struct result<constant_value<0>, constant_value<0> > {
+            template<typename _Dummy>
+            struct result<constant_value<0>, constant_value<0>, _Dummy> {
                 using type = constant_value<0>;
             };
         };
