@@ -46,11 +46,17 @@ namespace ga {
 
         template<typename Coefficient, bitset_t BasisVectors, bitset_t SignChangePattern>
         struct graded_unary_minus<component<Coefficient, constant_basis_blade<BasisVectors> >, SignChangePattern> {
+
+#pragma warning( push )
+#pragma warning( disable : 4805 )
+
             using type = std::conditional_t<
                 (SignChangePattern & (bitset_t(1) << ones(BasisVectors))) == bitset_t(0),
                 component<Coefficient, constant_basis_blade<BasisVectors> >,
                 component_t<product_t<constant_value<-1>, Coefficient, value_mapping>, constant_basis_blade<BasisVectors> >
             >;
+
+#pragma warning( pop )
         };
 
         template<typename Coefficient, bitset_t PossibleGrades, typename Bitset, bitset_t SignChangePattern>

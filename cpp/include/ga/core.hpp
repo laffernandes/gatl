@@ -78,7 +78,8 @@ namespace ga {
 
 #include "ga/core/rules.hpp"
 #include "ga/core/expression_relational_operators.hpp"
-#include "ga/core/expression_addition.hpp"
+#include "ga/core/expression_addition_values.hpp"
+#include "ga/core/expression_addition_components.hpp"
 #include "ga/core/expression_product.hpp"
 #include "ga/core/expression_power.hpp"
 #include "ga/core/expression_graded_unary_minus.hpp"
