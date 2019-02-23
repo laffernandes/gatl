@@ -37,6 +37,14 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #include <string>
 #include <type_traits>
 
+#ifndef GA_DEFAULT_FLOATING_POINT_TYPE
+    #define GA_DEFAULT_FLOATING_POINT_TYPE std::double_t
+#endif // GA_DEFAULT_FLOATING_POINT_TYPE
+
+#ifndef GA_DEFAULT_INTEGRAL_TYPE
+    #define GA_DEFAULT_INTEGRAL_TYPE std::int64_t
+#endif // GA_DEFAULT_INTEGRAL_TYPE
+
 #ifndef GA_MAX_BASIS_VECTOR_INDEX
     #define GA_MAX_BASIS_VECTOR_INDEX 63
 #endif // GA_MAX_BASIS_VECTOR_INDEX
@@ -45,8 +53,8 @@ namespace ga {
 
     static_assert(std::is_integral_v<decltype((GA_MAX_BASIS_VECTOR_INDEX))> && 1 <= (GA_MAX_BASIS_VECTOR_INDEX) && (GA_MAX_BASIS_VECTOR_INDEX) <= 63, "GA_MAX_BASIS_VECTOR_INDEX must be an integer value between 1 and 63, inclusive.");
 
-    using default_integral_t = std::int64_t;
-    using default_floating_point_t = std::double_t;
+    using default_floating_point_t = GA_DEFAULT_FLOATING_POINT_TYPE;
+    using default_integral_t = GA_DEFAULT_INTEGRAL_TYPE;
 
     using bitset_t = std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 8, std::uint8_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 16, std::uint16_t, std::conditional_t<(GA_MAX_BASIS_VECTOR_INDEX) < 32, std::uint32_t, std::uint64_t> > >;
 
@@ -80,7 +88,8 @@ namespace ga {
 #include "ga/core/expression_relational_operators.hpp"
 #include "ga/core/expression_addition_values.hpp"
 #include "ga/core/expression_addition_components.hpp"
-#include "ga/core/expression_product.hpp"
+#include "ga/core/expression_product_values.hpp"
+#include "ga/core/expression_product_components.hpp"
 #include "ga/core/expression_power.hpp"
 #include "ga/core/expression_graded_unary_minus.hpp"
 

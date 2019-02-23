@@ -83,8 +83,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression, typename _Dummy = void>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression, typename _Dummy = void>
@@ -92,8 +92,8 @@ namespace ga {
 
             // 0 + something => something
             template<typename RightExpression, typename _Dummy>
-            struct condition<constant_value<0>, RightExpression, _Dummy> {
-                constexpr static bool value = true;
+            struct condition<constant_value<0>, RightExpression, _Dummy> :
+                std::true_type {
             };
 
             template<typename RightExpression, typename _Dummy>
@@ -103,8 +103,8 @@ namespace ga {
 
             // something + 0 => something
             template<typename LeftExpression, typename _Dummy>
-            struct condition<LeftExpression, constant_value<0>, _Dummy> {
-                constexpr static bool value = true;
+            struct condition<LeftExpression, constant_value<0>, _Dummy> :
+                std::true_type {
             };
 
             template<typename LeftExpression, typename _Dummy>
@@ -114,8 +114,8 @@ namespace ga {
 
             // 0 + 0 => 0
             template<typename _Dummy>
-            struct condition<constant_value<0>, constant_value<0>, _Dummy> {
-                constexpr static bool value = true;
+            struct condition<constant_value<0>, constant_value<0>, _Dummy> :
+                std::true_type {
             };
 
             template<typename _Dummy>
@@ -129,8 +129,8 @@ namespace ga {
             
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -138,8 +138,8 @@ namespace ga {
 
             // A + A => 2 * A
             template<typename CommonExpression>
-            struct condition<CommonExpression, CommonExpression> {
-                constexpr static bool value = true;
+            struct condition<CommonExpression, CommonExpression> :
+                std::true_type {
             };
 
             template<typename CommonExpression>
@@ -153,8 +153,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -162,8 +162,8 @@ namespace ga {
 
             // mul<P, A...> + A... => (P + 1) * A...
             template<typename LeftLeftArgument, typename CommonArgument>
-            struct condition<mul<LeftLeftArgument, CommonArgument>, CommonArgument> {
-                constexpr static bool value = !is_any_v<addition_t<LeftLeftArgument, constant_value<1> >, add_t<LeftLeftArgument, constant_value<1> >, add_t<constant_value<1>, LeftLeftArgument> >;
+            struct condition<mul<LeftLeftArgument, CommonArgument>, CommonArgument> :
+                std::bool_constant<!is_any_v<addition_t<LeftLeftArgument, constant_value<1> >, add_t<LeftLeftArgument, constant_value<1> >, add_t<constant_value<1>, LeftLeftArgument> > > {
             };
 
             template<typename LeftLeftArgument, typename CommonArgument>
@@ -172,8 +172,8 @@ namespace ga {
             };
 
             template<typename LeftLeftArgument, typename... CommonArguments>
-            struct condition<mul<LeftLeftArgument, CommonArguments...>, mul<CommonArguments...> > {
-                constexpr static bool value = !is_any_v<addition_t<LeftLeftArgument, constant_value<1> >, add_t<LeftLeftArgument, constant_value<1> >, add_t<constant_value<1>, LeftLeftArgument > >;
+            struct condition<mul<LeftLeftArgument, CommonArguments...>, mul<CommonArguments...> > :
+                std::bool_constant<!is_any_v<addition_t<LeftLeftArgument, constant_value<1> >, add_t<LeftLeftArgument, constant_value<1> >, add_t<constant_value<1>, LeftLeftArgument > > > {
             };
 
             template<typename LeftLeftArgument, typename... CommonArguments>
@@ -187,8 +187,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -196,8 +196,8 @@ namespace ga {
 
             // A... + mul<P, A...> => (1 + P) * A...
             template<typename CommonArgument, typename RightLeftArgument>
-            struct condition<CommonArgument, mul<RightLeftArgument, CommonArgument> > {
-                constexpr static bool value = !is_any_v<addition_t<constant_value<1>, RightLeftArgument>, add_t<constant_value<1>, RightLeftArgument>, add_t<RightLeftArgument, constant_value<1> > >;
+            struct condition<CommonArgument, mul<RightLeftArgument, CommonArgument> > :
+                std::bool_constant<!is_any_v<addition_t<constant_value<1>, RightLeftArgument>, add_t<constant_value<1>, RightLeftArgument>, add_t<RightLeftArgument, constant_value<1> > > > {
             };
 
             template<typename CommonArgument, typename RightLeftArgument>
@@ -206,8 +206,8 @@ namespace ga {
             };
 
             template<typename... CommonArguments, typename RightLeftArgument>
-            struct condition<mul<CommonArguments...>, mul<RightLeftArgument, CommonArguments...> > {
-                constexpr static bool value = !is_any_v<addition_t<constant_value<1>, RightLeftArgument>, add_t<constant_value<1>, RightLeftArgument>, add_t<RightLeftArgument, constant_value<1> > >;
+            struct condition<mul<CommonArguments...>, mul<RightLeftArgument, CommonArguments...> > :
+                std::bool_constant<!is_any_v<addition_t<constant_value<1>, RightLeftArgument>, add_t<constant_value<1>, RightLeftArgument>, add_t<RightLeftArgument, constant_value<1> > > > {
             };
 
             template<typename... CommonArguments, typename RightLeftArgument>
@@ -221,8 +221,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -230,8 +230,8 @@ namespace ga {
 
             // mul<P, A...> + mul<Q, A...> => (P + Q) * A...
             template<typename LeftLeftArgument, typename CommonArgument, typename RightLeftArgument>
-            struct condition<mul<LeftLeftArgument, CommonArgument>, mul<RightLeftArgument, CommonArgument> > {
-                constexpr static bool value = !is_any_v<addition_t<LeftLeftArgument, RightLeftArgument>, add_t<LeftLeftArgument, RightLeftArgument>, add_t<RightLeftArgument, LeftLeftArgument> >;
+            struct condition<mul<LeftLeftArgument, CommonArgument>, mul<RightLeftArgument, CommonArgument> > :
+                std::bool_constant<!is_any_v<addition_t<LeftLeftArgument, RightLeftArgument>, add_t<LeftLeftArgument, RightLeftArgument>, add_t<RightLeftArgument, LeftLeftArgument> > > {
             };
 
             template<typename LeftLeftArgument, typename CommonArgument, typename RightLeftArgument>
@@ -240,8 +240,8 @@ namespace ga {
             };
 
             template<typename LeftLeftArgument, typename... CommonArguments, typename RightLeftArgument>
-            struct condition<mul<LeftLeftArgument, CommonArguments...>, mul<RightLeftArgument, CommonArguments...> > {
-                constexpr static bool value = !is_any_v<addition_t<LeftLeftArgument, RightLeftArgument>, add_t<LeftLeftArgument, RightLeftArgument>, add_t<RightLeftArgument, LeftLeftArgument> >;
+            struct condition<mul<LeftLeftArgument, CommonArguments...>, mul<RightLeftArgument, CommonArguments...> > :
+                std::bool_constant<!is_any_v<addition_t<LeftLeftArgument, RightLeftArgument>, add_t<LeftLeftArgument, RightLeftArgument>, add_t<RightLeftArgument, LeftLeftArgument> > > {
             };
 
             template<typename LeftLeftArgument, typename... CommonArguments, typename RightLeftArgument>
@@ -255,8 +255,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -264,8 +264,8 @@ namespace ga {
 
             // mul<A, ...> + A => A * (mul<...> + 1)
             template<typename CommonArgument, typename... LeftNextArguments>
-            struct condition<mul<CommonArgument, LeftNextArguments...>, CommonArgument> {
-                constexpr static bool value = !is_any_v<addition_t<mul_t<LeftNextArguments...>, constant_value<1> >, add_t<mul_t<LeftNextArguments...>, constant_value<1> >, add_t<constant_value<1>, mul_t<LeftNextArguments...> > >;
+            struct condition<mul<CommonArgument, LeftNextArguments...>, CommonArgument> :
+                std::bool_constant<!is_any_v<addition_t<mul_t<LeftNextArguments...>, constant_value<1> >, add_t<mul_t<LeftNextArguments...>, constant_value<1> >, add_t<constant_value<1>, mul_t<LeftNextArguments...> > > > {
             };
 
             template<typename CommonArgument, typename... LeftNextArguments>
@@ -279,8 +279,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -288,8 +288,8 @@ namespace ga {
 
             // A + mul<A, ...> => A * (1 + mul<...>)
             template<typename CommonArgument, typename... RightNextArguments>
-            struct condition<CommonArgument, mul<CommonArgument, RightNextArguments...> > {
-                constexpr static bool value = !is_any_v<addition_t<constant_value<1>, mul_t<RightNextArguments...> >, add_t<constant_value<1>, mul_t<RightNextArguments...> >, add_t<mul_t<RightNextArguments...>, constant_value<1> > >;
+            struct condition<CommonArgument, mul<CommonArgument, RightNextArguments...> > :
+                std::bool_constant<!is_any_v<addition_t<constant_value<1>, mul_t<RightNextArguments...> >, add_t<constant_value<1>, mul_t<RightNextArguments...> >, add_t<mul_t<RightNextArguments...>, constant_value<1> > > > {
             };
 
             template<typename CommonArgument, typename... RightNextArguments>
@@ -303,8 +303,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -312,8 +312,8 @@ namespace ga {
 
             // mul<A, P...> + mul<A, Q...> => A * (mul<P...> + mul<Q...>)
             template<typename CommonArgument, typename... LeftNextArguments, typename... RightNextArguments>
-            struct condition<mul<CommonArgument, LeftNextArguments...>, mul<CommonArgument, RightNextArguments...> > {
-                constexpr static bool value = !is_any_v<addition_t<mul_t<LeftNextArguments...>, mul_t<RightNextArguments...> >, add_t<mul_t<LeftNextArguments...>, mul_t<RightNextArguments...> >, add_t<mul_t<RightNextArguments...>, mul_t<LeftNextArguments...> > >;
+            struct condition<mul<CommonArgument, LeftNextArguments...>, mul<CommonArgument, RightNextArguments...> > :
+                std::bool_constant<!is_any_v<addition_t<mul_t<LeftNextArguments...>, mul_t<RightNextArguments...> >, add_t<mul_t<LeftNextArguments...>, mul_t<RightNextArguments...> >, add_t<mul_t<RightNextArguments...>, mul_t<LeftNextArguments...> > > > {
             };
 
             template<typename CommonArgument, typename... LeftNextArguments, typename... RightNextArguments>
@@ -327,8 +327,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -336,8 +336,8 @@ namespace ga {
 
             // A + B => C
             template<default_integral_t LeftValue, default_integral_t RightValue>
-            struct condition<constant_value<LeftValue>, constant_value<RightValue> > {
-                constexpr static bool value = true;
+            struct condition<constant_value<LeftValue>, constant_value<RightValue> > :
+                std::true_type {
             };
 
             template<default_integral_t LeftValue, default_integral_t RightValue>
@@ -351,8 +351,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -360,8 +360,8 @@ namespace ga {
 
             // A + 1 / B => (A * B + 1) / B
             template<default_integral_t LeftValue, default_integral_t RightValue>
-            struct condition<constant_value<LeftValue>, power<constant_value<RightValue>, constant_value<-1> > > {
-                constexpr static bool value = true;
+            struct condition<constant_value<LeftValue>, power<constant_value<RightValue>, constant_value<-1> > > :
+                std::true_type {
             };
 
             template<default_integral_t LeftValue, default_integral_t RightValue>
@@ -371,8 +371,8 @@ namespace ga {
 
             // 1 / A + B => (1 + B * A) / A
             template<default_integral_t LeftValue, default_integral_t RightValue>
-            struct condition<power<constant_value<LeftValue>, constant_value<-1> >, constant_value<RightValue> > {
-                constexpr static bool value = true;
+            struct condition<power<constant_value<LeftValue>, constant_value<-1> >, constant_value<RightValue> > :
+                std::true_type {
             };
 
             template<default_integral_t LeftValue, default_integral_t RightValue>
@@ -386,8 +386,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -395,8 +395,8 @@ namespace ga {
 
             // A / B + 1 / C => (A * C + B) / (B * C)
             template<default_integral_t LeftLeftValue, default_integral_t LeftRightValue, default_integral_t RightValue>
-            struct condition<mul<constant_value<LeftLeftValue>, power<constant_value<LeftRightValue>, constant_value<-1> > >, power<constant_value<RightValue>, constant_value<-1> > > {
-                constexpr static bool value = true;
+            struct condition<mul<constant_value<LeftLeftValue>, power<constant_value<LeftRightValue>, constant_value<-1> > >, power<constant_value<RightValue>, constant_value<-1> > > :
+                std::true_type {
             };
 
             template<default_integral_t LeftLeftValue, default_integral_t LeftRightValue, default_integral_t RightValue>
@@ -406,8 +406,8 @@ namespace ga {
 
             // 1 / C + A / B => (B + C * A) / (C * B)
             template<default_integral_t LeftValue, default_integral_t RightLeftValue, default_integral_t RightRightValue>
-            struct condition<power<constant_value<LeftValue>, constant_value<-1> >, mul<constant_value<RightLeftValue>, power<constant_value<RightRightValue>, constant_value<-1> > > > {
-                constexpr static bool value = true;
+            struct condition<power<constant_value<LeftValue>, constant_value<-1> >, mul<constant_value<RightLeftValue>, power<constant_value<RightRightValue>, constant_value<-1> > > > :
+                std::true_type {
             };
 
             template<default_integral_t LeftValue, default_integral_t RightLeftValue, default_integral_t RightRightValue>
@@ -421,8 +421,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -430,8 +430,8 @@ namespace ga {
 
             // 1 / B + 1 / C => (C + B) / (B * C)
             template<default_integral_t LeftValue, default_integral_t RightValue>
-            struct condition<power<constant_value<LeftValue>, constant_value<-1> >, power<constant_value<RightValue>, constant_value<-1> > > {
-                constexpr static bool value = true;
+            struct condition<power<constant_value<LeftValue>, constant_value<-1> >, power<constant_value<RightValue>, constant_value<-1> > > :
+                std::true_type {
             };
 
             template<default_integral_t LeftValue, default_integral_t RightValue>
@@ -445,8 +445,8 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -454,8 +454,8 @@ namespace ga {
 
             // A / B + C / D => (A * D + B * C) / (B * D)
             template<default_integral_t LeftLeftValue, default_integral_t LeftRightValue, default_integral_t RightLeftValue, default_integral_t RightRightValue>
-            struct condition<mul<constant_value<LeftLeftValue>, power<constant_value<LeftRightValue>, constant_value<-1> > >, mul<constant_value<RightLeftValue>, power<constant_value<RightRightValue>, constant_value<-1> > > > {
-                constexpr static bool value = true;
+            struct condition<mul<constant_value<LeftLeftValue>, power<constant_value<LeftRightValue>, constant_value<-1> > >, mul<constant_value<RightLeftValue>, power<constant_value<RightRightValue>, constant_value<-1> > > > :
+                std::true_type {
             };
 
             template<default_integral_t LeftLeftValue, default_integral_t LeftRightValue, default_integral_t RightLeftValue, default_integral_t RightRightValue>
@@ -464,13 +464,13 @@ namespace ga {
             };
         };
 
-        // Simplification rule to merge the addition of components when the left-hand side argument is smaller than the right-hand side argument.
+        // Simplification rule to merge the addition of values when the left-hand side argument is smaller than the right-hand side argument.
         struct _addition_values_rule_merge_less_than {
 
             // A + B => add<A, B>
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = lt_v<LeftExpression, RightExpression>;
+            struct condition :
+                lt_t<LeftExpression, RightExpression> {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -480,8 +480,8 @@ namespace ga {
 
             // A + add<B, ...> => add<A, B, ...>
             template<typename LeftExpression, typename RightArgument, typename... RightNextArguments>
-            struct condition<LeftExpression, add<RightArgument, RightNextArguments...> > {
-                constexpr static bool value = lt_v<LeftExpression, RightArgument>;
+            struct condition<LeftExpression, add<RightArgument, RightNextArguments...> > :
+                lt_t<LeftExpression, RightArgument> {
             };
 
             template<typename LeftExpression, typename RightArgument, typename... RightNextArguments>
@@ -491,8 +491,8 @@ namespace ga {
 
             // add<A, ...> + B => A + (add<...> + B)
             template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression>
-            struct condition<add<LeftArgument, LeftNextArguments...>, RightExpression> {
-                constexpr static bool value = lt_v<LeftArgument, RightExpression>;
+            struct condition<add<LeftArgument, LeftNextArguments...>, RightExpression> :
+                lt_t<LeftArgument, RightExpression> {
             };
 
             template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression>
@@ -502,8 +502,8 @@ namespace ga {
 
             // add<A, ...> + add<B, ...> => A + (add<...> + add<B, ...>)
             template<typename LeftArgument, typename... LeftNextArguments, typename RightArgument, typename... RightNextArguments>
-            struct condition<add<LeftArgument, LeftNextArguments...>, add<RightArgument, RightNextArguments...> > {
-                constexpr static bool value = lt_v<LeftArgument, RightArgument>;
+            struct condition<add<LeftArgument, LeftNextArguments...>, add<RightArgument, RightNextArguments...> > :
+                lt_t<LeftArgument, RightArgument> {
             };
             
             template<typename LeftArgument, typename... LeftNextArguments, typename RightArgument, typename... RightNextArguments>
@@ -512,13 +512,13 @@ namespace ga {
             };
         };
 
-        // Simplification rule to merge the addition of components when the right-hand side argument is smaller than the left-hand side argument.
+        // Simplification rule to merge the addition of values when the right-hand side argument is smaller than the left-hand side argument.
         struct _addition_values_rule_merge_greater_than {
 
             // B + A => add<A, B> 
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = lt_v<RightExpression, LeftExpression>;
+            struct condition :
+                lt_t<RightExpression, LeftExpression> {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -528,8 +528,8 @@ namespace ga {
 
             // B + add<A, ...> => A + (B + add<...>)
             template<typename LeftExpression, typename RightArgument, typename... RightNextArguments>
-            struct condition<LeftExpression, add<RightArgument, RightNextArguments...> > {
-                constexpr static bool value = lt_v<RightArgument, LeftExpression>;
+            struct condition<LeftExpression, add<RightArgument, RightNextArguments...> > :
+                lt_t<RightArgument, LeftExpression> {
             };
 
             template<typename LeftExpression, typename RightArgument, typename... RightNextArguments>
@@ -539,8 +539,8 @@ namespace ga {
 
             // add<B, ...> + A => add<A, B, ...>
             template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression>
-            struct condition<add<LeftArgument, LeftNextArguments...>, RightExpression> {
-                constexpr static bool value = lt_v<RightExpression, LeftArgument>;
+            struct condition<add<LeftArgument, LeftNextArguments...>, RightExpression> :
+                lt_t<RightExpression, LeftArgument> {
             };
 
             template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression>
@@ -550,13 +550,47 @@ namespace ga {
 
             // add<B, ...> + add<A, ...> => A + (add<B, ...> + add<...>)
             template<typename LeftArgument, typename... LeftNextArguments, typename RightArgument, typename... RightNextArguments>
-            struct condition<add<LeftArgument, LeftNextArguments...>, add<RightArgument, RightNextArguments...> > {
-                constexpr static bool value = lt_v<RightArgument, LeftArgument>;
+            struct condition<add<LeftArgument, LeftNextArguments...>, add<RightArgument, RightNextArguments...> > :
+                lt_t<RightArgument, LeftArgument> {
             };
 
             template<typename LeftArgument, typename... LeftNextArguments, typename RightArgument, typename... RightNextArguments>
             struct result<add<LeftArgument, LeftNextArguments...>, add<RightArgument, RightNextArguments...> > {
                 using type = addition_t<RightArgument, addition_t<add<LeftArgument, LeftNextArguments...>, add_t<RightNextArguments...> > >;
+            };
+        };
+
+        // Simplification rule to merge the addition of values when the left-hand side argument is equivalent to the rght-hand side argument.
+        struct _addition_values_rule_merge_equal_to {
+
+            // All cases must be accepted
+            template<typename LeftExpression, typename RightExpression>
+            struct condition :
+                std::true_type {
+            };
+
+            // A + B => add<A, B>
+            template<typename LeftExpression, typename RightExpression>
+            struct result {
+                using type = add_t<LeftExpression, RightExpression>;
+            };
+
+            // A + add<B, ...> => add<A, B, ...>
+            template<typename LeftExpression, typename RightArgument, typename... RightNextArguments>
+            struct result<LeftExpression, add<RightArgument, RightNextArguments...> > {
+                using type = add_t<LeftExpression, RightArgument, RightNextArguments...>;
+            };
+
+            // add<A, ...> + B => add<A, B, ...>
+            template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression>
+            struct result<add<LeftArgument, LeftNextArguments...>, RightExpression> {
+                using type = add_t<LeftArgument, RightExpression, LeftNextArguments...>;
+            };
+
+            // add<A, ...> + add<B, ...> => add<A, B> + (add<...> + add<...>)
+            template<typename LeftArgument, typename... LeftNextArguments, typename RightArgument, typename... RightNextArguments>
+            struct result<add<LeftArgument, LeftNextArguments...>, add<RightArgument, RightNextArguments...> > {
+                using type = addition_t<add_t<LeftArgument, RightArgument>, addition_t<add_t<LeftNextArguments...>, add_t<RightNextArguments...> > >;
             };
         };
 
@@ -579,7 +613,8 @@ namespace ga {
                     _addition_values_rule_helper<_addition_values_rule_constants_case_4>,
                     _addition_values_rule_helper<_addition_values_rule_constants_case_5>,
                     _addition_values_rule_merge_less_than,
-                    _addition_values_rule_merge_greater_than
+                    _addition_values_rule_merge_greater_than,
+                    _addition_values_rule_merge_equal_to
                 >,
                 LeftExpression,
                 RightExpression

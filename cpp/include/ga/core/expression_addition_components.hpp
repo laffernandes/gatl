@@ -34,8 +34,8 @@ namespace ga {
             
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -43,8 +43,8 @@ namespace ga {
 
             // 0 + something => something
             template<typename LeftBasisBlade, typename RightExpression>
-            struct condition<component<constant_value<0>, LeftBasisBlade>, RightExpression> {
-                constexpr static bool value = true;
+            struct condition<component<constant_value<0>, LeftBasisBlade>, RightExpression> :
+                std::true_type {
             };
 
             template<typename LeftBasisBlade, typename RightExpression>
@@ -54,8 +54,8 @@ namespace ga {
 
             // something + 0 => something
             template<typename LeftExpression, typename RightBasisBlade>
-            struct condition<LeftExpression, component<constant_value<0>, RightBasisBlade> > {
-                constexpr static bool value = true;
+            struct condition<LeftExpression, component<constant_value<0>, RightBasisBlade> > :
+                std::true_type {
             };
 
             template<typename LeftExpression, typename RightBasisBlade>
@@ -65,8 +65,8 @@ namespace ga {
 
             // 0 + 0 => 0
             template<typename LeftBasisBlade, typename RightBasisBlade>
-            struct condition<component<constant_value<0>, LeftBasisBlade>, component<constant_value<0>, RightBasisBlade> > {
-                constexpr static bool value = true;
+            struct condition<component<constant_value<0>, LeftBasisBlade>, component<constant_value<0>, RightBasisBlade> > :
+                std::true_type {
             };
 
             template<typename LeftBasisBlade, typename RightBasisBlade>
@@ -80,8 +80,8 @@ namespace ga {
             
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition {
-                constexpr static bool value = false;
+            struct condition :
+                std::false_type {
             };
 
             template<typename LeftExpression, typename RightExpression>
@@ -89,8 +89,8 @@ namespace ga {
 
             // A Ei + B Ei => (A + B) Ei
             template<typename LeftCoefficient, typename BasisBlade, typename RightCoefficient>
-            struct condition<component<LeftCoefficient, BasisBlade>, component<RightCoefficient, BasisBlade> > {
-                constexpr static bool value = true;
+            struct condition<component<LeftCoefficient, BasisBlade>, component<RightCoefficient, BasisBlade> > :
+                std::true_type {
             };
 
             template<typename LeftCoefficient, typename BasisBlade, typename RightCoefficient>
@@ -100,8 +100,8 @@ namespace ga {
 
             // A Ei + add<B Ei, ...> => (A + B) Ei + add<...>
             template<typename LeftCoefficient, typename BasisBlade, typename RightCoefficient, typename... RightNextArguments>
-            struct condition<component<LeftCoefficient, BasisBlade>, add<component<RightCoefficient, BasisBlade>, RightNextArguments...> > {
-                constexpr static bool value = true;
+            struct condition<component<LeftCoefficient, BasisBlade>, add<component<RightCoefficient, BasisBlade>, RightNextArguments...> > :
+                std::true_type {
             };
 
             template<typename LeftCoefficient, typename BasisBlade, typename RightCoefficient, typename... RightNextArguments>
@@ -111,8 +111,8 @@ namespace ga {
 
             // add<A Ei, ...> + B Ei => (A + B) Ei + add<...>
             template<typename LeftCoefficient, typename BasisBlade, typename... LeftNextArguments, typename RightCoefficient>
-            struct condition<add<component<LeftCoefficient, BasisBlade>, LeftNextArguments...>, component<RightCoefficient, BasisBlade> > {
-                constexpr static bool value = true;
+            struct condition<add<component<LeftCoefficient, BasisBlade>, LeftNextArguments...>, component<RightCoefficient, BasisBlade> > :
+                std::true_type {
             };
 
             template<typename LeftCoefficient, typename BasisBlade, typename... LeftNextArguments, typename RightCoefficient>
@@ -122,8 +122,8 @@ namespace ga {
 
             // add<A Ei, ...> + add<B Ei, ...> => (A + B) Ei + (add<...> + add<...>)
             template<typename LeftCoefficient, typename BasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename... RightNextArguments>
-            struct condition<add<component<LeftCoefficient, BasisBlade>, LeftNextArguments...>, add<component<RightCoefficient, BasisBlade>, RightNextArguments...> > {
-                constexpr static bool value = true;
+            struct condition<add<component<LeftCoefficient, BasisBlade>, LeftNextArguments...>, add<component<RightCoefficient, BasisBlade>, RightNextArguments...> > :
+                std::true_type {
             };
 
             template<typename LeftCoefficient, typename BasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename... RightNextArguments>
@@ -144,8 +144,8 @@ namespace ga {
 
             // A Ei + A Ej => add<A Ei, B Ej>
             template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade>
-            struct condition<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade> > {
-                constexpr static bool value = lt_v<LeftBasisBlade, RightBasisBlade>;
+            struct condition<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade> > :
+                lt_t<LeftBasisBlade, RightBasisBlade> {
             };
 
             template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade>
@@ -155,8 +155,8 @@ namespace ga {
 
             // A Ei + add<B Ej, ...> => add<A Ei, B Ej, ...>
             template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade, typename... RightNextArguments>
-            struct condition<component<LeftCoefficient, LeftBasisBlade>, add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...> > {
-                constexpr static bool value = lt_v<LeftBasisBlade, RightBasisBlade>;
+            struct condition<component<LeftCoefficient, LeftBasisBlade>, add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...> > :
+                lt_t<LeftBasisBlade, RightBasisBlade> {
             };
 
             template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade, typename... RightNextArguments>
@@ -166,8 +166,8 @@ namespace ga {
 
             // add<A Ei, ...> + B Ej => A Ei + (add<...> + B Ej)
             template<typename LeftCoefficient, typename LeftBasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename RightBasisBlade>
-            struct condition<add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>, component<RightCoefficient, RightBasisBlade> > {
-                constexpr static bool value = lt_v<LeftBasisBlade, RightBasisBlade>;
+            struct condition<add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>, component<RightCoefficient, RightBasisBlade> > :
+                lt_t<LeftBasisBlade, RightBasisBlade> {
             };
 
             template<typename LeftCoefficient, typename LeftBasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename RightBasisBlade>
@@ -177,8 +177,8 @@ namespace ga {
 
             // add<A Ei, ...> + add<B Ej, ...> => A Ei + (add<...> + add<B Ej, ...>)
             template<typename LeftCoefficient, typename LeftBasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename RightBasisBlade, typename... RightNextArguments>
-            struct condition<add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>, add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...> > {
-                constexpr static bool value = lt_v<LeftBasisBlade, RightBasisBlade>;
+            struct condition<add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>, add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...> > :
+                lt_t<LeftBasisBlade, RightBasisBlade> {
             };
 
             template<typename LeftCoefficient, typename LeftBasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename RightBasisBlade, typename... RightNextArguments>
@@ -199,8 +199,8 @@ namespace ga {
 
             // B Ej + A Ei => add<A Ei, B Ej>
             template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade>
-            struct condition<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade> > {
-                constexpr static bool value = lt_v<RightBasisBlade, LeftBasisBlade>;
+            struct condition<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade> > :
+                lt_t<RightBasisBlade, LeftBasisBlade> {
             };
 
             template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade>
@@ -210,8 +210,8 @@ namespace ga {
 
             // B Ej + add<A Ei, ...> => A Ei + (B Ej + add<...>)
             template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade, typename... RightNextArguments>
-            struct condition<component<LeftCoefficient, LeftBasisBlade>, add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...> > {
-                constexpr static bool value = lt_v<RightBasisBlade, LeftBasisBlade>;
+            struct condition<component<LeftCoefficient, LeftBasisBlade>, add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...> > :
+                lt_t<RightBasisBlade, LeftBasisBlade> {
             };
 
             template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade, typename... RightNextArguments>
@@ -221,8 +221,8 @@ namespace ga {
 
             // add<B Ej, ...> + A Ei => add<A Ei, B Ej, ...>
             template<typename LeftCoefficient, typename LeftBasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename RightBasisBlade>
-            struct condition<add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>, component<RightCoefficient, RightBasisBlade> > {
-                constexpr static bool value = lt_v<RightBasisBlade, LeftBasisBlade>;
+            struct condition<add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>, component<RightCoefficient, RightBasisBlade> > :
+                lt_t<RightBasisBlade, LeftBasisBlade> {
             };
 
             template<typename LeftCoefficient, typename LeftBasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename RightBasisBlade>
@@ -232,8 +232,8 @@ namespace ga {
 
             // add<B Ej, ...> + add<A Ei, ...> => A Ei + (add<B Ej, ...> + add<...>)
             template<typename LeftCoefficient, typename LeftBasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename RightBasisBlade, typename... RightNextArguments>
-            struct condition<add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>, add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...> > {
-                constexpr static bool value = lt_v<RightBasisBlade, LeftBasisBlade>;
+            struct condition<add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>, add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...> > :
+                lt_t<RightBasisBlade, LeftBasisBlade> {
             };
             
             template<typename LeftCoefficient, typename LeftBasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename RightBasisBlade, typename... RightNextArguments>
