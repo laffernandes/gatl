@@ -22,8 +22,8 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA_CORE_EXPRESSION_PRODUCT_VALUES_HPP__
-#define __GA_CORE_EXPRESSION_PRODUCT_VALUES_HPP__
+#ifndef __GA_CORE_EXPRESSION_SIMPLIFICATION_PRODUCT_VALUES_HPP__
+#define __GA_CORE_EXPRESSION_SIMPLIFICATION_PRODUCT_VALUES_HPP__
 
 namespace ga {
 
@@ -313,8 +313,8 @@ namespace ga {
             };
         };
 
-        // Simplification rule to produce a new constant value.
-        struct _product_values_rule_constants {
+        // Simplification rule to produce a new constant value (case 1).
+        struct _product_values_rule_constants_case_1 {
             
             // Default
             template<typename LeftExpression, typename RightExpression>
@@ -336,7 +336,31 @@ namespace ga {
                 using type = constant_value<LeftValue * RightValue>;
             };
 
-            // A * B^{-1} => simpler
+            // A^{-1} * B^{-1} => (A * B)^{-1}
+            template<default_integral_t LeftValue, default_integral_t RightValue>
+            struct condition<power<constant_value<LeftValue>, constant_value<-1> >, power<constant_value<RightValue>, constant_value<-1> > > :
+                std::true_type {
+            };
+
+            template<default_integral_t LeftValue, default_integral_t RightValue>
+            struct result<power<constant_value<LeftValue>, constant_value<-1> >, power<constant_value<RightValue>, constant_value<-1> > > {
+                using type = power_t<constant_value<LeftValue * RightValue>, constant_value<-1> >;
+            };
+        };
+
+        // Simplification rule to produce a new constant value (case 2).
+        struct _product_values_rule_constants_case_2 {
+            
+            // Default
+            template<typename LeftExpression, typename RightExpression>
+            struct condition :
+                std::false_type {
+            };
+
+            template<typename LeftExpression, typename RightExpression>
+            struct result;
+
+            // A * B^{-1} => simpler or mul<A, B^{-1}>
             template<default_integral_t LeftValue, default_integral_t RightValue>
             struct condition<constant_value<LeftValue>, power<constant_value<RightValue>, constant_value<-1> > > :
                 std::true_type {
@@ -347,7 +371,7 @@ namespace ga {
                 using type = simpler_rational_constant_t<LeftValue, RightValue>;
             };
 
-            // A^{-1} * B => simpler
+            // A^{-1} * B => simpler or mul<B, A^{-1}>
             template<default_integral_t LeftValue, default_integral_t RightValue>
             struct condition<power<constant_value<LeftValue>, constant_value<-1> >, constant_value<RightValue> > :
                 std::true_type {
@@ -356,17 +380,6 @@ namespace ga {
             template<default_integral_t LeftValue, default_integral_t RightValue>
             struct result<power<constant_value<LeftValue>, constant_value<-1> >, constant_value<RightValue> > {
                 using type = simpler_rational_constant_t<RightValue, LeftValue>;
-            };
-
-            // A^{-1} * B^{-1} => (A * B)^{-1}
-            template<default_integral_t LeftValue, default_integral_t RightValue>
-            struct condition<power<constant_value<LeftValue>, constant_value<-1> >, power<constant_value<RightValue>, constant_value<-1> > > :
-                std::true_type {
-            };
-
-            template<default_integral_t LeftValue, default_integral_t RightValue>
-            struct result<power<constant_value<LeftValue>, constant_value<-1> >, power<constant_value<RightValue>, constant_value<-1> > > {
-                using type = power_t<constant_value<LeftValue * RightValue>, constant_value<-1> >;
             };
         };
 
@@ -511,7 +524,8 @@ namespace ga {
                     _product_values_rule_helper<_product_values_rule_collect_value_case_1>,
                     _product_values_rule_helper<_product_values_rule_collect_value_case_2>,
                     _product_values_rule_helper<_product_values_rule_collect_value_case_3>,
-                    _product_values_rule_constants, //TODO How to use _product_values_rule_helper<> here without getting in a loop?
+                    _product_values_rule_helper<_product_values_rule_constants_case_1>,
+                    _product_values_rule_constants_case_2, //TODO How to use _product_values_rule_helper<> here without getting in a loop?
                     _product_values_rule_merge_less_than,
                     _product_values_rule_merge_greater_than,
                     _product_values_rule_merge_equal_to
@@ -525,4 +539,4 @@ namespace ga {
 
 }
 
-#endif // __GA_CORE_EXPRESSION_PRODUCT_VALUES_HPP__
+#endif // __GA_CORE_EXPRESSION_SIMPLIFICATION_PRODUCT_VALUES_HPP__

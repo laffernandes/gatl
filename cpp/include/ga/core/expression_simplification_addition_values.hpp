@@ -22,8 +22,8 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA_CORE_EXPRESSION_ADDITION_VALUES_HPP__
-#define __GA_CORE_EXPRESSION_ADDITION_VALUES_HPP__
+#ifndef __GA_CORE_EXPRESSION_SIMPLIFICATION_ADDITION_VALUES_HPP__
+#define __GA_CORE_EXPRESSION_SIMPLIFICATION_ADDITION_VALUES_HPP__
 
 namespace ga {
 
@@ -625,4 +625,4 @@ namespace ga {
 
 }
 
-#endif // __GA_CORE_EXPRESSION_ADDITION_VALUES_HPP__
+#endif // __GA_CORE_EXPRESSION_SIMPLIFICATION_ADDITION_VALUES_HPP__
