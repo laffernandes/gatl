@@ -36,9 +36,9 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
         return apply_odd_versor(versor, arg, SPACE); \
     } \
     \
-    template<typename VersorType, typename Type> \
-    constexpr decltype(auto) apply_rotor(VersorType const &versor, Type const &arg) { \
-        return apply_rotor(versor, arg, SPACE); \
+    template<typename RotorType, typename Type> \
+    constexpr decltype(auto) apply_rotor(RotorType const &rotor, Type const &arg) { \
+        return apply_rotor(rotor, arg, SPACE); \
     } \
     \
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
