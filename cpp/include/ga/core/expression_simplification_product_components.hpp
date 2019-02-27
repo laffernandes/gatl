@@ -75,52 +75,6 @@ namespace ga {
             };
         };
 
-        // Simplification rule to avoid multiply by one.
-        struct _product_components_rule_one {
-
-            // Default
-            template<typename LeftExpression, typename RightExpression, typename Mapping>
-            struct condition :
-                std::false_type {
-            };
-
-            template<typename LeftExpression, typename RightExpression, typename Mapping>
-            struct result;
-
-            // 1 * something => something
-            template<typename RightExpression, typename Mapping>
-            struct condition<component<constant_value<1>, constant_basis_blade<bitset_t(0)> >, RightExpression, Mapping> :
-                std::true_type {
-            };
-
-            template<typename RightExpression, typename Mapping>
-            struct result<component<constant_value<1>, constant_basis_blade<bitset_t(0)> >, RightExpression, Mapping> {
-                using type = RightExpression;
-            };
-
-            // something * 1 => something
-            template<typename LeftExpression, typename Mapping>
-            struct condition<LeftExpression, component<constant_value<1>, constant_basis_blade<bitset_t(0)> >, Mapping> :
-                std::true_type {
-            };
-
-            template<typename LeftExpression, typename Mapping>
-            struct result<LeftExpression, component<constant_value<1>, constant_basis_blade<bitset_t(0)> >, Mapping> {
-                using type = LeftExpression;
-            };
-
-            // 1 * 1 => 1
-            template<typename Mapping>
-            struct condition<component<constant_value<1>, constant_basis_blade<bitset_t(0)> >, component<constant_value<1>, constant_basis_blade<bitset_t(0)> >, Mapping> :
-                std::true_type {
-            };
-
-            template<typename Mapping>
-            struct result<component<constant_value<1>, constant_basis_blade<bitset_t(0)> >, component<constant_value<1>, constant_basis_blade<bitset_t(0)> >, Mapping> {
-                using type = component<constant_value<1>, constant_basis_blade<bitset_t(0)> >;
-            };
-        };
-
         // Simplification rule to multiply the given components or to distribute the product of components over addition.
         struct _product_components_rule_multiply_or_distribute {
         private:
@@ -177,7 +131,6 @@ namespace ga {
         // The set of simplification rules applied to the product of components.
         using _product_components_rules = rules<
             _product_components_rule_zero,
-            _product_components_rule_one,
             _product_components_rule_multiply_or_distribute
         >;
 
