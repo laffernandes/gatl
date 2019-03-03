@@ -29,7 +29,8 @@ namespace ga {
 
     // Homogeneous metric space.
     template<ndims_t N>
-    using homogeneous_metric_space = signed_metric_space<N + 1, 0>;
+    class homogeneous_metric_space : public signed_metric_space<N + 1, 0> {
+    };
 
 }
 

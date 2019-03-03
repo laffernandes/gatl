@@ -134,6 +134,12 @@ namespace ga {
             return std::move(arg) * std::move(arg);
         }
 
+        // Returns the cube of a given value.
+        template<typename Type>
+        constexpr decltype(auto) cube(Type &&arg) noexcept {
+            return std::move(arg) * std::move(arg) * std::move(arg);
+        }
+
         // Returns the sum of a given values.
         constexpr decltype(auto) sum() noexcept {
             return 0;

@@ -29,7 +29,8 @@ namespace ga {
 
     // Euclidean metric space.
     template<ndims_t N>
-    using euclidean_metric_space = signed_metric_space<N, 0>;
+    class euclidean_metric_space : public signed_metric_space<N, 0> {
+    };
 
 }
 

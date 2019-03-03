@@ -29,7 +29,8 @@ namespace ga {
 
     // Minkowski metric space.
     template<ndims_t N>
-    using minkowski_metric_space = signed_metric_space<N + 1, 1>;
+    class minkowski_metric_space : public signed_metric_space<N + 1, 1> {
+    };
 
 }
 

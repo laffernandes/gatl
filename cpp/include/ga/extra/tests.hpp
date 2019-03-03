@@ -44,23 +44,17 @@ namespace ga {
         return is_versor(arg, tol, mtr); // All invertible blades are also versors; and all versors are invertible.
     }
 
-    //TODO Should I omit the tol argument?
-
     // Returns whether the given Clifford expression is a null multivector up to an assumed numerical error.
     template<typename CoefficientType, typename Expression, typename ToleranceType, typename MetricSpaceType>
     constexpr bool is_null(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) noexcept {
         return is_zero(rnorm_sqr(arg, mtr), tol);
     }
 
-    //TODO Should I omit the tol argument?
-
     // Returns whether the given Clifford expression is a unit multivector up to an assumed numerical error.
     template<typename CoefficientType, typename Expression, typename ToleranceType, typename MetricSpaceType>
     constexpr bool is_unit(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) noexcept {
         return is_zero(abs(rnorm_sqr(arg, mtr)) - c<1>, tol);
     }
-
-    //TODO Should I omit the tol argument?
 
 }
 

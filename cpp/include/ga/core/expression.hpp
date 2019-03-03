@@ -980,6 +980,30 @@ namespace ga {
         };
 
         template<typename LeftArgument>
+        struct function<name_t::power, LeftArgument, constant_value<3> > {
+            using type = function;
+
+            template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
+            constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+                return cube(LeftArgument::template eval<LowerTag, UpperTag>(args));
+            }
+
+            static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+        };
+
+        template<typename LeftArgument>
+        struct function<name_t::power, LeftArgument, constant_value<4> > {
+            using type = function;
+
+            template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
+            constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
+                return square(square(LeftArgument::template eval<LowerTag, UpperTag>(args)));
+            }
+
+            static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+        };
+
+        template<typename LeftArgument>
         struct function<name_t::power, LeftArgument, power<constant_value<2>, constant_value<-1> > > {
             using type = function;
 
