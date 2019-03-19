@@ -263,7 +263,7 @@ Here you find a brief description of the implemented functions, operators, and c
 | Meta-Function | Description |
 | --- | --- |
 | `largest_possible_grade_v<Expression>` | Helper to deduce the largest possible grade value in the given `Expression` extracted from a Clifford expression |
-| `smallest_possible_grade<Expression>` | Helper to deduce the smallest possible grade value in the given `Expression` extracted from a Clifford expression |
+| `smallest_possible_grade_v<Expression>` | Helper to deduce the smallest possible grade value in the given `Expression` extracted from a Clifford expression |
 
 | Testing Meta-Function | Description |
 | --- | --- |
