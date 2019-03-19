@@ -66,7 +66,16 @@ Unit-tests are under construction. Please, don't try to build them.
 
 
 ## Documentation
-Here you find a brief description of the implemented functions, operators, and classes. The detailed documentation is not ready yet.
+Here you find a brief description of the implemented classes, functions, procedures, and operators. The detailed documentation is not ready yet.
+
+Contents:
+1. [Namespaces](#namespaces)
+2. [Classes and Data Types](#classes-and-data-types)
+3. [Utilities Constants and Functions](#utilities-constants-and-functions)
+4. [Products and Basic Operations](#products-and-basic-operations)
+5. [Overloaded Operators](#overloaded-operators)
+6. [Overloaded Mathematical Functions](#overloaded-mathematical-functions)
+7. [Tools](#tools)
 
 
 ### Namespaces
