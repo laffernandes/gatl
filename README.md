@@ -58,3 +58,7 @@ Unit tests are under construction. Please, don't try to build them.
 
 ## License
 This software is licensed under the GNU General Public License v3.0. See the [`LICENSE`](LICENSE) file for details.
+
+
+## Related Project
+Please, visit the GitHub repository of the [**ga-benchmark**](https://github.com/ga-developers/ga-benchmark) project for a benchmark comparing the most popular Geometric Algebra libraries.
