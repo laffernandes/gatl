@@ -605,7 +605,7 @@ namespace ga {
     
     }
 
-    // Helper structure to define lazy arguments for lazy evaluation of expressions.
+    // Helper structure to define lazy arguments for lazy evaluation of Clifford expressions.
     template<typename... InputTypes>
     class lazy_context;
 

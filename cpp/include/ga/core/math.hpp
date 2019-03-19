@@ -29,20 +29,20 @@ namespace ga {
 
     using std::pow;
 
-    template<typename LeftCoefficientType, typename LeftCoefficient, typename RightCoefficientType, typename RightCoefficient>
-    constexpr decltype(auto) pow(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
-        auto const lazy = make_lazy_context(lhs, rhs);
+    template<typename BaseCoefficientType, typename BaseCoefficient, typename ExponentCoefficientType, typename ExponentCoefficient>
+    constexpr decltype(auto) pow(scalar_clifford_expression<BaseCoefficientType, BaseCoefficient> const &base, scalar_clifford_expression<ExponentCoefficientType, ExponentCoefficient> const &exponent) {
+        auto const lazy = make_lazy_context(base, exponent);
         return lazy.eval(scalar_clifford_expression<default_integral_t, detail::power_t<detail::coefficient_t<typename decltype(lazy)::template argument_expression_t<0> >, detail::coefficient_t<typename decltype(lazy)::template argument_expression_t<1> > > >());
     }
 
-    template<typename LeftCoefficientType, typename LeftCoefficient, typename RightType, typename = std::enable_if_t<!is_clifford_expression_v<RightType> > >
-    constexpr decltype(auto) pow(scalar_clifford_expression<LeftCoefficientType, LeftCoefficient> const &lhs, RightType const &rhs) {
-        return pow(lhs, scalar(rhs));
+    template<typename BaseCoefficientType, typename BaseCoefficient, typename ExponentType, typename = std::enable_if_t<!is_clifford_expression_v<ExponentType> > >
+    constexpr decltype(auto) pow(scalar_clifford_expression<BaseCoefficientType, BaseCoefficient> const &base, ExponentType const &exponent) {
+        return pow(base, scalar(exponent));
     }
 
-    template<typename LeftType, typename RightCoefficientType, typename RightCoefficient, typename = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
-    constexpr decltype(auto) pow(LeftType const &lhs, scalar_clifford_expression<RightCoefficientType, RightCoefficient> const &rhs) {
-        return pow(scalar(lhs), rhs);
+    template<typename BaseType, typename ExponentCoefficientType, typename ExponentCoefficient, typename = std::enable_if_t<!is_clifford_expression_v<BaseType> > >
+    constexpr decltype(auto) pow(BaseType const &base, scalar_clifford_expression<ExponentCoefficientType, ExponentCoefficient> const &exponent) {
+        return pow(scalar(base), exponent);
     }
 
     using std::sqrt;

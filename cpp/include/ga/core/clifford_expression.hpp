@@ -35,7 +35,7 @@ namespace ga {
     template<typename CoefficientType, typename Coefficient>
     using scalar_clifford_expression = clifford_expression<CoefficientType, detail::component<Coefficient, detail::constant_basis_blade<bitset_t(0)> > >;
 
-    // Returns whether the given type is a clifford expression.
+    // Returns whether the given type is a Clifford expression.
     template<typename Type>
     struct is_clifford_expression :
         std::false_type {
