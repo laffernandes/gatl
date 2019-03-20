@@ -80,8 +80,8 @@ Contents:
 - [Tools](#tools)
 - [Algebra-Specific Declarations](#algebra-specific-declarations)
   - [Euclidean](#euclidean)
-  - [Homogeneous/Projective](#homogeneous-projective)
-  - [Mikowski/Spacetime](#mikowski-spacetime)
+  - [Homogeneous/Projective](#homogeneousprojective)
+  - [Mikowski/Spacetime](#mikowskispacetime)
   - [Conformal](#conformal)
 
 
@@ -111,46 +111,46 @@ According to the GATL conventions, the header file for each namespace is its nam
 | `lazy_context<InputTypes...>` | A class to define lazy arguments for lazy evaluation of Clifford expressions |
 | `metric_space<MetricSpaceType>` | Base metric space class |
 
-| Class Alias | Description |
-| --- | --- |
-| `scalar_clifford_expression<CoefficientType, Coefficient>` | Helper for defining scalar Clifford expressions |
-| `constant<CoefficientType, IntegralValue>` | Helper for defining constant scalar Clifford expressions whose coefficient is known in compile time |
-
-| Helper for Type Definition | Description |
-| --- | --- |
-| `full_multivector_t<CoefficientType, VectorSpaceDimensions [, FirstGrade [, LastGrade]]>` | Helper for defining a multivector type with runtime defined coefficients over an *n*-dimensional vector space |
-| `full_derived_multivector_t<CoefficientType, Expression>` | Helper for defining a multivector type with runtime defined coefficients in all components of the given Clifford expression |
-| `full_kvector_t<CoefficientType, VectorSpaceDimensions, Grade>` | Helper for defining a *k*-vector type with runtime defined coefficients over an *n*-dimensional vector space |
-| `full_vector_t<CoefficientType, VectorSpaceDimensions>` | Helper for defining a vector type with runtime defined coefficients over an *n*-dimensional vector space |
-| `scaled_constant_basis_blade_t<CoefficientType, Indices...>` | Helper for defining a scaled compile-time defined basis blade type |
-| `scaled_constant_basis_vector_t<CoefficientType, Index>` | Helper for defining a scaled compile-time defined basis vector type |
-| `scaled_basis_blade_t<CoefficientType, FirstPossibleGrade[, LastPossibleGrade]>` | Helper for defining a scaled runtime defined basis blade type |
-| `scaled_basis_vector_t<CoefficientType>` | Helper for defining a scaled runtime defined basis vector type |
-| `scaled_scalar_t<CoefficientType>` | Helper for defining a scalar Clifford expression type whose coefficient is unknown in compile time |
-| `scaled_pseudoscalar_t<CoefficientType, N>` | Helper for defining a scaled compile-time defined pseudoscalar type |
-| `unit_constant_basis_blade_t<Indices...>` | Helper for defining an unit compile-time defined basis blade type |
-| `unit_constant_basis_vector_t<Index>` | Helper for defining an unit compile-time defined basis vector type |
-| `unit_basis_blade_t<FirstPossibleGrade [, LastPossibleGrade]>` | Helper for defining an unit runtime defined basis blade type |
-| `unit_basis_vector_t` | Helper for defining an unit runtime defined basis vector type |
-| `unit_pseudoscalar_t<N>` | Helper for defining an unit compile-time defined pseudoscalar type |
-
 | Exception Class | Descrition |
 | --- | --- |
 | `bad_checked_copy` | An exception of this type is thrown when a checked copy fails |
 | `not_implemented_error` | Defines the type of objects thrown as exceptions to report errors related to not implemented features |
+
+| Class Alias | Description |
+| --- | --- |
+| `constant<CoefficientType, IntegralValue>` | Alias for constant scalar Clifford expressions whose coefficient is known in compile time |
+| `scalar_clifford_expression<CoefficientType, Coefficient>` | Alias for scalar Clifford expressions |
+
+| Helper for Type Definition | Description |
+| --- | --- |
+| `full_multivector_t<CoefficientType, VectorSpaceDimensions [, FirstGrade [, LastGrade]]>` | Helper for defining a Clifford expression representing a general multivector with runtime defined coefficients over an *n*-dimensional vector space |
+| `full_derived_multivector_t<CoefficientType, Expression>` | Helper for defining a Clifford expression representing a general multivector with runtime defined coefficients in all components of the given Clifford expression |
+| `full_kvector_t<CoefficientType, VectorSpaceDimensions, Grade>` | Helper for defining a Clifford expression representing a *k*-vector with runtime defined coefficients over an *n*-dimensional vector space |
+| `full_vector_t<CoefficientType, VectorSpaceDimensions>` | Helper for defining a Clifford expression representing a vector with runtime defined coefficients over an *n*-dimensional vector space |
+| `scaled_constant_basis_blade_t<CoefficientType, Indices...>` | Helper for defining a Clifford expression representing a scaled compile-time defined basis blade |
+| `scaled_constant_basis_vector_t<CoefficientType, Index>` | Helper for defining a Clifford expression representing a scaled compile-time defined basis vector |
+| `scaled_basis_blade_t<CoefficientType, FirstPossibleGrade[, LastPossibleGrade]>` | Helper for defining a Clifford expression representing a scaled runtime defined basis blade |
+| `scaled_basis_vector_t<CoefficientType>` | Helper for defining a Clifford expression representing a scaled runtime defined basis vector |
+| `scaled_scalar_t<CoefficientType>` | Helper for defining a Clifford expression representing a scalar value whose coefficient is unknown in compile time |
+| `scaled_pseudoscalar_t<CoefficientType, N>` | Helper for defining a Clifford expression representing a scaled compile-time defined pseudoscalar |
+| `unit_constant_basis_blade_t<Indices...>` | Helper for defining a Clifford expression representing an unit compile-time defined basis blade |
+| `unit_constant_basis_vector_t<Index>` | Helper for defining a Clifford expression representing an unit compile-time defined basis vector |
+| `unit_basis_blade_t<FirstPossibleGrade [, LastPossibleGrade]>` | Helper for defining a Clifford expression representing an unit runtime defined basis blade |
+| `unit_basis_vector_t` | Helper for defining a Clifford expression representing an unit runtime defined basis vector |
+| `unit_pseudoscalar_t<N>` | Helper for defining a Clifford expression representing an unit compile-time defined pseudoscalar |
 
 
 ### Utilities Constants and Functions
 
 | Constant | Description |
 | --- | --- |
-| `c<IntegralValue>` | Returns a compile-time defined scalar Clifford expression |
+| `c<IntegralValue [, CoefficientType]>` | Returns a compile-time defined scalar Clifford expression |
 
 | Function | Description |
 | --- | --- |
 | `make_lazy_context(inputs...)` | Creates a `lazy_context<InputTypes...>` object |
 | `e(index)` | Returns a runtime defined unit basis vector (index values can be defined using `c<IntegralValue>`, too) |
-| `scalar(arg)` | Converts the given native value type to scalar Clifford expression |
+| `scalar(arg)` | Converts the given numerical value to a scalar Clifford expression |
 | `pseudoscalar([mtr])` | Returns the compile-time defined unit pseudoscalar of the given space |
 | `vector([mtr ,] coords...)` | Makes a vector with the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
 
@@ -164,7 +164,7 @@ According to the GATL conventions, the header file for each namespace is its nam
 | `dot(lhs, rhs [, mtr])` | Dot product |
 | `gp(lhs, rhs [, mtr])` | Geometric/Clifford product |
 | `hip(lhs, rhs [, mtr])` | Hestenes inner product |
-| `igp(lhs, rhs [, mtr])` | Inverse geometric/Clifford product, where the argument `rhs` must be a versor  |
+| `igp(lhs, rhs [, mtr])` | Inverse geometric/Clifford product (the argument `rhs` must be a versor)  |
 | `lcont(lhs, rhs [, mtr])` | Left contraction |
 | `op(lhs, rhs [, mtr])` | Outer/Wedge product |
 | `rp(lhs, rhs [, mtr])` | Regressive product |
@@ -186,8 +186,8 @@ According to the GATL conventions, the header file for each namespace is its nam
 | --- | --- |
 | `rnorm_sqr(arg [, mtr])` | Squared reverse norm |
 | `rnorm(arg [, mtr])` | Reverse norm |
-| `inv(arg [, mtr])` | Computes the inverse of the given versor using the squared reverse norm |
-| `unit(arg [, mtr])` | Computes the unit Clifford expression under reverse norm |
+| `inv(arg [, mtr])` | Inverse of the given versor using the squared reverse norm |
+| `unit(arg [, mtr])` | Unit Clifford expression under reverse norm |
 
 | Versor Product | Description |
 | --- | --- |
@@ -211,9 +211,9 @@ According to the GATL conventions, the header file for each namespace is its nam
 | Misc Operation | Description |
 | --- | --- |
 | `grade(arg [, tol])` | Returns a `grade_result<Value>` structure with the grade of the given argument `arg` |
-| `largest_grade(arg [, tol])` | Returns a scalar expression with the largest grade part of a given Clifford expression such that it is not zero |
-| `take_grade(arg, k)` | Returns the *k*-grade part of the given Clifford expression |
-| `take_largest_grade(arg [, tol])` | Returns the portion of the given Clifford expression with the largest grade |
+| `largest_grade(arg [, tol])` | Returns a scalar expression with the largest grade part of the argument `arg` such that it is not zero |
+| `take_grade(arg, k)` | Returns the *k*-grade part of the argument `arg` |
+| `take_largest_grade(arg [, tol])` | Returns the portion of the argument `arg` with the largest grade |
 
 
 ### Overloaded Operators
@@ -240,30 +240,30 @@ According to the GATL conventions, the header file for each namespace is its nam
 
 | Trigonometric Function | Description |
 | --- | --- |
-| `cos(arg)` | Returns the cosine of the scalar argument `arg` (in radians) |
-| `sin(arg)` | Returns the sine of the scalar argument `arg` (in radians) |
-| `tan(arg)` | Returns the tangent of the scalar argument `arg` (in radians) |
+| `cos(arg)` | Cosine of the scalar argument `arg` (in radians) |
+| `sin(arg)` | Sine of the scalar argument `arg` (in radians) |
+| `tan(arg)` | Tangent of the scalar argument `arg` (in radians) |
 
 | Hyperbolic Function | Description |
 | --- | --- |
-| `cosh(arg)` | Returns the hyperbolic cosine of the scalar argument `arg` (in radians) |
-| `sinh(arg)` | Returns the hyperbolic sine of the scalar argument `arg` (in radians) |
-| `tanh(arg)` | Returns the hyperbolic tangent of the scalar argument `arg` (in radians) |
+| `cosh(arg)` | Hyperbolic cosine of the scalar argument `arg` (in radians) |
+| `sinh(arg)` | Hyperbolic sine of the scalar argument `arg` (in radians) |
+| `tanh(arg)` | Hyperbolic tangent of the scalar argument `arg` (in radians) |
 
 | Exponential and Logarithmic Function | Description |
 | --- | --- |
-| `exp(arg [, tol] [, mtr])` | Returns the base-e exponential function of the even blade argument `arg` |
-| `log(arg)` | Returns the natural logarithm of the scalar argument `arg` |
+| `exp(arg [, tol] [, mtr])` | Base-*e* exponential function of the even blade argument `arg` |
+| `log(arg)` | Natural logarithm of the scalar argument `arg` |
 
 | Power Function | Description |
 | --- | --- |
-| `pow(base, exponent)` | Returns the scalar argument `base` raised to the scalar power argument `exponent` |
-| `cbrt(arg)` | Returns the cubic root of the scalar argument `arg` |
-| `sqrt(arg)` | Returns the square root of the scalar argument `arg` |
+| `pow(base, exponent)` | Scalar argument `base` raised to the scalar power argument `exponent` |
+| `cbrt(arg)` | Cubic root of the scalar argument `arg` |
+| `sqrt(arg)` | Square root of the scalar argument `arg` |
 
 | Other Function | Description |
 | --- | --- |
-| `abs(arg)` | Returns the absolute value of the scalar argument `arg` |
+| `abs(arg)` | Absolute value of the scalar argument `arg` |
 
 
 ### Tools
@@ -280,7 +280,7 @@ According to the GATL conventions, the header file for each namespace is its nam
 | `is_blade(arg [, tol] [, mtr])` | Returns whether the given Clifford expression is a blade |
 | `is_invertible(arg [, tol] [, mtr])` | Returns whether the given Clifford expression is invertible (only for blades and versors) |
 | `is_null(arg [, tol] [, mtr])` | Returns whether the given Clifford expression is a null multivector |
-| `is_unit(arg [, tol] [, mtr])` | Returns whether the given Clifford expression is a unit multivector |
+| `is_unit(arg [, tol] [, mtr])` | Returns whether the given Clifford expression is an unit multivector |
 | `is_versor(arg [, tol] [, mtr])` | Returns whether the given Clifford expression is a versor |
 | `is_zero(arg [, tol])` | Returns whether the given Clifford expression is equal to zero |
 
@@ -302,11 +302,23 @@ According to the GATL conventions, the header file for each namespace is its nam
 #### Euclidean
 Documentation under construction.
 
+| Constant Value | Descrition |
+| --- | --- |
+| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ...) |
+
+
 #### Homogeneous/Projective
 Documentation under construction.
 
+| Constant Value | Descrition |
+| --- | --- |
+| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ...) |
+| `ep` | Euclidean homogeneous basis vector (`sp(ep, ep) = 1`) |
+
+
 #### Mikowski/Spacetime
 Documentation under construction.
+
 
 #### Conformal
 Documentation under construction.
