@@ -342,7 +342,7 @@ Specific classes, functions, procedures, and operators of homogeneous/projective
 | Constant Value | Descrition |
 | --- | --- |
 | `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
-| `ep` | Euclidean homogeneous basis vector (same as `e(c<D + 1>)`, `sp(ep, ep) = 1`) |
+| `ep` | Positive extra basis vector interpreted as the point at the origin (same as `e(c<D + 1>)`, `sp(ep, ep) = 1`) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, ep)`) |
 
