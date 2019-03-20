@@ -68,24 +68,38 @@ Unit-tests are under construction. Please, don't try to build them.
 
 
 ## 6. Documentation
-Here you find a brief description of the implemented classes, functions, procedures, and operators. The detailed documentation is not ready yet.
+Here you find a brief description of the classes, functions, procedures, and operators that available for the user. The detailed documentation is not ready yet.
 
 Contents:
-1. [Namespaces](#namespaces)
-2. [Classes and Data Types](#classes-and-data-types)
-3. [Utilities Constants and Functions](#utilities-constants-and-functions)
-4. [Products and Basic Operations](#products-and-basic-operations)
-5. [Overloaded Operators](#overloaded-operators)
-6. [Overloaded Mathematical Functions](#overloaded-mathematical-functions)
-7. [Tools](#tools)
+- [Namespaces](#namespaces)
+- [Classes and Data Types](#classes-and-data-types)
+- [Utilities Constants and Functions](#utilities-constants-and-functions)
+- [Products and Basic Operations](#products-and-basic-operations)
+- [Overloaded Operators](#overloaded-operators)
+- [Overloaded Mathematical Functions](#overloaded-mathematical-functions)
+- [Tools](#tools)
+- [Algebra-Specific Declarations](#algebra-specific-declarations)
+  - [Euclidean](#euclidean)
+  - [Homogeneous/Projective](#homogeneous-projective)
+  - [Mikowski/Spacetime](#mikowski-spacetime)
+  - [Conformal](#conformal)
 
 
 ### Namespaces
 
 | Namespace | Description |
 | --- | --- |
-| `ga` | The main namespace that encloses all GATL functions, operations, and classes |
-| `ga::detail` | The namespace where the magic happens (don't touch it!) |
+| `ga` | The main namespace that encloses all GATL implementations |
+| `ga1e`, `ga2e`, `ga3e`, `ga4e`, `ga5e` | The namespace of Euclidean geometric algebra of R<sup>*n*</sup> |
+| `ga1h`, `ga2h`, `ga3h`, `ga4h` | The namespace of homogeneous/projective geometric algebra of R<sup>*d*</sup> (*n* = *d* + 1) |
+| `ga1m`, `ga2m`, `ga3m` | The namespace of Mikowski/spacetime algebra of R<sup>*d*</sup> (*n* = *d* + 2) |
+| `ga1c`, `ga2c`, `ga3c` | The namespace of conformal geometric algebra of R<sup>*d*</sup> (*n* = *d* + 2) |
+
+The namespaces of specific geometric algebras (*e.g.*, `ga3e`, `ga3h`, `ga3m`, and `ga3c`) use the `ga` namespace. Also, they overload all metric operations by setting the `mtr` argument according to their respective spaces.
+
+All above mentioned namespaces declare a nested `detail` namespace. This is the namespace where the magic happens. Don't touch it!
+
+According to the GATL conventions, the header file for each namespace is its name followed by the `.hpp` expresion. For instance, `ga.hpp`, `ga3e.hpp`, `ga3h.hpp`, `ga3m.hpp`, `ga3c.hpp`, and so on.
 
 
 ### Classes and Data Types
@@ -93,9 +107,9 @@ Contents:
 | Class | Description |
 | --- | --- |
 | `clifford_expression<CoefficientType, Expression>` | A Clifford expression |
-| `grade_result<Value>` | A structure to encode the result of the `grade` function |
-| `lazy_context<InputTypes...>` | A structure to define lazy arguments for lazy evaluation of Clifford expressions |
-| `metric_space<MetricSpaceType>` | Base metric space typename |
+| `grade_result<Value>` | A class to encode the result of the `grade` function |
+| `lazy_context<InputTypes...>` | A class to define lazy arguments for lazy evaluation of Clifford expressions |
+| `metric_space<MetricSpaceType>` | Base metric space class |
 
 | Class Alias | Description |
 | --- | --- |
@@ -135,11 +149,10 @@ Contents:
 | Function | Description |
 | --- | --- |
 | `make_lazy_context(inputs...)` | Creates a `lazy_context<InputTypes...>` object |
-| `e(index)` | Returns a runtime defined unit basis vector |
-| `e(c<Index>)` | Returns a compile-time defined unit basis vector |
+| `e(index)` | Returns a runtime defined unit basis vector (index values can be defined using `c<IntegralValue>`, too) |
 | `scalar(arg)` | Converts the given native value type to scalar Clifford expression |
 | `pseudoscalar([mtr])` | Returns the compile-time defined unit pseudoscalar of the given space |
-| `vector([mtr ,] coords...)` | Makes a vector with the given set of coordinates (coordinates can be defined using `c<IntegralValue>`, too) |
+| `vector([mtr ,] coords...)` | Makes a vector with the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
 
 
 ### Products and Basic Operations
@@ -282,6 +295,21 @@ Contents:
 | `is_general_metric_space_v<MetricSpaceType>` | Returns whether the given metric space is general |
 | `is_metric_space_v<Type>` | Returns whether the given type is a metric space type |
 | `is_orthogonal_metric_space_v<MetricSpaceType>` | Returns whether the given metric space is orthogonal |
+
+
+### Algebra-Specific Declarations
+
+#### Euclidean
+Documentation under construction.
+
+#### Homogeneous/Projective
+Documentation under construction.
+
+#### Mikowski/Spacetime
+Documentation under construction.
+
+#### Conformal
+Documentation under construction.
 
 
 ## 7. Related Project
