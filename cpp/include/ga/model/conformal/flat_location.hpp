@@ -28,10 +28,10 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 namespace ga {
 
     // Returns the location parameter of a given flat.
-    template<typename CoefficientType, typename Expression, ndims_t N>
-    constexpr decltype(auto) flat_location(clifford_expression<CoefficientType, Expression> const &flat, conformal_metric_space<N> const &mtr) {
+    template<typename CoefficientType, typename Expression, ndims_t D>
+    constexpr decltype(auto) flat_location(clifford_expression<CoefficientType, Expression> const &flat, conformal_metric_space<D> const &mtr) {
         auto const lazy = make_lazy_context(flat);
-        return lazy.eval(gp(lcont(e(c<N + 2>), lazy.template argument<0>(), mtr), inv(lazy.template argument<0>(), mtr), mtr));
+        return lazy.eval(gp(lcont(e(c<D + 2>), lazy.template argument<0>(), mtr), inv(lazy.template argument<0>(), mtr), mtr));
     }
 
 }

@@ -28,8 +28,8 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 namespace ga {
 
     // Initializes a multivector representation of a Euclidean vector using the given coordinates expressed in the base space.
-    template<ndims_t N, typename... Types>
-    constexpr decltype(auto) euclidean_vector(conformal_metric_space<N> const &mtr, Types &&... coords) noexcept {
+    template<ndims_t D, typename... Types>
+    constexpr decltype(auto) euclidean_vector(conformal_metric_space<D> const &mtr, Types &&... coords) noexcept {
         return vector(mtr, std::move(coords)..., c<0>, c<0>);
     }
 

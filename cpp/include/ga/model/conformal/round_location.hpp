@@ -28,10 +28,10 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 namespace ga {
 
     // Returns the location parameter of a given round.
-    template<typename CoefficientType, typename Expression, ndims_t N>
-    constexpr decltype(auto) round_location(clifford_expression<CoefficientType, Expression> const &round, conformal_metric_space<N> const &mtr) {
+    template<typename CoefficientType, typename Expression, ndims_t D>
+    constexpr decltype(auto) round_location(clifford_expression<CoefficientType, Expression> const &round, conformal_metric_space<D> const &mtr) {
         auto const lazy = make_lazy_context(round);
-        return lazy.eval(gp(lazy.template argument<0>(), inv(lcont(-e(c<N + 2>), lazy.template argument<0>(), mtr), mtr), mtr));
+        return lazy.eval(gp(lazy.template argument<0>(), inv(lcont(-e(c<D + 2>), lazy.template argument<0>(), mtr), mtr), mtr));
     }
 
 }

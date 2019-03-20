@@ -27,11 +27,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-    // Returns the unit support point parameter of a given k-flat.
-    template<typename CoefficientType, typename Expression, ndims_t N>
-    constexpr decltype(auto) flat_unit_support_point(clifford_expression<CoefficientType, Expression> const &flat, homogeneous_metric_space<N> const &mtr) {
+    // Returns the unit support point parameter of a given flat.
+    template<typename CoefficientType, typename Expression, ndims_t D>
+    constexpr decltype(auto) flat_unit_support_point(clifford_expression<CoefficientType, Expression> const &flat, homogeneous_metric_space<D> const &mtr) {
         auto const lazy = make_lazy_context(flat);
-        return lazy.eval(gp(lazy.template argument<0>(), inv(lcont(e(c<N + 1>), lazy.template argument<0>(), mtr), mtr), mtr));
+        return lazy.eval(gp(lazy.template argument<0>(), inv(lcont(e(c<D + 1>), lazy.template argument<0>(), mtr), mtr), mtr));
     }
 
 }

@@ -27,9 +27,9 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 namespace ga {
 
-    // Minkowski metric space.
-    template<ndims_t N>
-    class minkowski_metric_space : public signed_metric_space<N + 1, 1> {
+    // Minkowski/Spacetime metric space.
+    template<ndims_t D>
+    class minkowski_metric_space : public signed_metric_space<D + 1, 1> {
     };
 
 }

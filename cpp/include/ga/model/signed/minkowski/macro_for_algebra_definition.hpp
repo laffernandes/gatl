@@ -25,14 +25,14 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #ifndef __GA_MODEL_SIGNED_MINKOWSKI_MACRO_FOR_ALGEBRA_DEFINITION_HPP__
 #define __GA_MODEL_SIGNED_MINKOWSKI_MACRO_FOR_ALGEBRA_DEFINITION_HPP__
 
-#define _GA_MINKOWSKI_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, N, ...) \
-    using space_t = minkowski_metric_space<N>; \
+#define _GA_MINKOWSKI_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, D, ...) \
+    using space_t = minkowski_metric_space<D>; \
     \
     static space_t const SPACE; \
-    static std::array<std::string, N + 2> const BASIS_VECTORS_NAMES = { __VA_ARGS__ , "ep", "em" }; \
+    static std::array<std::string, D + 2> const BASIS_VECTORS_NAMES = { __VA_ARGS__ , "ep", "em" }; \
     \
-    static auto const ep = e(c<N + 1>); \
-    static auto const em = e(c<N + 2>); \
+    static auto const ep = e(c<D + 1>); \
+    static auto const em = e(c<D + 2>); \
     \
     static auto const no = (em - ep) / c<2>; \
     static auto const ni = ep + em; \
