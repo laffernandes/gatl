@@ -68,7 +68,7 @@ Unit-tests are under construction. Please, don't try to build them.
 
 
 ## 6. Documentation
-Here you find a brief description of the classes, functions, procedures, and operators that available for the user. The detailed documentation is not ready yet.
+Here you find a brief description of the classes, functions, procedures, and operators that are available for the user. The detailed documentation is not ready yet.
 
 Contents:
 - [Namespaces](#namespaces)
@@ -79,6 +79,7 @@ Contents:
 - [Overloaded Mathematical Functions](#overloaded-mathematical-functions)
 - [Tools](#tools)
 - [Algebra-Specific Declarations](#algebra-specific-declarations)
+  - [Signed](#signed)
   - [Euclidean](#euclidean)
   - [Homogeneous/Projective](#homogeneousprojective)
   - [Mikowski/Spacetime](#mikowskispacetime)
@@ -152,7 +153,7 @@ According to the GATL conventions, the header file for each namespace is its nam
 | `e(index)` | Returns a runtime defined unit basis vector (index values can be defined using `c<IntegralValue>`, too) |
 | `scalar(arg)` | Converts the given numerical value to a scalar Clifford expression |
 | `pseudoscalar([mtr])` | Returns the compile-time defined unit pseudoscalar of the given space |
-| `vector([mtr ,] coords...)` | Makes a vector with the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
+| `vector([mtr,] coords...)` | Makes a vector with the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
 
 
 ### Products and Basic Operations
@@ -189,7 +190,7 @@ According to the GATL conventions, the header file for each namespace is its nam
 | `inv(arg [, mtr])` | Inverse of the given versor using the squared reverse norm |
 | `unit(arg [, mtr])` | Unit Clifford expression under reverse norm |
 
-| Versor Product | Description |
+| Transformation Operation | Description |
 | --- | --- |
 | `apply_even_versor(versor, arg [, mtr])` | Returns the argument `arg` transformed by the even versor using the sandwich product |
 | `apply_odd_versor(versor, arg [, mtr])` | Returns the argument `arg` transformed by the odd versor using the sandwich product |
@@ -299,29 +300,133 @@ According to the GATL conventions, the header file for each namespace is its nam
 
 ### Algebra-Specific Declarations
 
+#### Signed
+Specific classes, functions, procedures, and operators of a signed geometric algebras of R<sup>*p, q*</sup>.
+
+| Class | Descrition |
+| --- | --- |
+| `signed_metric_space<P, Q>` | Orthogonal metric space with signature (*p*, *q*) (*n* = *p* + *q*) |
+
+
 #### Euclidean
-Documentation under construction.
+Specific classes, functions, procedures, and operators of Euclidean geometric algebras of R<sup>*n*</sup>.
+
+| Class | Descrition |
+| --- | --- |
+| `euclidean_metric_space<N>` | Euclidean metric space |
 
 | Constant Value | Descrition |
 | --- | --- |
-| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ...) |
+| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<N>)`) |
+| `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
+| `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `I`) |
+
+| Function | Descrition |
+| --- | --- |
+| `euclidean_vector([mtr,] coords...)` | Makes a Euclidean vector with the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
+
+| Operation | Description |
+| --- | --- |
+| `project(lhs, rhs [, mtr])` | Orthogonal projection of blade `lhs` ontho blade `rhs` |
+| `reject(lhs, rhs [, mtr])` | Rejection of blade `lhs` by blade `rhs` |
+
 
 
 #### Homogeneous/Projective
-Documentation under construction.
+Specific classes, functions, procedures, and operators of homogeneous/projective geometric algebras of R<sup>*d*</sup> (*n* = *d* + 1).
+
+| Class | Descrition |
+| --- | --- |
+| `homogeneous_metric_space<D>` | Homogeneous/Projective metric space |
 
 | Constant Value | Descrition |
 | --- | --- |
-| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ...) |
-| `ep` | Euclidean homogeneous basis vector (`sp(ep, ep) = 1`) |
+| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
+| `ep` | Euclidean homogeneous basis vector (same as `e(c<D + 1>)`, `sp(ep, ep) = 1`) |
+| `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
+| `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, ep)`) |
+
+| Function | Descrition |
+| --- | --- |
+| `euclidean_vector([mtr,] coords...)` | Makes a Euclidean vector with the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
+| `point([mtr,] coords...)` | Makes a unit point using the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
+
+| Parameter Function | Description |
+| --- | --- |
+| `flat_direction(flat [, mtr])` | The direction parameter of a given flat |
+| `flat_moment(flat [, mtr])` | The moment parameter of a given flat |
+| `flat_support_vector(flat [, mtr])` | The support vector parameter of a given flat |
+| `flat_unit_support_point(flat [, mtr])` | The unit support point parameter of a given flat |
+
+| Transformation Operation | Description |
+| --- | --- |
+| `translate(direction, flat [, mtr])` | Translate the given flat to a given direction |
 
 
 #### Mikowski/Spacetime
-Documentation under construction.
+Specific classes, functions, procedures, and operators of Mikowski/spacetime geometric algebras of R<sup>*d*</sup> (*n* = *d* + 2).
+
+| Class | Descrition |
+| --- | --- |
+| `minkowski_metric_space<D>` | Minkowski/Spacetime metric space |
+
+| Constant Value | Descrition |
+| --- | --- |
+| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
+| `ep` | Positive extra basis vector (same as `e(c<D + 1>)`, `sp(ep, ep) = 1`) |
+| `em` | Negative extra basis vector (same as `e(c<D + 2>)`, `sp(em, em) = -1`) |
+| `no` | Null vector interpreted as the point at the origin (same as `(em - ep) / c<2>`) |
+| `ni` | Null vector interpreted as the point at infinity (same as `ep + em`) |
+| `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
+| `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, ep ^ em)`) |
+
+| Function | Descrition |
+| --- | --- |
+| `euclidean_vector([mtr,] coords...)` | Makes a Euclidean vector with the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
+| `point([mtr,] coords...)` | Makes a unit point using the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
+
+| Parameter Function | Description |
+| --- | --- |
+| `flat_direction(flat [, mtr])` | The direction parameter of a given flat |
+| `flat_location(flat [, mtr])` | The location parameter of a given flat |
+| `round_direction(round [, mtr])` | The direction parameter of a given round |
+| `round_location(round [, mtr])` | The location parameter of a given round |
+| `round_size_sqr(round [, mtr])` | The squared size parameter of a given round |
+| `tangent_direction(tangent [, mtr])` | The direction parameter of a given tangent |
+| `tangent_location(tangent [, mtr])` | The location parameter of a given tangent |
 
 
 #### Conformal
-Documentation under construction.
+Specific classes, functions, procedures, and operators of conformal geometric algebras of R<sup>*d*</sup> (*n* = *d* + 2).
+
+| Class | Descrition |
+| --- | --- |
+| `conformal_metric_space<D>` | Conformal metric space |
+
+| Constant Value | Descrition |
+| --- | --- |
+| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
+| `no` | Null vector interpreted as the point at the origin (same as `e(c<D + 1>)`) |
+| `ni` | Null vector interpreted as the point at infinity (same as `e(c<D + 2>)`) |
+| `ep` | Positive extra basis vector (same as `(ni / c<2>) - no`) |
+| `em` | Negative extra basis vector (same as `(ni / c<2>) + no`) |
+| `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
+| `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, no ^ ni)`) |
+
+| Function | Descrition |
+| --- | --- |
+| `euclidean_vector([mtr,] coords...)` | Makes a Euclidean vector with the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
+| `point([mtr,] coords...)` | Makes a unit point using the given set of coordinates (coordinate values can be defined using `c<IntegralValue>`, too) |
+
+| Parameter Function | Description |
+| --- | --- |
+| `flat_direction(flat [, mtr])` | The direction parameter of a given flat |
+| `flat_location(flat [, mtr])` | The location parameter of a given flat |
+| `round_direction(round [, mtr])` | The direction parameter of a given round |
+| `round_location(round [, mtr])` | The location parameter of a given round |
+| `round_size_sqr(round [, mtr])` | The squared size parameter of a given round |
+| `tangent_direction(tangent [, mtr])` | The direction parameter of a given tangent |
+| `tangent_location(tangent [, mtr])` | The location parameter of a given tangent |
 
 
 ## 7. Related Project
