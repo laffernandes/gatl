@@ -28,7 +28,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 namespace ga {
 
     // An exception of this type is thrown when a ga::checked_trivial_copy() fails.
-    class bad_checked_copy : public std::exception {
+    class bad_checked_copy_exception : public std::exception {
     public:
 
         virtual const char* what() const noexcept {
@@ -378,7 +378,7 @@ namespace ga {
             template<typename InputValueItr, typename InputBitsetItr, typename InputMapItr, typename ToleranceType>
             constexpr static void run(InputValueItr &input_value_itr, InputBitsetItr const &, InputMapItr const &, ToleranceType const &tol) {
                 if (std::abs(*input_value_itr) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
-                    throw bad_checked_copy();
+                    throw bad_checked_copy_exception();
                 }
                 std::advance(input_value_itr, 1);
             }
@@ -389,7 +389,7 @@ namespace ga {
             template<typename InputValueItr, typename InputBitsetItr, typename InputMapItr, typename ToleranceType>
             constexpr static void run(InputValueItr &input_value_itr, InputBitsetItr &input_bitset_itr, InputMapItr const &, ToleranceType const &tol) {
                 if (std::abs(*input_value_itr) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
-                    throw bad_checked_copy();
+                    throw bad_checked_copy_exception();
                 }
                 std::advance(input_value_itr, 1);
                 std::advance(input_bitset_itr, 1);
@@ -402,7 +402,7 @@ namespace ga {
             constexpr static void run(InputValueItr const &, InputBitsetItr const &, InputMapItr &input_map_itr, ToleranceType const &tol) {
                 for (auto const &pair : *input_map_itr) {
                     if (std::abs(pair.second) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
-                        throw bad_checked_copy();
+                        throw bad_checked_copy_exception();
                     }
                 }
                 std::advance(input_map_itr, 1);

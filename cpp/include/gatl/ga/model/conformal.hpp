@@ -22,19 +22,23 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA_UTIL_HPP__
-#define __GA_UTIL_HPP__
+#ifndef __GA_MODEL_CONFORMAL_HPP__
+#define __GA_MODEL_CONFORMAL_HPP__
 
-#include "ga/util/basis_vector.hpp"
-#include "ga/util/basis_blade.hpp"
-#include "ga/util/pseudoscalar.hpp"
+#include "conformal/metric_space.hpp"
 
-#include "ga/util/vector.hpp"
-#include "ga/util/multivector.hpp"
+#include "conformal/euclidean_vector.hpp"
+#include "conformal/point.hpp"
 
-#include "ga/util/for_each_basis_vector.hpp"
-#include "ga/util/for_each_component.hpp"
+#include "conformal/flat_direction.hpp"
+#include "conformal/flat_location.hpp"
+#include "conformal/round_direction.hpp"
+#include "conformal/round_location.hpp"
+#include "conformal/round_size_sqr.hpp"
+#include "conformal/tangent_direction.hpp"
+#include "conformal/tangent_location.hpp"
 
-#include "ga/util/macro_for_algebra_overload.hpp"
+#include "conformal/macro_for_algebra_definition.hpp"
+#include "conformal/macro_for_algebra_overload.hpp"
 
-#endif // __GA_UTIL_HPP__
+#endif // __GA_MODEL_CONFORMAL_HPP__

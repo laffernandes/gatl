@@ -22,24 +22,27 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA_MODEL_MINKOWSKI_HPP__
-#define __GA_MODEL_MINKOWSKI_HPP__
+#ifndef __GA1M_HPP__
+#define __GA1M_HPP__
 
-#include "ga/model/signed/metric_space.hpp"
-#include "ga/model/signed/minkowski/metric_space.hpp"
+#include "ga/core.hpp"
+#include "ga/util.hpp"
+#include "ga/extra.hpp"
+#include "ga/model/minkowski.hpp"
 
-#include "ga/model/signed/minkowski/euclidean_vector.hpp"
-#include "ga/model/signed/minkowski/point.hpp"
+namespace ga1m {
 
-#include "ga/model/signed/minkowski/flat_direction.hpp"
-#include "ga/model/signed/minkowski/flat_location.hpp"
-#include "ga/model/signed/minkowski/round_direction.hpp"
-#include "ga/model/signed/minkowski/round_location.hpp"
-#include "ga/model/signed/minkowski/round_size_sqr.hpp"
-#include "ga/model/signed/minkowski/tangent_direction.hpp"
-#include "ga/model/signed/minkowski/tangent_location.hpp"
+    using namespace ga;
 
-#include "ga/model/signed/minkowski/macro_for_algebra_definition.hpp"
-#include "ga/model/signed/minkowski/macro_for_algebra_overload.hpp"
+    _GA_MINKOWSKI_ALGEBRA_DEFINITION(space, basis_vectors_names, 1, "e1")
 
-#endif // __GA_MODEL_MINKOWSKI_HPP__
+    static auto const e1 = e(c<1>);
+
+    _GA_CORE_OVERLOAD(space)
+    _GA_UTIL_OVERLOAD(space)
+    _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
+    _GA_MINKOWSKI_ALGEBRA_OVERLOAD(space)
+
+}
+
+#endif // __GA1M_HPP__

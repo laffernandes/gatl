@@ -22,40 +22,24 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA_EXTRA_HPP__
-#define __GA_EXTRA_HPP__
+#ifndef __GA_MODEL_MINKOWSKI_HPP__
+#define __GA_MODEL_MINKOWSKI_HPP__
 
-#include "ga/extra/default_tolerance.hpp"
+#include "signed/metric_space.hpp"
+#include "signed/minkowski/metric_space.hpp"
 
-#include "ga/extra/grade.hpp"
-#include "ga/extra/take_grade.hpp"
+#include "signed/minkowski/euclidean_vector.hpp"
+#include "signed/minkowski/point.hpp"
 
-#include "ga/extra/reverse_norm.hpp"
-#include "ga/extra/unit.hpp"
+#include "signed/minkowski/flat_direction.hpp"
+#include "signed/minkowski/flat_location.hpp"
+#include "signed/minkowski/round_direction.hpp"
+#include "signed/minkowski/round_location.hpp"
+#include "signed/minkowski/round_size_sqr.hpp"
+#include "signed/minkowski/tangent_direction.hpp"
+#include "signed/minkowski/tangent_location.hpp"
 
-#include "ga/extra/versor_inverse.hpp"
-#include "ga/extra/inverse_geometric_product.hpp"
-#include "ga/extra/arithmetic_operators.hpp"
+#include "signed/minkowski/macro_for_algebra_definition.hpp"
+#include "signed/minkowski/macro_for_algebra_overload.hpp"
 
-#include "ga/extra/apply_versor.hpp"
-#include "ga/extra/blade_exponential.hpp"
-
-#include "ga/extra/commutator_product.hpp"
-#include "ga/extra/delta_product.hpp"
-
-#include "ga/extra/dualization.hpp"
-
-#include "ga/extra/trivial_copy.hpp"
-
-#include "ga/extra/fast_meet_and_join.hpp"
-#include "ga/extra/fast_plunge.hpp"
-#include "ga/extra/meet_and_join.hpp"
-#include "ga/extra/plunge.hpp"
-
-#include "ga/extra/tests.hpp"
-
-#include "ga/extra/write.hpp"
-
-#include "ga/extra/macro_for_algebra_overload.hpp"
-
-#endif // __GA_EXTRA_HPP__
+#endif // __GA_MODEL_MINKOWSKI_HPP__

@@ -22,23 +22,28 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA_MODEL_HOMOGENEOUS_HPP__
-#define __GA_MODEL_HOMOGENEOUS_HPP__
+#ifndef __GA2C_HPP__
+#define __GA2C_HPP__
 
-#include "ga/model/signed/metric_space.hpp"
-#include "ga/model/signed/homogeneous/metric_space.hpp"
+#include "ga/core.hpp"
+#include "ga/util.hpp"
+#include "ga/extra.hpp"
+#include "ga/model/conformal.hpp"
 
-#include "ga/model/signed/homogeneous/euclidean_vector.hpp"
-#include "ga/model/signed/homogeneous/point.hpp"
+namespace ga2c {
 
-#include "ga/model/signed/homogeneous/flat_direction.hpp"
-#include "ga/model/signed/homogeneous/flat_moment.hpp"
-#include "ga/model/signed/homogeneous/flat_support_vector.hpp"
-#include "ga/model/signed/homogeneous/flat_unit_support_point.hpp"
+    using namespace ga;
 
-#include "ga/model/signed/homogeneous/translation.hpp"
+    _GA_CONFORMAL_ALGEBRA_DEFINITION(space, basis_vectors_names, 2, "e1", "e2")
+        
+    static auto const e1 = e(c<1>);
+    static auto const e2 = e(c<2>);
 
-#include "ga/model/signed/homogeneous/macro_for_algebra_definition.hpp"
-#include "ga/model/signed/homogeneous/macro_for_algebra_overload.hpp"
+    _GA_CORE_OVERLOAD(space)
+    _GA_UTIL_OVERLOAD(space)
+    _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
+    _GA_CONFORMAL_ALGEBRA_OVERLOAD(space)
 
-#endif // __GA_MODEL_HOMOGENEOUS_HPP__
+}
+
+#endif // __GA2C_HPP__

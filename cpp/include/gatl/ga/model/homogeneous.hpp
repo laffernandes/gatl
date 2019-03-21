@@ -22,31 +22,23 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA5E_HPP__
-#define __GA5E_HPP__
+#ifndef __GA_MODEL_HOMOGENEOUS_HPP__
+#define __GA_MODEL_HOMOGENEOUS_HPP__
 
-#include <ga/core.hpp>
-#include <ga/util.hpp>
-#include <ga/extra.hpp>
-#include <ga/model/euclidean.hpp>
+#include "signed/metric_space.hpp"
+#include "signed/homogeneous/metric_space.hpp"
 
-namespace ga5e {
+#include "signed/homogeneous/euclidean_vector.hpp"
+#include "signed/homogeneous/point.hpp"
 
-    using namespace ga;
+#include "signed/homogeneous/flat_direction.hpp"
+#include "signed/homogeneous/flat_moment.hpp"
+#include "signed/homogeneous/flat_support_vector.hpp"
+#include "signed/homogeneous/flat_unit_support_point.hpp"
 
-    _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, 5, "e1", "e2", "e3", "e4", "e5")
+#include "signed/homogeneous/translation.hpp"
 
-    static auto const e1 = e(c<1>);
-    static auto const e2 = e(c<2>);
-    static auto const e3 = e(c<3>);
-    static auto const e4 = e(c<4>);
-    static auto const e5 = e(c<5>);
+#include "signed/homogeneous/macro_for_algebra_definition.hpp"
+#include "signed/homogeneous/macro_for_algebra_overload.hpp"
 
-    _GA_CORE_OVERLOAD(space)
-    _GA_UTIL_OVERLOAD(space)
-    _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-    _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(space)
-
-}
-
-#endif // __GA5E_HPP__
+#endif // __GA_MODEL_HOMOGENEOUS_HPP__

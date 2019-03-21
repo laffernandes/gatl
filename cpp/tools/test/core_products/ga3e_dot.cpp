@@ -23,7 +23,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
 #include "common.hpp"
-#include <ga3e.hpp>
+#include <gatl/ga3e.hpp>
 
 using namespace ga3e;
 

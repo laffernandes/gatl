@@ -22,27 +22,40 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA1E_HPP__
-#define __GA1E_HPP__
+#ifndef __GA_EXTRA_HPP__
+#define __GA_EXTRA_HPP__
 
-#include <ga/core.hpp>
-#include <ga/util.hpp>
-#include <ga/extra.hpp>
-#include <ga/model/euclidean.hpp>
+#include "extra/default_tolerance.hpp"
 
-namespace ga1e {
+#include "extra/grade.hpp"
+#include "extra/take_grade.hpp"
 
-    using namespace ga;
+#include "extra/reverse_norm.hpp"
+#include "extra/unit.hpp"
 
-    _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, 1, "e1")
+#include "extra/versor_inverse.hpp"
+#include "extra/inverse_geometric_product.hpp"
+#include "extra/arithmetic_operators.hpp"
 
-    static auto const e1 = e(c<1>);
+#include "extra/apply_versor.hpp"
+#include "extra/blade_exponential.hpp"
 
-    _GA_CORE_OVERLOAD(space)
-    _GA_UTIL_OVERLOAD(space)
-    _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-    _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(space)
+#include "extra/commutator_product.hpp"
+#include "extra/delta_product.hpp"
 
-}
+#include "extra/dualization.hpp"
 
-#endif // __GA1E_HPP__
+#include "extra/trivial_copy.hpp"
+
+#include "extra/fast_meet_and_join.hpp"
+#include "extra/fast_plunge.hpp"
+#include "extra/meet_and_join.hpp"
+#include "extra/plunge.hpp"
+
+#include "extra/tests.hpp"
+
+#include "extra/write.hpp"
+
+#include "extra/macro_for_algebra_overload.hpp"
+
+#endif // __GA_EXTRA_HPP__

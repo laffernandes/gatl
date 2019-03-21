@@ -22,7 +22,7 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#include <ga5e.hpp>
+#include <gatl/ga5e.hpp>
 #include <gtest/gtest.h>
 
 using namespace ga5e;

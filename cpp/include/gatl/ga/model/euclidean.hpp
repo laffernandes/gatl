@@ -22,29 +22,18 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA3E_HPP__
-#define __GA3E_HPP__
+#ifndef __GA_MODEL_EUCLIDEAN_HPP__
+#define __GA_MODEL_EUCLIDEAN_HPP__
 
-#include <ga/core.hpp>
-#include <ga/util.hpp>
-#include <ga/extra.hpp>
-#include <ga/model/euclidean.hpp>
+#include "signed/metric_space.hpp"
+#include "signed/euclidean/metric_space.hpp"
 
-namespace ga3e {
+#include "signed/euclidean/euclidean_vector.hpp"
 
-    using namespace ga;
+#include "signed/euclidean/orthogonal_projection.hpp"
+#include "signed/euclidean/rejection.hpp"
 
-    _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, 3, "e1", "e2", "e3")
+#include "signed/euclidean/macro_for_algebra_definition.hpp"
+#include "signed/euclidean/macro_for_algebra_overload.hpp"
 
-    static auto const e1 = e(c<1>);
-    static auto const e2 = e(c<2>);
-    static auto const e3 = e(c<3>);
-
-    _GA_CORE_OVERLOAD(space)
-    _GA_UTIL_OVERLOAD(space)
-    _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-    _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(space)
-
-}
-
-#endif // __GA3E_HPP__
+#endif // __GA_MODEL_EUCLIDEAN_HPP__

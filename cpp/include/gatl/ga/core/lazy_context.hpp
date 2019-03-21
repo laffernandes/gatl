@@ -221,11 +221,16 @@ namespace ga {
 
             using expression_type = stored_value;
 
+#pragma warning( push )
+#pragma warning( disable : 4244 )
+
             template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
             constexpr static void run(ValueItr &value_itr, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &args) noexcept {
                 *value_itr = Expression::template eval<LowerTag, UpperTag>(args);
                 std::advance(value_itr, 1);
             }
+
+#pragma warning( pop )
         };
 
         template<tag_t LowerTag, tag_t UpperTag, typename Expression>

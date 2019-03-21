@@ -22,8 +22,8 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#include <ga.hpp>
-#include <ga/model/signed/metric_space.hpp>
+#include <gatl/ga.hpp>
+#include <gatl/ga/model/signed/metric_space.hpp>
 #include <gtest/gtest.h>
 
 using namespace ga;

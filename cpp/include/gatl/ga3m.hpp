@@ -22,28 +22,29 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA2E_HPP__
-#define __GA2E_HPP__
+#ifndef __GA3M_HPP__
+#define __GA3M_HPP__
 
-#include <ga/core.hpp>
-#include <ga/util.hpp>
-#include <ga/extra.hpp>
-#include <ga/model/euclidean.hpp>
+#include "ga/core.hpp"
+#include "ga/util.hpp"
+#include "ga/extra.hpp"
+#include "ga/model/minkowski.hpp"
 
-namespace ga2e {
+namespace ga3m {
 
     using namespace ga;
 
-    _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, 2, "e1", "e2")
+    _GA_MINKOWSKI_ALGEBRA_DEFINITION(space, basis_vectors_names, 3, "e1", "e2", "e3")
 
     static auto const e1 = e(c<1>);
     static auto const e2 = e(c<2>);
+    static auto const e3 = e(c<3>);
 
     _GA_CORE_OVERLOAD(space)
     _GA_UTIL_OVERLOAD(space)
     _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-    _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(space)
+    _GA_MINKOWSKI_ALGEBRA_OVERLOAD(space)
 
 }
 
-#endif // __GA2E_HPP__
+#endif // __GA3M_HPP__

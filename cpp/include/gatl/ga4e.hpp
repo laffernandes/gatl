@@ -25,10 +25,10 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #ifndef __GA4E_HPP__
 #define __GA4E_HPP__
 
-#include <ga/core.hpp>
-#include <ga/util.hpp>
-#include <ga/extra.hpp>
-#include <ga/model/euclidean.hpp>
+#include "ga/core.hpp"
+#include "ga/util.hpp"
+#include "ga/extra.hpp"
+#include "ga/model/euclidean.hpp"
 
 namespace ga4e {
 

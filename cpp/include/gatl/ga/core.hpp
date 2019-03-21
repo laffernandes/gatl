@@ -61,7 +61,7 @@ namespace ga {
     using grade_t = default_integral_t;
 
     using index_t = std::uint64_t;
-    using ndims_t = std::uint64_t;
+    using ndims_t = index_t;
 
     template<typename ValueType>
     using associative_container_t = std::map<bitset_t, ValueType>;
@@ -71,57 +71,57 @@ namespace ga {
 
 }
 
-#include "ga/core/exceptions.hpp"
-#include "ga/core/type_traits_extension.hpp"
+#include "core/exceptions.hpp"
+#include "core/type_traits_extension.hpp"
 
-#include "ga/core/constexpr.hpp"
+#include "core/constexpr.hpp"
 
-#include "ga/core/expression.hpp"
-#include "ga/core/expression_traits.hpp"
+#include "core/expression.hpp"
+#include "core/expression_traits.hpp"
 
-#include "ga/core/metric_space.hpp"
-#include "ga/core/real_metric_space.hpp"
+#include "core/metric_space.hpp"
+#include "core/real_metric_space.hpp"
 
-#include "ga/core/mapping.hpp"
+#include "core/mapping.hpp"
 
-#include "ga/core/expression_relational_operators.hpp"
-#include "ga/core/expression_graded_unary_minus.hpp"
+#include "core/expression_relational_operators.hpp"
+#include "core/expression_graded_unary_minus.hpp"
 
-#include "ga/core/rules.hpp"
-#include "ga/core/expression_simplification_addition_values.hpp"
-#include "ga/core/expression_simplification_addition_components.hpp"
-#include "ga/core/expression_simplification_product_values.hpp"
-#include "ga/core/expression_simplification_product_components.hpp"
-#include "ga/core/expression_simplification_power.hpp"
+#include "core/rules.hpp"
+#include "core/expression_simplification_addition_values.hpp"
+#include "core/expression_simplification_addition_components.hpp"
+#include "core/expression_simplification_product_values.hpp"
+#include "core/expression_simplification_product_components.hpp"
+#include "core/expression_simplification_power.hpp"
 
-#include "ga/core/clifford_expression.hpp"
+#include "core/clifford_expression.hpp"
 
-#include "ga/core/lazy_context.hpp"
+#include "core/lazy_context.hpp"
 
-#include "ga/core/constant.hpp"
-#include "ga/core/scalar.hpp"
+#include "core/constant.hpp"
+#include "core/scalar.hpp"
 
-#include "ga/core/conjugation.hpp"
-#include "ga/core/involution.hpp"
-#include "ga/core/reversion.hpp"
+#include "core/conjugation.hpp"
+#include "core/involution.hpp"
+#include "core/reversion.hpp"
 
-#include "ga/core/exterior_product_mapping.hpp"
-#include "ga/core/regressive_product_mapping.hpp"
-#include "ga/core/orthogonal_metric_mapping.hpp"
-#include "ga/core/general_metric_mapping.hpp"
+#include "core/exterior_product_mapping.hpp"
+#include "core/regressive_product_mapping.hpp"
+#include "core/orthogonal_metric_mapping.hpp"
+#include "core/general_metric_mapping.hpp"
 
-#include "ga/core/dot_product.hpp"
-#include "ga/core/geometric_product.hpp"
-#include "ga/core/hestenes_inner_product.hpp"
-#include "ga/core/left_contraction.hpp"
-#include "ga/core/outer_product.hpp"
-#include "ga/core/regressive_product.hpp"
-#include "ga/core/right_contraction.hpp"
-#include "ga/core/scalar_product.hpp"
+#include "core/dot_product.hpp"
+#include "core/geometric_product.hpp"
+#include "core/hestenes_inner_product.hpp"
+#include "core/left_contraction.hpp"
+#include "core/outer_product.hpp"
+#include "core/regressive_product.hpp"
+#include "core/right_contraction.hpp"
+#include "core/scalar_product.hpp"
 
-#include "ga/core/math.hpp"
-#include "ga/core/arithmetic_operators.hpp"
+#include "core/math.hpp"
+#include "core/arithmetic_operators.hpp"
 
-#include "ga/core/macro_for_algebra_overload.hpp"
+#include "core/macro_for_algebra_overload.hpp"
 
 #endif // __GA_CORE_HPP__

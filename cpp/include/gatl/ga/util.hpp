@@ -22,30 +22,19 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA4H_HPP__
-#define __GA4H_HPP__
+#ifndef __GA_UTIL_HPP__
+#define __GA_UTIL_HPP__
 
-#include <ga/core.hpp>
-#include <ga/util.hpp>
-#include <ga/extra.hpp>
-#include <ga/model/homogeneous.hpp>
+#include "util/basis_vector.hpp"
+#include "util/basis_blade.hpp"
+#include "util/pseudoscalar.hpp"
 
-namespace ga4h {
+#include "util/vector.hpp"
+#include "util/multivector.hpp"
 
-    using namespace ga;
+#include "util/for_each_basis_vector.hpp"
+#include "util/for_each_component.hpp"
 
-    _GA_HOMOGENEOUS_ALGEBRA_DEFINITION(space, basis_vectors_names, 4, "e1", "e2", "e3", "e4")
-    
-    static auto const e1 = e(c<1>);
-    static auto const e2 = e(c<2>);
-    static auto const e3 = e(c<3>);
-    static auto const e4 = e(c<4>);
+#include "util/macro_for_algebra_overload.hpp"
 
-    _GA_CORE_OVERLOAD(space)
-    _GA_UTIL_OVERLOAD(space)
-    _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-    _GA_HOMOGENEOUS_ALGEBRA_OVERLOAD(space)
-
-}
-
-#endif // __GA4H_HPP__
+#endif // __GA_UTIL_HPP__

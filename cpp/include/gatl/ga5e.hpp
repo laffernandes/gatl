@@ -22,28 +22,31 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA2C_HPP__
-#define __GA2C_HPP__
+#ifndef __GA5E_HPP__
+#define __GA5E_HPP__
 
-#include <ga/core.hpp>
-#include <ga/util.hpp>
-#include <ga/extra.hpp>
-#include <ga/model/conformal.hpp>
+#include "ga/core.hpp"
+#include "ga/util.hpp"
+#include "ga/extra.hpp"
+#include "ga/model/euclidean.hpp"
 
-namespace ga2c {
+namespace ga5e {
 
     using namespace ga;
 
-    _GA_CONFORMAL_ALGEBRA_DEFINITION(space, basis_vectors_names, 2, "e1", "e2")
-        
+    _GA_EUCLIDEAN_ALGEBRA_DEFINITION(space, basis_vectors_names, 5, "e1", "e2", "e3", "e4", "e5")
+
     static auto const e1 = e(c<1>);
     static auto const e2 = e(c<2>);
+    static auto const e3 = e(c<3>);
+    static auto const e4 = e(c<4>);
+    static auto const e5 = e(c<5>);
 
     _GA_CORE_OVERLOAD(space)
     _GA_UTIL_OVERLOAD(space)
     _GA_EXTRA_OVERLOAD(space, basis_vectors_names)
-    _GA_CONFORMAL_ALGEBRA_OVERLOAD(space)
+    _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(space)
 
 }
 
-#endif // __GA2C_HPP__
+#endif // __GA5E_HPP__

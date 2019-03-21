@@ -25,7 +25,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #ifndef __GA_TEST_HPP__
 #define __GA_TEST_HPP__
 
-#include <ga.hpp>
+#include <gatl/ga.hpp>
 #include <gtest/gtest.h>
 
 //TODO Missing testing cases: rp, *, ^, conjugation, involution, reversion, math
