@@ -31,6 +31,9 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
     static space_t const SPACE; \
     static std::array<std::string, N> const BASIS_VECTORS_NAMES = { __VA_ARGS__ }; \
     \
+    static auto const _0 = c<0>; \
+    static auto const _1 = c<1>; \
+    \
     static auto const I = pseudoscalar(SPACE); \
     static auto const Ie = I;
 

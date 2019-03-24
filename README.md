@@ -342,15 +342,21 @@ In the following sub-section, you find declarations that are specific of the res
 
 
 #### Signed
-Classes, constant values, functions, procedures, and operators of signed geometric algebras of R<sup>*p, q*</sup>.
+Classes and constants of signed geometric algebras of R<sup>*p, q*</sup>.
 
 | Class | Descrition |
 | --- | --- |
 | `signed_metric_space<P, Q>` | Orthogonal metric space with signature (*p*, *q*) (*n* = *p* + *q*) |
 
+| Constant Value | Descrition |
+| --- | --- |
+| `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
+| `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
+| `space` | An instance of the orthogonal metric space class with signature (*p*, *q*) |
+
 
 #### Euclidean
-Classes, functions, procedures, and operators of Euclidean geometric algebras of R<sup>*n*</sup>.
+Classes, constants, functions, and operations of Euclidean geometric algebras of R<sup>*n*</sup>. They are available in the following namespaces: `ga1e`, `ga2e`, `ga3e`, `ga4e`, and `ga5e`.
 
 | Class | Descrition |
 | --- | --- |
@@ -358,9 +364,11 @@ Classes, functions, procedures, and operators of Euclidean geometric algebras of
 
 | Constant Value | Descrition |
 | --- | --- |
+| `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
 | `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<N>)`) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `I`) |
+| `space` | An instance of the Euclidean metric space class |
 
 | Function | Descrition |
 | --- | --- |
@@ -373,7 +381,7 @@ Classes, functions, procedures, and operators of Euclidean geometric algebras of
 
 
 #### Homogeneous/Projective
-Classes, constant values, functions, procedures, and operators of homogeneous/projective geometric algebras of R<sup>*d*</sup> (*n* = *d* + 1).
+Classes, constants, functions, and operations of homogeneous/projective geometric algebras of R<sup>*d*</sup> (*n* = *d* + 1). They are available in the following namespaces: `ga1h`, `ga2h`, `ga3h`, and `ga4h`.
 
 | Class | Descrition |
 | --- | --- |
@@ -381,10 +389,12 @@ Classes, constant values, functions, procedures, and operators of homogeneous/pr
 
 | Constant Value | Descrition |
 | --- | --- |
+| `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
 | `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
 | `ep` | Positive extra basis vector interpreted as the point at the origin (same as `e(c<D + 1>)`) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, ep)`) |
+| `space` | An instance of the homogeneous/projective metric space class |
 
 | Function | Descrition |
 | --- | --- |
@@ -404,7 +414,7 @@ Classes, constant values, functions, procedures, and operators of homogeneous/pr
 
 
 #### Mikowski/Spacetime
-Classes, constant values, functions, procedures, and operators of Mikowski/spacetime geometric algebras of R<sup>*d*</sup> (*n* = *d* + 2).
+Classes, constants, functions, and operations of Mikowski/spacetime geometric algebras of R<sup>*d*</sup> (*n* = *d* + 2). They are available in the following namespaces: `ga1m`, `ga2m`, and `ga3m`.
 
 | Class | Descrition |
 | --- | --- |
@@ -412,6 +422,7 @@ Classes, constant values, functions, procedures, and operators of Mikowski/space
 
 | Constant Value | Descrition |
 | --- | --- |
+| `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
 | `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
 | `ep` | Positive extra basis vector (same as `e(c<D + 1>)`) |
 | `em` | Negative extra basis vector (same as `e(c<D + 2>)`) |
@@ -419,6 +430,7 @@ Classes, constant values, functions, procedures, and operators of Mikowski/space
 | `ni` | Null vector interpreted as the point at infinity (same as `ep + em`) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, ep ^ em)`) |
+| `space` | An instance of the Minkowski/spacetime metric space class |
 
 | Function | Descrition |
 | --- | --- |
@@ -437,7 +449,7 @@ Classes, constant values, functions, procedures, and operators of Mikowski/space
 
 
 #### Conformal
-Classes, constant values, functions, procedures, and operators of conformal geometric algebras of R<sup>*d*</sup> (*n* = *d* + 2).
+Classes, constants, functions, and operations of conformal geometric algebras of R<sup>*d*</sup> (*n* = *d* + 2). They are available in the following namespaces: `ga1c`, `ga2c`, and `ga3c`.
 
 | Class | Descrition |
 | --- | --- |
@@ -445,6 +457,7 @@ Classes, constant values, functions, procedures, and operators of conformal geom
 
 | Constant Value | Descrition |
 | --- | --- |
+| `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
 | `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
 | `no` | Null vector interpreted as the point at the origin (same as `e(c<D + 1>)`) |
 | `ni` | Null vector interpreted as the point at infinity (same as `e(c<D + 2>)`) |
@@ -452,6 +465,7 @@ Classes, constant values, functions, procedures, and operators of conformal geom
 | `em` | Negative extra basis vector (same as `(ni / c<2>) + no`) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, no ^ ni)`) |
+| `space` | An instance of the conformal metric space class |
 
 | Function | Descrition |
 | --- | --- |

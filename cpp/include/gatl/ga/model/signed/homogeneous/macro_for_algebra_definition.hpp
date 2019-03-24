@@ -33,6 +33,9 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
     \
     static auto const ep = e(c<D + 1>); \
     \
+    static auto const _0 = c<0>; \
+    static auto const _1 = c<1>; \
+    \
     static auto const I = pseudoscalar(SPACE); \
     static auto const Ie = rcont(I, ep, SPACE);
 

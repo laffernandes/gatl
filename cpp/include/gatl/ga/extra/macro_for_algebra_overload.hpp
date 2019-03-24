@@ -117,11 +117,6 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
     } \
     \
     template<typename CoefficientType, typename Expression, typename ToleranceType> \
-    constexpr bool is_invertible(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept{ \
-        return is_invertible(arg, tol, SPACE); \
-    } \
-    \
-    template<typename CoefficientType, typename Expression, typename ToleranceType> \
     constexpr bool is_null(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept{ \
         return is_null(arg, tol, SPACE); \
     } \

@@ -37,6 +37,9 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
     static auto const no = (em - ep) / c<2>; \
     static auto const ni = ep + em; \
     \
+    static auto const _0 = c<0>; \
+    static auto const _1 = c<1>; \
+    \
     static auto const I = pseudoscalar(SPACE); \
     static auto const Ie = rcont(I, op(ep, em, SPACE), SPACE);
 

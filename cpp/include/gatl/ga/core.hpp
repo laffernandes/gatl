@@ -123,5 +123,6 @@ namespace ga {
 #include "core/arithmetic_operators.hpp"
 
 #include "core/macro_for_algebra_overload.hpp"
+#include "core/macro_for_mapping_specialization.hpp"
 
 #endif // __GA_CORE_HPP__

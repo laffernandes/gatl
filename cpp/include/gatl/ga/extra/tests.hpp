@@ -38,12 +38,6 @@ namespace ga {
         return is_zero(arg, default_tolerance<CoefficientType>());
     }
 
-    // Returns whether the given Clifford expression is invertible (only for blades and versors).
-    template<typename CoefficientType, typename Expression, typename ToleranceType, typename MetricSpaceType>
-    constexpr bool is_invertible(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) noexcept {
-        return is_versor(arg, tol, mtr); // All invertible blades are also versors; and all versors are invertible.
-    }
-
     // Returns whether the given Clifford expression is a null multivector up to an assumed numerical error.
     template<typename CoefficientType, typename Expression, typename ToleranceType, typename MetricSpaceType>
     constexpr bool is_null(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) noexcept {

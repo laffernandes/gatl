@@ -29,6 +29,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
     using space_t = signed_metric_space<P, Q>; \
     \
     static space_t const SPACE; \
-    static std::array<std::string, P + Q> const BASIS_VECTORS_NAMES = { __VA_ARGS__ };
+    static std::array<std::string, P + Q> const BASIS_VECTORS_NAMES = { __VA_ARGS__ }; \
+    \
+    static auto const _0 = c<0>; \
+    static auto const _1 = c<1>; \
+    \
+    static auto const I = pseudoscalar(SPACE);
 
 #endif // __GA_MODEL_SIGNED_MACRO_FOR_ALGEBRA_DEFINITION_HPP__

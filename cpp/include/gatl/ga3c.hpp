@@ -46,5 +46,5 @@ namespace ga3c {
     _GA_CONFORMAL_ALGEBRA_OVERLOAD(space)
 
 }
-
+    
 #endif // __GA3C_HPP__
