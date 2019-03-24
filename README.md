@@ -365,7 +365,7 @@ Classes, constants, functions, and operations of Euclidean geometric algebras of
 | Constant Value | Descrition |
 | --- | --- |
 | `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
-| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<N>)`) |
+| `e1`, `e2`, ..., `eN` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<N>)`) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `I`) |
 | `space` | An instance of the Euclidean metric space class |
@@ -390,7 +390,7 @@ Classes, constants, functions, and operations of homogeneous/projective geometri
 | Constant Value | Descrition |
 | --- | --- |
 | `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
-| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
+| `e1`, `e2`, ..., `eD` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
 | `ep` | Positive extra basis vector interpreted as the point at the origin (same as `e(c<D + 1>)`) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, ep)`) |
@@ -423,7 +423,7 @@ Classes, constants, functions, and operations of Mikowski/spacetime geometric al
 | Constant Value | Descrition |
 | --- | --- |
 | `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
-| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
+| `e1`, `e2`, ..., `eD` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
 | `ep` | Positive extra basis vector (same as `e(c<D + 1>)`) |
 | `em` | Negative extra basis vector (same as `e(c<D + 2>)`) |
 | `no` | Null vector interpreted as the point at the origin (same as `(em - ep) / c<2>`) |
@@ -458,7 +458,7 @@ Classes, constants, functions, and operations of conformal geometric algebras of
 | Constant Value | Descrition |
 | --- | --- |
 | `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
-| `e1`, `e2`, ... | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
+| `e1`, `e2`, ..., `eD` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
 | `no` | Null vector interpreted as the point at the origin (same as `e(c<D + 1>)`) |
 | `ni` | Null vector interpreted as the point at infinity (same as `e(c<D + 2>)`) |
 | `ep` | Positive extra basis vector (same as `(ni / c<2>) - no`) |
