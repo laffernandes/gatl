@@ -7,7 +7,7 @@ GATL uses template meta-programming to implement the [lazy evaluation](https://e
 
 Please, let me know if you want to contribute to this project. [Here](http://www.ic.uff.br/~laffernandes) you will find my contact information.
 
-Contents:
+**Contents:**
 1. [Requirements](#1-requirements)
 2. [How to "Install" GATL](#2-how-to-install-gatl)
 3. [Compiling Examples](#3-compiling-examples)
