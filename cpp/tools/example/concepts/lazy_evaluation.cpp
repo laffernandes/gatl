@@ -79,9 +79,6 @@ int main() {
 
         auto eval_l = lazy.eval(l);
 
-        std::cout << "zero = " << _0 << std::endl;
-        std::cout << "one = " << _1 << std::endl;
-        std::cout << std::endl;
         std::cout << "x = " << x << std::endl;
         std::cout << "y = " << y << std::endl;
         std::cout << "z = " << z << std::endl;
