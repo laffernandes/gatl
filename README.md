@@ -319,11 +319,8 @@ GATL includes a set of useful functions, procedures, and meta-functions to help 
 
 | Testing Function | Description |
 | --- | --- |
-| `is_blade(arg [, tol] [, mtr])` | Returns whether the given argument is a blade |
-| `is_invertible(arg [, tol] [, mtr])` | Returns whether the given argument is invertible (only for blades and versors) |
 | `is_null(arg [, tol] [, mtr])` | Returns whether the given argument is a null multivector |
 | `is_unit(arg [, tol] [, mtr])` | Returns whether the given argument is an unit multivector |
-| `is_versor(arg [, tol] [, mtr])` | Returns whether the given argument is a versor |
 | `is_zero(arg [, tol])` | Returns whether the given argument is equal to zero |
 
 | Copy Procedure | Description |
