@@ -1,17 +1,4 @@
 # GATL: Geometric Algebra Template Library
-
-Contents:
-1. [Overview](#1-overview)
-2. [Requirements](#2-requirements)
-3. [How to "Install" GATL](#3-how-to-install-gatl)
-4. [Compiling Examples](#4-compiling-examples)
-5. [Compiling and Running Unit-Tests](#5-compiling-and-running-unit-tests)
-6. [Documentation](#6-documentation)
-7. [Related Project](#7-related-project)
-8. [License](#8-license)
-
-
-## 1. Overview
 GATL is a C++ library for Euclidean, homogeneous/projective, Mikowski/spacetime, conformal, and arbitrary [geometric algebras](https://en.wikipedia.org/wiki/Geometric_algebra).
 
 Geometric algebra is a powerful mathematical system encompassing many mathematical concepts (*e.g.*, [complex numbers](https://en.wikipedia.org/wiki/Complex_number), [quaternions algebra](https://en.wikipedia.org/wiki/Quaternion_algebra), [Grassmann-Cayley algebra](https://en.wikipedia.org/wiki/Grassmann%E2%80%93Cayley_algebra), and [Plücker coordinates](https://en.wikipedia.org/wiki/Pl%C3%BCcker_coordinates)) under the same framework. Geometric algebra is mainly based on the algebraic system called [Clifford algebra](https://en.wikipedia.org/wiki/Clifford_algebra), but with a strong emphasis on geometric interpretation. In geometric algebra, subspaces are treated as primitives for computation. As such, it is an appropriate mathematical tool for modeling and solving geometric problems in physics, chemistry, engineering, and computer science.
@@ -20,8 +7,17 @@ GATL uses template meta-programming to implement the [lazy evaluation](https://e
 
 Please, let me know if you want to contribute to this project. [Here](http://www.ic.uff.br/~laffernandes) you will find my contact information.
 
+Contents:
+1. [Requirements](#1-requirements)
+2. [How to "Install" GATL](#2-how-to-install-gatl)
+3. [Compiling Examples](#3-compiling-examples)
+4. [Compiling and Running Unit-Tests](#4-compiling-and-running-unit-tests)
+5. [Documentation](#5-documentation)
+6. [Related Project](#6-related-project)
+7. [License](#7-license)
 
-## 2. Requirements
+
+## 1. Requirements
 Make sure that you have the following tools before attempting to use GATL.
 
 Required tool:
@@ -36,7 +32,7 @@ Optional C++ library:
 GATL doesn't have any dependencies other than the [C++ standard library](https://en.cppreference.com/w/cpp/header).
 
 
-## 3. How to "Install" GATL
+## 2. How to "Install" GATL
 GATL is a pure template library defined in the headers. Therefore, if you just want to use GATL, you can use the header files right away. There is no binary library to link to and no configured header file.
 
 Use the [git clone](https://git-scm.com/docs/git-clone) command to download the project, where `<gatl-dir>` must be replaced by the directory in which you want to place GATL's source code, or removed `<gatl-dir>` from the command line to download the project to the `./gatl` directory:
@@ -53,7 +49,7 @@ $ cmake ..
 ```
 
 
-## 4. Compiling Examples
+## 3. Compiling Examples
 The basic steps for configuring and building GATL examples look like this in Linux:
 ```bash
 $ cd <gatl-dir>/cpp/tools/example
@@ -72,11 +68,11 @@ $ make -j8
 The executable files produced by the `make` command start with `gatl_example_`.
 
 
-## 5. Compiling and Running Unit-Tests
+## 4. Compiling and Running Unit-Tests
 Unit-tests are under construction. Please, don't try to build them.
 
 
-## 6. Documentation
+## 5. Documentation
 Here you find a brief description of the namespaces, macros, classes, functions, procedures, and operators available for the user. The detailed documentation is not ready yet.
 
 According to GATL conventions, in the following definitions, `lhs` and `rhs` are informal shorthand for, respectively, the left-hand side and the right-hand side arguments of some procedure. In addition, the `mtr` argument must be an instance of the `metric_space<...>` class, while all other arguments can be either an instances of the `clifford_expression<...>` class or other numerical types (*e.g.*, `double`, `float`, `int`, or instances of third-party classes). Numerical types are automatically converted by GATL to scalar Clifford expression using the `scalar` function.
@@ -473,9 +469,9 @@ Classes, constant values, functions, procedures, and operators of conformal geom
 | `tangent_location(tangent [, mtr])` | The location parameter of a given tangent |
 
 
-## 7. Related Project
+## 6. Related Project
 Please, visit the GitHub repository of the [**ga-benchmark**](https://github.com/ga-developers/ga-benchmark) project for a benchmark comparing the most popular geometric algebra libraries.
 
 
-## 8. License
+## 7. License
 This software is licensed under the GNU General Public License v3.0. See the [`LICENSE`](LICENSE) file for details.
