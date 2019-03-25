@@ -26,6 +26,7 @@ project(GATL-Test)
 
 enable_testing()
 
+find_package(GATL REQUIRED)
 find_package(GTest REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -43,7 +44,7 @@ set(test_groups
   util
 )
 
-include_directories(${GTEST_INCLUDE_DIRS} "${PROJECT_SOURCE_DIR}/../../include")
+include_directories(${GATL_INCLUDE_DIRS} ${GTEST_INCLUDE_DIRS})
 
 foreach(test_group ${test_groups})
   file(GLOB test_filenames RELATIVE "${PROJECT_SOURCE_DIR}/${test_group}" ${PROJECT_SOURCE_DIR}/${test_group}/*.cpp)

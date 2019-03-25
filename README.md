@@ -48,6 +48,8 @@ $ cd build
 $ cmake ..
 ```
 
+If you are using CMake to handle builds of your program, then it is strongly recommended to use the commands above to install GATL. After installation CMake will find GATL using the command `find_package(GATL)` (see [CMake documentation](https://cmake.org/cmake/help/latest/command/find_package.html) for details). In addition, you will be able to use the `GATL_INCLUDE_DIRS` variable in the `CMakeList.txt` file of your program while defining the include directories of your project or targets.
+
 
 ## 3. Compiling Examples
 The basic steps for configuring and building GATL examples look like this in Linux:
@@ -244,7 +246,7 @@ The following tables present a set of basic products and operations from geometr
 | Misc Operation | Description |
 | --- | --- |
 | `grade(arg [, tol])` | Returns a `grade_result<Value>` structure encoding the grade of the given argument |
-| `largest_grade(arg [, tol])` | Returns a scalar expression with the largest grade part of the argument, such that it is not zero |
+| `largest_grade(arg [, tol])` | Returns a scalar expression with the largest grade part of the argument, such that it is not *zero* |
 | `take_grade(arg, k)` | Returns the *k*-grade part of the argument |
 | `take_largest_grade(arg [, tol])` | Returns the portion of the argument with the largest grade |
 
@@ -317,7 +319,7 @@ GATL includes a set of useful functions, procedures, and meta-functions to help 
 | --- | --- |
 | `is_null(arg [, tol] [, mtr])` | Returns whether the given argument is a null multivector |
 | `is_unit(arg [, tol] [, mtr])` | Returns whether the given argument is an unit multivector |
-| `is_zero(arg [, tol])` | Returns whether the given argument is equal to zero |
+| `is_zero(arg [, tol])` | Returns whether the given argument is equal to *zero* |
 
 | Copy Procedure | Description |
 | --- | --- |
@@ -350,7 +352,7 @@ Classes and constants of signed geometric algebras of R<sup>*p, q*</sup>.
 
 | Constant Value | Descrition |
 | --- | --- |
-| `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
+| `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
 | `space` | An instance of the orthogonal metric space class with signature (*p*, *q*) |
 
@@ -364,7 +366,7 @@ Classes, constants, functions, and operations of Euclidean geometric algebras of
 
 | Constant Value | Descrition |
 | --- | --- |
-| `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
+| `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `e1`, `e2`, ..., `eN` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<N>)`) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `I`) |
@@ -389,7 +391,7 @@ Classes, constants, functions, and operations of homogeneous/projective geometri
 
 | Constant Value | Descrition |
 | --- | --- |
-| `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
+| `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `e1`, `e2`, ..., `eD` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
 | `ep` | Positive extra basis vector interpreted as the point at the origin (same as `e(c<D + 1>)`) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
@@ -422,7 +424,7 @@ Classes, constants, functions, and operations of Mikowski/spacetime geometric al
 
 | Constant Value | Descrition |
 | --- | --- |
-| `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
+| `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `e1`, `e2`, ..., `eD` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
 | `ep` | Positive extra basis vector (same as `e(c<D + 1>)`) |
 | `em` | Negative extra basis vector (same as `e(c<D + 2>)`) |
@@ -457,7 +459,7 @@ Classes, constants, functions, and operations of conformal geometric algebras of
 
 | Constant Value | Descrition |
 | --- | --- |
-| `_0`, `_1` | Zero and one, respectively (same as `c<0>` and `c<1>`, respectively) |
+| `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `e1`, `e2`, ..., `eD` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
 | `no` | Null vector interpreted as the point at the origin (same as `e(c<D + 1>)`) |
 | `ni` | Null vector interpreted as the point at infinity (same as `e(c<D + 2>)`) |

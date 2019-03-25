@@ -39,6 +39,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
     \
     static auto const _0 = c<0>; \
     static auto const _1 = c<1>; \
+    static auto const _2 = c<2>; \
     \
     static auto const I = pseudoscalar(SPACE); \
     static auto const Ie = rcont(I, op(no, ni, SPACE), SPACE);
