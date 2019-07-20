@@ -33,14 +33,14 @@ GATL doesn't have any dependencies other than the [C++ standard library](https:/
 
 
 ## 2. How to "Install" GATL
-GATL is a pure template library defined in the headers. Therefore, if you just want to use GATL, you can use the header files right away. There is no binary library to link to and no configured header file.
+GATL is a pure template library defined in the headers. Therefore, if you want to use GATL, you can use the header files right away. There is no binary library to link to and no configured header file.
 
 Use the [git clone](https://git-scm.com/docs/git-clone) command to download the project, where `<gatl-dir>` must be replaced by the directory in which you want to place GATL's source code, or removed `<gatl-dir>` from the command line to download the project to the `./gatl` directory:
 ```bash
 $ git clone https://github.com/laffernandes/gatl.git <gatl-dir>
 ```
 
-The directory `<gatl-dir>/cpp/include` must be in the include path of your program, *i.e.*, you have to use the `-I<gatl-dir>/cpp/include` option flag while compiling your program. Alternatively, you can use CMake to copy GATL's header files to the common include directory in your system (*e.g.*, `/usr/local/include`, in Linux) in order to avoid the use of the `-I<gatl-dir>/cpp/include` option flag. The basic steps for installing GATL using CMake look like this in Linux:
+The directory `<gatl-dir>/cpp/include` must be in the include path of your program, *i.e.*, you have to use the `-I<gatl-dir>/cpp/include` option flag while compiling your program. Alternatively, you can use CMake to copy GATL's header files to the common include directory in your system (*e.g.*, `/usr/local/include`, in Linux) to avoid the use of the `-I<gatl-dir>/cpp/include` option flag. The basic steps for installing GATL using CMake look like this in Linux:
 ```bash
 $ cd <gatl-dir>/cpp
 $ mkdir build
@@ -62,7 +62,7 @@ $ cmake -DCMAKE_BUILD_TYPE=Release ..
 
 Recall that `<gatl-dir>` is the directory in which you placed GATL's source code.
 
-Assuming a makefile generator was used, the examples are build using:
+Assuming a makefile generator was used, the examples are built using:
 ```bash
 $ make -j8
 ```
@@ -115,11 +115,11 @@ According to the GATL conventions, the root directory for the header files that 
 
 
 ### Macros
-Optionally, set the following macros before including GATL headers in your program in order to change some conventions of the library.
+Optionally, set the following macros before including GATL headers in your program to change some conventions of the library.
 
 | Class | Description |
 | --- | --- |
-| `GA_DEFAULT_FLOATING_POINT_TYPE` | Defines the floating point type assumed as default by the library (default is `std::double_t`) |
+| `GA_DEFAULT_FLOATING_POINT_TYPE` | Defines the floating-point type assumed as default by the library (default is `std::double_t`) |
 | `GA_DEFAULT_INTEGRAL_TYPE` | Defines the signed integral type assumed as default by the library (default is `std::int64_t`) |
 | `GA_MAX_BASIS_VECTOR_INDEX` | Defines the maximum number of basis vectors assumed while performing algebraic manipulations and setting the size of bitsets (default is `63`) |
 
@@ -147,12 +147,12 @@ The following classes correspond to the most important structures of GATL.
 | `lazy_context<InputTypes...>` | A class to define lazy arguments for lazy evaluation of Clifford expressions |
 | `metric_space<MetricSpaceType>` | The base metric space class |
 
-| Exception Class | Descrition |
+| Exception Class | Description |
 | --- | --- |
 | `bad_checked_copy_exception` | An exception of this type is thrown when a checked copy fails |
 | `not_implemented_error` | An exception to report errors related to not implemented features |
 
-For sake of simplicity, GATL provides the following set of class aliases and helper meta-functions to assist type definition. Nevertheless, it is strongly recommended to use the `auto` placeholder type specifier (please, refer to the [C++ specification](https://en.cppreference.com/w/cpp/language/auto) for details) whenever possible.
+For the sake of simplicity, GATL provides the following set of class aliases and helper meta-functions to assist type definition. Nevertheless, it is strongly recommended to use the `auto` placeholder type specifier (please, refer to the [C++ specification](https://en.cppreference.com/w/cpp/language/auto) for details) whenever possible.
 
 | Class Alias | Description |
 | --- | --- |
@@ -252,7 +252,7 @@ The following tables present a set of basic products and operations from geometr
 
 
 ### Overloaded Operators
-GATL overload some C++ operators with the aim of making the writing of source code closer to the writing of mathematical expressions with geometric algebra.
+GATL overload some C++ operators to make the writing of source code closer to the writing of mathematical expressions with geometric algebra.
 
 It is important to notice that the precedence and associativity of C++ operators are different than the one assumed in mathematical functions. For instance, one would expect that the outer/wedge product `^` would be evaluated before the addition operation in the following expression `a + b ^ c`, because product precedes addition in math. However, in C++ the addition operator (`+`) precedes the bitwise XOR operator (`^`), leading to possible mistakes while implementing mathematical procedures (please, refer to the [C++ specification](https://en.cppreference.com/w/cpp/language/operator_precedence) for details). As a result, the resulting expression in this example would be `(a + b) ^ c`. The use of parenthesis is strongly recommended in order to avoid those mistakes. By rewriting the example, `a + (b ^ c)` will guarantee the expected behavior.
 
@@ -275,7 +275,7 @@ It is important to notice that the precedence and associativity of C++ operators
 
 
 ### Overloaded Mathematical Functions
-The following tables present the C++ mathematical functions overloaded by GATL with the aim of accepting Clifford expressions as input.
+The following tables present the C++ mathematical functions overloaded by GATL to accept Clifford expressions as input.
 
 | Trigonometric Function | Description |
 | --- | --- |
@@ -312,7 +312,7 @@ GATL includes a set of useful functions, procedures, and meta-functions to help 
 | --- | --- |
 | `default_tolerance<ValueType>()` | Return the standard tolerance value `tol` assumed for the given value type |
 | `for_each_basis_vector(arg, f)` | Applies the given function object `f` to the result of dereferencing every basis vector in the given Clifford expression comprised of a single component |
-| `for_each_component(arg, f)` | Applies the given function object `f` to the result of dereferencing every component in the given Cliffod expression |
+| `for_each_component(arg, f)` | Applies the given function object `f` to the result of dereferencing every component in the given Clifford expression |
 | `write(os, expression, basis_vectors)` | Writes the given Clifford expression into the output stream `os` using the given set of basis vectors  |
 
 | Testing Function | Description |
@@ -346,11 +346,11 @@ In the following sub-section, you find declarations that are specific of the res
 #### Signed
 Classes and constants of signed geometric algebras of R<sup>*p, q*</sup>.
 
-| Class | Descrition |
+| Class | Description |
 | --- | --- |
 | `signed_metric_space<P, Q>` | Orthogonal metric space with signature (*p*, *q*) (*n* = *p* + *q*) |
 
-| Constant Value | Descrition |
+| Constant Value | Description |
 | --- | --- |
 | `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
@@ -360,11 +360,11 @@ Classes and constants of signed geometric algebras of R<sup>*p, q*</sup>.
 #### Euclidean
 Classes, constants, functions, and operations of Euclidean geometric algebras of R<sup>*n*</sup>. They are available in the following namespaces: `ga1e`, `ga2e`, `ga3e`, `ga4e`, and `ga5e`.
 
-| Class | Descrition |
+| Class | Description |
 | --- | --- |
 | `euclidean_metric_space<N>` | Euclidean metric space |
 
-| Constant Value | Descrition |
+| Constant Value | Description |
 | --- | --- |
 | `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `e1`, `e2`, ..., `eN` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<N>)`) |
@@ -372,7 +372,7 @@ Classes, constants, functions, and operations of Euclidean geometric algebras of
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `I`) |
 | `space` | An instance of the Euclidean metric space class |
 
-| Function | Descrition |
+| Function | Description |
 | --- | --- |
 | `euclidean_vector([mtr,] coords...)` | Makes an Euclidean vector with the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
 
@@ -385,11 +385,11 @@ Classes, constants, functions, and operations of Euclidean geometric algebras of
 #### Homogeneous/Projective
 Classes, constants, functions, and operations of homogeneous/projective geometric algebras of R<sup>*d*</sup> (*n* = *d* + 1). They are available in the following namespaces: `ga1h`, `ga2h`, `ga3h`, and `ga4h`.
 
-| Class | Descrition |
+| Class | Description |
 | --- | --- |
 | `homogeneous_metric_space<D>` | Homogeneous/Projective metric space |
 
-| Constant Value | Descrition |
+| Constant Value | Description |
 | --- | --- |
 | `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `e1`, `e2`, ..., `eD` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
@@ -398,7 +398,7 @@ Classes, constants, functions, and operations of homogeneous/projective geometri
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, ep)`) |
 | `space` | An instance of the homogeneous/projective metric space class |
 
-| Function | Descrition |
+| Function | Description |
 | --- | --- |
 | `euclidean_vector([mtr,] coords...)` | Makes an Euclidean vector with the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
 | `point([mtr,] coords...)` | Makes an unit point using the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
@@ -418,11 +418,11 @@ Classes, constants, functions, and operations of homogeneous/projective geometri
 #### Mikowski/Spacetime
 Classes, constants, functions, and operations of Mikowski/spacetime geometric algebras of R<sup>*d*</sup> (*n* = *d* + 2). They are available in the following namespaces: `ga1m`, `ga2m`, and `ga3m`.
 
-| Class | Descrition |
+| Class | Description |
 | --- | --- |
 | `minkowski_metric_space<D>` | Minkowski/Spacetime metric space |
 
-| Constant Value | Descrition |
+| Constant Value | Description |
 | --- | --- |
 | `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `e1`, `e2`, ..., `eD` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
@@ -434,7 +434,7 @@ Classes, constants, functions, and operations of Mikowski/spacetime geometric al
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, ep ^ em)`) |
 | `space` | An instance of the Minkowski/spacetime metric space class |
 
-| Function | Descrition |
+| Function | Description |
 | --- | --- |
 | `euclidean_vector([mtr,] coords...)` | Makes an Euclidean vector with the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
 | `point([mtr,] coords...)` | Makes an unit point using the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
@@ -453,11 +453,11 @@ Classes, constants, functions, and operations of Mikowski/spacetime geometric al
 #### Conformal
 Classes, constants, functions, and operations of conformal geometric algebras of R<sup>*d*</sup> (*n* = *d* + 2). They are available in the following namespaces: `ga1c`, `ga2c`, and `ga3c`.
 
-| Class | Descrition |
+| Class | Description |
 | --- | --- |
 | `conformal_metric_space<D>` | Conformal metric space |
 
-| Constant Value | Descrition |
+| Constant Value | Description |
 | --- | --- |
 | `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `e1`, `e2`, ..., `eD` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
@@ -469,7 +469,7 @@ Classes, constants, functions, and operations of conformal geometric algebras of
 | `Ie` | Unit pseudoscalar of the Euclidean portion of the vector space (same as `rcont(I, no ^ ni)`) |
 | `space` | An instance of the conformal metric space class |
 
-| Function | Descrition |
+| Function | Description |
 | --- | --- |
 | `euclidean_vector([mtr,] coords...)` | Makes an Euclidean vector with the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
 | `point([mtr,] coords...)` | Makes an unit point using the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
