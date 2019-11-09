@@ -495,7 +495,7 @@ Classes, constants, functions, and operations of general geometric algebras defi
 
 | Helper for Practical Type Definition | Description |
 | --- | --- |
-| `constant_general_metric_space_t<MetricMatrixValues...>` | Helper for defining a general geometric algebra model with a metric matrix comprised of constant integer values. |
+| `constant_general_metric_space_t<MetricMatrixValues...>` | Helper for defining a general geometric algebra model with a metric matrix comprised of constant integer values |
 
 
 ## 6. Related Project
