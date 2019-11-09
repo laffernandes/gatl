@@ -22,16 +22,9 @@ You should have received a copy of the GNU General Public License
 along with GATL. If not, see <https://www.gnu.org/licenses/>.
 /**/
 
-#ifndef __GA_MODEL_SIGNED_MINKOWSKI_METRIC_SPACE_HPP__
-#define __GA_MODEL_SIGNED_MINKOWSKI_METRIC_SPACE_HPP__
+#ifndef __GA_MODEL_GENERAL_HPP__
+#define __GA_MODEL_GENERAL_HPP__
 
-namespace ga {
+#include "general/metric_space.hpp"
 
-    // Minkowski/Spacetime metric space.
-    template<ndims_t D>
-    class minkowski_metric_space : public signed_metric_space<D + 1, 1, 0> {
-    };
-
-}
-
-#endif // __GA_MODEL_SIGNED_MINKOWSKI_METRIC_SPACE_HPP__
+#endif // __GA_MODEL_GENERAL_HPP__

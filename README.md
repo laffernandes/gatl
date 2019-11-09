@@ -64,7 +64,7 @@ Recall that `<gatl-dir>` is the directory in which you placed GATL's source code
 
 Assuming a makefile generator was used, the examples are built using:
 ```bash
-$ make -j8
+$ make -j
 ```
 
 The executable files produced by the `make` command start with `gatl_example_`.
@@ -94,6 +94,7 @@ Contents:
   - [Homogeneous/Projective](#homogeneousprojective)
   - [Mikowski/Spacetime](#mikowskispacetime)
   - [Conformal](#conformal)
+  - [General](#general)
 
 
 ### Namespaces
@@ -344,17 +345,17 @@ In the following sub-section, you find declarations that are specific of the res
 
 
 #### Signed
-Classes and constants of signed geometric algebras of R<sup>*p, q*</sup>.
+Classes and constants of signed geometric algebras of R<sup>*p, q, r*</sup>.
 
 | Class | Description |
 | --- | --- |
-| `signed_metric_space<P, Q>` | Orthogonal metric space with signature (*p*, *q*) (*n* = *p* + *q*) |
+| `signed_metric_space<P, Q, R>` | Orthogonal metric space with signature (*p*, *q*, *r*) (*n* = *p* + *q* + *r*) |
 
 | Constant Value | Description |
 | --- | --- |
 | `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
-| `space` | An instance of the orthogonal metric space class with signature (*p*, *q*) |
+| `space` | An instance of the orthogonal metric space class with signature (*p*, *q*, *r*) |
 
 
 #### Euclidean
@@ -483,6 +484,18 @@ Classes, constants, functions, and operations of conformal geometric algebras of
 | `round_size_sqr(round [, mtr])` | The squared size parameter of a given round |
 | `tangent_direction(tangent [, mtr])` | The direction parameter of a given tangent |
 | `tangent_location(tangent [, mtr])` | The location parameter of a given tangent |
+
+
+#### General
+Classes, constants, functions, and operations of general geometric algebras defined by the used. The are available by including `gatl/ga.hpp` and `gatl/ga/model/general.hpp`.
+
+| Class | Description |
+| --- | --- |
+| `general_metric_space<MetricMatrixEntries...>` | General metric space |
+
+| Helper for Practical Type Definition | Description |
+| --- | --- |
+| `constant_general_metric_space_t<MetricMatrixValues...>` | Helper for defining a general geometric algebra model with a metric matrix comprised of constant integer values. |
 
 
 ## 6. Related Project

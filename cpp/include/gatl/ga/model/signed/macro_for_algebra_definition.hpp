@@ -25,11 +25,11 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 #ifndef __GA_MODEL_SIGNED_MACRO_FOR_ALGEBRA_DEFINITION_HPP__
 #define __GA_MODEL_SIGNED_MACRO_FOR_ALGEBRA_DEFINITION_HPP__
 
-#define _GA_SIGNED_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, P, Q, ...) \
-    using space_t = signed_metric_space<P, Q>; \
+#define _GA_SIGNED_ALGEBRA_DEFINITION(SPACE, BASIS_VECTORS_NAMES, P, Q, R, ...) \
+    using space_t = signed_metric_space<P, Q, R>; \
     \
     static space_t const SPACE; \
-    static std::array<std::string, P + Q> const BASIS_VECTORS_NAMES = { __VA_ARGS__ }; \
+    static std::array<std::string, P + Q + R> const BASIS_VECTORS_NAMES = { __VA_ARGS__ }; \
     \
     static auto const _0 = c<0>; \
     static auto const _1 = c<1>; \

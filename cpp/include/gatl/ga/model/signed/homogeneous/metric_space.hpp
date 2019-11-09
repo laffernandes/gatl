@@ -29,7 +29,7 @@ namespace ga {
 
     // Homogeneous/Projective metric space.
     template<ndims_t D>
-    class homogeneous_metric_space : public signed_metric_space<D + 1, 0> {
+    class homogeneous_metric_space : public signed_metric_space<D + 1, 0, 0> {
     };
 
 }

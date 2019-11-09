@@ -28,7 +28,7 @@ along with GATL. If not, see <https://www.gnu.org/licenses/>.
 
 using namespace ga;
 
-signed_metric_space<6, 1> const space;
+signed_metric_space<6, 1, 0> const space;
 std::array<std::string, 7> const basis_vectors = { "e1", "e2", "e3", "e4", "e5", "e6", "e7" };
 
 auto const e1 = e(c<1>);
