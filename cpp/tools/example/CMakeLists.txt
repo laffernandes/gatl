@@ -33,6 +33,7 @@ set(target_prefix gatl_example_)
 
 set(example_groups
   concepts
+  miscelaneos
 )
 
 include_directories(${GATL_INCLUDE_DIRS})
