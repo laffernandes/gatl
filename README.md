@@ -21,7 +21,7 @@ Please, let me know if you want to contribute to this project. [Here](http://www
 Make sure that you have the following tools before attempting to use GATL.
 
 Required tool:
-- Your favorite [C++17](https://en.wikipedia.org/wiki/C%2B%2B14) compiler.
+- Your favorite [C++17](https://en.wikipedia.org/wiki/C%2B%2B17) compiler.
 
 Optional tool:
 - [CMake](https://cmake.org) to automate installation and to build and run examples and unit-tests.
