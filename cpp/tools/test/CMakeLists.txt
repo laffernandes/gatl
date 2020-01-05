@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Leandro Augusto Frata Fernandes
+# Copyright (C) Leandro Augusto Frata Fernandes
 # 
 # author     : Fernandes, Leandro A. F.
 # e-mail     : laffernandes@ic.uff.br
@@ -27,10 +27,28 @@ project(GATL-Test)
 enable_testing()
 
 find_package(GATL REQUIRED)
-find_package(GTest REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+###############################################################################
+# Download and unpack googletest at configure time
+configure_file(CMakeLists-googletest.txt.in googletest-download/CMakeLists.txt)
+
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" . RESULT_VARIABLE result WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download)
+if(result)
+  message(FATAL_ERROR "CMake step for googletest failed: ${result}")
+endif()
+
+execute_process(COMMAND ${CMAKE_COMMAND} --build . RESULT_VARIABLE result WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download)
+if(result)
+  message(FATAL_ERROR "Build step for googletest failed: ${result}")
+endif()
+
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src ${CMAKE_CURRENT_BINARY_DIR}/googletest-build EXCLUDE_FROM_ALL)
+###############################################################################
 
 set(target_prefix gatl_test_)
 
@@ -44,7 +62,7 @@ set(test_groups
   util
 )
 
-include_directories(${GATL_INCLUDE_DIRS} ${GTEST_INCLUDE_DIRS})
+include_directories(${GATL_INCLUDE_DIRS})
 
 foreach(test_group ${test_groups})
   file(GLOB test_filenames RELATIVE "${PROJECT_SOURCE_DIR}/${test_group}" ${PROJECT_SOURCE_DIR}/${test_group}/*.cpp)
@@ -52,7 +70,7 @@ foreach(test_group ${test_groups})
     string(REPLACE ".cpp" "" test_name ${test_filename})
     add_executable(${target_prefix}${test_group}_${test_name} "${PROJECT_SOURCE_DIR}/${test_group}/${test_filename}")
     target_include_directories(${target_prefix}${test_group}_${test_name} PUBLIC ${PROJECT_SOURCE_DIR}/${test_group})
-    target_link_libraries(${target_prefix}${test_group}_${test_name} ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(${target_prefix}${test_group}_${test_name} gtest_main)
     add_test(${target_prefix}${test_group}_${test_name} ${target_prefix}${test_group}_${test_name})
   endforeach()
 endforeach()

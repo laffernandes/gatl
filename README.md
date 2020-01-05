@@ -1,4 +1,5 @@
 # GATL: Geometric Algebra Template Library
+
 GATL is a C++ library for Euclidean, homogeneous/projective, Mikowski/spacetime, conformal, and arbitrary [geometric algebras](https://en.wikipedia.org/wiki/Geometric_algebra).
 
 Geometric algebra is a powerful mathematical system encompassing many mathematical concepts (*e.g.*, [complex numbers](https://en.wikipedia.org/wiki/Complex_number), [quaternions algebra](https://en.wikipedia.org/wiki/Quaternion_algebra), [Grassmann-Cayley algebra](https://en.wikipedia.org/wiki/Grassmann%E2%80%93Cayley_algebra), and [Plücker coordinates](https://en.wikipedia.org/wiki/Pl%C3%BCcker_coordinates)) under the same framework. Geometric algebra is mainly based on the algebraic system called [Clifford algebra](https://en.wikipedia.org/wiki/Clifford_algebra), but with a strong emphasis on geometric interpretation. In geometric algebra, subspaces are treated as primitives for computation. As such, it is an appropriate mathematical tool for modeling and solving geometric problems in physics, chemistry, engineering, and computer science.
@@ -8,6 +9,7 @@ GATL uses template meta-programming to implement the [lazy evaluation](https://e
 Please, let me know if you want to contribute to this project. [Here](http://www.ic.uff.br/~laffernandes) you will find my contact information.
 
 **Contents:**
+
 1. [Requirements](#1-requirements)
 2. [How to "Install" GATL](#2-how-to-install-gatl)
 3. [Compiling Examples](#3-compiling-examples)
@@ -16,70 +18,69 @@ Please, let me know if you want to contribute to this project. [Here](http://www
 6. [Related Project](#6-related-project)
 7. [License](#7-license)
 
-
 ## 1. Requirements
+
 Make sure that you have the following tools before attempting to use GATL.
 
 Required tool:
+
 - Your favorite [C++17](https://en.wikipedia.org/wiki/C%2B%2B17) compiler.
 
 Optional tool:
-- [CMake](https://cmake.org) to automate installation and to build and run examples and unit-tests.
 
-Optional C++ library:
-- [Google Test](https://github.com/google/googletest) to build and run unit-tests.
+- [CMake](https://cmake.org) to automate installation and to build and run examples and unit-tests.
 
 GATL doesn't have any dependencies other than the [C++ standard library](https://en.cppreference.com/w/cpp/header).
 
-
 ## 2. How to "Install" GATL
+
 GATL is a pure template library defined in the headers. Therefore, if you want to use GATL, you can use the header files right away. There is no binary library to link to and no configured header file.
 
 Use the [git clone](https://git-scm.com/docs/git-clone) command to download the project, where `<gatl-dir>` must be replaced by the directory in which you want to place GATL's source code, or removed `<gatl-dir>` from the command line to download the project to the `./gatl` directory:
+
 ```bash
-$ git clone https://github.com/laffernandes/gatl.git <gatl-dir>
+git clone https://github.com/laffernandes/gatl.git <gatl-dir>
 ```
 
-The directory `<gatl-dir>/cpp/include` must be in the include path of your program, *i.e.*, you have to use the `-I<gatl-dir>/cpp/include` option flag while compiling your program. Alternatively, you can use CMake to copy GATL's header files to the common include directory in your system (*e.g.*, `/usr/local/include`, in Linux) to avoid the use of the `-I<gatl-dir>/cpp/include` option flag. The basic steps for installing GATL using CMake look like this in Linux:
+The directory `<gatl-dir>/cpp/include` must be in the include path of your program, *i.e.*, you have to use the `-I<gatl-dir>/cpp/include` option flag while compiling your program. Alternatively, you can use CMake to copy GATL's header files to the common include directory in your system (*e.g.*, `/usr/local/include`, in Linux) to avoid the use of the `-I<gatl-dir>/cpp/include` option flag. The basic steps for installing GATL using CMake look like this:
+
 ```bash
-$ cd <gatl-dir>/cpp
-$ mkdir build
-$ cd build
-$ cmake ..
+cd <gatl-dir>/cpp
+mkdir build
+cd build
+cmake ..
 ```
 
 If you are using CMake to handle builds of your program, then it is strongly recommended to use the commands above to install GATL. After installation CMake will find GATL using the command `find_package(GATL)` (see [CMake documentation](https://cmake.org/cmake/help/latest/command/find_package.html) for details). In addition, you will be able to use the `GATL_INCLUDE_DIRS` variable in the `CMakeList.txt` file of your program while defining the include directories of your project or targets.
 
-
 ## 3. Compiling Examples
-The basic steps for configuring and building GATL examples look like this in Linux:
+
+The basic steps for configuring and building GATL examples look like this:
+
 ```bash
-$ cd <gatl-dir>/cpp/tools/example
-$ mkdir build
-$ cd build
-$ cmake -DCMAKE_BUILD_TYPE=Release ..
+cd <gatl-dir>/cpp/tools/example
+mkdir build
+cd build
+cmake ..
+cmake --build . --config Release
 ```
 
 Recall that `<gatl-dir>` is the directory in which you placed GATL's source code.
 
-Assuming a makefile generator was used, the examples are built using:
-```bash
-$ make -j
-```
-
-The executable files produced by the `make` command start with `gatl_example_`.
-
+The executable files produced by the last command start with `gatl_example_`.
 
 ## 4. Compiling and Running Unit-Tests
+
 Unit-tests are under construction. Please, don't try to build them.
 
-
 ## 5. Documentation
+
 Here you find a brief description of the namespaces, macros, classes, functions, procedures, and operators available for the user. The detailed documentation is not ready yet.
 
 According to GATL conventions, in the following definitions, `lhs` and `rhs` are informal shorthand for, respectively, the left-hand side and the right-hand side arguments of some procedure. In addition, the `mtr` argument must be an instance of the `metric_space<...>` class, while all other arguments can be either an instances of the `clifford_expression<...>` class or other numerical types (*e.g.*, `double`, `float`, `int`, or instances of third-party classes). Numerical types are automatically converted by GATL to scalar Clifford expression using the `scalar` function.
 
 Contents:
+
 - [Namespaces](#namespaces)
 - [Macros](#macros)
 - [Classes and Data Types](#classes-and-data-types)
@@ -96,8 +97,8 @@ Contents:
   - [Conformal](#conformal)
   - [General](#general)
 
-
 ### Namespaces
+
 Namespaces are declarative regions that provide scope to the names of the types, function, variables, *etc.*, inside it. GATL defines the following namespaces.
 
 | Namespace | Description |
@@ -114,8 +115,8 @@ All above-mentioned namespaces declare a nested `detail` namespace. This is the 
 
 According to the GATL conventions, the root directory for the header files that you will include in your program is the `gatl` folder. Also, the header file for each namespace is its name followed by the `.hpp` expression. Putting both conventions together, we have `gatl/ga.hpp`, `gatl/ga3e.hpp`, `gatl/ga3h.hpp`, `gatl/ga3m.hpp`, `gatl/ga3c.hpp`, and so on.
 
-
 ### Macros
+
 Optionally, set the following macros before including GATL headers in your program to change some conventions of the library.
 
 | Class | Description |
@@ -124,8 +125,8 @@ Optionally, set the following macros before including GATL headers in your progr
 | `GA_DEFAULT_INTEGRAL_TYPE` | Defines the signed integral type assumed as default by the library (default is `std::int64_t`) |
 | `GA_MAX_BASIS_VECTOR_INDEX` | Defines the maximum number of basis vectors assumed while performing algebraic manipulations and setting the size of bitsets (default is `63`) |
 
-
 ### Classes and Data Types
+
 The following basic data types are defined in order to assign a meaning to conventional types, like `double`, `int`, and so on.
 
 | Basic Type | Description |
@@ -178,8 +179,8 @@ For the sake of simplicity, GATL provides the following set of class aliases and
 | `unit_basis_vector_t` | Helper for defining a Clifford expression representing an unit runtime defined basis vector |
 | `unit_pseudoscalar_t<N>` | Helper for defining a Clifford expression representing an unit compile-time defined pseudoscalar |
 
-
 ### Utilities Constants and Functions
+
 Here you find some useful meta-constants and functions to assist the implementation of your program.
 
 | Constant | Description |
@@ -193,9 +194,10 @@ Here you find some useful meta-constants and functions to assist the implementat
 | `scalar(arg)` | Converts the given numerical value to a scalar Clifford expression |
 | `pseudoscalar([mtr])` | Returns the compile-time defined unit pseudoscalar of the given metric space |
 | `vector([mtr,] coords...)` | Makes a vector with the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
-
+| `vector([mtr,] begin, end)` | Makes a vector with the set of coordinates accessed by the iterators |
 
 ### Products and Basic Operations
+
 The following tables present a set of basic products and operations from geometric algebra.
 
 | Product | Description |
@@ -251,8 +253,8 @@ The following tables present a set of basic products and operations from geometr
 | `take_grade(arg, k)` | Returns the *k*-grade part of the argument |
 | `take_largest_grade(arg [, tol])` | Returns the portion of the argument with the largest grade |
 
-
 ### Overloaded Operators
+
 GATL overload some C++ operators to make the writing of source code closer to the writing of mathematical expressions with geometric algebra.
 
 It is important to notice that the precedence and associativity of C++ operators are different than the one assumed in mathematical functions. For instance, one would expect that the outer/wedge product `^` would be evaluated before the addition operation in the following expression `a + b ^ c`, because product precedes addition in math. However, in C++ the addition operator (`+`) precedes the bitwise XOR operator (`^`), leading to possible mistakes while implementing mathematical procedures (please, refer to the [C++ specification](https://en.cppreference.com/w/cpp/language/operator_precedence) for details). As a result, the resulting expression in this example would be `(a + b) ^ c`. The use of parenthesis is strongly recommended in order to avoid those mistakes. By rewriting the example, `a + (b ^ c)` will guarantee the expected behavior.
@@ -270,12 +272,12 @@ It is important to notice that the precedence and associativity of C++ operators
 | `lhs > rhs` | Right constraction (same as `rcond(lhs, rhs)`) |
 | <code>lhs &#124; rhs</code> | Dot product (same as `dot(lhs, rhs)`) |
 
-| Input/Output Operator | Description | 
+| Input/Output Operator | Description |
 | --- | --- |
 | `os << arg` | Insert formatted output (it uses the `write` function) |
 
-
 ### Overloaded Mathematical Functions
+
 The following tables present the C++ mathematical functions overloaded by GATL to accept Clifford expressions as input.
 
 | Trigonometric Function | Description |
@@ -305,8 +307,8 @@ The following tables present the C++ mathematical functions overloaded by GATL t
 | --- | --- |
 | `abs(arg)` | Absolute value of the scalar argument |
 
-
 ### Tools
+
 GATL includes a set of useful functions, procedures, and meta-functions to help developers to write their programs.
 
 | Function | Description |
@@ -339,12 +341,12 @@ GATL includes a set of useful functions, procedures, and meta-functions to help 
 | `is_general_metric_space_v<MetricSpaceType>` | Returns whether the given metric space is general |
 | `is_orthogonal_metric_space_v<MetricSpaceType>` | Returns whether the given metric space is orthogonal |
 
-
 ### Algebra-Specific Declarations
+
 In the following sub-section, you find declarations that are specific of the respective geometric algebra.
 
-
 #### Signed
+
 Classes and constants of signed geometric algebras of R<sup>*p, q, r*</sup>.
 
 | Class | Description |
@@ -357,8 +359,8 @@ Classes and constants of signed geometric algebras of R<sup>*p, q, r*</sup>.
 | `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
 | `space` | An instance of the orthogonal metric space class with signature (*p*, *q*, *r*) |
 
-
 #### Euclidean
+
 Classes, constants, functions, and operations of Euclidean geometric algebras of R<sup>*n*</sup>. They are available in the following namespaces: `ga1e`, `ga2e`, `ga3e`, `ga4e`, and `ga5e`.
 
 | Class | Description |
@@ -376,14 +378,15 @@ Classes, constants, functions, and operations of Euclidean geometric algebras of
 | Function | Description |
 | --- | --- |
 | `euclidean_vector([mtr,] coords...)` | Makes an Euclidean vector with the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
+| `euclidean_vector([mtr,] begin, end)` | Makes an Euclidean vector with the set of coordinates accessed by the iterators |
 
 | Operation | Description |
 | --- | --- |
 | `project(lhs, rhs [, mtr])` | Orthogonal projection of blade `lhs` ontho blade `rhs` |
 | `reject(lhs, rhs [, mtr])` | Rejection of blade `lhs` by blade `rhs` |
 
-
 #### Homogeneous/Projective
+
 Classes, constants, functions, and operations of homogeneous/projective geometric algebras of R<sup>*d*</sup> (*n* = *d* + 1). They are available in the following namespaces: `ga1h`, `ga2h`, `ga3h`, and `ga4h`.
 
 | Class | Description |
@@ -402,7 +405,9 @@ Classes, constants, functions, and operations of homogeneous/projective geometri
 | Function | Description |
 | --- | --- |
 | `euclidean_vector([mtr,] coords...)` | Makes an Euclidean vector with the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
+| `euclidean_vector([mtr,] begin, end)` | Makes an Euclidean vector with the set of coordinates accessed by the iterators |
 | `point([mtr,] coords...)` | Makes an unit point using the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
+| `point([mtr,] begin, end)` | Makes an unit point using the set of coordinates accesses by the iterators |
 
 | Parameter Function | Description |
 | --- | --- |
@@ -415,8 +420,8 @@ Classes, constants, functions, and operations of homogeneous/projective geometri
 | --- | --- |
 | `translate(direction, flat [, mtr])` | Translate the given flat to a given direction |
 
-
 #### Mikowski/Spacetime
+
 Classes, constants, functions, and operations of Mikowski/spacetime geometric algebras of R<sup>*d*</sup> (*n* = *d* + 2). They are available in the following namespaces: `ga1m`, `ga2m`, and `ga3m`.
 
 | Class | Description |
@@ -438,7 +443,9 @@ Classes, constants, functions, and operations of Mikowski/spacetime geometric al
 | Function | Description |
 | --- | --- |
 | `euclidean_vector([mtr,] coords...)` | Makes an Euclidean vector with the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
+| `euclidean_vector([mtr,] begin, end)` | Makes an Euclidean vector with the set of coordinates accessed by the iterators |
 | `point([mtr,] coords...)` | Makes an unit point using the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
+| `point([mtr,] begin, end)` | Makes an unit point using the set of coordinates accesses by the iterators |
 
 | Parameter Function | Description |
 | --- | --- |
@@ -450,8 +457,8 @@ Classes, constants, functions, and operations of Mikowski/spacetime geometric al
 | `tangent_direction(tangent [, mtr])` | The direction parameter of a given tangent |
 | `tangent_location(tangent [, mtr])` | The location parameter of a given tangent |
 
-
 #### Conformal
+
 Classes, constants, functions, and operations of conformal geometric algebras of R<sup>*d*</sup> (*n* = *d* + 2). They are available in the following namespaces: `ga1c`, `ga2c`, and `ga3c`.
 
 | Class | Description |
@@ -473,7 +480,9 @@ Classes, constants, functions, and operations of conformal geometric algebras of
 | Function | Description |
 | --- | --- |
 | `euclidean_vector([mtr,] coords...)` | Makes an Euclidean vector with the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
+| `euclidean_vector([mtr,] begin, end)` | Makes an Euclidean vector with the set of coordinates accessed by the iterators |
 | `point([mtr,] coords...)` | Makes an unit point using the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
+| `point([mtr,] begin, end)` | Makes an unit point using the set of coordinates accesses by the iterators |
 
 | Parameter Function | Description |
 | --- | --- |
@@ -485,8 +494,8 @@ Classes, constants, functions, and operations of conformal geometric algebras of
 | `tangent_direction(tangent [, mtr])` | The direction parameter of a given tangent |
 | `tangent_location(tangent [, mtr])` | The location parameter of a given tangent |
 
-
 #### General
+
 Classes, constants, functions, and operations of general geometric algebras defined by the used. The are available by including `gatl/ga.hpp` and `gatl/ga/model/general.hpp`.
 
 | Class | Description |
@@ -497,10 +506,10 @@ Classes, constants, functions, and operations of general geometric algebras defi
 | --- | --- |
 | `constant_general_metric_space_t<MetricMatrixValues...>` | Helper for defining a general geometric algebra model with a metric matrix comprised of constant integer values |
 
-
 ## 6. Related Project
+
 Please, visit the GitHub repository of the [**ga-benchmark**](https://github.com/ga-developers/ga-benchmark) project for a benchmark comparing the most popular geometric algebra libraries.
 
-
 ## 7. License
+
 This software is licensed under the GNU General Public License v3.0. See the [`LICENSE`](LICENSE) file for details.

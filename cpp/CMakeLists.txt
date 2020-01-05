@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Leandro Augusto Frata Fernandes
+# Copyright (C) Leandro Augusto Frata Fernandes
 # 
 # author     : Fernandes, Leandro A. F.
 # e-mail     : laffernandes@ic.uff.br
@@ -24,7 +24,7 @@ cmake_minimum_required(VERSION 3.10)
 
 set(VERSION_MAJOR 2)
 set(VERSION_MINOR 0)
-set(VERSION_PATCH 20191108)
+set(VERSION_PATCH 20200105)
 
 project(GATL
   VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}

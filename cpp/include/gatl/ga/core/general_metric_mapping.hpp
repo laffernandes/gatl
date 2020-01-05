@@ -1,26 +1,25 @@
-/**
-Copyright (C) 2018 Leandro Augusto Frata Fernandes
-
-author     : Fernandes, Leandro A. F.
-e-mail     : laffernandes@ic.uff.br
-home page  : http://www.ic.uff.br/~laffernandes
-repository : https://github.com/laffernandes/gatl.git
-
-This file is part of The Geometric Algebra Template Library (GATL).
-
-GATL is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-GATL is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with GATL. If not, see <https://www.gnu.org/licenses/>.
-/**/
+/* Copyright (C) Leandro Augusto Frata Fernandes
+ * 
+ * author     : Fernandes, Leandro A. F.
+ * e-mail     : laffernandes@ic.uff.br
+ * home page  : http://www.ic.uff.br/~laffernandes
+ * repository : https://github.com/laffernandes/gatl.git
+ * 
+ * This file is part of The Geometric Algebra Template Library (GATL).
+ * 
+ * GATL is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * GATL is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with GATL. If not, see <https://www.gnu.org/licenses/>.
+ */
 
 #ifndef __GA_CORE_GENERAL_METRIC_MAPPING_HPP__
 #define __GA_CORE_GENERAL_METRIC_MAPPING_HPP__
@@ -204,7 +203,7 @@ namespace ga {
                             component_t<determinant_t<GeneralMetricSpace, row_basis_vectors, column_basis_vectors, order>, constant_basis_blade<ColumnBasisVectors ^ GeneralMetricSpace::basis_vectors> >,
                             regressive_product_mapping<GeneralMetricSpace::vector_space_dimensions>
                         >,
-                        component_t<reordering_sign_t<row_basis_vectors, row_basis_vectors_complement>, deduce_basis_blade_t<(possible_grades_v<RightBasisBlade> >> order), row_basis_vectors_complement> >,
+                        component_t<reordering_sign_t<row_basis_vectors, row_basis_vectors_complement>, deduce_basis_blade_t<safe_rshift(possible_grades_v<RightBasisBlade>, order), row_basis_vectors_complement> >,
                         exterior_product_mapping<GeneralMetricSpace::vector_space_dimensions>
                     >;
 

@@ -1,4 +1,4 @@
-# Copyright (C) 2018 Leandro Augusto Frata Fernandes
+# Copyright (C) Leandro Augusto Frata Fernandes
 # 
 # author     : Fernandes, Leandro A. F.
 # e-mail     : laffernandes@ic.uff.br
