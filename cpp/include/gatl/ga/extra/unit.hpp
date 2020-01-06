@@ -33,6 +33,28 @@ namespace ga {
         return lazy.eval(gp(lazy.template argument<0>(), inv(sqrt(abs(sp(lazy.template argument<0>(), reversion(lazy.template argument<0>()), mtr))), mtr), mtr));
     }
 
+    template<typename CoefficientType, typename Coefficient, typename MetricSpaceType>
+    constexpr decltype(auto) unit(scalar_clifford_expression<CoefficientType, Coefficient> const &arg, metric_space<MetricSpaceType> const &) {
+        auto const lazy = make_lazy_context(arg);
+        return lazy.eval(gp(lazy.template argument<0>(), pow(abs(lazy.template argument<0>()), c<-1>)));
+    }
+
+    template<typename CoefficientType, typename Coefficient>
+    constexpr decltype(auto) unit(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
+        auto const lazy = make_lazy_context(arg);
+        return lazy.eval(gp(lazy.template argument<0>(), pow(abs(lazy.template argument<0>()), c<-1>)));
+    }
+
+    template<typename Type, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+    constexpr decltype(auto) unit(Type const &arg, metric_space<MetricSpaceType> const &mtr) {
+        return unit(scalar(arg), mtr);
+    }
+
+    template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+    constexpr decltype(auto) unit(Type const &arg) {
+        return unit(scalar(arg));
+    }
+
 }
 
 #endif // __GA_EXTRA_UNIT_HPP__

@@ -110,6 +110,11 @@
         return igp(lhs, rhs, SPACE); \
     } \
     \
+    template<typename LeftType, typename RightCoefficientType, typename RightExpression, typename = std::enable_if_t<!is_clifford_expression_v<LeftType> > > \
+    constexpr decltype(auto) igp(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
+        return igp(lhs, rhs, SPACE); \
+    } \
+    \
     template<typename CoefficientType, typename Expression> \
     constexpr decltype(auto) inv(clifford_expression<CoefficientType, Expression> const &arg) { \
         return inv(arg, SPACE); \
