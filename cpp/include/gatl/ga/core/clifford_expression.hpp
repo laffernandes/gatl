@@ -183,7 +183,7 @@ namespace ga {
             template<typename... Args>
             constexpr sequential_storage(Args &&... args) noexcept :
                 entries_{ std::move(args)... } {
-                static_assert(sizeof...(args) == Size, "The number of arguments must be equal to the number of stored data entries.");
+                //static_assert(sizeof...(args) == Size, "The number of arguments must be equal to the number of stored data entries.");
             }
 
             constexpr sequential_storage & operator=(sequential_storage const &) = default;
@@ -729,19 +729,19 @@ namespace std {
     template<typename LeftType, typename RightCoefficientType, typename RightCoefficient>
     struct common_type<LeftType, ga::scalar_clifford_expression<RightCoefficientType, RightCoefficient> > :
         common_type<LeftType, RightCoefficientType> {
-        static_assert(ga::detail::can_be_stored_v<RightCoefficient>, "The given ga::scalar_clifford_expression<...> can not be stored as a native scalar value.");
+        //static_assert(ga::detail::can_be_stored_v<RightCoefficient>, "The given ga::scalar_clifford_expression<...> can not be stored as a native scalar value.");
     };
 
     template<typename LeftCoefficientType, typename LeftCoefficient, typename RightType>
     struct common_type<ga::scalar_clifford_expression<LeftCoefficientType, LeftCoefficient>, RightType> :
         common_type<LeftCoefficientType, RightType> {
-        static_assert(ga::detail::can_be_stored_v<LeftCoefficient>, "The given ga::scalar_clifford_expression<...> can not be stored as a native scalar value.");
+        //static_assert(ga::detail::can_be_stored_v<LeftCoefficient>, "The given ga::scalar_clifford_expression<...> can not be stored as a native scalar value.");
     };
 
     template<typename LeftCoefficientType, typename LeftCoefficient, typename RightCoefficientType, typename RightCoefficient>
     struct common_type<ga::scalar_clifford_expression<LeftCoefficientType, LeftCoefficient>, ga::scalar_clifford_expression<RightCoefficientType, RightCoefficient> > :
         common_type<LeftCoefficientType, RightCoefficientType> {
-        static_assert(ga::detail::can_be_stored_v<LeftCoefficient> && ga::detail::can_be_stored_v<RightCoefficient>, "The given ga::scalar_clifford_expression<...> can not be stored as a native scalar value.");
+        //static_assert(ga::detail::can_be_stored_v<LeftCoefficient> && ga::detail::can_be_stored_v<RightCoefficient>, "The given ga::scalar_clifford_expression<...> can not be stored as a native scalar value.");
     };
 
 }

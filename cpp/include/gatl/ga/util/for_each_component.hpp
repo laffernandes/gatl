@@ -54,7 +54,7 @@ namespace ga {
 
         template<typename ValueType, typename Coefficient, bitset_t BasisVectors>
         struct _for_each_component_impl_inner_iteration<ValueType, Coefficient, constant_basis_blade<BasisVectors> > {
-            static_assert(can_be_stored_v<Coefficient>, "The ga::for_each_component() function does not allow lazy evaluation with arguments from a lazy context.");
+            //static_assert(can_be_stored_v<Coefficient>, "The ga::for_each_component() function does not allow lazy evaluation with arguments from a lazy context.");
 
             template<typename ValueCItr, typename BitsetCItr, typename MapCIts, typename Function>
             inline static bool run(ValueCItr const &, BitsetCItr const &, MapCIts const &, Function f) noexcept(noexcept(f)) {
@@ -77,7 +77,7 @@ namespace ga {
 
         template<typename ValueType, typename Coefficient, bitset_t PossibleGrades>
         struct _for_each_component_impl_inner_iteration<ValueType, Coefficient, dynamic_basis_blade<PossibleGrades, stored_bitset> > {
-            static_assert(can_be_stored_v<Coefficient>, "The ga::for_each_component() function does not allow lazy evaluation with arguments from a lazy context.");
+            //static_assert(can_be_stored_v<Coefficient>, "The ga::for_each_component() function does not allow lazy evaluation with arguments from a lazy context.");
 
             template<typename ValueCItr, typename BitsetCItr, typename MapCIts, typename Function>
             inline static bool run(ValueCItr const &, BitsetCItr &bitset_citr, MapCIts const &, Function f) noexcept(noexcept(f)) {
@@ -121,7 +121,7 @@ namespace ga {
     // Applies the given function object f to the result of dereferencing every component in the given instance of ga::clifford_expression<CoefficientType, Expression>. The list of parameters of the function is: bitset_t const basis_vectors, CoefficientType const &value, ga::entry_source_t const basis_vectors_source, ga::entry_source_t const value_source, bool &keep_going. The keep_going parameter is always initialized to true. This function does not allow lazy evaluation with arguments from a lazy context.
     template<typename CoefficientType, typename Expression, typename Function>
     inline bool for_each_component(clifford_expression<CoefficientType, Expression> const &arg, Function f) noexcept(noexcept(f)) {
-        static_assert(detail::can_be_stored_v<Expression>, "This function does not expect lazy expressions.");
+        //static_assert(detail::can_be_stored_v<Expression>, "This function does not expect lazy expressions.");
         auto value_citr = arg.values().cbegin();
         auto bitset_citr = arg.bitsets().cbegin();
         auto map_citr = arg.maps().cbegin();

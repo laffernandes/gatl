@@ -65,7 +65,7 @@ namespace ga {
                 >;
         };
 
-        static_assert((P + Q + R) <= GA_MAX_BASIS_VECTOR_INDEX, "ga::signed_metric_space<P, Q, R> is ill-defined. It is expectated (P + Q + R) <= GA_MAX_BASIS_VECTOR_INDEX.");
+        //static_assert((P + Q + R) <= GA_MAX_BASIS_VECTOR_INDEX, "ga::signed_metric_space<P, Q, R> is ill-defined. It is expectated (P + Q + R) <= GA_MAX_BASIS_VECTOR_INDEX.");
     };
 
     // Specialization of is_orthogonal_metric_space<MetricSpaceType>.

@@ -42,8 +42,8 @@ namespace ga {
         // Implementation of ga::trivial_copy() and ga::checked_trivial_copy() procedures.
         template<bool RuntimeCheck, typename InputExpression, typename ResultExpression, typename Enabled = void>
         struct _trivial_copy {
-            static_assert(RuntimeCheck && std::is_same_v<InputExpression, nullptr_t>, "Non-trivial ga:checked_trivial_copy() operation.");
-            static_assert(!RuntimeCheck && std::is_same_v<InputExpression, nullptr_t>, "Non-trivial ga:trivial_copy() operation.");
+            //static_assert(RuntimeCheck && std::is_same_v<InputExpression, nullptr_t>, "Non-trivial ga:checked_trivial_copy() operation.");
+            //static_assert(!RuntimeCheck && std::is_same_v<InputExpression, nullptr_t>, "Non-trivial ga:trivial_copy() operation.");
         };
 
         template<bool RuntimeCheck, typename InputExpression, typename ResultExpression>
@@ -233,7 +233,7 @@ namespace ga {
 
         template<typename CommonConstantCoefficient, bitset_t CommonBasisVectors>
         struct _trivial_assign<component<CommonConstantCoefficient, constant_basis_blade<CommonBasisVectors> >, component<CommonConstantCoefficient, constant_basis_blade<CommonBasisVectors> > > {
-            static_assert(is_constant_expression_v<CommonConstantCoefficient>, "Common constant expression expected.");
+            //static_assert(is_constant_expression_v<CommonConstantCoefficient>, "Common constant expression expected.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
             constexpr static void run(InputValueCItr const &, InputBitsetCItr const &, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr const &) noexcept {
@@ -262,8 +262,8 @@ namespace ga {
 
         template<typename CommonConstantCoefficient, bitset_t InputPossibleGrades, bitset_t ResultPossibleGrades>
         struct _trivial_assign<component<CommonConstantCoefficient, dynamic_basis_blade<InputPossibleGrades, stored_bitset> >, component<CommonConstantCoefficient, dynamic_basis_blade<ResultPossibleGrades, stored_bitset> > > {
-            static_assert(is_constant_expression_v<CommonConstantCoefficient>, "Common constant expression expected.");
-            static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
+            //static_assert(is_constant_expression_v<CommonConstantCoefficient>, "Common constant expression expected.");
+            //static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
             constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
@@ -275,7 +275,7 @@ namespace ga {
 
         template<typename InputConstantCoefficient, bitset_t InputPossibleGrades, bitset_t ResultPossibleGrades>
         struct _trivial_assign<component<InputConstantCoefficient, dynamic_basis_blade<InputPossibleGrades, stored_bitset> >, component<stored_value, dynamic_basis_blade<ResultPossibleGrades, stored_bitset> > > {
-            static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
+            //static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
             constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
@@ -290,7 +290,7 @@ namespace ga {
 
         template<bitset_t InputPossibleGrades, bitset_t ResultPossibleGrades>
         struct _trivial_assign<component<stored_value, dynamic_basis_blade<InputPossibleGrades, stored_bitset> >, component<stored_value, dynamic_basis_blade<ResultPossibleGrades, stored_bitset> > > {
-            static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
+            //static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
             constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
@@ -306,7 +306,7 @@ namespace ga {
 
         template<typename InputConstantCoefficient, bitset_t InputPossibleGrades, bitset_t ResultPossibleGrades>
         struct _trivial_assign<component<InputConstantCoefficient, dynamic_basis_blade<InputPossibleGrades, stored_bitset> >, component<stored_map_values, dynamic_basis_blade<ResultPossibleGrades, stored_map_bitsets> > > {
-            static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
+            //static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
             constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
@@ -319,7 +319,7 @@ namespace ga {
 
         template<bitset_t InputPossibleGrades, bitset_t ResultPossibleGrades>
         struct _trivial_assign<component<stored_value, dynamic_basis_blade<InputPossibleGrades, stored_bitset> >, component<stored_map_values, dynamic_basis_blade<ResultPossibleGrades, stored_map_bitsets> > > {
-            static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
+            //static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
             constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
@@ -332,7 +332,7 @@ namespace ga {
 
         template<bitset_t InputPossibleGrades, bitset_t ResultPossibleGrades>
         struct _trivial_assign<component<stored_map_values, dynamic_basis_blade<InputPossibleGrades, stored_map_bitsets> >, component<stored_map_values, dynamic_basis_blade<ResultPossibleGrades, stored_map_bitsets> > > {
-            static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
+            //static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
             constexpr static void run(InputValueCItr const &, InputBitsetCItr const &, InputMapCItr &input_map_itr, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
