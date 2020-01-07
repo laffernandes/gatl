@@ -40,13 +40,13 @@ namespace ga {
 
     template<typename CoefficientType, typename Coefficient, bitset_t BasisVectors, typename Function>
     inline bool for_each_basis_vector(clifford_expression<CoefficientType, detail::component<Coefficient, detail::constant_basis_blade<BasisVectors> > > const &, Function f) noexcept(noexcept(f)) {
-        //static_assert(detail::can_be_stored_v<Coefficient>, "The ga::for_each_basis_vector() function does not allow lazy evaluation with arguments from a lazy context.");
+        static_assert(detail::can_be_stored_v<Coefficient>, "The ga::for_each_basis_vector() function does not allow lazy evaluation with arguments from a lazy context.");
         return for_each_basis_vector(BasisVectors, f);
     };
 
     template<typename CoefficientType, typename Coefficient, bitset_t PossibleGrades, typename Function>
     inline bool for_each_basis_vector(clifford_expression<CoefficientType, detail::component<Coefficient, detail::dynamic_basis_blade<PossibleGrades, detail::stored_bitset> > > const &arg, Function f) noexcept(noexcept(f)) {
-        //static_assert(detail::can_be_stored_v<Coefficient>, "The ga::for_each_basis_vector() function does not allow lazy evaluation with arguments from a lazy context.");
+        static_assert(detail::can_be_stored_v<Coefficient>, "The ga::for_each_basis_vector() function does not allow lazy evaluation with arguments from a lazy context.");
         return for_each_basis_vector(*arg.bitsets().cbegin(), f);
     };
 

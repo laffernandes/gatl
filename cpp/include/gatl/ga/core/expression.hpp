@@ -144,7 +144,7 @@ namespace ga {
 
             template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
             constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &args) {
-                //static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
+                static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
                 return *std::next(std::get<Tag - LowerTag>(args).values().cbegin(), Index);
             }
         };
@@ -156,7 +156,7 @@ namespace ga {
 
             template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
             constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &) {
-                //static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
+                static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
                 //TODO Not supported yet (map)
                 throw not_implemented_error("Sorry! The use of ga::clifford_expresion<CoefficientType, Expression> with ga::associative_container_t<ValueType> is not supported yet.");
             }
@@ -190,7 +190,7 @@ namespace ga {
 
             template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
             constexpr static bitset_t eval(std::tuple<InputTypes...> const &args) {
-                //static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
+                static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
                 return *std::next(std::get<Tag - LowerTag>(args).bitsets().cbegin(), Index);
             }
         };
@@ -202,7 +202,7 @@ namespace ga {
 
             template<tag_t LowerTag, tag_t UpperTag, typename... InputTypes>
             constexpr static decltype(auto) eval(std::tuple<InputTypes...> const &) {
-                //static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
+                static_assert(LowerTag <= Tag && Tag <= UpperTag, "Tag out of bounds.");
                 //TODO Not supported yet (map)
                 throw not_implemented_error("Sorry! The use of ga::clifford_expresion<CoefficientType, Expression> with ga::associative_container_t<ValueType> is not supported yet.");
             }
@@ -244,7 +244,7 @@ namespace ga {
         struct dynamic_basis_blade<PossibleGrades, constant_bitset<Bitset> > {
             using type = constant_basis_blade<Bitset>; // it is not dynamic
 
-            //static_assert(PossibleGrades == possible_grades_v<type>, "The possible grades are inconsistent.");
+            static_assert(PossibleGrades == possible_grades_v<type>, "The possible grades are inconsistent.");
         };
 
         template<bitset_t PossibleGrades, typename Bitset>
@@ -949,9 +949,9 @@ namespace ga {
                 return pow(LeftArgument::template eval<LowerTag, UpperTag>(args), RightArgument::template eval<LowerTag, UpperTag>(args));
             }
 
-            //static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
-            //static_assert(!std::is_same_v<RightArgument, constant_value<0> >, "The right-hand side argument cannot be ga::detail::constant_value<0>.");
-            //static_assert(!std::is_same_v<RightArgument, constant_value<1> >, "The right-hand side argument cannot be ga::detail::constant_value<1>.");
+            static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+            static_assert(!std::is_same_v<RightArgument, constant_value<0> >, "The right-hand side argument cannot be ga::detail::constant_value<0>.");
+            static_assert(!std::is_same_v<RightArgument, constant_value<1> >, "The right-hand side argument cannot be ga::detail::constant_value<1>.");
         };
 
         template<typename LeftArgument>
@@ -963,7 +963,7 @@ namespace ga {
                 return 1 / cast_to_floating_point(LeftArgument::template eval<LowerTag, UpperTag>(args));
             }
 
-            //static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+            static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
         };
 
         template<typename LeftArgument>
@@ -975,7 +975,7 @@ namespace ga {
                 return square(LeftArgument::template eval<LowerTag, UpperTag>(args));
             }
 
-            //static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+            static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
         };
 
         template<typename LeftArgument>
@@ -987,7 +987,7 @@ namespace ga {
                 return cube(LeftArgument::template eval<LowerTag, UpperTag>(args));
             }
 
-            //static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+            static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
         };
 
         template<typename LeftArgument>
@@ -999,7 +999,7 @@ namespace ga {
                 return square(square(LeftArgument::template eval<LowerTag, UpperTag>(args)));
             }
 
-            //static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+            static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
         };
 
         template<typename LeftArgument>
@@ -1011,7 +1011,7 @@ namespace ga {
                 return sqrt(LeftArgument::template eval<LowerTag, UpperTag>(args));
             }
 
-            //static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+            static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
         };
 
         template<typename LeftArgument>
@@ -1023,7 +1023,7 @@ namespace ga {
                 return cbrt(LeftArgument::template eval<LowerTag, UpperTag>(args));
             }
 
-            //static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
+            static_assert(!std::is_same_v<LeftArgument, constant_value<0> >, "The left-hand side argument cannot be ga::detail::constant_value<0>.");
         };
 
         // Specializations of mul<Arguments...>.
@@ -1036,8 +1036,8 @@ namespace ga {
                 return Argument::template eval<LowerTag, UpperTag>(args) * mul_t<NextArguments...>::template eval<LowerTag, UpperTag>(args);
             }
 
-            //static_assert(!is_any_v<constant_value<0>, Argument, NextArguments...>, "The argument ga::detail::constant_value<0> is invalid.");
-            //static_assert(!is_any_v<constant_value<1>, Argument, NextArguments...>, "The argument ga::detail::constant_value<1> is invalid.");
+            static_assert(!is_any_v<constant_value<0>, Argument, NextArguments...>, "The argument ga::detail::constant_value<0> is invalid.");
+            static_assert(!is_any_v<constant_value<1>, Argument, NextArguments...>, "The argument ga::detail::constant_value<1> is invalid.");
         };
 
         template<typename... NextArguments>
@@ -1049,8 +1049,8 @@ namespace ga {
                 return -mul_t<NextArguments...>::template eval<LowerTag, UpperTag>(args);
             }
 
-            //static_assert(!is_any_v<constant_value<0>, NextArguments...>, "The argument ga::detail::constant_value<0> is invalid.");
-            //static_assert(!is_any_v<constant_value<1>, NextArguments...>, "The argument ga::detail::constant_value<1> is invalid.");
+            static_assert(!is_any_v<constant_value<0>, NextArguments...>, "The argument ga::detail::constant_value<0> is invalid.");
+            static_assert(!is_any_v<constant_value<1>, NextArguments...>, "The argument ga::detail::constant_value<1> is invalid.");
         };
 
         template<typename LeftArgument, typename RightArgument>
@@ -1062,8 +1062,8 @@ namespace ga {
                 return LeftArgument::template eval<LowerTag, UpperTag>(args) / RightArgument::template eval<LowerTag, UpperTag>(args);
             }
 
-            //static_assert(!is_any_v<constant_value<0>, LeftArgument>, "The argument ga::detail::constant_value<0> is invalid.");
-            //static_assert(!is_any_v<constant_value<1>, LeftArgument>, "The argument ga::detail::constant_value<1> is invalid.");
+            static_assert(!is_any_v<constant_value<0>, LeftArgument>, "The argument ga::detail::constant_value<0> is invalid.");
+            static_assert(!is_any_v<constant_value<1>, LeftArgument>, "The argument ga::detail::constant_value<1> is invalid.");
         };
 
         template<typename RightArgument>
@@ -1096,7 +1096,7 @@ namespace ga {
                 return Argument::template eval<LowerTag, UpperTag>(args) + add_t<NextArguments...>::template eval<LowerTag, UpperTag>(args);
             }
 
-            //static_assert(!is_any_v<constant_value<0>, Argument, NextArguments...>, "The argument ga::detail::constant_value<0> is invalid.");
+            static_assert(!is_any_v<constant_value<0>, Argument, NextArguments...>, "The argument ga::detail::constant_value<0> is invalid.");
         };
 
         template<typename LeftArgument, typename... RightArguments>
@@ -1108,7 +1108,7 @@ namespace ga {
                 return LeftArgument::template eval<LowerTag, UpperTag>(args) - mul_t<RightArguments...>::template eval<LowerTag, UpperTag>(args);
             }
 
-            //static_assert(!is_any_v<constant_value<0>, LeftArgument>, "The argument ga::detail::constant_value<0> is invalid.");
+            static_assert(!is_any_v<constant_value<0>, LeftArgument>, "The argument ga::detail::constant_value<0> is invalid.");
         };
 
         template<typename... LeftArguments, typename RightArgument, typename... RightNextArguments>

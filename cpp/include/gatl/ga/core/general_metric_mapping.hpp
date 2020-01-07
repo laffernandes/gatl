@@ -138,7 +138,7 @@ namespace ga {
             struct multiply {
             private:
 
-                //static_assert(safe_rshift(possible_grades_v<LeftBasisBlade> | possible_grades_v<RightBasisBlade>, GeneralMetricSpace::vector_space_dimensions + 1) == bitset_t(0), "The possible grades exceed the number of dimensions of the vectors space.");
+                static_assert(safe_rshift(possible_grades_v<LeftBasisBlade> | possible_grades_v<RightBasisBlade>, GeneralMetricSpace::vector_space_dimensions + 1) == bitset_t(0), "The possible grades exceed the number of dimensions of the vectors space.");
 
                 constexpr static bitset_t candidate_possible_grades = GradedProduct::template possible_grades_result<possible_grades_v<LeftBasisBlade>, possible_grades_v<RightBasisBlade>, GeneralMetricSpace::vector_space_dimensions>::value;
                 
