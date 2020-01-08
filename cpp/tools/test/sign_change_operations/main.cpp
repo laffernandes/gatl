@@ -65,19 +65,19 @@ bool test_using_dynamic_basis_blades(Function f, std::string const &pattern) {
 }
 
 TEST(SignChangeOperations, Conjugation) {
-    EXPECT_TRUE(test_using_constant_basis_blades(conjugation(constant_values_and_constant_basis_blades), "+--++--+"));
-    EXPECT_TRUE(test_using_constant_basis_blades(conjugation(dynamic_values_and_constant_basis_blades), "+--++--+"));
-    EXPECT_TRUE(test_using_dynamic_basis_blades([](auto const &arg) { return conjugation(arg); }, "+--++--+"));
+    EXPECT_TRUE(test_using_constant_basis_blades(conjugate(constant_values_and_constant_basis_blades), "+--++--+"));
+    EXPECT_TRUE(test_using_constant_basis_blades(conjugate(dynamic_values_and_constant_basis_blades), "+--++--+"));
+    EXPECT_TRUE(test_using_dynamic_basis_blades([](auto const &arg) { return conjugate(arg); }, "+--++--+"));
 }
 
 TEST(SignChangeOperations, Involution) {
-    EXPECT_TRUE(test_using_constant_basis_blades(involution(constant_values_and_constant_basis_blades), "+-+-+-+-"));
-    EXPECT_TRUE(test_using_constant_basis_blades(involution(dynamic_values_and_constant_basis_blades), "+-+-+-+-"));
-    EXPECT_TRUE(test_using_dynamic_basis_blades([](auto const &arg) { return involution(arg); }, "+-+-+-+-"));
+    EXPECT_TRUE(test_using_constant_basis_blades(involute(constant_values_and_constant_basis_blades), "+-+-+-+-"));
+    EXPECT_TRUE(test_using_constant_basis_blades(involute(dynamic_values_and_constant_basis_blades), "+-+-+-+-"));
+    EXPECT_TRUE(test_using_dynamic_basis_blades([](auto const &arg) { return involute(arg); }, "+-+-+-+-"));
 }
 
 TEST(SignChangeOperations, Reversion) {
-    EXPECT_TRUE(test_using_constant_basis_blades(reversion(constant_values_and_constant_basis_blades), "++--++--"));
-    EXPECT_TRUE(test_using_constant_basis_blades(reversion(dynamic_values_and_constant_basis_blades), "++--++--"));
-    EXPECT_TRUE(test_using_dynamic_basis_blades([](auto const &arg) { return reversion(arg); }, "++--++--"));
+    EXPECT_TRUE(test_using_constant_basis_blades(reverse(constant_values_and_constant_basis_blades), "++--++--"));
+    EXPECT_TRUE(test_using_constant_basis_blades(reverse(dynamic_values_and_constant_basis_blades), "++--++--"));
+    EXPECT_TRUE(test_using_dynamic_basis_blades([](auto const &arg) { return reverse(arg); }, "++--++--"));
 }

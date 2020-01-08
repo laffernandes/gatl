@@ -31,7 +31,7 @@ namespace ga {
     constexpr decltype(auto) round_size_sqr(clifford_expression<CoefficientType, Expression> const &round, conformal_metric_space<D> const &mtr) {
         auto const lazy = make_lazy_context(round);
         auto aux = lcont(e(c<D + 2>), lazy.template argument<0>(), mtr);
-        return lazy.eval(sp(sp(lazy.template argument<0>(), involution(lazy.template argument<0>()), mtr), inv(sp(aux, aux, mtr), mtr), mtr));
+        return lazy.eval(sp(sp(lazy.template argument<0>(), involute(lazy.template argument<0>()), mtr), inv(sp(aux, aux, mtr), mtr), mtr));
     }
 
 }

@@ -216,9 +216,9 @@ The following tables present a set of basic products and operations from geometr
 
 | Sign-Change Operation | Description |
 | --- | --- |
-| `conjugation(arg)` | Clifford conjugation |
-| `involution(arg)` | Grade involution |
-| `reversion(arg)` | Reversion |
+| `conjugate(arg)` | Clifford conjugation |
+| `involute(arg)` | Grade involution |
+| `reverse(arg)` | Reversion |
 
 | Dualization Operation | Description |
 | --- | --- |

@@ -79,7 +79,7 @@ namespace ga {
             largest_type largest(typename largest_type::value_storage_type{}, rhs.bitsets(), typename largest_type::map_storage_type{});
             *(largest.values().begin() + largest_index) = 1;
 
-            auto const inv_largest = reversion(largest);
+            auto const inv_largest = reverse(largest);
 
             for_each_basis_vector(largest_basis_vectors, [&](index_t const index, bool &keep_going) {
                 full_vector_t<default_integral_t, N> f;
