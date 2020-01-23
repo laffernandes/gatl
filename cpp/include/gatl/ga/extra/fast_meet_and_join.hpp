@@ -30,7 +30,7 @@ namespace ga {
 
         // Implementation of the ga::fast_join() function.
         template<ndims_t N, typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType>
-        constexpr decltype(auto) _fast_join_impl(bool const extra_sign_change, clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, grade_t const grade_lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, grade_t const grade_rhs, ToleranceType const &tol) {
+        GA_ALWAYS_INLINE constexpr decltype(auto) _fast_join_impl(bool const extra_sign_change, clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, grade_t const grade_lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, grade_t const grade_rhs, ToleranceType const &tol) {
             using value_type = std::common_type_t<LeftCoefficientType, RightCoefficientType>;
             using largest_type = full_derived_multivector_t<default_integral_t, RightExpression>;
             using join_type = full_multivector_t<value_type, N, std::max(smallest_possible_grade_v<LeftExpression>, smallest_possible_grade_v<RightExpression>), std::min(largest_possible_grade_v<LeftExpression> + largest_possible_grade_v<RightExpression>, (grade_t)N)>;

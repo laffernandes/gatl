@@ -28,7 +28,7 @@ namespace ga {
 
     // Returns the moment parameter of a given flat.
     template<typename CoefficientType, typename Expression, ndims_t D>
-    constexpr decltype(auto) flat_moment(clifford_expression<CoefficientType, Expression> const &flat, homogeneous_metric_space<D> const &mtr) noexcept {
+    constexpr decltype(auto) flat_moment(clifford_expression<CoefficientType, Expression> const &flat, homogeneous_metric_space<D> const &mtr) GA_NOEXCEPT {
         auto const lazy = make_lazy_context(flat);
         return lazy.eval(lcont(e(c<D + 1>), op(e(c<D + 1>), lazy.template argument<0>(), mtr), mtr));
     }

@@ -28,7 +28,7 @@ namespace ga {
 
     // Returns the direction parameter of a given round.
     template<typename CoefficientType, typename Expression, ndims_t D>
-    constexpr decltype(auto) round_direction(clifford_expression<CoefficientType, Expression> const &round, conformal_metric_space<D> const &mtr) noexcept {
+    constexpr decltype(auto) round_direction(clifford_expression<CoefficientType, Expression> const &round, conformal_metric_space<D> const &mtr) GA_NOEXCEPT {
         auto const lazy = make_lazy_context(round);
         return lazy.eval(op(lcont(-e(c<D + 2>), lazy.template argument<0>(), mtr), e(c<D + 2>), mtr));
     }

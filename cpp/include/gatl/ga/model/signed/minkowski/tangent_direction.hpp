@@ -28,7 +28,7 @@ namespace ga {
 
     // Returns the direction parameter of a given tangent.
     template<typename CoefficientType, typename Expression, ndims_t D>
-    constexpr decltype(auto) tangent_direction(clifford_expression<CoefficientType, Expression> const &tangent, minkowski_metric_space<D> const &mtr) noexcept {
+    constexpr decltype(auto) tangent_direction(clifford_expression<CoefficientType, Expression> const &tangent, minkowski_metric_space<D> const &mtr) GA_NOEXCEPT {
         auto const lazy = make_lazy_context(tangent);
         return lazy.eval(op(lcont(-(e(c<D + 1>) + e(c<D + 2>)), lazy.template argument<0>(), mtr), e(c<D + 1>) + e(c<D + 2>), mtr));
     }

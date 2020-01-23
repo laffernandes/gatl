@@ -39,17 +39,17 @@
 namespace ga {
 
     template<typename ValueType>
-    constexpr decltype(auto) default_tolerance() noexcept {
+    constexpr decltype(auto) default_tolerance() GA_NOEXCEPT {
         return c<0, ValueType>;
     }
 
     template<>
-    constexpr decltype(auto) default_tolerance<std::float_t>() noexcept {
+    constexpr decltype(auto) default_tolerance<std::float_t>() GA_NOEXCEPT {
         return scalar(GA_DEFAULT_FLT_TOLERANCE);
     }
 
     template<>
-    constexpr decltype(auto) default_tolerance<std::double_t>() noexcept {
+    constexpr decltype(auto) default_tolerance<std::double_t>() GA_NOEXCEPT {
         return scalar(GA_DEFAULT_DBL_TOLERANCE);
     }
 

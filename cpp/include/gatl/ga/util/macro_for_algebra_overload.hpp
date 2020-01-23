@@ -25,17 +25,17 @@
 #define __GA_UTIL_MACRO_FOR_ALGEBRA_OVERLOAD_HPP__
 
 #define _GA_UTIL_OVERLOAD(SPACE) \
-    constexpr decltype(auto) pseudoscalar() noexcept { \
+    constexpr decltype(auto) pseudoscalar() GA_NOEXCEPT { \
         return pseudoscalar(SPACE); \
     } \
     \
     template<typename... Types, typename = std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...> > > \
-    constexpr decltype(auto) vector(Types &&... coords) noexcept { \
+    constexpr decltype(auto) vector(Types &&... coords) GA_NOEXCEPT { \
         return ga::vector(SPACE, std::move(coords)...); \
     } \
     \
     template <typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > > \
-    constexpr decltype(auto) vector(IteratorType begin, IteratorType end) noexcept { \
+    constexpr decltype(auto) vector(IteratorType begin, IteratorType end) GA_NOEXCEPT { \
         return ga::vector(SPACE, begin, end); \
     }
 

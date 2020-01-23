@@ -28,7 +28,7 @@ namespace ga {
 
     // Translate the given flat to a given direction.
     template<typename DirectionCoefficientType, typename DirectionExpression, typename CoefficientType, typename Expresion, ndims_t D>
-    constexpr decltype(auto) translate(clifford_expression<DirectionCoefficientType, DirectionExpression> const &direction, clifford_expression<CoefficientType, Expresion> const &flat, homogeneous_metric_space<D> const &mtr) noexcept {
+    constexpr decltype(auto) translate(clifford_expression<DirectionCoefficientType, DirectionExpression> const &direction, clifford_expression<CoefficientType, Expresion> const &flat, homogeneous_metric_space<D> const &mtr) GA_NOEXCEPT {
         auto const lazy = make_lazy_context(direction, flat);
         return lazy.eval(lazy.template argument<1>() + op(lazy.template argument<0>(), lcont(e(c<D + 1>), lazy.template argument<1>(), mtr), mtr));
     }

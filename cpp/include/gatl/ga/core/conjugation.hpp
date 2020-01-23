@@ -27,13 +27,13 @@
 namespace ga {
 
     template<typename CoefficientType, typename Expression>
-    constexpr decltype(auto) conjugate(clifford_expression<CoefficientType, Expression> const &arg) noexcept {
+    constexpr decltype(auto) conjugate(clifford_expression<CoefficientType, Expression> const &arg) GA_NOEXCEPT {
         auto lazy = make_lazy_context(arg);
         return lazy.eval(clifford_expression<default_integral_t, detail::graded_unary_minus_t<typename decltype(lazy)::template argument_expression_t<0>, (bitset_t)0x6666666666666666ull> >());
     }
 
     template<typename Type>
-    constexpr decltype(auto) conjugate(Type const &arg) noexcept {
+    constexpr decltype(auto) conjugate(Type const &arg) GA_NOEXCEPT {
         return conjugate(scalar(arg));
     }
 }

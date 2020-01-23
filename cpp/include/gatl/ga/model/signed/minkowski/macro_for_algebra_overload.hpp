@@ -26,17 +26,17 @@
 
 #define _GA_MINKOWSKI_ALGEBRA_OVERLOAD(SPACE) \
     template <typename... Types, typename = std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...> > > \
-    constexpr decltype(auto) euclidean_vector(Types &&... coords) noexcept { \
+    constexpr decltype(auto) euclidean_vector(Types &&... coords) GA_NOEXCEPT { \
         return euclidean_vector(SPACE, std::move(coords)...); \
     } \
     \
     template <typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > > \
-    constexpr decltype(auto) euclidean_vector(IteratorType begin, IteratorType end) noexcept { \
+    constexpr decltype(auto) euclidean_vector(IteratorType begin, IteratorType end) GA_NOEXCEPT { \
         return euclidean_vector(SPACE, begin, end); \
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) flat_direction(clifford_expression<CoefficientType, Expression> const &flat) noexcept { \
+    constexpr decltype(auto) flat_direction(clifford_expression<CoefficientType, Expression> const &flat) GA_NOEXCEPT { \
         return flat_direction(flat, SPACE); \
     } \
     \
@@ -46,17 +46,17 @@
     } \
     \
     template <typename... Types, typename = std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...> > > \
-    constexpr decltype(auto) point(Types &&... coords) noexcept { \
+    constexpr decltype(auto) point(Types &&... coords) GA_NOEXCEPT { \
         return point(SPACE, std::move(coords)...); \
     } \
     \
     template <typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > > \
-    constexpr decltype(auto) point(IteratorType begin, IteratorType end) noexcept { \
+    constexpr decltype(auto) point(IteratorType begin, IteratorType end) GA_NOEXCEPT { \
         return point(SPACE, begin, end); \
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) round_direction(clifford_expression<CoefficientType, Expression> const &round) noexcept { \
+    constexpr decltype(auto) round_direction(clifford_expression<CoefficientType, Expression> const &round) GA_NOEXCEPT { \
         return round_direction(round, SPACE); \
     } \
     \
@@ -71,7 +71,7 @@
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) tangent_direction(clifford_expression<CoefficientType, Expression> const &tangent) noexcept { \
+    constexpr decltype(auto) tangent_direction(clifford_expression<CoefficientType, Expression> const &tangent) GA_NOEXCEPT { \
         return tangent_direction(tangent, SPACE); \
     } \
     \

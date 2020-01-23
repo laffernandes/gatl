@@ -39,13 +39,13 @@ namespace ga {
 
     // Returns whether the given Clifford expression is a null multivector up to an assumed numerical error.
     template<typename CoefficientType, typename Expression, typename ToleranceType, typename MetricSpaceType>
-    constexpr bool is_null(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) noexcept {
+    constexpr bool is_null(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) GA_NOEXCEPT {
         return is_zero(rnorm_sqr(arg, mtr), tol);
     }
 
     // Returns whether the given Clifford expression is a unit multivector up to an assumed numerical error.
     template<typename CoefficientType, typename Expression, typename ToleranceType, typename MetricSpaceType>
-    constexpr bool is_unit(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) noexcept {
+    constexpr bool is_unit(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) GA_NOEXCEPT {
         return is_zero(abs(rnorm_sqr(arg, mtr)) - c<1>, tol);
     }
 

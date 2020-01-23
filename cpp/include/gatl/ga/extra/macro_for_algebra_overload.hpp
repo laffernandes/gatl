@@ -41,17 +41,17 @@
     } \
     \
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
-    constexpr decltype(auto) cp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept { \
+    constexpr decltype(auto) cp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) GA_NOEXCEPT { \
         return cp(lhs, rhs, SPACE); \
     } \
     \
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType, typename = std::enable_if_t<!is_metric_space_v<ToleranceType> > > \
-    constexpr decltype(auto) dp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, ToleranceType const &tol) noexcept { \
+    constexpr decltype(auto) dp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, ToleranceType const &tol) GA_NOEXCEPT { \
         return dp(lhs, rhs, tol, SPACE); \
     } \
     \
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression> \
-    constexpr decltype(auto) dp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) noexcept { \
+    constexpr decltype(auto) dp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) GA_NOEXCEPT { \
         return dp(lhs, rhs, default_tolerance<std::common_type_t<LeftCoefficientType, RightCoefficientType> >(), SPACE); \
     } \
     \
@@ -121,12 +121,12 @@
     } \
     \
     template<typename CoefficientType, typename Expression, typename ToleranceType> \
-    constexpr bool is_null(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept{ \
+    constexpr bool is_null(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) GA_NOEXCEPT{ \
         return is_null(arg, tol, SPACE); \
     } \
     \
     template<typename CoefficientType, typename Expression, typename ToleranceType> \
-    constexpr bool is_unit(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept { \
+    constexpr bool is_unit(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) GA_NOEXCEPT { \
         return is_unit(arg, tol, SPACE); \
     } \
     \
@@ -156,17 +156,17 @@
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) rnorm_sqr(clifford_expression<CoefficientType, Expression> const &arg) noexcept { \
+    constexpr decltype(auto) rnorm_sqr(clifford_expression<CoefficientType, Expression> const &arg) GA_NOEXCEPT { \
         return rnorm_sqr(arg, SPACE); \
     } \
     \
     template<typename Type, typename PseudoscalarCoefficientType, typename PseudoscalarExpression> \
-    constexpr decltype(auto) undual(Type const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) noexcept { \
+    constexpr decltype(auto) undual(Type const &arg, clifford_expression<PseudoscalarCoefficientType, PseudoscalarExpression> const &pseudoscalar) GA_NOEXCEPT { \
         return undual(arg, pseudoscalar, SPACE); \
     } \
     \
     template<typename Type> \
-    constexpr decltype(auto) undual(Type const &arg) noexcept { \
+    constexpr decltype(auto) undual(Type const &arg) GA_NOEXCEPT { \
         return undual(arg, pseudoscalar(SPACE), SPACE); \
     } \
     \
@@ -176,7 +176,7 @@
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    std::ostream & operator <<(std::ostream &os, clifford_expression<CoefficientType, Expression> const &arg) noexcept { \
+    std::ostream & operator <<(std::ostream &os, clifford_expression<CoefficientType, Expression> const &arg) GA_NOEXCEPT { \
         return write(os, arg, BASIS_VECTORS_NAMES); \
     }
 

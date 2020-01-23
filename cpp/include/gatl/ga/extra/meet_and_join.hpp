@@ -30,7 +30,7 @@ namespace ga {
 
         // Returns a std::tuple<T1, T2> structure where T1 is the meet and T2 is the join of the given pair of blades. This implementation assumes that the grade of the left-hand side argument is lower or equal to the grade of the right-hand side argument.
         template<ndims_t N, typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType>
-        constexpr decltype(auto) _meet_and_join_impl(bool const extra_sign_change, clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, grade_t const grade_lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, grade_t const grade_rhs, ToleranceType const &tol) {
+        GA_ALWAYS_INLINE constexpr decltype(auto) _meet_and_join_impl(bool const extra_sign_change, clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, grade_t const grade_lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, grade_t const grade_rhs, ToleranceType const &tol) {
             using delta_type = decltype(dp(lhs, rhs, real_metric_space()));
             using value_type = std::common_type_t<LeftCoefficientType, RightCoefficientType>;
             using meet_type = full_multivector_t<value_type, N, 0, std::min(largest_possible_grade_v<LeftExpression>, largest_possible_grade_v<RightExpression>)>;

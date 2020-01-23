@@ -42,16 +42,16 @@ namespace ga {
         constexpr grade_result(grade_result const &) = default;
         constexpr grade_result(grade_result &&) = default;
 
-        constexpr grade_result(value_type const &) noexcept {
+        constexpr grade_result(value_type const &) GA_NOEXCEPT {
         }
 
-        constexpr operator value_type() const noexcept {
+        constexpr operator value_type() const GA_NOEXCEPT {
             return value_type();
         }
 
         constexpr operator grade_t() const = delete;
 
-        constexpr grade_interpretation_t flag() const noexcept {
+        constexpr grade_interpretation_t flag() const GA_NOEXCEPT {
             return LAZY_GRADE;
         }
     };
@@ -65,25 +65,25 @@ namespace ga {
         constexpr grade_result(grade_result const &) = default;
         constexpr grade_result(grade_result &&) = default;
 
-        constexpr grade_result(value_type const &value) noexcept :
+        constexpr grade_result(value_type const &value) GA_NOEXCEPT :
             value_(value) {
         }
 
-        constexpr operator value_type() const noexcept {
+        constexpr operator value_type() const GA_NOEXCEPT {
             return value_;
         }
 
-        constexpr operator grade_t() const noexcept {
+        constexpr operator grade_t() const GA_NOEXCEPT {
             return value_;
         }
 
-        constexpr grade_interpretation_t flag() const noexcept {
+        constexpr grade_interpretation_t flag() const GA_NOEXCEPT {
             return flag(*this);
         }
 
     private:
 
-        constexpr grade_interpretation_t flag(grade_t const grade) const noexcept {
+        constexpr grade_interpretation_t flag(grade_t const grade) const GA_NOEXCEPT {
             return grade >= 0 ? SINGLE_GRADE : (grade_interpretation_t)grade;
         }
 
@@ -99,18 +99,18 @@ namespace ga {
         constexpr grade_result(grade_result const &) = default;
         constexpr grade_result(grade_result &&) = default;
 
-        constexpr grade_result(value_type const &) noexcept {
+        constexpr grade_result(value_type const &) GA_NOEXCEPT {
         }
 
-        constexpr operator value_type() const noexcept {
+        constexpr operator value_type() const GA_NOEXCEPT {
             return value_type();
         }
 
-        constexpr operator grade_t() const noexcept {
+        constexpr operator grade_t() const GA_NOEXCEPT {
             return static_cast<grade_t>(GradeValue);
         }
 
-        constexpr grade_interpretation_t flag() const noexcept {
+        constexpr grade_interpretation_t flag() const GA_NOEXCEPT {
             return GradeValue >= 0 ? SINGLE_GRADE : (grade_interpretation_t)GradeValue;
         }
     };
@@ -118,7 +118,7 @@ namespace ga {
     namespace detail {
 
         template<typename Value>
-        constexpr decltype(auto) make_grade_result(scalar_clifford_expression<grade_t, Value> const &arg) noexcept {
+        GA_ALWAYS_INLINE constexpr decltype(auto) make_grade_result(scalar_clifford_expression<grade_t, Value> const &arg) GA_NOEXCEPT {
             return grade_result<scalar_clifford_expression<grade_t, Value> >(arg);
         }
 
@@ -240,45 +240,45 @@ namespace ga {
 
     // Returns the ga::grade_result<Value> structure representing the grade of the given Clifford expression.
     template<typename CoefficientType, typename Expression, typename ToleranceType>
-    constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept {
+    constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) GA_NOEXCEPT {
         auto const lazy = make_lazy_context(arg, scalar(tol));
         return detail::make_grade_result(lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_grade_result_t<typename decltype(lazy)::template argument_expression_t<0>, detail::coefficient_t<typename decltype(lazy)::template argument_expression_t<1> > > >()));
     }
 
     template<typename Type, typename ToleranceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
-    constexpr decltype(auto) grade(Type const &arg, ToleranceType const &tol) noexcept {
+    constexpr decltype(auto) grade(Type const &arg, ToleranceType const &tol) GA_NOEXCEPT {
         return grade(scalar(arg), tol);
     }
 
     template<typename CoefficientType, typename Expression>
-    constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg) noexcept {
+    constexpr decltype(auto) grade(clifford_expression<CoefficientType, Expression> const &arg) GA_NOEXCEPT {
         return grade(arg, default_tolerance<CoefficientType>());
     }
 
     template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
-    constexpr decltype(auto) grade(Type const &arg) noexcept {
+    constexpr decltype(auto) grade(Type const &arg) GA_NOEXCEPT {
         return grade(scalar(arg), default_tolerance<Type>());
     }
 
     // Returns a scalar expression with the largest grade part of a given Clifford expression such that it is not zero.
     template<typename CoefficientType, typename Expression, typename ToleranceType>
-    constexpr decltype(auto) largest_grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) noexcept {
+    constexpr decltype(auto) largest_grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) GA_NOEXCEPT {
         auto lazy = make_lazy_context(arg, scalar(tol));
         return lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_largest_grade_result_t<typename decltype(lazy)::template argument_expression_t<0>, detail::coefficient_t<typename decltype(lazy)::template argument_expression_t<1> > > >());
     }
 
     template<typename Type, typename ToleranceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
-    constexpr decltype(auto) largest_grade(Type const &arg, ToleranceType const &tol) noexcept {
+    constexpr decltype(auto) largest_grade(Type const &arg, ToleranceType const &tol) GA_NOEXCEPT {
         return largest_grade(scalar(arg), tol);
     }
 
     template<typename CoefficientType, typename Expression>
-    constexpr decltype(auto) largest_grade(clifford_expression<CoefficientType, Expression> const &arg) noexcept {
+    constexpr decltype(auto) largest_grade(clifford_expression<CoefficientType, Expression> const &arg) GA_NOEXCEPT {
         return largest_grade(arg, default_tolerance<CoefficientType>());
     }
 
     template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
-    constexpr decltype(auto) largest_grade(Type const &arg) noexcept {
+    constexpr decltype(auto) largest_grade(Type const &arg) GA_NOEXCEPT {
         return largest_grade(scalar(arg), default_tolerance<Type>());
     }
 

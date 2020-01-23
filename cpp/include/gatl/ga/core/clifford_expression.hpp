@@ -173,7 +173,7 @@ namespace ga {
 
             using entry_type = EntryType;
 
-            constexpr sequential_storage() noexcept :
+            constexpr sequential_storage() GA_NOEXCEPT :
                 entries_{} {
             }
 
@@ -181,7 +181,7 @@ namespace ga {
             constexpr sequential_storage(sequential_storage &&) = default;
 
             template<typename... Args>
-            constexpr sequential_storage(Args &&... args) noexcept :
+            constexpr sequential_storage(Args &&... args) GA_NOEXCEPT :
                 entries_{ std::move(args)... } {
                 static_assert(sizeof...(args) == Size, "The number of arguments must be equal to the number of stored data entries.");
             }
@@ -189,27 +189,27 @@ namespace ga {
             constexpr sequential_storage & operator=(sequential_storage const &) = default;
             constexpr sequential_storage & operator=(sequential_storage &&) = default;
 
-            constexpr decltype(auto) begin() noexcept {
+            constexpr decltype(auto) begin() GA_NOEXCEPT {
                 return entries_.begin();
             }
 
-            constexpr decltype(auto) begin() const noexcept {
+            constexpr decltype(auto) begin() const GA_NOEXCEPT {
                 return entries_.begin();
             }
 
-            constexpr decltype(auto) end() noexcept {
+            constexpr decltype(auto) end() GA_NOEXCEPT {
                 return entries_.end();
             }
 
-            constexpr decltype(auto) end() const noexcept {
+            constexpr decltype(auto) end() const GA_NOEXCEPT {
                 return entries_.end();
             }
 
-            constexpr decltype(auto) cbegin() const noexcept {
+            constexpr decltype(auto) cbegin() const GA_NOEXCEPT {
                 return entries_.cbegin();
             }
 
-            constexpr decltype(auto) cend() const noexcept {
+            constexpr decltype(auto) cend() const GA_NOEXCEPT {
                 return entries_.cend();
             }
 
@@ -231,7 +231,7 @@ namespace ga {
             using bitset_storage_type = sequential_storage<bitset_type, StoredBitsetsCount>;
             using map_storage_type = sequential_storage<map_type, StoredMapsCount>;
 
-            constexpr _super_clifford_expression() noexcept :
+            constexpr _super_clifford_expression() GA_NOEXCEPT :
                 values_{},
                 bitsets_{},
                 maps_{} {
@@ -240,7 +240,7 @@ namespace ga {
             constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-            constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets, map_storage_type &&maps) noexcept :
+            constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets, map_storage_type &&maps) GA_NOEXCEPT :
                 values_(std::move(values)),
                 bitsets_(std::move(bitsets)),
                 maps_(std::move(maps)) {
@@ -249,27 +249,27 @@ namespace ga {
             constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-            constexpr value_storage_type & values() noexcept {
+            constexpr value_storage_type & values() GA_NOEXCEPT {
                 return values_;
             }
 
-            constexpr value_storage_type const & values() const noexcept {
+            constexpr value_storage_type const & values() const GA_NOEXCEPT {
                 return values_;
             }
 
-            constexpr bitset_storage_type & bitsets() noexcept {
+            constexpr bitset_storage_type & bitsets() GA_NOEXCEPT {
                 return bitsets_;
             }
 
-            constexpr bitset_storage_type const & bitsets() const noexcept {
+            constexpr bitset_storage_type const & bitsets() const GA_NOEXCEPT {
                 return bitsets_;
             }
 
-            constexpr map_storage_type & maps() noexcept {
+            constexpr map_storage_type & maps() GA_NOEXCEPT {
                 return maps_;
             }
 
-            constexpr map_storage_type const & maps() const noexcept {
+            constexpr map_storage_type const & maps() const GA_NOEXCEPT {
                 return maps_;
             }
 
@@ -292,7 +292,7 @@ namespace ga {
             using bitset_storage_type = sequential_storage<bitset_type, StoredBitsetsCount>;
             using map_storage_type = sequential_storage<map_type, StoredMapsCount>;
 
-            constexpr _super_clifford_expression() noexcept :
+            constexpr _super_clifford_expression() GA_NOEXCEPT :
                 bitsets_{},
                 maps_{} {
             }
@@ -300,12 +300,12 @@ namespace ga {
             constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-            constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&bitsets, map_storage_type &&maps) noexcept :
+            constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&bitsets, map_storage_type &&maps) GA_NOEXCEPT :
                 bitsets_(std::move(bitsets)),
                 maps_(std::move(maps)) {
             }
             
-            constexpr _super_clifford_expression(bitset_storage_type &&bitsets, map_storage_type &&maps) noexcept :
+            constexpr _super_clifford_expression(bitset_storage_type &&bitsets, map_storage_type &&maps) GA_NOEXCEPT :
                 bitsets_(std::move(bitsets)),
                 maps_(std::move(maps)) {
             }
@@ -313,23 +313,23 @@ namespace ga {
             constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-            constexpr value_storage_type values() const noexcept {
+            constexpr value_storage_type values() const GA_NOEXCEPT {
                 return value_storage_type();
             }
 
-            constexpr bitset_storage_type & bitsets() noexcept {
+            constexpr bitset_storage_type & bitsets() GA_NOEXCEPT {
                 return bitsets_;
             }
 
-            constexpr bitset_storage_type const & bitsets() const noexcept {
+            constexpr bitset_storage_type const & bitsets() const GA_NOEXCEPT {
                 return bitsets_;
             }
 
-            constexpr map_storage_type & maps() noexcept {
+            constexpr map_storage_type & maps() GA_NOEXCEPT {
                 return maps_;
             }
 
-            constexpr map_storage_type const & maps() const noexcept {
+            constexpr map_storage_type const & maps() const GA_NOEXCEPT {
                 return maps_;
             }
 
@@ -351,7 +351,7 @@ namespace ga {
             using bitset_storage_type = sequential_storage<bitset_type, 0>;
             using map_storage_type = sequential_storage<map_type, StoredMapsCount>;
 
-            constexpr _super_clifford_expression() noexcept :
+            constexpr _super_clifford_expression() GA_NOEXCEPT :
                 values_{},
                 maps_{} {
             }
@@ -359,12 +359,12 @@ namespace ga {
             constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-            constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&, map_storage_type &&maps) noexcept :
+            constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&, map_storage_type &&maps) GA_NOEXCEPT :
                 values_(std::move(values)),
                 maps_(std::move(maps)) {
             }
 
-            constexpr _super_clifford_expression(value_storage_type &&values, map_storage_type &&maps) noexcept :
+            constexpr _super_clifford_expression(value_storage_type &&values, map_storage_type &&maps) GA_NOEXCEPT :
                 values_(std::move(values)),
                 maps_(std::move(maps)) {
             }
@@ -372,23 +372,23 @@ namespace ga {
             constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-            constexpr value_storage_type & values() noexcept {
+            constexpr value_storage_type & values() GA_NOEXCEPT {
                 return values_;
             }
 
-            constexpr value_storage_type const & values() const noexcept {
+            constexpr value_storage_type const & values() const GA_NOEXCEPT {
                 return values_;
             }
 
-            constexpr bitset_storage_type bitsets() const noexcept {
+            constexpr bitset_storage_type bitsets() const GA_NOEXCEPT {
                 return bitset_storage_type();
             }
 
-            constexpr map_storage_type & maps() noexcept {
+            constexpr map_storage_type & maps() GA_NOEXCEPT {
                 return maps_;
             }
 
-            constexpr map_storage_type const & maps() const noexcept {
+            constexpr map_storage_type const & maps() const GA_NOEXCEPT {
                 return maps_;
             }
 
@@ -410,37 +410,37 @@ namespace ga {
             using bitset_storage_type = sequential_storage<bitset_type, 0>;
             using map_storage_type = sequential_storage<map_type, StoredMapsCount>;
 
-            constexpr _super_clifford_expression() noexcept :
+            constexpr _super_clifford_expression() GA_NOEXCEPT :
                 maps_{} {
             }
 
             constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-            constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&, map_storage_type &&maps) noexcept :
+            constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&, map_storage_type &&maps) GA_NOEXCEPT :
                 maps_(std::move(maps)) {
             }
 
-            constexpr _super_clifford_expression(map_storage_type &&maps) noexcept :
+            constexpr _super_clifford_expression(map_storage_type &&maps) GA_NOEXCEPT :
                 maps_(std::move(maps)) {
             }
 
             constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-            constexpr value_storage_type values() const noexcept {
+            constexpr value_storage_type values() const GA_NOEXCEPT {
                 return value_storage_type();
             }
 
-            constexpr bitset_storage_type bitsets() const noexcept {
+            constexpr bitset_storage_type bitsets() const GA_NOEXCEPT {
                 return bitset_storage_type();
             }
 
-            constexpr map_storage_type & maps() noexcept {
+            constexpr map_storage_type & maps() GA_NOEXCEPT {
                 return maps_;
             }
 
-            constexpr map_storage_type const & maps() const noexcept {
+            constexpr map_storage_type const & maps() const GA_NOEXCEPT {
                 return maps_;
             }
 
@@ -461,7 +461,7 @@ namespace ga {
             using bitset_storage_type = sequential_storage<bitset_type, StoredBitsetsCount>;
             using map_storage_type = sequential_storage<map_type, 0>;
 
-            constexpr _super_clifford_expression() noexcept :
+            constexpr _super_clifford_expression() GA_NOEXCEPT :
                 values_{},
                 bitsets_{} {
             }
@@ -469,12 +469,12 @@ namespace ga {
             constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-            constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets, map_storage_type &&) noexcept :
+            constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets, map_storage_type &&) GA_NOEXCEPT :
                 values_(std::move(values)),
                 bitsets_(std::move(bitsets)) {
             }
 
-            constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets) noexcept :
+            constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&bitsets) GA_NOEXCEPT :
                 values_(std::move(values)),
                 bitsets_(std::move(bitsets)) {
             }
@@ -482,23 +482,23 @@ namespace ga {
             constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-            constexpr value_storage_type & values() noexcept {
+            constexpr value_storage_type & values() GA_NOEXCEPT {
                 return values_;
             }
 
-            constexpr value_storage_type const & values() const noexcept {
+            constexpr value_storage_type const & values() const GA_NOEXCEPT {
                 return values_;
             }
 
-            constexpr bitset_storage_type & bitsets() noexcept {
+            constexpr bitset_storage_type & bitsets() GA_NOEXCEPT {
                 return bitsets_;
             }
 
-            constexpr bitset_storage_type const & bitsets() const noexcept {
+            constexpr bitset_storage_type const & bitsets() const GA_NOEXCEPT {
                 return bitsets_;
             }
 
-            constexpr map_storage_type maps() const noexcept {
+            constexpr map_storage_type maps() const GA_NOEXCEPT {
                 return map_storage_type();
             }
 
@@ -520,37 +520,37 @@ namespace ga {
             using bitset_storage_type = sequential_storage<bitset_type, StoredBitsetsCount>;
             using map_storage_type = sequential_storage<map_type, 0>;
 
-            constexpr _super_clifford_expression() noexcept :
+            constexpr _super_clifford_expression() GA_NOEXCEPT :
                 bitsets_{} {
             }
 
             constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-            constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&bitsets, map_storage_type &&) noexcept :
+            constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&bitsets, map_storage_type &&) GA_NOEXCEPT :
                 bitsets_(std::move(bitsets)) {
             }
 
-            constexpr _super_clifford_expression(bitset_storage_type &&bitsets) noexcept :
+            constexpr _super_clifford_expression(bitset_storage_type &&bitsets) GA_NOEXCEPT :
                 bitsets_(std::move(bitsets)) {
             }
 
             constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-            constexpr value_storage_type values() const noexcept {
+            constexpr value_storage_type values() const GA_NOEXCEPT {
                 return value_storage_type();
             }
 
-            constexpr bitset_storage_type & bitsets() noexcept {
+            constexpr bitset_storage_type & bitsets() GA_NOEXCEPT {
                 return bitsets_;
             }
 
-            constexpr bitset_storage_type const & bitsets() const noexcept {
+            constexpr bitset_storage_type const & bitsets() const GA_NOEXCEPT {
                 return bitsets_;
             }
 
-            constexpr map_storage_type maps() const noexcept {
+            constexpr map_storage_type maps() const GA_NOEXCEPT {
                 return map_storage_type();
             }
 
@@ -571,37 +571,37 @@ namespace ga {
             using bitset_storage_type = sequential_storage<bitset_type, 0>;
             using map_storage_type = sequential_storage<map_type, 0>;
 
-            constexpr _super_clifford_expression() noexcept :
+            constexpr _super_clifford_expression() GA_NOEXCEPT :
                 values_{} {
             }
 
             constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-            constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&, map_storage_type &&) noexcept :
+            constexpr _super_clifford_expression(value_storage_type &&values, bitset_storage_type &&, map_storage_type &&) GA_NOEXCEPT :
                 values_(std::move(values)) {
             }
 
-            constexpr _super_clifford_expression(value_storage_type &&values) noexcept :
+            constexpr _super_clifford_expression(value_storage_type &&values) GA_NOEXCEPT :
                 values_(std::move(values)) {
             }
 
             constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-            constexpr value_storage_type & values() noexcept {
+            constexpr value_storage_type & values() GA_NOEXCEPT {
                 return values_;
             }
 
-            constexpr value_storage_type const & values() const noexcept {
+            constexpr value_storage_type const & values() const GA_NOEXCEPT {
                 return values_;
             }
 
-            constexpr bitset_storage_type bitsets() const noexcept {
+            constexpr bitset_storage_type bitsets() const GA_NOEXCEPT {
                 return bitset_storage_type();
             }
 
-            constexpr map_storage_type maps() const noexcept {
+            constexpr map_storage_type maps() const GA_NOEXCEPT {
                 return map_storage_type();
             }
 
@@ -626,21 +626,21 @@ namespace ga {
             constexpr _super_clifford_expression(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression(_super_clifford_expression &&) = default;
 
-            constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&, map_storage_type &&) noexcept {
+            constexpr _super_clifford_expression(value_storage_type &&, bitset_storage_type &&, map_storage_type &&) GA_NOEXCEPT {
             }
 
             constexpr _super_clifford_expression & operator=(_super_clifford_expression const &) = default;
             constexpr _super_clifford_expression & operator=(_super_clifford_expression &&) = default;
 
-            constexpr value_storage_type values() const noexcept {
+            constexpr value_storage_type values() const GA_NOEXCEPT {
                 return value_storage_type();
             }
 
-            constexpr bitset_storage_type bitsets() const noexcept {
+            constexpr bitset_storage_type bitsets() const GA_NOEXCEPT {
                 return bitset_storage_type();
             }
 
-            constexpr map_storage_type maps() const noexcept {
+            constexpr map_storage_type maps() const GA_NOEXCEPT {
                 return map_storage_type();
             }
         };
@@ -652,7 +652,7 @@ namespace ga {
         template<typename Coefficient>
         struct _clifford_expression_to_native<component<Coefficient, constant_basis_blade<bitset_t(0)> >, true> {
             template<typename ValueCItr>
-            constexpr static decltype(auto) eval(ValueCItr const &) noexcept {
+            GA_ALWAYS_INLINE constexpr static decltype(auto) eval(ValueCItr const &) GA_NOEXCEPT {
                 return Coefficient::template eval<0, 0>(std::tuple<>());
             }
         };
@@ -660,7 +660,7 @@ namespace ga {
         template<>
         struct _clifford_expression_to_native<component<stored_value, constant_basis_blade<bitset_t(0)> >, false> {
             template<typename ValueCItr>
-            constexpr static decltype(auto) eval(ValueCItr const &value_itr) {
+            GA_ALWAYS_INLINE constexpr static decltype(auto) eval(ValueCItr const &value_itr) {
                 return *value_itr;
             }
         };
@@ -703,7 +703,7 @@ namespace ga {
         constexpr clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> &&) = delete;
 
         template<typename... StorageTypes>
-        constexpr clifford_expression(StorageTypes &&... args) noexcept :
+        constexpr clifford_expression(StorageTypes &&... args) GA_NOEXCEPT :
             super(std::move(args)...) {
         }
 
@@ -718,7 +718,7 @@ namespace ga {
 
     // Helper function to build a sequential storage of values, bitsets or maps.
     template<typename... Args>
-    constexpr decltype(auto) make_sequential_storage(Args &&... args) noexcept {
+    constexpr decltype(auto) make_sequential_storage(Args &&... args) GA_NOEXCEPT {
         return detail::sequential_storage<std::common_type_t<std::remove_cv_t<std::remove_reference_t<Args> >...>, sizeof...(args)>(std::move(args)...);
     }
 

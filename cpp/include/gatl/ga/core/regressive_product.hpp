@@ -27,23 +27,23 @@
 namespace ga {
 
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename MetricSpaceType>
-    constexpr decltype(auto) rp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &) noexcept {
+    constexpr decltype(auto) rp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &) GA_NOEXCEPT {
         auto lazy = make_lazy_context(lhs, rhs);
         return lazy.eval(clifford_expression<default_integral_t, detail::product_t<typename decltype(lazy)::template argument_expression_t<0>, typename decltype(lazy)::template argument_expression_t<1>, detail::regressive_product_mapping<MetricSpaceType::vector_space_dimensions> > >());
     }
 
     template<typename LeftCoefficientType, typename LeftExpression, typename RightType, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<RightType> > >
-    constexpr decltype(auto) rp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &mtr) noexcept {
+    constexpr decltype(auto) rp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &mtr) GA_NOEXCEPT {
         return rp(lhs, scalar(rhs), mtr);
     }
 
     template<typename LeftType, typename RightCoefficientType, typename RightExpression, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<LeftType> > >
-    constexpr decltype(auto) rp(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &mtr) noexcept {
+    constexpr decltype(auto) rp(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &mtr) GA_NOEXCEPT {
         return rp(scalar(lhs), rhs, mtr);
     }
 
     template<typename LeftType, typename RightType, typename MetricSpaceType, typename = std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>)> >
-    constexpr decltype(auto) rp(LeftType const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &mtr) noexcept {
+    constexpr decltype(auto) rp(LeftType const &lhs, RightType const &rhs, metric_space<MetricSpaceType> const &mtr) GA_NOEXCEPT {
         return rp(scalar(lhs), scalar(rhs), mtr);
     }
 

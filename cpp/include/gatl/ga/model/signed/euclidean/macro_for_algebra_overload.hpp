@@ -26,12 +26,12 @@
 
 #define _GA_EUCLIDEAN_ALGEBRA_OVERLOAD(SPACE) \
     template <typename... Types, typename = std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...> > > \
-    constexpr decltype(auto) euclidean_vector(Types &&... coords) noexcept { \
+    constexpr decltype(auto) euclidean_vector(Types &&... coords) GA_NOEXCEPT { \
         return euclidean_vector(SPACE, std::move(coords)...); \
     } \
     \
     template <typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > > \
-    constexpr decltype(auto) euclidean_vector(IteratorType begin, IteratorType end) noexcept { \
+    constexpr decltype(auto) euclidean_vector(IteratorType begin, IteratorType end) GA_NOEXCEPT { \
         return euclidean_vector(SPACE, begin, end); \
     } \
     \

@@ -67,7 +67,7 @@ bool check(Product prod, Truth truth, ga::clifford_expression<LeftCoefficientTyp
 template<ga::ndims_t N, ga::bitset_t LeftBitset, ga::bitset_t RightBitset = ga::detail::first_combination(N)>
 struct _compile_time_vs_compile_time_iterate_right {
     template<typename Product, typename Truth>
-    static bool run(Product prod, Truth truth) {
+    GA_ALWAYS_INLINE static bool run(Product prod, Truth truth) {
         ga::clifford_expression<ga::default_integral_t, ga::detail::component<ga::detail::constant_value<1>, ga::detail::constant_basis_blade<LeftBitset> > > lhs;
         ga::clifford_expression<ga::default_integral_t, ga::detail::component<ga::detail::constant_value<1>, ga::detail::constant_basis_blade<RightBitset> > > rhs;
         return _compile_time_vs_compile_time_iterate_right<N, LeftBitset, RightBitset - 1>::run(prod, truth)
@@ -78,7 +78,7 @@ struct _compile_time_vs_compile_time_iterate_right {
 template<ga::ndims_t N, ga::bitset_t LeftBitset>
 struct _compile_time_vs_compile_time_iterate_right<N, LeftBitset, ga::bitset_t(0)> {
     template<typename Product, typename Truth>
-    static bool run(Product prod, Truth truth) {
+    GA_ALWAYS_INLINE static bool run(Product prod, Truth truth) {
         ga::clifford_expression<ga::default_integral_t, ga::detail::component<ga::detail::constant_value<1>, ga::detail::constant_basis_blade<LeftBitset> > > lhs;
         ga::clifford_expression<ga::default_integral_t, ga::detail::component<ga::detail::constant_value<1>, ga::detail::constant_basis_blade<ga::bitset_t(0)> > > rhs;
         return check(prod, truth, lhs, rhs);
@@ -88,7 +88,7 @@ struct _compile_time_vs_compile_time_iterate_right<N, LeftBitset, ga::bitset_t(0
 template<ga::ndims_t N, ga::bitset_t LeftBitset = ga::detail::first_combination(N)>
 struct _compile_time_vs_compile_time_iterate_left {
     template<typename Product, typename Truth>
-    static bool run(Product prod, Truth truth) {
+    GA_ALWAYS_INLINE static bool run(Product prod, Truth truth) {
         return _compile_time_vs_compile_time_iterate_left<N, LeftBitset - 1>::run(prod, truth)
             && _compile_time_vs_compile_time_iterate_right<N, LeftBitset>::run(prod, truth);
     }
@@ -97,7 +97,7 @@ struct _compile_time_vs_compile_time_iterate_left {
 template<ga::ndims_t N>
 struct _compile_time_vs_compile_time_iterate_left<N, ga::bitset_t(0)> {
     template<typename Product, typename Truth>
-    static bool run(Product prod, Truth const &truth) {
+    GA_ALWAYS_INLINE static bool run(Product prod, Truth const &truth) {
         return _compile_time_vs_compile_time_iterate_right<N, ga::bitset_t(0)>::run(prod, truth);
     }
 };
@@ -110,7 +110,7 @@ bool compile_time_vs_compile_time(Product prod, Truth truth) {
 template<ga::ndims_t N, ga::bitset_t LeftBitset = ga::detail::first_combination(N)>
 struct _compile_time_vs_runtime_iterate_left {
     template<typename Product, typename Truth>
-    static bool run(Product prod, Truth truth, runtime_entry_t<N> const &rhs) {
+    GA_ALWAYS_INLINE static bool run(Product prod, Truth truth, runtime_entry_t<N> const &rhs) {
         ga::clifford_expression<ga::default_integral_t, ga::detail::component<ga::detail::constant_value<1>, ga::detail::constant_basis_blade<LeftBitset> > > lhs;
         return _compile_time_vs_runtime_iterate_left<N, LeftBitset - 1>::run(prod, truth, rhs)
             && check(prod, truth, lhs, rhs);
@@ -120,7 +120,7 @@ struct _compile_time_vs_runtime_iterate_left {
 template<ga::ndims_t N>
 struct _compile_time_vs_runtime_iterate_left<N, ga::bitset_t(0)> {
     template<typename Product, typename Truth>
-    static bool run(Product prod, Truth const &truth, runtime_entry_t<N> const &rhs) {
+    GA_ALWAYS_INLINE static bool run(Product prod, Truth const &truth, runtime_entry_t<N> const &rhs) {
         ga::clifford_expression<ga::default_integral_t, ga::detail::component<ga::detail::constant_value<1>, ga::detail::constant_basis_blade<ga::bitset_t(0)> > > lhs;
         return check(prod, truth, lhs, rhs);
     }

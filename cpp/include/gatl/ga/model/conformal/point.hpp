@@ -28,7 +28,7 @@ namespace ga {
 
     // Initializes a multivector representation of a point using the given coordinates expressed in the base space.
     template<ndims_t D, typename... Types>
-    constexpr decltype(auto) point(conformal_metric_space<D> const &mtr, Types &&... coords) noexcept {
+    constexpr decltype(auto) point(conformal_metric_space<D> const &mtr, Types &&... coords) GA_NOEXCEPT {
         return vector(mtr, std::move(coords)..., c<1>, ((std::move(coords) * std::move(coords)) + ... + c<0>) / c<2>);
     }
 
@@ -36,7 +36,7 @@ namespace ga {
 
         // Helper function to adapt one point() function to another.
         template<ndims_t D, typename IteratorType, std::size_t... Indices>
-        constexpr decltype(auto) make_point_using_iterator(conformal_metric_space<D> const &mtr, IteratorType begin, std::index_sequence<Indices...>) noexcept {
+        GA_ALWAYS_INLINE constexpr decltype(auto) make_point_using_iterator(conformal_metric_space<D> const &mtr, IteratorType begin, std::index_sequence<Indices...>) GA_NOEXCEPT {
             return point(mtr, *(begin + Indices)...);
         };
 
@@ -44,7 +44,7 @@ namespace ga {
 
     // Initializes a multivector representation of a point using the given iterator to provide the set of coordinates.
     template<ndims_t D, typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > >
-    decltype(auto) point(conformal_metric_space<D> const &mtr, IteratorType begin, IteratorType end) noexcept {
+    decltype(auto) point(conformal_metric_space<D> const &mtr, IteratorType begin, IteratorType end) GA_NOEXCEPT {
         assert(D == std::distance(begin, end));
         return detail::make_point_using_iterator(mtr, begin, std::make_index_sequence<D>{});
     }

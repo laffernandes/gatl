@@ -160,7 +160,7 @@ namespace ga {
             // expression_type is not defined here.
 
             template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-            constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+            GA_ALWAYS_INLINE constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
                 eval_clifford_expression<LowerTag, UpperTag, Expression>::run(value_itr, bitset_itr, map_itr, args);
                 eval_clifford_expressions<LowerTag, UpperTag, NextExpressions...>::run(value_itr, bitset_itr, map_itr, args);
             }
@@ -176,7 +176,7 @@ namespace ga {
             // expression_type is not defined here.
 
             template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-            constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+            GA_ALWAYS_INLINE constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
                 eval_clifford_expression<LowerTag, UpperTag, Expression>::run(value_itr, bitset_itr, map_itr, args);
             }
         };
@@ -191,7 +191,7 @@ namespace ga {
             using expression_type = Expression ;
 
             template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-            constexpr static void run(ValueItr const &, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &) noexcept {
+            GA_ALWAYS_INLINE constexpr static void run(ValueItr const &, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &) GA_NOEXCEPT {
                 // Do nothing.
             }
         };
@@ -206,7 +206,7 @@ namespace ga {
             using expression_type = ExpressionType;
 
             template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-            constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
+            GA_ALWAYS_INLINE constexpr static void run(ValueItr &value_itr, BitsetItr &bitset_itr, MapIts &map_itr, std::tuple<InputTypes...> const &args) {
                 eval_clifford_expressions<LowerTag, UpperTag, Expressions...>::run(value_itr, bitset_itr, map_itr, args);
             }
         };
@@ -224,7 +224,7 @@ namespace ga {
 #pragma warning( disable : 4244 )
 
             template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-            constexpr static void run(ValueItr &value_itr, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &args) noexcept {
+            GA_ALWAYS_INLINE constexpr static void run(ValueItr &value_itr, BitsetItr const &, MapIts const &, std::tuple<InputTypes...> const &args) GA_NOEXCEPT {
                 *value_itr = Expression::template eval<LowerTag, UpperTag>(args);
                 std::advance(value_itr, 1);
             }
@@ -242,7 +242,7 @@ namespace ga {
             using expression_type = stored_map_values;
 
             template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-            constexpr static void run(ValueItr const &, BitsetItr const &, MapIts &map_itr, std::tuple<InputTypes...> const &args) noexcept {
+            GA_ALWAYS_INLINE constexpr static void run(ValueItr const &, BitsetItr const &, MapIts &map_itr, std::tuple<InputTypes...> const &args) GA_NOEXCEPT {
                 //TODO Not supported yet (map)
                 throw not_implemented_error("Sorry! The use of ga::clifford_expresion<CoefficientType, Expression> with ga::associative_container_t<ValueType> is not supported yet.");
             }
@@ -258,7 +258,7 @@ namespace ga {
             using expression_type = stored_bitset;
 
             template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-            constexpr static void run(ValueItr const &, BitsetItr &bitset_itr, MapIts const &, std::tuple<InputTypes...> const &args) noexcept {
+            GA_ALWAYS_INLINE constexpr static void run(ValueItr const &, BitsetItr &bitset_itr, MapIts const &, std::tuple<InputTypes...> const &args) GA_NOEXCEPT {
                 *bitset_itr = Expression::template eval<LowerTag, UpperTag>(args);
                 std::advance(bitset_itr, 1);
             }
@@ -274,7 +274,7 @@ namespace ga {
             using expression_type = stored_map_bitsets;
 
             template<typename ValueItr, typename BitsetItr, typename MapIts, typename... InputTypes>
-            constexpr static void run(ValueItr const &, BitsetItr const &, MapIts &map_itr, std::tuple<InputTypes...> const &args) noexcept {
+            GA_ALWAYS_INLINE constexpr static void run(ValueItr const &, BitsetItr const &, MapIts &map_itr, std::tuple<InputTypes...> const &args) GA_NOEXCEPT {
                 //TODO Not supported yet (map)
                 throw not_implemented_error("Sorry! The use of ga::clifford_expresion<CoefficientType, Expression> with ga::associative_container_t<ValueType> is not supported yet.");
             }
@@ -469,7 +469,7 @@ namespace ga {
         };
         
         template<tag_t LowerTag, tag_t UpperTag, typename CoefficientType, typename Expression, typename... InputTypes>
-        constexpr static decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &, std::tuple<InputTypes...> const &args) {
+        GA_ALWAYS_INLINE constexpr static decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &, std::tuple<InputTypes...> const &args) {
             using result_type = clifford_expression<eval_coefficient_t<LowerTag, UpperTag, Expression, std::remove_const_t<std::remove_reference_t<InputTypes> >...>, eval_expression_t<LowerTag, UpperTag, Expression> >;
 
             typename result_type::value_storage_type values;
@@ -498,18 +498,18 @@ namespace ga {
             constexpr _super_lazy_context_input(_super_lazy_context_input const &) = default;
             constexpr _super_lazy_context_input(_super_lazy_context_input &&) = default;
 
-            constexpr _super_lazy_context_input(input_type const &input) noexcept :
+            constexpr _super_lazy_context_input(input_type const &input) GA_NOEXCEPT :
                 input_(input) {
             }
 
             constexpr _super_lazy_context_input & operator=(_super_lazy_context_input const &) = delete;
             constexpr _super_lazy_context_input & operator=(_super_lazy_context_input &&) = delete;
 
-            constexpr decltype(auto) get_as_tuple() const noexcept {
+            constexpr decltype(auto) get_as_tuple() const GA_NOEXCEPT {
                 return std::tie(input_);
             }
 
-            constexpr static bool is_stored() noexcept {
+            constexpr static bool is_stored() GA_NOEXCEPT {
                 return true;
             }
 
@@ -527,17 +527,17 @@ namespace ga {
             constexpr _super_lazy_context_input(_super_lazy_context_input const &) = default;
             constexpr _super_lazy_context_input(_super_lazy_context_input &&) = default;
 
-            constexpr _super_lazy_context_input(clifford_expression<InputCoefficientType, InputExpression> const &) noexcept {
+            constexpr _super_lazy_context_input(clifford_expression<InputCoefficientType, InputExpression> const &) GA_NOEXCEPT {
             }
 
             constexpr _super_lazy_context_input & operator=(_super_lazy_context_input const &) = delete;
             constexpr _super_lazy_context_input & operator=(_super_lazy_context_input &&) = delete;
 
-            constexpr decltype(auto) get_as_tuple() const noexcept {
+            constexpr decltype(auto) get_as_tuple() const GA_NOEXCEPT {
                 return std::make_tuple();
             }
 
-            constexpr static bool is_stored() noexcept {
+            constexpr static bool is_stored() GA_NOEXCEPT {
                 return false;
             }
         };
@@ -570,7 +570,7 @@ namespace ga {
             constexpr _super_lazy_context(_super_lazy_context const &) = default;
             constexpr _super_lazy_context(_super_lazy_context &&) = default;
 
-            constexpr _super_lazy_context(clifford_expression<InputCoefficientType, InputExpression> const &input, clifford_expression<OtherInputCoefficientTypes, OtherInputExpressions> const &... other_inputs) noexcept :
+            constexpr _super_lazy_context(clifford_expression<InputCoefficientType, InputExpression> const &input, clifford_expression<OtherInputCoefficientTypes, OtherInputExpressions> const &... other_inputs) GA_NOEXCEPT :
                 super_input(input),
                 super_recursive(other_inputs...) {
             }
@@ -578,11 +578,11 @@ namespace ga {
             constexpr _super_lazy_context & operator=(_super_lazy_context const &) = delete;
             constexpr _super_lazy_context & operator=(_super_lazy_context &&) = delete;
 
-            constexpr decltype(auto) stored_inputs_tuple() const noexcept {
+            constexpr decltype(auto) stored_inputs_tuple() const GA_NOEXCEPT {
                 return std::tuple_cat(super_input::get_as_tuple(), super_recursive::stored_inputs_tuple());
             }
 
-            constexpr static std::size_t stored_inputs_count() noexcept {
+            constexpr static std::size_t stored_inputs_count() GA_NOEXCEPT {
                 return (super_input::is_stored() ? 1 : 0) + super_recursive::stored_inputs_count();
             }
         };
@@ -598,11 +598,11 @@ namespace ga {
             constexpr _super_lazy_context & operator=(_super_lazy_context const &) = delete;
             constexpr _super_lazy_context & operator=(_super_lazy_context &&) = delete;
 
-            constexpr decltype(auto) stored_inputs_tuple() const noexcept {
+            constexpr decltype(auto) stored_inputs_tuple() const GA_NOEXCEPT {
                 return std::make_tuple();
             }
 
-            constexpr static std::size_t stored_inputs_count() noexcept {
+            constexpr static std::size_t stored_inputs_count() GA_NOEXCEPT {
                 return 0;
             }
         };
@@ -636,7 +636,7 @@ namespace ga {
         constexpr lazy_context(lazy_context const &) = default;
         constexpr lazy_context(lazy_context &&) = default;
 
-        constexpr lazy_context(clifford_expression<InputCoefficientTypes, InputExpressions> const &... inputs) noexcept :
+        constexpr lazy_context(clifford_expression<InputCoefficientTypes, InputExpressions> const &... inputs) GA_NOEXCEPT :
             super(inputs...) {
         }
 
@@ -644,7 +644,7 @@ namespace ga {
         constexpr lazy_context & operator=(lazy_context &&) = delete;
 
         template<std::size_t Index>
-        constexpr static decltype(auto) argument() noexcept {
+        constexpr static decltype(auto) argument() GA_NOEXCEPT {
             return argument_t<Index>();
         }
 
@@ -654,13 +654,13 @@ namespace ga {
         }
 
         template<typename CoefficientType, typename Expression, typename = std::enable_if_t<super::stored_inputs_count() == 0> >
-        constexpr decltype(auto) eval(clifford_expression<CoefficientType, Expression> &&) const noexcept {
+        constexpr decltype(auto) eval(clifford_expression<CoefficientType, Expression> &&) const GA_NOEXCEPT {
             return clifford_expression<CoefficientType, Expression>();
         }
     };
 
     template<typename... InputTypes>
-    constexpr decltype(auto) make_lazy_context(InputTypes const &... inputs) noexcept {
+    constexpr decltype(auto) make_lazy_context(InputTypes const &... inputs) GA_NOEXCEPT {
         return lazy_context<InputTypes...>(inputs...);
     }
 

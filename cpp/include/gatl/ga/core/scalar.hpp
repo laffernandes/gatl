@@ -35,22 +35,22 @@ namespace ga {
 
     // Converts the given native value type to scalar Clifford expression.
     template<typename ValueType, typename = std::enable_if_t<!is_clifford_expression_v<ValueType> > >
-    constexpr scaled_scalar_t<ValueType> scalar(ValueType const &arg) noexcept {
+    constexpr scaled_scalar_t<ValueType> scalar(ValueType const &arg) GA_NOEXCEPT {
         return scaled_scalar_t<ValueType>(make_sequential_storage(arg));
     }
 
     template<typename ValueType, typename = std::enable_if_t<!is_clifford_expression_v<ValueType> > >
-    constexpr decltype(auto) scalar(ValueType &&arg) noexcept {
+    constexpr decltype(auto) scalar(ValueType &&arg) GA_NOEXCEPT {
         return scaled_scalar_t<std::remove_cv_t<std::remove_reference_t<ValueType> > >(make_sequential_storage(std::move(arg)));
     }
 
     template<typename CoefficientType, typename Coefficient>
-    constexpr decltype(auto) scalar(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) noexcept {
+    constexpr decltype(auto) scalar(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) GA_NOEXCEPT {
         return arg;
     }
 
     template<typename CoefficientType, typename Coefficient>
-    constexpr decltype(auto) scalar(scalar_clifford_expression<CoefficientType, Coefficient> &&arg) noexcept {
+    constexpr decltype(auto) scalar(scalar_clifford_expression<CoefficientType, Coefficient> &&arg) GA_NOEXCEPT {
         return std::move(arg);
     }
 

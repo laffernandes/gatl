@@ -24,6 +24,26 @@
 #ifndef __GA_CORE_HPP__
 #define __GA_CORE_HPP__
 
+#ifdef _MSC_VER
+    #pragma inline_recursion(on)
+    #pragma inline_depth(255)
+#endif
+
+#if defined(__GNUC__)
+    #define GA_ALWAYS_INLINE __attribute__((always_inline))
+    #define GA_NOEXCEPT noexcept
+#elif defined(_MSC_VER) && !defined(__clang__)
+    #define GA_ALWAYS_INLINE __forceinline
+    #if _MSC_VER >= 1900
+        #define GA_NOEXCEPT noexcept
+    #else
+        #define GA_NOEXCEPT
+    #endif
+#else
+    #define GA_ALWAYS_INLINE
+    #define GA_NOEXCEPT
+#endif
+
 #include <algorithm>
 #include <array>
 #include <cassert>

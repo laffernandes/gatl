@@ -30,7 +30,7 @@ namespace ga {
     class bad_checked_copy_exception : public std::exception {
     public:
 
-        virtual const char* what() const noexcept {
+        virtual const char* what() const GA_NOEXCEPT {
             return "bad checked copy";
         }
     };
@@ -163,7 +163,7 @@ namespace ga {
         template<bool RuntimeCheck, typename InputCoefficient, typename InputBasisBlade, typename... NextInputArguments, typename ResultCoefficient, typename ResultBasisBlade, typename... NextResultArguments>
         struct _trivial_assign_and_advance_both<RuntimeCheck, add<component<InputCoefficient, InputBasisBlade>, NextInputArguments...>, add<component<ResultCoefficient, ResultBasisBlade>, NextResultArguments...> > {
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr, typename ToleranceType>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
                 _trivial_assign<component<InputCoefficient, InputBasisBlade>, component<ResultCoefficient, ResultBasisBlade> >::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr);
                 _trivial_copy<RuntimeCheck, add_t<NextInputArguments...>, add_t<NextResultArguments...> >::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr, tol);
             }
@@ -172,7 +172,7 @@ namespace ga {
         template<bool RuntimeCheck, typename InputCoefficient, typename InputBasisBlade, typename... NextInputArguments, typename ResultCoefficient, typename ResultBasisBlade>
         struct _trivial_assign_and_advance_both<RuntimeCheck, add<component<InputCoefficient, InputBasisBlade>, NextInputArguments...>, component<ResultCoefficient, ResultBasisBlade> > {
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr, typename ToleranceType>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
                 _trivial_assign<component<InputCoefficient, InputBasisBlade>, component<ResultCoefficient, ResultBasisBlade> >::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr);
                 _trivial_copy<RuntimeCheck, add_t<NextInputArguments...>, component<constant_value<0>, constant_basis_blade<bitset_t(0)> > >::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr, tol);
             }
@@ -181,7 +181,7 @@ namespace ga {
         template<bool RuntimeCheck, typename InputCoefficient, typename InputBasisBlade, typename ResultCoefficient, typename ResultBasisBlade, typename... NextResultArguments>
         struct _trivial_assign_and_advance_both<RuntimeCheck, component<InputCoefficient, InputBasisBlade>, add<component<ResultCoefficient, ResultBasisBlade>, NextResultArguments...> > {
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr, typename ToleranceType>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
                 _trivial_assign<component<InputCoefficient, InputBasisBlade>, component<ResultCoefficient, ResultBasisBlade> >::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr);
                 _trivial_copy<RuntimeCheck, component<constant_value<0>, constant_basis_blade<bitset_t(0)> >, add_t<NextResultArguments...> >::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr, tol);
             }
@@ -190,7 +190,7 @@ namespace ga {
         template<bool RuntimeCheck, typename InputCoefficient, typename InputBasisBlade, typename ResultCoefficient, typename ResultBasisBlade>
         struct _trivial_assign_and_advance_both<RuntimeCheck, component<InputCoefficient, InputBasisBlade>, component<ResultCoefficient, ResultBasisBlade> > {
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr, typename ToleranceType>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &) {
                 _trivial_assign<component<InputCoefficient, InputBasisBlade>, component<ResultCoefficient, ResultBasisBlade> >::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr);
             }
         };
@@ -198,7 +198,7 @@ namespace ga {
         template<bool RuntimeCheck, typename InputExpression, typename ResultCoefficient, typename ResultBasisBlade, typename... NextResultArguments>
         struct _trivial_set_zero_and_advance_result<RuntimeCheck, InputExpression, add<component<ResultCoefficient, ResultBasisBlade>, NextResultArguments...> > {
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr, typename ToleranceType>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
                 _trivial_set_zero<component<ResultCoefficient, ResultBasisBlade> >::run(result_value_itr, result_bitset_itr, result_map_itr);
                 _trivial_copy<RuntimeCheck, InputExpression, add_t<NextResultArguments...> >::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr, tol);
             }
@@ -207,7 +207,7 @@ namespace ga {
         template<bool RuntimeCheck, typename InputExpression, typename ResultCoefficient, typename ResultBasisBlade>
         struct _trivial_set_zero_and_advance_result<RuntimeCheck, InputExpression, component<ResultCoefficient, ResultBasisBlade> > {
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr, typename ToleranceType>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
                 _trivial_set_zero<component<ResultCoefficient, ResultBasisBlade> >::run(result_value_itr, result_bitset_itr, result_map_itr);
                 _trivial_copy<RuntimeCheck, InputExpression, component<constant_value<0>, constant_basis_blade<bitset_t(0)> > >::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr, tol);
             }
@@ -216,7 +216,7 @@ namespace ga {
         template<typename InputCoefficient, typename InputBasisBlade, typename... NextInputArguments, typename ResultExpression>
         struct _trivial_check_zero_and_advance_input<add<component<InputCoefficient, InputBasisBlade>, NextInputArguments...>, ResultExpression> {
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr, typename ToleranceType>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
                 _trivial_check_zero<component<InputCoefficient, InputBasisBlade> >::run(input_value_itr, input_bitset_itr, input_map_itr, tol);
                 _trivial_copy<true, add_t<NextInputArguments...>, ResultExpression>::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr, tol);
             }
@@ -225,7 +225,7 @@ namespace ga {
         template<typename InputCoefficient, typename InputBasisBlade, typename ResultExpression>
         struct _trivial_check_zero_and_advance_input<component<InputCoefficient, InputBasisBlade>, ResultExpression> {
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr, typename ToleranceType>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr &input_map_itr, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr &result_map_itr, ToleranceType const &tol) {
                 _trivial_check_zero<component<InputCoefficient, InputBasisBlade> >::run(input_value_itr, input_bitset_itr, input_map_itr, tol);
                 _trivial_copy<true, component<constant_value<0>, constant_basis_blade<bitset_t(0)> >, ResultExpression>::run(input_value_itr, input_bitset_itr, input_map_itr, result_value_itr, result_bitset_itr, result_map_itr, tol);
             }
@@ -236,7 +236,7 @@ namespace ga {
             static_assert(is_constant_expression_v<CommonConstantCoefficient>, "Common constant expression expected.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(InputValueCItr const &, InputBitsetCItr const &, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr const &) noexcept {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr const &, InputBitsetCItr const &, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr const &) GA_NOEXCEPT {
                 // end of recursion
             }
         };
@@ -244,7 +244,7 @@ namespace ga {
         template<typename InputConstantCoefficient, bitset_t CommonBasisVectors>
         struct _trivial_assign<component<InputConstantCoefficient, constant_basis_blade<CommonBasisVectors> >, component<stored_value, constant_basis_blade<CommonBasisVectors> > > {
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(InputValueCItr const &, InputBitsetCItr const &, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr const &, ResultMapItr const &) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr const &, InputBitsetCItr const &, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr const &, ResultMapItr const &) {
                 *result_value_itr = InputConstantCoefficient::template eval<0, 0>(std::make_tuple());
                 std::advance(result_value_itr, 1);
             }
@@ -253,7 +253,7 @@ namespace ga {
         template<bitset_t CommonBasisVectors>
         struct _trivial_assign<component<stored_value, constant_basis_blade<CommonBasisVectors> >, component<stored_value, constant_basis_blade<CommonBasisVectors> > > {
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr const &, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr const &, ResultMapItr const &) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr const &, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr const &, ResultMapItr const &) {
                 *result_value_itr = *input_value_itr;
                 std::advance(input_value_itr, 1);
                 std::advance(result_value_itr, 1);
@@ -266,7 +266,7 @@ namespace ga {
             static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
                 *result_bitset_itr = *input_bitset_itr;
                 std::advance(input_bitset_itr, 1);
                 std::advance(result_bitset_itr, 1);
@@ -278,7 +278,7 @@ namespace ga {
             static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
                 *result_value_itr = InputConstantCoefficient::template eval<0, 0>(std::make_tuple());
                 std::advance(result_value_itr, 1);
 
@@ -293,7 +293,7 @@ namespace ga {
             static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
                 *result_value_itr = *input_value_itr;
                 std::advance(input_value_itr, 1);
                 std::advance(result_value_itr, 1);
@@ -309,7 +309,7 @@ namespace ga {
             static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr const &, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
                 result_map_itr->clear();
                 result_map_itr->emplace(*input_bitset_itr, InputConstantCoefficient::template eval<0, 0>(std::make_tuple()));
                 std::advance(input_bitset_itr, 1);
@@ -322,7 +322,7 @@ namespace ga {
             static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr &input_value_itr, InputBitsetCItr &input_bitset_itr, InputMapCItr const &, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
                 result_map_itr->clear();
                 result_map_itr->emplace(*input_bitset_itr, *input_value_itr);
                 std::advance(input_bitset_itr, 1);
@@ -335,7 +335,7 @@ namespace ga {
             static_assert((InputPossibleGrades & ResultPossibleGrades) == InputPossibleGrades, "The possible grades of the input basis blade must be included in the set of possible brades of the resulting basis blade.");
 
             template<typename InputValueCItr, typename InputBitsetCItr, typename InputMapCItr, typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(InputValueCItr const &, InputBitsetCItr const &, InputMapCItr &input_map_itr, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueCItr const &, InputBitsetCItr const &, InputMapCItr &input_map_itr, ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
                 *result_map_itr = *input_map_itr;
                 std::advance(input_map_itr, 1);
                 std::advance(result_map_itr, 1);
@@ -345,7 +345,7 @@ namespace ga {
         template<bitset_t BasisVectors>
         struct _trivial_set_zero<component<stored_value, constant_basis_blade<BasisVectors> > > {
             template<typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(ResultValueItr &result_value_itr, ResultBitsetItr const &, ResultMapItr const &) {
+            GA_ALWAYS_INLINE constexpr static void run(ResultValueItr &result_value_itr, ResultBitsetItr const &, ResultMapItr const &) {
                 *result_value_itr = 0;
                 std::advance(result_value_itr, 1);
             }
@@ -354,7 +354,7 @@ namespace ga {
         template<bitset_t PossibleGrades>
         struct _trivial_set_zero<component<stored_value, dynamic_basis_blade<PossibleGrades, stored_bitset> > > {
             template<typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
+            GA_ALWAYS_INLINE constexpr static void run(ResultValueItr &result_value_itr, ResultBitsetItr &result_bitset_itr, ResultMapItr const &) {
                 *result_value_itr = 0;
                 std::advance(result_value_itr, 1);
 
@@ -366,7 +366,7 @@ namespace ga {
         template<bitset_t PossibleGrades>
         struct _trivial_set_zero<component<stored_map_values, dynamic_basis_blade<PossibleGrades, stored_map_bitsets> > > {
             template<typename ResultValueItr, typename ResultBitsetItr, typename ResultMapItr>
-            constexpr static void run(ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
+            GA_ALWAYS_INLINE constexpr static void run(ResultValueItr const &, ResultBitsetItr const &, ResultMapItr &result_map_itr) {
                 result_map_itr->clear();
                 std::advance(result_map_itr, 1);
             }
@@ -375,7 +375,7 @@ namespace ga {
         template<bitset_t BasisVectors>
         struct _trivial_check_zero<component<stored_value, constant_basis_blade<BasisVectors> > > {
             template<typename InputValueItr, typename InputBitsetItr, typename InputMapItr, typename ToleranceType>
-            constexpr static void run(InputValueItr &input_value_itr, InputBitsetItr const &, InputMapItr const &, ToleranceType const &tol) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueItr &input_value_itr, InputBitsetItr const &, InputMapItr const &, ToleranceType const &tol) {
                 if (std::abs(*input_value_itr) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
                     throw bad_checked_copy_exception();
                 }
@@ -386,7 +386,7 @@ namespace ga {
         template<bitset_t PossibleGrades>
         struct _trivial_check_zero<component<stored_value, dynamic_basis_blade<PossibleGrades, stored_bitset> > > {
             template<typename InputValueItr, typename InputBitsetItr, typename InputMapItr, typename ToleranceType>
-            constexpr static void run(InputValueItr &input_value_itr, InputBitsetItr &input_bitset_itr, InputMapItr const &, ToleranceType const &tol) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueItr &input_value_itr, InputBitsetItr &input_bitset_itr, InputMapItr const &, ToleranceType const &tol) {
                 if (std::abs(*input_value_itr) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
                     throw bad_checked_copy_exception();
                 }
@@ -398,7 +398,7 @@ namespace ga {
         template<bitset_t PossibleGrades>
         struct _trivial_check_zero<component<stored_map_values, dynamic_basis_blade<PossibleGrades, stored_map_bitsets> > > {
             template<typename InputValueItr, typename InputBitsetItr, typename InputMapItr, typename ToleranceType>
-            constexpr static void run(InputValueItr const &, InputBitsetItr const &, InputMapItr &input_map_itr, ToleranceType const &tol) {
+            GA_ALWAYS_INLINE constexpr static void run(InputValueItr const &, InputBitsetItr const &, InputMapItr &input_map_itr, ToleranceType const &tol) {
                 for (auto const &pair : *input_map_itr) {
                     if (std::abs(pair.second) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
                         throw bad_checked_copy_exception();
@@ -430,12 +430,12 @@ namespace ga {
     }
 
     template<typename CoefficientType, typename Expression, typename ToleranceType>
-    constexpr void checked_trivial_copy(clifford_expression<CoefficientType, Expression> const &input, clifford_expression<CoefficientType, Expression> &result, ToleranceType const &tol) noexcept {
+    constexpr void checked_trivial_copy(clifford_expression<CoefficientType, Expression> const &input, clifford_expression<CoefficientType, Expression> &result, ToleranceType const &tol) GA_NOEXCEPT {
         result = input;
     }
 
     template<typename CoefficientType, typename Expression>
-    constexpr void checked_trivial_copy(clifford_expression<CoefficientType, Expression> const &input, clifford_expression<CoefficientType, Expression> &result) noexcept {
+    constexpr void checked_trivial_copy(clifford_expression<CoefficientType, Expression> const &input, clifford_expression<CoefficientType, Expression> &result) GA_NOEXCEPT {
         result = input;
     }
 
@@ -464,7 +464,7 @@ namespace ga {
     }
 
     template<typename CoefficientType, typename Expression>
-    constexpr void trivial_copy(clifford_expression<CoefficientType, Expression> const &input, clifford_expression<CoefficientType, Expression> &result) noexcept {
+    constexpr void trivial_copy(clifford_expression<CoefficientType, Expression> const &input, clifford_expression<CoefficientType, Expression> &result) GA_NOEXCEPT {
         result = input;
     }
 
