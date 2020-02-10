@@ -85,7 +85,7 @@ namespace ga {
     // Returns the k-grade part of the given Clifford expression.
     template<typename CoefficientType, typename Expression, typename GradeCoefficientType, typename GradeCoefficient, typename = std::enable_if_t<std::is_constructible_v<grade_t, GradeCoefficientType> > >
     constexpr decltype(auto) take_grade(clifford_expression<CoefficientType, Expression> const &arg, scalar_clifford_expression<GradeCoefficientType, GradeCoefficient> const &k) GA_NOEXCEPT {
-        auto lazy = make_lazy_context(arg, k);
+        auto const lazy = make_lazy_context(arg, k);
         return lazy.eval(clifford_expression<default_integral_t, detail::keep_grade_t<typename decltype(lazy)::template argument_expression_t<0>, typename decltype(lazy)::template argument_expression_t<1> > >());
     }
 

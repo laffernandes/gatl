@@ -263,7 +263,7 @@ namespace ga {
     // Returns a scalar expression with the largest grade part of a given Clifford expression such that it is not zero.
     template<typename CoefficientType, typename Expression, typename ToleranceType>
     constexpr decltype(auto) largest_grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) GA_NOEXCEPT {
-        auto lazy = make_lazy_context(arg, scalar(tol));
+        auto const lazy = make_lazy_context(arg, scalar(tol));
         return lazy.eval(scalar_clifford_expression<grade_t, detail::deduce_largest_grade_result_t<typename decltype(lazy)::template argument_expression_t<0>, detail::coefficient_t<typename decltype(lazy)::template argument_expression_t<1> > > >());
     }
 

@@ -28,7 +28,7 @@ namespace ga {
 
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename MetricSpaceType>
     constexpr decltype(auto) cp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &mtr) GA_NOEXCEPT {
-        auto lazy = make_lazy_context(lhs, rhs);
+        auto const lazy = make_lazy_context(lhs, rhs);
         return lazy.eval((gp(lazy.template argument<0>(), lazy.template argument<1>(), mtr) - gp(lazy.template argument<1>(), lazy.template argument<0>(), mtr)) / c<2>);
     }
 

@@ -68,9 +68,7 @@ int main() {
     std::cout << std::endl;
     {
         auto lazy = make_lazy_context(scalar(x_in), scalar(y_in), scalar(z_in));
-        auto x = lazy.argument<0>();
-        auto y = lazy.argument<1>();
-        auto z = lazy.argument<2>();
+        auto [x, y, z] = lazy.arguments();
 
         auto p = x * e1 + y * e2 + z * e3 + ep;
         auto d = x * e1 + y * e2 + z * e3;

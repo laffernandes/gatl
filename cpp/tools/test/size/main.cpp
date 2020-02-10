@@ -45,7 +45,7 @@ TEST(Size, ScaledScalar) {
 }
 
 TEST(Size, LazyArgument) {
-    auto lazy = make_lazy_context(scalar(5.0), scalar(7), scalar(7.0));
+    auto const lazy = make_lazy_context(scalar(5.0), scalar(7), scalar(7.0));
     auto x = lazy.argument<0>() + lazy.argument<1>();
     auto y = c<5> + sqrt(lazy.argument<2>());
     auto z = c<5> + sqrt(c<7>) + cbrt(c<11>);
@@ -56,7 +56,7 @@ TEST(Size, LazyArgument) {
 }
 
 TEST(Size, MixedExpressions1) {
-    auto lazy = make_lazy_context(scalar(5.0), scalar(7), scalar(7.0));
+    auto const lazy = make_lazy_context(scalar(5.0), scalar(7), scalar(7.0));
 
     auto x1 = c<5> + pow(c<2>, c<10>);
     auto x2 = scalar(5.0);

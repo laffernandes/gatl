@@ -648,6 +648,10 @@ namespace ga {
             return argument_t<Index>();
         }
 
+        constexpr static decltype(auto) arguments() GA_NOEXCEPT {
+            return arguments_tuple(std::make_index_sequence<sizeof...(InputExpressions)>());
+        }
+
         template<typename CoefficientType, typename Expression, typename = std::enable_if_t<super::stored_inputs_count() != 0> >
         constexpr decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &expression) const {
             return detail::eval<base_id + 1, base_id + (detail::tag_t)super::stored_inputs_count()>(expression, super::stored_inputs_tuple());
@@ -656,6 +660,13 @@ namespace ga {
         template<typename CoefficientType, typename Expression, typename = std::enable_if_t<super::stored_inputs_count() == 0> >
         constexpr decltype(auto) eval(clifford_expression<CoefficientType, Expression> &&) const GA_NOEXCEPT {
             return clifford_expression<CoefficientType, Expression>();
+        }
+
+    private:
+
+        template<std::size_t... Indices>
+        constexpr static decltype(auto) arguments_tuple(std::index_sequence<Indices...>) GA_NOEXCEPT {
+            return std::make_tuple(argument<Indices>()...);
         }
     };
 
