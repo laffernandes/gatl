@@ -242,9 +242,9 @@ The following tables present a set of basic products and operations from geometr
 | --- | --- |
 | `fast_join(lhs, rhs [, tol] [, mtr])` | Returns the join of the given pair of blades using the algorithm developed by [Fontijne (2008)](https://doi.org/10.1007/978-1-84996-108-0_21) |
 | `fast_meet_and_join(lhs, rhs [, tol] [, mtr])` | Returns a `std::tuple<T1, T2>` structure where `T1` is the meet and `T2` is the join of the given pair of blades using the algorithm developed by [Fontijne (2008)](https://doi.org/10.1007/978-1-84996-108-0_21) |
-| `fast_plunge(lhs, rhs [, tol] [, mtr])` | Returns the plunge of the given pair of blades as described by [Dorst at al. (2007)](http://www.geometricalgebra.net/), and implemented using the `fast_join` function |
-| `meet_and_join(lhs, rhs [, tol] [, mtr])` | Returns a `std::tuple<T1, T2>` structure where `T1` is the meet and `T2` is the join of the given pair of blades using the algorithm described by [Dorst at al. (2007)](http://www.geometricalgebra.net/) |
-| `plunge(lhs, rhs [, tol] [, mtr])` | Returns the plunge of the given pair of blades as described by [Dorst at al. (2007)](http://www.geometricalgebra.net/), and implemented using the `meet_and_join` function |
+| `fast_plunge(lhs, rhs [, tol] [, mtr])` | Returns the plunge of the given pair of blades as described by [Dorst et al. (2007)](http://www.geometricalgebra.net/), and implemented using the `fast_join` function |
+| `meet_and_join(lhs, rhs [, tol] [, mtr])` | Returns a `std::tuple<T1, T2>` structure where `T1` is the meet and `T2` is the join of the given pair of blades using the algorithm described by [Dorst et al. (2007)](http://www.geometricalgebra.net/) |
+| `plunge(lhs, rhs [, tol] [, mtr])` | Returns the plunge of the given pair of blades as described by [Dorst et al. (2007)](http://www.geometricalgebra.net/), and implemented using the `meet_and_join` function |
 
 | Misc Operation | Description |
 | --- | --- |
