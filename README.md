@@ -77,7 +77,7 @@ Unit-tests are under construction. Please, don't try to build them.
 
 Here you find a brief description of the namespaces, macros, classes, functions, procedures, and operators available for the user. The detailed documentation is not ready yet.
 
-According to GATL conventions, in the following definitions, `lhs` and `rhs` are informal shorthand for, respectively, the left-hand side and the right-hand side arguments of some procedure. In addition, the `mtr` argument must be an instance of the `metric_space<...>` class, while all other arguments can be either an instances of the `clifford_expression<...>` class or other numerical types (*e.g.*, `double`, `float`, `int`, or instances of third-party classes). Numerical types are automatically converted by GATL to scalar Clifford expression using the `scalar` function.
+According to GATL conventions, in the following definitions, `lhs` and `rhs` are informal shorthand for, respectively, the left-hand side and the right-hand side arguments of binary procedures. In addition, the `mtr` argument must be an instance of the `metric_space<...>` class, while all other arguments can be either an instances of the `clifford_expression<...>` class or other numerical types (*e.g.*, `double`, `float`, `int`, or instances of third-party classes). Numerical types are automatically converted by GATL to scalar Clifford expression using the `scalar` function.
 
 Contents:
 
