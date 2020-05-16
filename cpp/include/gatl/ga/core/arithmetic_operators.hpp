@@ -193,6 +193,11 @@ namespace ga {
         return dot(scalar(lhs), rhs, detail::real_metric_space());
     }
 
+    template<typename RightCoefficientType, typename RightExpression>
+    constexpr decltype(auto) operator~(clifford_expression<RightCoefficientType, RightExpression> const &rhs) GA_NOEXCEPT {
+        return reverse(rhs);
+    }
+
 }
 
 #endif // __GA_CORE_ARITHMETIC_OPERATORS_HPP__

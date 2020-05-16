@@ -263,6 +263,7 @@ It is important to notice that the precedence and associativity of C++ operators
 | --- | --- |
 | `+rhs` | Unary plus |
 | `-rhs` | Unary minus |
+| `~rhs` | Reversion (same as `reverse(rhs)`) |
 | `lhs + rhs` | Addition |
 | `lhs - rhs` | Subtraction |
 | `lhs * rhs` | Geometric/Clifford product (same as `gp(lhs, rhs)`) |
