@@ -28,45 +28,36 @@ namespace ga {
 
     namespace detail {
     
-        // An identity type trait used by get_rule_for<...> to avoid evaluating all rules in a given rules<...> list.
-        template<typename Type>
-        struct identity {
-            using type = Type;
-        };
-
         // A list of simplification rules that must be applied in the given order.
         template<typename... Rules>
         struct rules {
         };
 
-        // Look for a rule attending the given arguments.
+        // Look for a rule attending the given arguments and apply it, returning the resulting type.
         template<typename Rules, typename... Arguments>
-        struct get_rule_for;
+        struct apply_rule_for;
 
         template<typename Rules, typename... Arguments>
-        using get_rule_for_t = typename get_rule_for<Rules, Arguments...>::type;
+        using apply_rule_for_t = typename apply_rule_for<Rules, Arguments...>::type;
 
         template<typename Rule, typename... NextRules, typename... Arguments>
-        struct get_rule_for<rules<Rule, NextRules...>, Arguments...> {
+        struct apply_rule_for<rules<Rule, NextRules...>, Arguments...> {
             using type = typename std::conditional_t<
-                Rule::template condition<Arguments...>::value,
-                identity<Rule>,
-                get_rule_for<rules<NextRules...>, Arguments...>
+                !std::is_same_v<typename Rule::template result<Arguments...>::type, std::nullptr_t>,
+                typename Rule::template result<Arguments...>,
+                apply_rule_for<rules<NextRules...>, Arguments...>
             >::type;
         };
 
         template<typename Rule, typename... Arguments>
-        struct get_rule_for<rules<Rule>, Arguments...> {
+        struct apply_rule_for<rules<Rule>, Arguments...> {
             using type = std::conditional_t<
-                Rule::template condition<Arguments...>::value,
-                Rule,
-                nullptr_t // It should be impossible to reach this case
+                !std::is_same_v<typename Rule::template result<Arguments...>::type, std::nullptr_t>,
+                typename Rule::template result<Arguments...>::type,
+                std::nullptr_t // It should be impossible to reach this case
             >;
         };
 
-        // Look for a rule attending the given arguments and apply it, returning the resulting type.
-        template<typename Rules, typename... Arguments>
-        using apply_rule_for_t = typename get_rule_for_t<Rules, Arguments...>::template result<Arguments...>::type;
     }
 
 }

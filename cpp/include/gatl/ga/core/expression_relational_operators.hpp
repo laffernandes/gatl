@@ -30,6 +30,356 @@ namespace ga {
 
         // Relational operators.
         template<typename LeftType, typename RightType>
+        struct lt;
+
+        template<typename LeftType, typename RightType>
+        using lt_t = typename lt<LeftType, RightType>::type;
+
+        template<typename LeftType, typename RightType>
+        constexpr bool lt_v = lt<LeftType, RightType>::value;
+
+        template<typename LeftType, typename RightType>
+        using le_t = std::bool_constant<lt_v<LeftType, RightType> || !lt_v<RightType, LeftType> >;
+
+        template<typename LeftType, typename RightType>
+        constexpr bool le_v = le_t<LeftType, RightType>::value;
+
+        template<typename LeftType, typename RightType>
+        using eq_t = std::bool_constant<!(lt_v<LeftType, RightType> || lt_v<RightType, LeftType>)>;
+
+        template<typename LeftType, typename RightType>
+        constexpr bool eq_v = eq_t<LeftType, RightType>::value;
+
+        template<typename LeftType, typename RightType>
+        using ne_t = std::bool_constant<lt_v<LeftType, RightType> || lt_v<RightType, LeftType> >;
+
+        template<typename LeftType, typename RightType>
+        constexpr bool ne_v = ne_t<LeftType, RightType>::value;
+
+        template<typename LeftType, typename RightType>
+        using gt_t = std::bool_constant<!lt_v<LeftType, RightType> && lt_v<RightType, LeftType> >;
+
+        template<typename LeftType, typename RightType>
+        constexpr bool gt_v = gt_t<LeftType, RightType>::value;
+
+        template<typename LeftType, typename RightType>
+        using ge_t = std::bool_constant<!lt_v<LeftType, RightType> >;
+
+        template<typename LeftType, typename RightType>
+        constexpr bool ge_v = ge_t<LeftType, RightType>::value;
+
+        // Priority value.
+        template<typename ValueType, ValueType Value>
+        using priority = std::integral_constant<ValueType, Value>;
+
+        using priority_prefix_constant = priority<std::uint8_t, 0x00>;
+        using priority_prefix_referenced = priority<std::uint8_t, 0x01>;
+        using priority_prefix_stored = priority<std::uint8_t, 0x02>;
+        using priority_prefix_function = priority<std::uint8_t, 0x03>;
+
+        // List of priorities.
+        template<typename... Priorities>
+        struct priority_list {
+        };
+
+        template<typename... PriorityLists>
+        struct concatenate_priority_lists;
+
+        template<typename... FirstPriorities, typename... SecondPriorities, typename... NextPriorityLists>
+        struct concatenate_priority_lists<priority_list<FirstPriorities...>, priority_list<SecondPriorities...>, NextPriorityLists...> {
+            using type = typename concatenate_priority_lists<priority_list<FirstPriorities..., SecondPriorities...>, NextPriorityLists...>::type;
+        };
+
+        template<typename... Priorities>
+        struct concatenate_priority_lists<priority_list<Priorities...> > {
+            using type = priority_list<Priorities...>;
+        };
+
+        template<>
+        struct concatenate_priority_lists<> {
+            using type = priority_list<>;
+        };
+
+        // Produces the priority_list<...> of a given entry.
+        template<typename Entry>
+        struct entry_priority;
+
+        // Priority of values.
+        template<default_integral_t Value>
+        struct entry_priority<constant_value<Value> > {
+            using type = priority_list<
+                priority_prefix_constant,
+                priority<default_integral_t, Value>
+            >;
+        };
+
+        template<tag_t Tag, std::size_t Index>
+        struct entry_priority<get_value<Tag, Index> > {
+            using type = priority_list<
+                priority_prefix_referenced,
+                priority<tag_t, Tag>,
+                priority<std::uint8_t, 0x00>,
+                priority<std::size_t, Index>
+            >;
+        };
+
+        template<tag_t Tag, std::size_t Index>
+        struct entry_priority<get_map_values<Tag, Index> > {
+            using type = priority_list<
+                priority_prefix_referenced,
+                priority<tag_t, Tag>,
+                priority<std::uint8_t, 0x01>,
+                priority<std::size_t, Index>
+            >;
+        };
+
+        template<>
+        struct entry_priority<stored_value> {
+            using type = priority_list<
+                priority_prefix_stored,
+                priority<std::uint8_t, 0x00>
+            >;
+        };
+
+        template<>
+        struct entry_priority<stored_map_values> {
+            using type = priority_list<
+                priority_prefix_stored,
+                priority<std::uint8_t, 0x01>
+            >;
+        };
+
+        // Priority of bitsets.
+        template<bitset_t Bitset>
+        struct entry_priority<constant_bitset<Bitset> > {
+            using type = priority_list<
+                priority_prefix_constant,
+                priority<bitset_t, Bitset>
+            >;
+        };
+
+        template<tag_t Tag, std::size_t Index>
+        struct entry_priority<get_bitset<Tag, Index> > {
+            using type = priority_list<
+                priority_prefix_referenced,
+                priority<tag_t, Tag>,
+                priority<std::uint8_t, 0x00>,
+                priority<std::size_t, Index>
+            >;
+        };
+
+        template<tag_t Tag, std::size_t Index>
+        struct entry_priority<get_map_bitsets<Tag, Index> > {
+            using type = priority_list<
+                priority_prefix_referenced,
+                priority<tag_t, Tag>,
+                priority<std::uint8_t, 0x01>,
+                priority<std::size_t, Index>
+            >;
+        };
+
+        template<>
+        struct entry_priority<stored_bitset> {
+            using type = priority_list<
+                priority_prefix_stored,
+                priority<std::uint8_t, 0x00>
+            >;
+        };
+
+        template<>
+        struct entry_priority<stored_map_bitsets> {
+            using type = priority_list<
+                priority_prefix_stored,
+                priority<std::uint8_t, 0x01>
+            >;
+        };
+
+        // Priority of basis blades.
+        template<bitset_t BasisVectors>
+        struct entry_priority<constant_basis_blade<BasisVectors> > {
+            using type = priority_list<
+                priority<bitset_t, possible_grades_v<constant_basis_blade<BasisVectors> > >,
+                priority_prefix_constant,
+                priority<bitset_t, BasisVectors>
+            >;
+        };
+
+        template<bitset_t PossibleGrades, typename Bitset>
+        struct entry_priority<dynamic_basis_blade<PossibleGrades, Bitset> > {
+            using type = typename concatenate_priority_lists<
+                priority_list<
+                    priority<bitset_t, PossibleGrades>
+                >,
+                typename entry_priority<Bitset>::type
+            >::type;
+        };
+
+        // Priority of function.
+        template<typename... Entries>
+        struct _set_of_entries {
+        };
+
+        template<typename... Arguments>
+        struct _make_set_of_non_constant_entries;
+
+        template<typename LeftSetOfEntries, typename RightSetOfEntries, typename Enable = void>
+        struct _merge_sets_of_entries;
+
+        template<typename NewEntry, typename SetOfEntries>
+        struct _prepend_set_of_entries;
+        
+        template<default_integral_t Value, typename... NextArguments>
+        struct _make_set_of_non_constant_entries<constant_value<Value>, NextArguments...> {
+            using type = typename _make_set_of_non_constant_entries<NextArguments...>::type;
+        };
+
+        template<default_integral_t Value>
+        struct _make_set_of_non_constant_entries<constant_value<Value> > {
+            using type = _set_of_entries<>;
+        };
+
+        template<bitset_t Bitset, typename... NextArguments>
+        struct _make_set_of_non_constant_entries<constant_bitset<Bitset>, NextArguments...> {
+            using type = typename _make_set_of_non_constant_entries<NextArguments...>::type;
+        };
+
+        template<bitset_t Bitset>
+        struct _make_set_of_non_constant_entries<constant_bitset<Bitset> > {
+            using type = _set_of_entries<>;
+        };
+
+        template<bitset_t BasisVectors, typename... NextArguments>
+        struct _make_set_of_non_constant_entries<constant_basis_blade<BasisVectors>, NextArguments...> {
+            using type = typename _make_set_of_non_constant_entries<NextArguments...>::type;
+        };
+
+        template<bitset_t BasisVectors>
+        struct _make_set_of_non_constant_entries<constant_basis_blade<BasisVectors> > {
+            using type = _set_of_entries<>;
+        };
+
+        template<name_t Name, typename... Arguments, typename... NextArguments>
+        struct _make_set_of_non_constant_entries<function<Name, Arguments...>, NextArguments...> {
+            using type = typename _merge_sets_of_entries<
+                typename _make_set_of_non_constant_entries<Arguments...>::type,
+                typename _make_set_of_non_constant_entries<NextArguments...>::type
+            >::type;
+        };
+
+        template<name_t Name, typename... Arguments>
+        struct _make_set_of_non_constant_entries<function<Name, Arguments...> > {
+            using type = typename _make_set_of_non_constant_entries<Arguments...>::type;
+        };
+
+        template<typename Argument, typename... NextArguments>
+        struct _make_set_of_non_constant_entries<Argument, NextArguments...> {
+            using type = typename _merge_sets_of_entries<typename _make_set_of_non_constant_entries<_set_of_entries<Argument> >::type, typename _make_set_of_non_constant_entries<NextArguments...>::type>::type;
+        };
+
+        template<typename Argument>
+        struct _make_set_of_non_constant_entries<Argument> {
+            using type = _set_of_entries<Argument>;
+        };
+
+        template<>
+        struct _make_set_of_non_constant_entries<> {
+            using type = _set_of_entries<>;
+        };
+
+        template<typename NewEntry, typename... Entries>
+        struct _prepend_set_of_entries<NewEntry, _set_of_entries<Entries...> > {
+            using type = _set_of_entries<NewEntry, Entries...>;
+        };
+
+        template<typename LeftEntry, typename... LeftNextEntries, typename RightEntry, typename... RightNextEntries>
+        struct _merge_sets_of_entries<_set_of_entries<LeftEntry, LeftNextEntries...>, _set_of_entries<RightEntry, RightNextEntries...>, std::enable_if_t<lt_v<LeftEntry, RightEntry> > > {
+            using type = typename _prepend_set_of_entries<LeftEntry, typename _merge_sets_of_entries<_set_of_entries<LeftNextEntries...>, _set_of_entries<RightEntry, RightNextEntries...> >::type>::type;
+        };
+
+        template<typename LeftEntry, typename... LeftNextEntries, typename RightEntry, typename... RightNextEntries>
+        struct _merge_sets_of_entries<_set_of_entries<LeftEntry, LeftNextEntries...>, _set_of_entries<RightEntry, RightNextEntries...>, std::enable_if_t<lt_v<RightEntry, LeftEntry> > > {
+            using type = typename _prepend_set_of_entries<RightEntry, typename _merge_sets_of_entries<_set_of_entries<LeftEntry, LeftNextEntries...>, _set_of_entries<RightNextEntries...> >::type>::type;
+        };
+
+        template<typename LeftEntry, typename... LeftNextEntries, typename RightEntry, typename... RightNextEntries>
+        struct _merge_sets_of_entries<_set_of_entries<LeftEntry, LeftNextEntries...>, _set_of_entries<RightEntry, RightNextEntries...>, std::enable_if_t<eq_v<RightEntry, LeftEntry> > > {
+            using type = typename _merge_sets_of_entries<_set_of_entries<LeftNextEntries...>, _set_of_entries<RightEntry, RightNextEntries...> >::type;
+        };
+
+        template<typename LeftEntry, typename... LeftNextEntries>
+        struct _merge_sets_of_entries<_set_of_entries<LeftEntry, LeftNextEntries...>, _set_of_entries<>, void> {
+            using type = _set_of_entries<LeftEntry, LeftNextEntries...>;
+        };
+
+        template<typename RightEntry, typename... RightNextEntries>
+        struct _merge_sets_of_entries<_set_of_entries<>, _set_of_entries<RightEntry, RightNextEntries...>, void> {
+            using type = _set_of_entries<RightEntry, RightNextEntries...>;
+        };
+
+        template<>
+        struct _merge_sets_of_entries<_set_of_entries<>, _set_of_entries<>, void> {
+            using type = _set_of_entries<>;
+        };
+
+        template<typename... Entries>
+        struct entry_priority<_set_of_entries<Entries...> > {
+            using type = typename concatenate_priority_lists<
+                typename entry_priority<Entries>::type...
+            >::type;
+        };
+
+        template<name_t Name, typename... Arguments>
+        struct entry_priority<function<Name, Arguments...> > {
+            using type = typename concatenate_priority_lists<
+                typename entry_priority<typename _make_set_of_non_constant_entries<Arguments...>::type>::type/*TODO [Debug],
+                priority_list<
+                    priority_prefix_function,
+                    priority<name_t, Name>
+                >*/
+            >::type;
+        };
+
+        // Less-than operator.
+        template<typename LeftType, typename RightType>
+        struct lt :
+            lt<typename entry_priority<LeftType>::type, typename entry_priority<RightType>::type> {
+        };
+        
+        template<typename FirstValueType, FirstValueType LeftFirstValue, typename... LeftNextPriorities, FirstValueType RightFirstValue, typename... RightNextPriorities>
+        struct lt<priority_list<priority<FirstValueType, LeftFirstValue>, LeftNextPriorities...>, priority_list<priority<FirstValueType, RightFirstValue>, RightNextPriorities...> > :
+            std::conditional_t<
+                (LeftFirstValue < RightFirstValue),
+                std::true_type,
+                std::conditional_t<
+                    LeftFirstValue == RightFirstValue,
+                    lt<priority_list<LeftNextPriorities...>, priority_list<RightNextPriorities...> >,
+                    std::false_type
+                >
+            > {
+        };
+
+        template<typename LeftFirstValueType, LeftFirstValueType LeftFirstValue, typename... LeftNextPriorities, typename RightFirstValueType, RightFirstValueType RightFirstValue, typename... RightNextPriorities>
+        struct lt<priority_list<priority<LeftFirstValueType, LeftFirstValue>, LeftNextPriorities...>, priority_list<priority<RightFirstValueType, RightFirstValue>, RightNextPriorities...> > :
+            std::false_type {
+        };
+
+        template<typename... LeftPriorities>
+        struct lt<priority_list<LeftPriorities...>, priority_list<> > :
+            std::false_type {
+        };
+
+        template<typename... RightPriorities>
+        struct lt<priority_list<>, priority_list<RightPriorities...> > :
+            std::true_type {
+        };
+
+        template<>
+        struct lt<priority_list<>, priority_list<> > :
+            std::false_type {
+        };
+        /*/
+        // Relational operators.
+        template<typename LeftType, typename RightType>
         struct lt :
             std::false_type {
         };
@@ -509,6 +859,7 @@ namespace ga {
         struct lt<function<LeftName, LeftArguments...>, function<RightName, RightArguments...> > :
             std::bool_constant<(LeftName < RightName || (LeftName == RightName && lt_v<_arguments_list<LeftArguments...>, _arguments_list<RightArguments...> >))> {
         };
+        /**/
 
     }
 

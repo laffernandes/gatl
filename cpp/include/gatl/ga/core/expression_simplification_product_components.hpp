@@ -33,19 +33,11 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression, typename Mapping>
-            struct condition :
-                std::false_type {
+            struct result {
+                using type = std::nullptr_t;
             };
-
-            template<typename LeftExpression, typename RightExpression, typename Mapping>
-            struct result;
 
             // 0 * something => 0
-            template<typename LeftBasisBlade, typename RightExpression, typename Mapping>
-            struct condition<component<constant_value<0>, LeftBasisBlade>, RightExpression, Mapping> :
-                std::true_type {
-            };
-
             template<typename LeftBasisBlade, typename RightExpression, typename Mapping>
             struct result<component<constant_value<0>, LeftBasisBlade>, RightExpression, Mapping> {
                 using type = component<constant_value<0>, LeftBasisBlade>;
@@ -53,21 +45,11 @@ namespace ga {
 
             // something * 0 => 0
             template<typename LeftExpression, typename RightBasisBlade, typename Mapping>
-            struct condition<LeftExpression, component<constant_value<0>, RightBasisBlade>, Mapping> :
-                std::true_type {
-            };
-
-            template<typename LeftExpression, typename RightBasisBlade, typename Mapping>
             struct result<LeftExpression, component<constant_value<0>, RightBasisBlade>, Mapping> {
                 using type = component<constant_value<0>, RightBasisBlade>;
             };
 
             // 0 * 0 => 0
-            template<typename LeftBasisBlade, typename RightBasisBlade, typename Mapping>
-            struct condition<component<constant_value<0>, LeftBasisBlade>, component<constant_value<0>, RightBasisBlade>, Mapping> :
-                std::true_type {
-            };
-
             template<typename LeftBasisBlade, typename RightBasisBlade, typename Mapping>
             struct result<component<constant_value<0>, LeftBasisBlade>, component<constant_value<0>, RightBasisBlade>, Mapping> {
                 using type = component<constant_value<0>, LeftBasisBlade>;
@@ -93,14 +75,11 @@ namespace ga {
 
         public:
 
-            // Default (it is always true)
+            // Default
             template<typename LeftExpression, typename RightExpression, typename Mapping>
-            struct condition :
-                std::true_type {
+            struct result {
+                using type = std::nullptr_t;
             };
-
-            template<typename LeftExpression, typename RightExpression, typename Mapping>
-            struct result;
 
             // A Ei * B Ej => (A * B) (Ei * Ej)
             template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade, typename Mapping>
@@ -127,49 +106,16 @@ namespace ga {
             };
         };
 
-        // The set of simplification rules applied to the product of components.
-        using _product_components_rules = rules<
-            _product_components_rule_zero,
-            _product_components_rule_multiply_or_distribute
-        >;
-
-        // Implementation of _product<LeftExpression, RightExpression, Mapping> with component<...> and add<component<...>, ...> as arguments.
-        template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade, typename Mapping>
-        struct _product<component<LeftCoefficient, LeftBasisBlade>, component<RightCoefficient, RightBasisBlade>, Mapping> :
+        // Implementation of _product<LeftExpression, RightExpression, Mapping> with component<...> (because it accepts any Mapping, except value_mapping -- see expression_simplification_product_values.hpp).
+        template<typename LeftExpression, typename RightExpression, typename Mapping>
+        struct _product :
             apply_rule_for_t<
-                _product_components_rules,
-                component<LeftCoefficient, LeftBasisBlade>,
-                component<RightCoefficient, RightBasisBlade>,
-                Mapping
-            > {
-        };
-
-        template<typename LeftCoefficient, typename LeftBasisBlade, typename RightCoefficient, typename RightBasisBlade, typename... RightNextArguments, typename Mapping>
-        struct _product<component<LeftCoefficient, LeftBasisBlade>, add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...>, Mapping> :
-            apply_rule_for_t<
-                _product_components_rules,
-                component<LeftCoefficient, LeftBasisBlade>,
-                add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...>,
-                Mapping
-            > {
-        };
-
-        template<typename LeftCoefficient, typename LeftBasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename RightBasisBlade, typename Mapping>
-        struct _product<add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>, component<RightCoefficient, RightBasisBlade>, Mapping> :
-            apply_rule_for_t<
-                _product_components_rules,
-                add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>,
-                component<RightCoefficient, RightBasisBlade>,
-                Mapping
-            > {
-        };
-
-        template<typename LeftCoefficient, typename LeftBasisBlade, typename... LeftNextArguments, typename RightCoefficient, typename RightBasisBlade, typename... RightNextArguments, typename Mapping>
-        struct _product<add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>, add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...>, Mapping> :
-            apply_rule_for_t<
-                _product_components_rules,
-                add<component<LeftCoefficient, LeftBasisBlade>, LeftNextArguments...>,
-                add<component<RightCoefficient, RightBasisBlade>, RightNextArguments...>,
+                rules<
+                    _product_components_rule_zero,
+                    _product_components_rule_multiply_or_distribute
+                >,
+                LeftExpression,
+                RightExpression,
                 Mapping
             > {
         };

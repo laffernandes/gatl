@@ -73,7 +73,7 @@ namespace ga {
                 std::conditional_t<
                     may_be_positive_v<RightExpression>,
                     constant_value<0>, // 0^{X} = 0, for X > 0 (simplify)
-                    nullptr_t // the value of pow(0, X) is undefined for X <= 0
+                    std::nullptr_t // the value of pow(0, X) is undefined for X <= 0
                 >,
                 power<constant_value<0>, RightExpression>
             >;
@@ -106,7 +106,7 @@ namespace ga {
             using type = std::conditional_t<
                 (RightValue > 0),
                 constant_value<0>, // 0^{X} = 0, for X > 0 (simplify)
-                nullptr_t // the value of pow(0, X) is undefined for X <= 0
+                std::nullptr_t // the value of pow(0, X) is undefined for X <= 0
             >;
         };
 
@@ -167,53 +167,30 @@ namespace ga {
         struct _power_rule_miscellaneous_1 {
 
             // Default
-            template<typename LeftExpression, typename RightExpression, typename _Dummy = void>
-            struct condition :
-                std::false_type {
+            template<typename LeftExpression, typename RightExpression, typename Enable = void>
+            struct result {
+                using type = std::nullptr_t;
             };
-
-            template<typename LeftExpression, typename RightExpression, typename _Dummy = void>
-            struct result;
 
             // 0^{X} => 0, for X > 0
-            template<typename RightExpression, typename _Dummy>
-            struct condition<constant_value<0>, RightExpression, _Dummy> :
-                std::bool_constant<is_constant_expression_v<RightExpression> && may_be_positive_v<RightExpression> > {
-            };
-
-            template<typename RightExpression, typename _Dummy>
-            struct result<constant_value<0>, RightExpression, _Dummy> {
+            template<typename RightExpression>
+            struct result<constant_value<0>, RightExpression, std::enable_if_t<is_constant_expression_v<RightExpression> && may_be_positive_v<RightExpression> > > {
                 using type = constant_value<0>;
             };
 
             // 0^{X} => 0, for X > 0 (shortcut)
-            template<default_integral_t RightValue, typename _Dummy>
-            struct condition<constant_value<0>, constant_value<RightValue>, _Dummy> :
-                std::bool_constant<(RightValue > 0)> {
-            };
-
-            template<default_integral_t RightValue, typename _Dummy>
-            struct result<constant_value<0>, constant_value<RightValue>, _Dummy> {
+            template<default_integral_t RightValue>
+            struct result<constant_value<0>, constant_value<RightValue>, std::enable_if_t<(RightValue > 0)> > {
                 using type = constant_value<0>;
             };
 
             // 0^{1/2} = sqrt(0) => 0 (shortcut)
-            template<typename _Dummy>
-            struct condition<constant_value<0>, power<constant_value<2>, constant_value<-1> >, _Dummy> :
-                std::true_type {
-            };
-
             template<typename _Dummy>
             struct result<constant_value<0>, power<constant_value<2>, constant_value<-1> >, _Dummy> {
                 using type = constant_value<0>;
             };
 
             // 1^{X} => 1
-            template<typename RightExpression>
-            struct condition<constant_value<1>, RightExpression> :
-                std::true_type {
-            };
-
             template<typename RightExpression>
             struct result<constant_value<1>, RightExpression> {
                 using type = constant_value<1>;
@@ -224,31 +201,18 @@ namespace ga {
         struct _power_rule_miscellaneous_2 {
 
             // Default
-            template<typename LeftExpression, typename RightExpression>
-            struct condition :
-                std::false_type {
+            template<typename LeftExpression, typename RightExpression, typename Enable = void>
+            struct result {
+                using type = std::nullptr_t;
             };
-
-            template<typename LeftExpression, typename RightExpression>
-            struct result;
 
             // X^{0} => 1, for X != 0
             template<typename LeftExpression>
-            struct condition<LeftExpression, constant_value<0> > :
-                std::bool_constant<!std::is_same_v<LeftExpression, constant_value<0> > > {
-            };
-
-            template<typename LeftExpression>
-            struct result<LeftExpression, constant_value<0> > {
+            struct result<LeftExpression, constant_value<0>, std::enable_if_t<!std::is_same_v<LeftExpression, constant_value<0> > > > {
                 using type = constant_value<1>;
             };
 
             // X^{1} => X
-            template<typename LeftExpression>
-            struct condition<LeftExpression, constant_value<1> > :
-                std::true_type {
-            };
-
             template<typename LeftExpression>
             struct result<LeftExpression, constant_value<1> > {
                 using type = LeftExpression;
@@ -260,30 +224,17 @@ namespace ga {
 
             // Default
             template<typename LeftExpression, typename RightExpression>
-            struct condition :
-                std::false_type {
+            struct result {
+                using type = std::nullptr_t;
             };
-
-            template<typename LeftExpression, typename RightExpression>
-            struct result;
 
             // X^{1/2} = sqrt(X) => Y, if it is possible simplify for given integer X and Y values
-            template<default_integral_t LeftValue>
-            struct condition<constant_value<LeftValue>, power<constant_value<2>, constant_value<-1> > > :
-                std::true_type {
-            };
-
             template<default_integral_t LeftValue>
             struct result<constant_value<LeftValue>, power<constant_value<2>, constant_value<-1> > > {
                 using type = simpler_isqrt_t<LeftValue>;
             };
 
             // X^{K} => simpler
-            template<default_integral_t LeftValue, default_integral_t RightValue>
-            struct condition<constant_value<LeftValue>, constant_value<RightValue> > :
-                std::true_type {
-            };
-
             template<default_integral_t LeftValue, default_integral_t RightValue>
             struct result<constant_value<LeftValue>, constant_value<RightValue> > {
                 using type = std::conditional_t<
@@ -307,32 +258,17 @@ namespace ga {
 
             // Default (bind)
             template<typename LeftExpression, typename RightExpression>
-            struct condition :
-                std::true_type {
-            };
-
-            template<typename LeftExpression, typename RightExpression>
             struct result {
                 using type = power<LeftExpression, RightExpression>;
             };
 
             // (A * ...)^{B} => A^{B} * (...)^{C}
             template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression>
-            struct condition<mul<LeftArgument, LeftNextArguments...>, RightExpression> :
-                std::true_type {
-            };
-
-            template<typename LeftArgument, typename... LeftNextArguments, typename RightExpression>
             struct result<mul<LeftArgument, LeftNextArguments...>, RightExpression> {
                 using type = product_t<power_t<LeftArgument, RightExpression>, power_t<mul_t<LeftNextArguments...>, RightExpression>, value_mapping>;
             };
 
             // (A^{B})^{C} = A^{B * C} (simplify)
-            template<typename LeftLeftArgument, typename LeftRightArgument, typename RightExpression>
-            struct condition<power<LeftLeftArgument, LeftRightArgument>, RightExpression> :
-                std::true_type {
-            };
-
             template<typename LeftLeftArgument, typename LeftRightArgument, typename RightExpression>
             struct result<power<LeftLeftArgument, LeftRightArgument>, RightExpression> {
                 using type = power_t<LeftLeftArgument, product_t<LeftRightArgument, RightExpression, value_mapping> >;
