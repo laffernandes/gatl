@@ -26,11 +26,20 @@
 
 namespace ga {
 
-    // Returns the direction parameter of a given tangent.
+    // Returns the direction parameter of a given dual tangent.
     template<typename CoefficientType, typename Expression, ndims_t D>
-    constexpr decltype(auto) tangent_direction(clifford_expression<CoefficientType, Expression> const &tangent, minkowski_metric_space<D> const &mtr) GA_NOEXCEPT {
-        auto const lazy = make_lazy_context(tangent);
-        return lazy.eval(op(lcont(-(e(c<D + 1>) + e(c<D + 2>)), lazy.template argument<0>(), mtr), e(c<D + 1>) + e(c<D + 2>), mtr));
+    constexpr decltype(auto) dual_tangent_direction(clifford_expression<CoefficientType, Expression> const &dual_tangent, minkowski_metric_space<D> const &mtr) GA_NOEXCEPT {
+        auto [lazy, dual_tangent_] = make_lazy_context_tuple(dual_tangent);
+        constexpr auto ni = e(c<D + 1>) + e(c<D + 2>);
+        return lazy.eval(op(lcont(-ni, undual(dual_tangent_, mtr), mtr), ni, mtr));
+    }
+
+    // Returns the direction parameter of a given primal tangent.
+    template<typename CoefficientType, typename Expression, ndims_t D>
+    constexpr decltype(auto) primal_tangent_direction(clifford_expression<CoefficientType, Expression> const &primal_tangent, minkowski_metric_space<D> const &mtr) GA_NOEXCEPT {
+        auto [lazy, primal_tangent_] = make_lazy_context_tuple(primal_tangent);
+        constexpr auto ni = e(c<D + 1>) + e(c<D + 2>);
+        return lazy.eval(op(lcont(-ni, primal_tangent_, mtr), ni, mtr));
     }
 
 }

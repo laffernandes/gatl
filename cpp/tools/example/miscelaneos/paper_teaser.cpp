@@ -27,10 +27,15 @@ using namespace ga3h;
 
 int main() {
     double x_, y_, z_, phi_deg_;
+
+    std::cout << "-- Input" << std::endl;
+    std::cout << std::endl;
+
     std::cout << "x = "; std::cin >> x_;
     std::cout << "y = "; std::cin >> y_;
     std::cout << "z = "; std::cin >> z_;
     std::cout << std::endl;
+
     std::cout << "phi_deg = "; std::cin >> phi_deg_;
     std::cout << std::endl;
 
@@ -45,7 +50,11 @@ int main() {
 
     auto b_ = lazy.eval(b);
 
+    std::cout << "-- Result" << std::endl;
+    std::cout << std::endl;
+
     std::cout << "b = " << b_ << std::endl;
+    std::cout << std::endl;
 
     return EXIT_SUCCESS;
 }

@@ -29,8 +29,8 @@ namespace ga {
     // Rejection of a subspace (lhs) by another subspace (rhs).
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, ndims_t N>
     constexpr decltype(auto) reject(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, euclidean_metric_space<N> const &mtr) {
-        auto const lazy = make_lazy_context(lhs, rhs);
-        return lazy.eval(lazy.template argument<0>() - project(lazy.template argument<0>(), lazy.template argument<1>(), mtr));
+        auto [lazy, lhs_, rhs_] = make_lazy_context_tuple(lhs, rhs);
+        return lazy.eval(lhs_ - project(lhs_, rhs_, mtr));
     }
 
 }

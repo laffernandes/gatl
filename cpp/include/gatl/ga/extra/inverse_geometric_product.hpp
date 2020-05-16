@@ -28,8 +28,8 @@ namespace ga {
 
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename MetricSpaceType>
     constexpr decltype(auto) igp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, metric_space<MetricSpaceType> const &mtr) {
-        auto const lazy = make_lazy_context(lhs, rhs);
-        return lazy.eval(gp(lazy.template argument<0>(), inv(lazy.template argument<1>(), mtr), mtr));
+        auto [lazy, lhs_, rhs_] = make_lazy_context_tuple(lhs, rhs);
+        return lazy.eval(gp(lhs_, inv(rhs_, mtr), mtr));
     }
 
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightCoefficient>

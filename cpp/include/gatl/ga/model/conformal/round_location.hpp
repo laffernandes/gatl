@@ -26,11 +26,22 @@
 
 namespace ga {
 
-    // Returns the location parameter of a given round.
+    // Returns the location parameter of a given dual round.
     template<typename CoefficientType, typename Expression, ndims_t D>
-    constexpr decltype(auto) round_location(clifford_expression<CoefficientType, Expression> const &round, conformal_metric_space<D> const &mtr) {
-        auto const lazy = make_lazy_context(round);
-        return lazy.eval(gp(lazy.template argument<0>(), inv(lcont(-e(c<D + 2>), lazy.template argument<0>(), mtr), mtr), mtr));
+    constexpr decltype(auto) dual_round_location(clifford_expression<CoefficientType, Expression> const &dual_round, conformal_metric_space<D> const &mtr) {
+        auto [lazy, dual_round_] = make_lazy_context_tuple(dual_round);
+        constexpr auto ni = e(c<D + 2>);
+        auto aux_ = lcont(ni, dual_round_, mtr);
+        return lazy.eval(gp(gp(gp(dual_round_, ni, mtr), dual_round_, mtr), inv(gp(-c<2>, sp(aux_, aux_, mtr), mtr), mtr), mtr));
+    }
+
+    // Returns the location parameter of a given primal round.
+    template<typename CoefficientType, typename Expression, ndims_t D>
+    constexpr decltype(auto) primal_round_location(clifford_expression<CoefficientType, Expression> const &primal_round, conformal_metric_space<D> const &mtr) {
+        auto [lazy, primal_round_] = make_lazy_context_tuple(primal_round);
+        constexpr auto ni = e(c<D + 2>);
+        auto aux_ = lcont(ni, primal_round_, mtr);
+        return lazy.eval(gp(gp(gp(primal_round_, ni, mtr), primal_round_, mtr), inv(gp(-c<2>, sp(aux_, aux_, mtr), mtr), mtr), mtr));
     }
 
 }

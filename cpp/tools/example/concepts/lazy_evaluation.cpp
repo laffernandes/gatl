@@ -67,8 +67,7 @@ int main() {
     std::cout << "-- The motivation for lazy evaluation (simplification via lazy evaluation)" << std::endl;
     std::cout << std::endl;
     {
-        auto lazy = make_lazy_context(scalar(x_in), scalar(y_in), scalar(z_in));
-        auto [x, y, z] = lazy.arguments();
+        auto [lazy, x, y, z] = make_lazy_context_tuple(scalar(x_in), scalar(y_in), scalar(z_in));
 
         auto p = x * e1 + y * e2 + z * e3 + ep;
         auto d = x * e1 + y * e2 + z * e3;

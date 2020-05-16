@@ -26,11 +26,20 @@
 
 namespace ga {
 
-    // Returns the direction parameter of a given round.
+    // Returns the direction parameter of a given dual round.
     template<typename CoefficientType, typename Expression, ndims_t D>
-    constexpr decltype(auto) round_direction(clifford_expression<CoefficientType, Expression> const &round, minkowski_metric_space<D> const &mtr) GA_NOEXCEPT {
-        auto const lazy = make_lazy_context(round);
-        return lazy.eval(op(lcont(-(e(c<D + 1>) + e(c<D + 2>)), lazy.template argument<0>(), mtr), e(c<D + 1>) + e(c<D + 2>), mtr));
+    constexpr decltype(auto) dual_round_direction(clifford_expression<CoefficientType, Expression> const &dual_round, minkowski_metric_space<D> const &mtr) GA_NOEXCEPT {
+        auto [lazy, dual_round_] = make_lazy_context_tuple(dual_round);
+        constexpr auto ni = e(c<D + 1>) + e(c<D + 2>);
+        return lazy.eval(op(lcont(-ni, undual(dual_round_, mtr), mtr), ni, mtr));
+    }
+
+    // Returns the direction parameter of a given primal round.
+    template<typename CoefficientType, typename Expression, ndims_t D>
+    constexpr decltype(auto) primal_round_direction(clifford_expression<CoefficientType, Expression> const &primal_round, minkowski_metric_space<D> const &mtr) GA_NOEXCEPT {
+        auto [lazy, primal_round_] = make_lazy_context_tuple(primal_round);
+        constexpr auto ni = e(c<D + 1>) + e(c<D + 2>);
+        return lazy.eval(op(lcont(-ni, primal_round_, mtr), ni, mtr));
     }
 
 }

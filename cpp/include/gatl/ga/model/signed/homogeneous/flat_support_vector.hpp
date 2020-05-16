@@ -29,8 +29,9 @@ namespace ga {
     // Returns the support vector parameter of a given flat.
     template<typename CoefficientType, typename Expression, ndims_t D>
     constexpr decltype(auto) flat_support_vector(clifford_expression<CoefficientType, Expression> const &flat, homogeneous_metric_space<D> const &mtr) {
-        auto const lazy = make_lazy_context(flat);
-        return lazy.eval(gp(lcont(e(c<D + 1>), op(e(c<D + 1>), lazy.template argument<0>(), mtr), mtr), inv(lcont(e(c<D + 1>), lazy.template argument<0>(), mtr), mtr), mtr));
+        auto [lazy, flat_] = make_lazy_context_tuple(flat);
+        constexpr auto ep = e(c<D + 1>);
+        return lazy.eval(gp(lcont(ep, op(ep, flat_, mtr), mtr), inv(lcont(ep, flat_, mtr), mtr), mtr));
     }
 
 }

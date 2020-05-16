@@ -190,6 +190,7 @@ Here you find some useful meta-constants and functions to assist the implementat
 | Function | Description |
 | --- | --- |
 | `make_lazy_context(inputs...)` | Creates a `lazy_context<InputTypes...>` object |
+| `make_lazy_context_tuple(inputs...)` | Creates a `std::tuple` object made of `K + 1` entries, where the first is a `lazy_context<InputTypes...>` object and the next `K` entries are the lazy input arguments |
 | `e(index)` | Returns a runtime defined unit basis vector (index values can be set using `c<IntegralValue>`, too) |
 | `scalar(arg)` | Converts the given numerical value to a scalar Clifford expression |
 | `pseudoscalar([mtr])` | Returns the compile-time defined unit pseudoscalar of the given metric space |
@@ -450,13 +451,13 @@ Classes, constants, functions, and operations of Mikowski/spacetime geometric al
 
 | Parameter Function | Description |
 | --- | --- |
-| `flat_direction(flat [, mtr])` | The direction parameter of a given flat |
-| `flat_location(flat [, mtr])` | The location parameter of a given flat |
-| `round_direction(round [, mtr])` | The direction parameter of a given round |
-| `round_location(round [, mtr])` | The location parameter of a given round |
-| `round_size_sqr(round [, mtr])` | The squared size parameter of a given round |
-| `tangent_direction(tangent [, mtr])` | The direction parameter of a given tangent |
-| `tangent_location(tangent [, mtr])` | The location parameter of a given tangent |
+| `primal_flat_direction(primal_flat [, mtr])`, `dual_flat_direction(dual_flat [, mtr])` | The direction parameter of a given primal/dual flat |
+| `primal_flat_location(primal_flat [, mtr])`, `dual_flat_location(primal_flat [, mtr])` | The location parameter of a given primal/dual flat |
+| `primal_round_direction(primal_round [, mtr])`, `dual_round_direction(primal_round [, mtr])` | The direction parameter of a given primal/dual round |
+| `primal_round_location(primal_round [, mtr])`, `dual_round_location(dual_round [, mtr])` | The location parameter of a given primal/dual round |
+| `primal_round_size_sqr(primal_round [, mtr])`, `dual_round_size_sqr(primal_round [, mtr])` | The squared size parameter of a given primal/dual round |
+| `primal_tangent_direction(primal_tangent [, mtr])`, `dual_tangent_direction(primal_tangent [, mtr])` | The direction parameter of a given primal/dual tangent |
+| `primal_tangent_location(primal_tangent [, mtr])`, `dual_tangent_location(dual_tangent [, mtr])` | The location parameter of a given primal/dual tangent |
 
 #### Conformal
 
@@ -487,13 +488,13 @@ Classes, constants, functions, and operations of conformal geometric algebras of
 
 | Parameter Function | Description |
 | --- | --- |
-| `flat_direction(flat [, mtr])` | The direction parameter of a given flat |
-| `flat_location(flat [, mtr])` | The location parameter of a given flat |
-| `round_direction(round [, mtr])` | The direction parameter of a given round |
-| `round_location(round [, mtr])` | The location parameter of a given round |
-| `round_size_sqr(round [, mtr])` | The squared size parameter of a given round |
-| `tangent_direction(tangent [, mtr])` | The direction parameter of a given tangent |
-| `tangent_location(tangent [, mtr])` | The location parameter of a given tangent |
+| `primal_flat_direction(primal_flat [, mtr])`, `dual_flat_direction(dual_flat [, mtr])` | The direction parameter of a given primal/dual flat |
+| `primal_flat_location(primal_flat [, mtr])`, `dual_flat_location(primal_flat [, mtr])` | The location parameter of a given primal/dual flat |
+| `primal_round_direction(primal_round [, mtr])`, `dual_round_direction(primal_round [, mtr])` | The direction parameter of a given primal/dual round |
+| `primal_round_location(primal_round [, mtr])`, `dual_round_location(dual_round [, mtr])` | The location parameter of a given primal/dual round |
+| `primal_round_size_sqr(primal_round [, mtr])`, `dual_round_size_sqr(primal_round [, mtr])` | The squared size parameter of a given primal/dual round |
+| `primal_tangent_direction(primal_tangent [, mtr])`, `dual_tangent_direction(primal_tangent [, mtr])` | The direction parameter of a given primal/dual tangent |
+| `primal_tangent_location(primal_tangent [, mtr])`, `dual_tangent_location(dual_tangent [, mtr])` | The location parameter of a given primal/dual tangent |
 
 #### General
 

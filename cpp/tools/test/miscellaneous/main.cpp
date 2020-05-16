@@ -105,7 +105,7 @@ TEST(Miscellaneous, Simplification2) {
 TEST(Miscellaneous, Simplification3) {
     using namespace ga5e;
 
-    auto const lazy = make_lazy_context(scalar(10.0), scalar(5.0), scalar(3.0));
+    auto lazy = make_lazy_context(scalar(10.0), scalar(5.0), scalar(3.0));
 
     EXPECT_EQ(to_string(lazy.eval(lazy.argument<0>() * (lazy.argument<1>() + lazy.argument<2>()))), "80 * <1>");
     EXPECT_EQ(to_string(lazy.eval(lazy.argument<0>() * c<0>)), "<0> * <1>");
@@ -135,7 +135,7 @@ TEST(Miscellaneous, Simplification4) {
         return eval(p ^ d);
     };
 
-    auto const lazy = make_lazy_context(scalar(5.0), scalar(3.0), scalar(10.0), scalar(-7.0));
+    auto lazy = make_lazy_context(scalar(5.0), scalar(3.0), scalar(10.0), scalar(-7.0));
     auto eval = [&](auto const &arg) -> decltype(auto) { return arg; };
     auto lazy_eval = [&](auto const &arg) -> decltype(auto) { return lazy.eval(arg); };
 

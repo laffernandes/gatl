@@ -29,8 +29,8 @@ namespace ga {
     // Orthogonal projection of a subspace (lhs) ontho another subspace (rhs).
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, ndims_t N>
     constexpr decltype(auto) project(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, euclidean_metric_space<N> const &mtr) {
-        auto const lazy = make_lazy_context(lhs, rhs);
-        return lazy.eval(lcont(lcont(lazy.template argument<0>(), inv(lazy.template argument<1>(), mtr), mtr), lazy.template argument<1>(), mtr));
+        auto [lazy, lhs_, rhs_] = make_lazy_context_tuple(lhs, rhs);
+        return lazy.eval(lcont(lcont(lhs_, inv(rhs_, mtr), mtr), rhs_, mtr));
     }
 
 }

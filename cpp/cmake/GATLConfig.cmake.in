@@ -22,6 +22,6 @@
 
 set(GATL_INCLUDE_DIRS "@CMAKE_INSTALL_PREFIX@/include")
 
-if(MSVC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   add_compile_options(/bigobj)
 endif()

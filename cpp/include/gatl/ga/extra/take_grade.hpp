@@ -85,7 +85,7 @@ namespace ga {
     // Returns the k-grade part of the given Clifford expression.
     template<typename CoefficientType, typename Expression, typename GradeCoefficientType, typename GradeCoefficient, typename = std::enable_if_t<std::is_constructible_v<grade_t, GradeCoefficientType> > >
     constexpr decltype(auto) take_grade(clifford_expression<CoefficientType, Expression> const &arg, scalar_clifford_expression<GradeCoefficientType, GradeCoefficient> const &k) GA_NOEXCEPT {
-        auto const lazy = make_lazy_context(arg, k);
+        auto lazy = make_lazy_context(arg, k);
         return lazy.eval(clifford_expression<default_integral_t, detail::keep_grade_t<typename decltype(lazy)::template argument_expression_t<0>, typename decltype(lazy)::template argument_expression_t<1> > >());
     }
 
@@ -107,8 +107,8 @@ namespace ga {
     // Returns the portion of the given Clifford expression with the largest grade.
     template<typename CoefficientType, typename Expression, typename ToleranceType>
     constexpr decltype(auto) take_largest_grade(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) GA_NOEXCEPT {
-        auto const lazy = make_lazy_context(arg, scalar(tol));
-        return lazy.eval(take_grade(lazy.template argument<0>(), largest_grade(lazy.template argument<0>(), lazy.template argument<1>())));
+        auto [lazy, arg_, tol_] = make_lazy_context_tuple(arg, scalar(tol));
+        return lazy.eval(take_grade(arg_, largest_grade(arg_, tol_)));
     }
 
     template<typename CoefficientType, typename Expression>

@@ -42,8 +42,8 @@ namespace ga {
         // Implementation of ga::trivial_copy() and ga::checked_trivial_copy() procedures.
         template<bool RuntimeCheck, typename InputExpression, typename ResultExpression, typename Enabled = void>
         struct _trivial_copy {
-            static_assert(RuntimeCheck && std::is_same_v<InputExpression, nullptr_t>, "Non-trivial ga:checked_trivial_copy() operation.");
-            static_assert(!RuntimeCheck && std::is_same_v<InputExpression, nullptr_t>, "Non-trivial ga:trivial_copy() operation.");
+            static_assert(RuntimeCheck && std::is_same_v<InputExpression, std::nullptr_t>, "Non-trivial ga:checked_trivial_copy() operation.");
+            static_assert(!RuntimeCheck && std::is_same_v<InputExpression, std::nullptr_t>, "Non-trivial ga:trivial_copy() operation.");
         };
 
         template<bool RuntimeCheck, typename InputExpression, typename ResultExpression>

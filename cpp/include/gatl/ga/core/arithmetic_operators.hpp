@@ -33,7 +33,7 @@ namespace ga {
 
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression>
     constexpr decltype(auto) operator+(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) GA_NOEXCEPT {
-        auto const lazy = make_lazy_context(lhs, rhs);
+        auto lazy = make_lazy_context(lhs, rhs);
         return lazy.eval(clifford_expression<default_integral_t, detail::addition_t<typename decltype(lazy)::template argument_expression_t<0>, typename decltype(lazy)::template argument_expression_t<1> > >());
     }
 
@@ -54,8 +54,8 @@ namespace ga {
 
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression>
     constexpr decltype(auto) operator-(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) GA_NOEXCEPT {
-        auto const lazy = make_lazy_context(lhs, rhs);
-        return lazy.eval(lazy.template argument<0>() + gp(c<-1>, lazy.template argument<1>()));
+        auto [lazy, lhs_, rhs_] = make_lazy_context_tuple(lhs, rhs);
+        return lazy.eval(lhs_ + gp(c<-1>, rhs_));
     }
 
     template<typename LeftCoefficientType, typename LeftExpression, typename RightType>

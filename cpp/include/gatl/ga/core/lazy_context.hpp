@@ -236,7 +236,7 @@ namespace ga {
         struct _eval_clifford_expression_store_map_values {
             template<typename... InputTypes>
             struct coefficient_type {
-                using type = nullptr_t; //TODO Not supported yet (map)
+                using type = std::nullptr_t; //TODO Not supported yet (map)
             };
 
             using expression_type = stored_map_values;
@@ -268,7 +268,7 @@ namespace ga {
         struct _eval_clifford_expression_store_map_bitsets {
             template<typename... InputTypes>
             struct coefficient_type {
-                using type = nullptr_t; //TODO Not supported yet (map)
+                using type = std::nullptr_t; //TODO Not supported yet (map)
             };
 
             using expression_type = stored_map_bitsets;
@@ -673,6 +673,12 @@ namespace ga {
     template<typename... InputTypes>
     constexpr decltype(auto) make_lazy_context(InputTypes const &... inputs) GA_NOEXCEPT {
         return lazy_context<InputTypes...>(inputs...);
+    }
+
+    template<typename... InputTypes>
+    constexpr decltype(auto) make_lazy_context_tuple(InputTypes const &... inputs) GA_NOEXCEPT {
+        lazy_context<InputTypes...> lazy(inputs...);
+        return std::tuple_cat(std::make_tuple(lazy), lazy.arguments());
     }
 
 }

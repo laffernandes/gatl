@@ -39,8 +39,8 @@ namespace ga {
             constexpr auto em = real_metric_space(); // Euclidean metric
 
             auto project_vector = [&](auto const &vector, auto const &blade, auto const &inv_blade) {
-                auto const lazy = make_lazy_context(vector, blade, inv_blade);
-                return lazy.eval(take_grade(lcont(lcont(lazy.template argument<0>(), lazy.template argument<2>(), em), lazy.template argument<1>(), em), c<1>));
+                auto [lazy, vector_, blade_, inv_blade_] = make_lazy_context_tuple(vector, blade, inv_blade);
+                return lazy.eval(take_grade(lcont(lcont(vector_, inv_blade_, em), blade_, em), c<1>));
             };
 
             meet_type meet; // initialized with zeros

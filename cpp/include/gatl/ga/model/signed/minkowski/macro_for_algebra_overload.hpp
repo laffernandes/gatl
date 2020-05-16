@@ -36,13 +36,38 @@
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) flat_direction(clifford_expression<CoefficientType, Expression> const &flat) GA_NOEXCEPT { \
-        return flat_direction(flat, SPACE); \
+    constexpr decltype(auto) dual_flat_direction(clifford_expression<CoefficientType, Expression> const &dual_flat) GA_NOEXCEPT { \
+        return dual_flat_direction(dual_flat, SPACE); \
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) flat_location(clifford_expression<CoefficientType, Expression> const &flat) { \
-        return flat_location(flat, SPACE); \
+    constexpr decltype(auto) dual_flat_location(clifford_expression<CoefficientType, Expression> const &dual_flat) { \
+        return dual_flat_location(dual_flat, SPACE); \
+    } \
+    \
+    template<typename CoefficientType, typename Expression> \
+    constexpr decltype(auto) dual_round_direction(clifford_expression<CoefficientType, Expression> const &dual_round) GA_NOEXCEPT { \
+        return dual_round_direction(dual_round, SPACE); \
+    } \
+    \
+    template<typename CoefficientType, typename Expression> \
+    constexpr decltype(auto) dual_round_location(clifford_expression<CoefficientType, Expression> const &dual_round) { \
+        return dual_round_location(dual_round, SPACE); \
+    } \
+    \
+    template<typename CoefficientType, typename Expression> \
+    constexpr decltype(auto) dual_round_size_sqr(clifford_expression<CoefficientType, Expression> const &dual_round) { \
+        return dual_round_size_sqr(dual_round, SPACE); \
+    } \
+    \
+    template<typename CoefficientType, typename Expression> \
+    constexpr decltype(auto) dual_tangent_direction(clifford_expression<CoefficientType, Expression> const &dual_tangent) GA_NOEXCEPT { \
+        return dual_tangent_direction(dual_tangent, SPACE); \
+    } \
+    \
+    template<typename CoefficientType, typename Expression> \
+    constexpr decltype(auto) dual_tangent_location(clifford_expression<CoefficientType, Expression> const &dual_tangent) { \
+        return dual_tangent_location(dual_tangent, SPACE); \
     } \
     \
     template <typename... Types, typename = std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...> > > \
@@ -56,28 +81,38 @@
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) round_direction(clifford_expression<CoefficientType, Expression> const &round) GA_NOEXCEPT { \
-        return round_direction(round, SPACE); \
+    constexpr decltype(auto) primal_flat_direction(clifford_expression<CoefficientType, Expression> const &primal_flat) GA_NOEXCEPT { \
+        return primal_flat_direction(primal_flat, SPACE); \
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) round_location(clifford_expression<CoefficientType, Expression> const &round) { \
-        return round_location(round, SPACE); \
+    constexpr decltype(auto) primal_flat_location(clifford_expression<CoefficientType, Expression> const &primal_flat) { \
+        return primal_flat_location(primal_flat, SPACE); \
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) round_size_sqr(clifford_expression<CoefficientType, Expression> const &round) { \
-        return round_size_sqr(round, SPACE); \
+    constexpr decltype(auto) primal_round_direction(clifford_expression<CoefficientType, Expression> const &primal_round) GA_NOEXCEPT { \
+        return primal_round_direction(primal_round, SPACE); \
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) tangent_direction(clifford_expression<CoefficientType, Expression> const &tangent) GA_NOEXCEPT { \
-        return tangent_direction(tangent, SPACE); \
+    constexpr decltype(auto) primal_round_location(clifford_expression<CoefficientType, Expression> const &primal_round) { \
+        return primal_round_location(primal_round, SPACE); \
     } \
     \
     template<typename CoefficientType, typename Expression> \
-    constexpr decltype(auto) tangent_location(clifford_expression<CoefficientType, Expression> const &tangent) { \
-        return tangent_location(tangent, SPACE); \
+    constexpr decltype(auto) primal_round_size_sqr(clifford_expression<CoefficientType, Expression> const &primal_round) { \
+        return primal_round_size_sqr(primal_round, SPACE); \
+    } \
+    \
+    template<typename CoefficientType, typename Expression> \
+    constexpr decltype(auto) primal_tangent_direction(clifford_expression<CoefficientType, Expression> const &primal_tangent) GA_NOEXCEPT { \
+        return primal_tangent_direction(primal_tangent, SPACE); \
+    } \
+    \
+    template<typename CoefficientType, typename Expression> \
+    constexpr decltype(auto) primal_tangent_location(clifford_expression<CoefficientType, Expression> const &primal_tangent) { \
+        return primal_tangent_location(primal_tangent, SPACE); \
     }
 
 #endif // __GA_MODEL_SIGNED_MINKOWSKI_MACRO_FOR_ALGEBRA_OVERLOAD_HPP__

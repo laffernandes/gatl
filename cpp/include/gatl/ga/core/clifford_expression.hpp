@@ -711,7 +711,7 @@ namespace ga {
         constexpr clifford_expression & operator=(clifford_expression &&) = default;
 
         template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> && detail::is_scalar_component_v<Expression> && detail::can_be_stored_v<Expression> > >
-        constexpr operator Type() const {
+        constexpr operator Type() const GA_NOEXCEPT {
             return detail::_clifford_expression_to_native<Expression>::eval(super::values().cbegin());
         }
     };

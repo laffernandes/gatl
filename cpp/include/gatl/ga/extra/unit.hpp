@@ -29,20 +29,20 @@ namespace ga {
     // Computes the unit multivector under reverse norm.
     template<typename CoefficientType, typename Expression, typename MetricSpaceType>
     constexpr decltype(auto) unit(clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
-        auto const lazy = make_lazy_context(arg);
-        return lazy.eval(gp(lazy.template argument<0>(), inv(sqrt(abs(sp(lazy.template argument<0>(), reverse(lazy.template argument<0>()), mtr))), mtr), mtr));
+        auto [lazy, arg_] = make_lazy_context_tuple(arg);
+        return lazy.eval(gp(arg_, inv(sqrt(abs(sp(arg_, reverse(arg_), mtr))), mtr), mtr));
     }
 
     template<typename CoefficientType, typename Coefficient, typename MetricSpaceType>
     constexpr decltype(auto) unit(scalar_clifford_expression<CoefficientType, Coefficient> const &arg, metric_space<MetricSpaceType> const &) {
-        auto const lazy = make_lazy_context(arg);
-        return lazy.eval(gp(lazy.template argument<0>(), pow(abs(lazy.template argument<0>()), c<-1>)));
+        auto [lazy, arg_] = make_lazy_context_tuple(arg);
+        return lazy.eval(gp(arg_, pow(abs(arg_), c<-1>)));
     }
 
     template<typename CoefficientType, typename Coefficient>
     constexpr decltype(auto) unit(scalar_clifford_expression<CoefficientType, Coefficient> const &arg) {
-        auto const lazy = make_lazy_context(arg);
-        return lazy.eval(gp(lazy.template argument<0>(), pow(abs(lazy.template argument<0>()), c<-1>)));
+        auto [lazy, arg_] = make_lazy_context_tuple(arg);
+        return lazy.eval(gp(arg_, pow(abs(arg_), c<-1>)));
     }
 
     template<typename Type, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >

@@ -28,8 +28,8 @@ namespace ga {
 
     template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType, typename MetricSpaceType>
     constexpr decltype(auto) dp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, ToleranceType const &tol, metric_space<MetricSpaceType> const &mtr) GA_NOEXCEPT {
-        auto const lazy = make_lazy_context(lhs, rhs, scalar(tol));
-        return lazy.eval(take_largest_grade(gp(lazy.template argument<0>(), lazy.template argument<1>(), mtr), lazy.template argument<2>()));
+        auto [lazy, lhs_, rhs_, tol_] = make_lazy_context_tuple(lhs, rhs, scalar(tol));
+        return lazy.eval(take_largest_grade(gp(lhs_, rhs_, mtr), tol_));
     }
 
     template<typename LeftCoefficientType, typename LeftCoefficient, typename RightCoefficientType, typename RightExpression, typename ToleranceType, typename = std::enable_if_t<!is_metric_space_v<ToleranceType> > >

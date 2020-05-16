@@ -53,7 +53,7 @@ namespace ga {
                 std::conditional_t<
                     is_general_metric_space_v<MetricSpaceType>,
                     general_metric_mapping<MetricSpaceType, GradedProduct>,
-                    nullptr_t // should be impossible
+                    std::nullptr_t // should be impossible
                 >
             >;
         };

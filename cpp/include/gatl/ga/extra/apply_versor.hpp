@@ -29,8 +29,8 @@ namespace ga {
     // Apply an even versor (i.e., an orthogonal transformation) to a Clifford expression.
     template<typename VersorCoefficientType, typename VersorExpression, typename CoefficientType, typename Expression, typename MetricSpaceType>
     constexpr decltype(auto) apply_even_versor(clifford_expression<VersorCoefficientType, VersorExpression> const &versor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
-        auto const lazy = make_lazy_context(versor, arg);
-        return lazy.eval(gp(gp(lazy.template argument<0>(), lazy.template argument<1>(), mtr), inv(lazy.template argument<0>(), mtr), mtr));
+        auto [lazy, versor_, arg_] = make_lazy_context_tuple(versor, arg);
+        return lazy.eval(gp(gp(versor_, arg_, mtr), inv(versor_, mtr), mtr));
     }
 
     template<typename VersorCoefficientType, typename VersorExpression, typename Type, typename MetricSpaceType>
@@ -51,8 +51,8 @@ namespace ga {
     // Apply an odd versor (i.e., an orthogonal transformation) to a Clifford expression.
     template<typename VersorCoefficientType, typename VersorExpression, typename CoefficientType, typename Expression, typename MetricSpaceType>
     constexpr decltype(auto) apply_odd_versor(clifford_expression<VersorCoefficientType, VersorExpression> const &versor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
-        auto const lazy = make_lazy_context(versor, arg);
-        return lazy.eval(gp(gp(lazy.template argument<0>(), involute(lazy.template argument<1>()), mtr), inv(lazy.template argument<0>(), mtr), mtr));
+        auto [lazy, versor_, arg_] = make_lazy_context_tuple(versor, arg);
+        return lazy.eval(gp(gp(versor_, involute(arg_), mtr), inv(versor_, mtr), mtr));
     }
 
     template<typename VersorCoefficientType, typename VersorExpression, typename Type, typename MetricSpaceType>
@@ -73,8 +73,8 @@ namespace ga {
     // Apply a rotor (i.e., an even unit versor) to a Clifford expression.
     template<typename RotorCoefficientType, typename RotorExpression, typename CoefficientType, typename Expression, typename MetricSpaceType>
     constexpr decltype(auto) apply_rotor(clifford_expression<RotorCoefficientType, RotorExpression> const &rotor, clifford_expression<CoefficientType, Expression> const &arg, metric_space<MetricSpaceType> const &mtr) {
-        auto const lazy = make_lazy_context(rotor, arg);
-        return lazy.eval(gp(gp(lazy.template argument<0>(), lazy.template argument<1>(), mtr), reverse(lazy.template argument<0>()), mtr));
+        auto [lazy, rotor_, arg_] = make_lazy_context_tuple(rotor, arg);
+        return lazy.eval(gp(gp(rotor_, arg_, mtr), reverse(rotor_), mtr));
     }
 
     template<typename RotorCoefficientType, typename RotorExpression, typename Type, typename MetricSpaceType>
