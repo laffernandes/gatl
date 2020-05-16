@@ -113,7 +113,7 @@ The namespaces of specific geometric algebras (*e.g.*, `ga3e`, `ga3h`, `ga3m`, a
 
 All above-mentioned namespaces declare a nested `detail` namespace. This is the namespace where the magic happens. Don't touch it!
 
-According to the GATL conventions, the root directory for the header files that you will include in your program is the `gatl` folder. Also, the header file for each namespace is its name followed by the `.hpp` expression. Putting both conventions together, we have `gatl/ga.hpp`, `gatl/ga3e.hpp`, `gatl/ga3h.hpp`, `gatl/ga3m.hpp`, `gatl/ga3c.hpp`, and so on.
+According to the GATL conventions, the root directory for the header files that you will include in your program is the `gatl` folder. Also, the header file for each namespace is its name followed by the `.hpp` extension. Putting both conventions together, we have `gatl/ga.hpp`, `gatl/ga3e.hpp`, `gatl/ga3h.hpp`, `gatl/ga3m.hpp`, `gatl/ga3c.hpp`, and so on.
 
 ### Macros
 
