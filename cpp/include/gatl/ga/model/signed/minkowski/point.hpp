@@ -44,7 +44,7 @@ namespace ga {
     }
 
     // Initializes a multivector representation of a point using the given iterator to provide the set of coordinates.
-    template<ndims_t D, typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > >
+    template<ndims_t D, typename IteratorType, std::enable_if_t<detail::is_iterator_v<IteratorType>, int> = 0>
     constexpr decltype(auto) point(minkowski_metric_space<D> const &mtr, IteratorType begin, IteratorType end) GA_NOEXCEPT {
         assert(D == std::distance(begin, end));
         return detail::make_point_using_iterator(mtr, begin, std::make_index_sequence<D>{});

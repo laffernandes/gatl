@@ -25,12 +25,12 @@
 #define __GA_MODEL_SIGNED_MINKOWSKI_MACRO_FOR_ALGEBRA_OVERLOAD_HPP__
 
 #define _GA_MINKOWSKI_ALGEBRA_OVERLOAD(SPACE) \
-    template <typename... Types, typename = std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...> > > \
+    template <typename... Types, std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...>, int> = 0> \
     constexpr decltype(auto) euclidean_vector(Types &&... coords) GA_NOEXCEPT { \
         return euclidean_vector(SPACE, std::move(coords)...); \
     } \
     \
-    template <typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > > \
+    template <typename IteratorType, std::enable_if_t<detail::is_iterator_v<IteratorType>, int> = 0> \
     constexpr decltype(auto) euclidean_vector(IteratorType begin, IteratorType end) GA_NOEXCEPT { \
         return euclidean_vector(SPACE, begin, end); \
     } \
@@ -70,12 +70,12 @@
         return dual_tangent_location(dual_tangent, SPACE); \
     } \
     \
-    template <typename... Types, typename = std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...> > > \
+    template <typename... Types, std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...>, int> = 0> \
     constexpr decltype(auto) point(Types &&... coords) GA_NOEXCEPT { \
         return point(SPACE, std::move(coords)...); \
     } \
     \
-    template <typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > > \
+    template <typename IteratorType, std::enable_if_t<detail::is_iterator_v<IteratorType>, int> = 0> \
     constexpr decltype(auto) point(IteratorType begin, IteratorType end) GA_NOEXCEPT { \
         return point(SPACE, begin, end); \
     } \

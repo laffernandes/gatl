@@ -34,12 +34,12 @@ namespace ga {
         return lazy.eval(scalar_clifford_expression<default_integral_t, detail::power_t<detail::coefficient_t<typename decltype(lazy)::template argument_expression_t<0> >, detail::coefficient_t<typename decltype(lazy)::template argument_expression_t<1> > > >());
     }
 
-    template<typename BaseCoefficientType, typename BaseCoefficient, typename ExponentType, typename = std::enable_if_t<!is_clifford_expression_v<ExponentType> > >
+    template<typename BaseCoefficientType, typename BaseCoefficient, typename ExponentType, std::enable_if_t<!is_clifford_expression_v<ExponentType>, int> = 0>
     constexpr decltype(auto) pow(scalar_clifford_expression<BaseCoefficientType, BaseCoefficient> const &base, ExponentType const &exponent) {
         return pow(base, scalar(exponent));
     }
 
-    template<typename BaseType, typename ExponentCoefficientType, typename ExponentCoefficient, typename = std::enable_if_t<!is_clifford_expression_v<BaseType> > >
+    template<typename BaseType, typename ExponentCoefficientType, typename ExponentCoefficient, std::enable_if_t<!is_clifford_expression_v<BaseType>, int> = 0>
     constexpr decltype(auto) pow(BaseType const &base, scalar_clifford_expression<ExponentCoefficientType, ExponentCoefficient> const &exponent) {
         return pow(scalar(base), exponent);
     }

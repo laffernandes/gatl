@@ -468,7 +468,7 @@ namespace ga {
             > {
         };
         
-        template<tag_t LowerTag, tag_t UpperTag, typename CoefficientType, typename Expression, typename... InputTypes>
+        template<tag_t LowerTag, tag_t UpperTag, typename CoefficientType, typename Expression, typename... InputTypes, std::enable_if_t<(LowerTag <= UpperTag), int> = 0>
         GA_ALWAYS_INLINE constexpr static decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &, std::tuple<InputTypes...> const &args) {
             using result_type = clifford_expression<eval_coefficient_t<LowerTag, UpperTag, Expression, std::remove_const_t<std::remove_reference_t<InputTypes> >...>, eval_expression_t<LowerTag, UpperTag, Expression> >;
 
@@ -483,6 +483,11 @@ namespace ga {
             eval_clifford_expression<LowerTag, UpperTag, Expression>::run(value_itr, bitset_itr, map_itr, args);
 
             return result_type(std::move(values), std::move(bitsets), std::move(maps));
+        }
+
+        template<tag_t LowerTag, tag_t UpperTag, typename CoefficientType, typename Expression, typename... InputTypes, std::enable_if_t<(LowerTag > UpperTag), int> = 0>
+        GA_ALWAYS_INLINE constexpr static decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &, std::tuple<InputTypes...> const &) {
+            return clifford_expression<CoefficientType, Expression>();
         }
 
         // Superclass for ga::lazy_context<InputTypes...>.
@@ -652,14 +657,9 @@ namespace ga {
             return arguments_tuple(std::make_index_sequence<sizeof...(InputExpressions)>());
         }
 
-        template<typename CoefficientType, typename Expression, typename = std::enable_if_t<super::stored_inputs_count() != 0> >
+        template<typename CoefficientType, typename Expression>
         constexpr decltype(auto) eval(clifford_expression<CoefficientType, Expression> const &expression) const {
             return detail::eval<base_id + 1, base_id + (detail::tag_t)super::stored_inputs_count()>(expression, super::stored_inputs_tuple());
-        }
-
-        template<typename CoefficientType, typename Expression, typename = std::enable_if_t<super::stored_inputs_count() == 0> >
-        constexpr decltype(auto) eval(clifford_expression<CoefficientType, Expression> &&) const GA_NOEXCEPT {
-            return clifford_expression<CoefficientType, Expression>();
         }
 
     private:

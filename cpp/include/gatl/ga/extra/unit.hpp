@@ -45,12 +45,12 @@ namespace ga {
         return lazy.eval(gp(arg_, pow(abs(arg_), c<-1>)));
     }
 
-    template<typename Type, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+    template<typename Type, typename MetricSpaceType, std::enable_if_t<!is_clifford_expression_v<Type>, int> = 0>
     constexpr decltype(auto) unit(Type const &arg, metric_space<MetricSpaceType> const &mtr) {
         return unit(scalar(arg), mtr);
     }
 
-    template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+    template<typename Type, std::enable_if_t<!is_clifford_expression_v<Type>, int> = 0>
     constexpr decltype(auto) unit(Type const &arg) {
         return unit(scalar(arg));
     }

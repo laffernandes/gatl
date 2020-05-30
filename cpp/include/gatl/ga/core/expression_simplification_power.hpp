@@ -38,7 +38,7 @@ namespace ga {
         using simpler_ipow_t = typename simpler_ipow<Base, Exponent>::type;
 
         // Returns the square root of the given integral value.
-        template<default_integral_t Value, typename Enable = void>
+        template<default_integral_t Value, typename Enabled = void>
         struct simpler_isqrt;
         
         template<default_integral_t Value>

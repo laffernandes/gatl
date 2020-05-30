@@ -29,12 +29,12 @@
         return pseudoscalar(SPACE); \
     } \
     \
-    template<typename... Types, typename = std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...> > > \
+    template<typename... Types, std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...>, int> = 0> \
     constexpr decltype(auto) vector(Types &&... coords) GA_NOEXCEPT { \
         return ga::vector(SPACE, std::move(coords)...); \
     } \
     \
-    template <typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > > \
+    template<typename IteratorType, std::enable_if_t<detail::is_iterator_v<IteratorType>, int> = 0> \
     constexpr decltype(auto) vector(IteratorType begin, IteratorType end) GA_NOEXCEPT { \
         return ga::vector(SPACE, begin, end); \
     }

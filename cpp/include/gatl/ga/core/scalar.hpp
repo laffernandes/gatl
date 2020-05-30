@@ -34,12 +34,12 @@ namespace ga {
     using unit_scalar_t = scalar_clifford_expression<default_integral_t, detail::constant_value<1> >;
 
     // Converts the given native value type to scalar Clifford expression.
-    template<typename ValueType, typename = std::enable_if_t<!is_clifford_expression_v<ValueType> > >
+    template<typename ValueType, std::enable_if_t<!is_clifford_expression_v<ValueType>, int> = 0>
     constexpr scaled_scalar_t<ValueType> scalar(ValueType const &arg) GA_NOEXCEPT {
         return scaled_scalar_t<ValueType>(make_sequential_storage(arg));
     }
 
-    template<typename ValueType, typename = std::enable_if_t<!is_clifford_expression_v<ValueType> > >
+    template<typename ValueType, std::enable_if_t<!is_clifford_expression_v<ValueType>, int> = 0>
     constexpr decltype(auto) scalar(ValueType &&arg) GA_NOEXCEPT {
         return scaled_scalar_t<std::remove_cv_t<std::remove_reference_t<ValueType> > >(make_sequential_storage(std::move(arg)));
     }

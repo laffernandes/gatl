@@ -85,17 +85,17 @@
         return rp(lhs, rhs, SPACE); \
     } \
     \
-    template<typename LeftCoefficientType, typename LeftExpression, typename RightType, typename = std::enable_if_t<!is_clifford_expression_v<RightType> > > \
+    template<typename LeftCoefficientType, typename LeftExpression, typename RightType, std::enable_if_t<!is_clifford_expression_v<RightType>, int> = 0> \
     constexpr decltype(auto) rp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, RightType const &rhs) GA_NOEXCEPT { \
         return rp(lhs, scalar(rhs), SPACE); \
     } \
     \
-    template<typename LeftType, typename RightCoefficientType, typename RightExpression, typename = std::enable_if_t<!is_clifford_expression_v<LeftType> > > \
+    template<typename LeftType, typename RightCoefficientType, typename RightExpression, std::enable_if_t<!is_clifford_expression_v<LeftType>, int> = 0> \
     constexpr decltype(auto) rp(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) GA_NOEXCEPT { \
         return rp(scalar(lhs), rhs, SPACE); \
     } \
     \
-    template<typename LeftType, typename RightType, typename = std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>)> > \
+    template<typename LeftType, typename RightType, std::enable_if_t<!(is_clifford_expression_v<LeftType> || is_clifford_expression_v<RightType>), int> = 0> \
     constexpr decltype(auto) rp(LeftType const &lhs, RightType const &rhs) GA_NOEXCEPT { \
         return rp(scalar(lhs), scalar(rhs), SPACE); \
     } \

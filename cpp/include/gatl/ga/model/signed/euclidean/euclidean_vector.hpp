@@ -27,13 +27,13 @@
 namespace ga {
 
     // Initializes a multivector representation of a Euclidean vector using the given coordinates expressed in the base space.
-    template<ndims_t N, typename... Types, typename = std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...> > >
+    template<ndims_t N, typename... Types, std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...>, int> = 0>
     constexpr decltype(auto) euclidean_vector(euclidean_metric_space<N> const &mtr, Types &&... coords) GA_NOEXCEPT {
         return vector(mtr, std::move(coords)...);
     }
 
     // Initializes a multivector representation of a Euclidean vector using the given iterator to provide the set of coordinates.
-    template<ndims_t D, typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > >
+    template<ndims_t D, typename IteratorType, std::enable_if_t<detail::is_iterator_v<IteratorType>, int> = 0>
     constexpr decltype(auto) euclidean_vector(euclidean_metric_space<D> const &mtr, IteratorType begin, IteratorType end) GA_NOEXCEPT {
         assert(D == std::distance(begin, end));
         return detail::make_vector_using_iterator(mtr, begin, std::make_index_sequence<D>{});

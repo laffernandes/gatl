@@ -45,7 +45,7 @@
         return cp(lhs, rhs, SPACE); \
     } \
     \
-    template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType, typename = std::enable_if_t<!is_metric_space_v<ToleranceType> > > \
+    template<typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType, std::enable_if_t<!is_metric_space_v<ToleranceType>, int> = 0> \
     constexpr decltype(auto) dp(clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, ToleranceType const &tol) GA_NOEXCEPT { \
         return dp(lhs, rhs, tol, SPACE); \
     } \
@@ -65,7 +65,7 @@
         return dual(arg, pseudoscalar(SPACE), SPACE); \
     } \
     \
-    template<typename CoefficientType, typename Expression, typename ToleranceType, typename = std::enable_if_t<!is_metric_space_v<ToleranceType> > > \
+    template<typename CoefficientType, typename Expression, typename ToleranceType, std::enable_if_t<!is_metric_space_v<ToleranceType>, int> = 0> \
     constexpr decltype(auto) exp(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) { \
         return exp(arg, tol, SPACE); \
     } \
@@ -110,7 +110,7 @@
         return igp(lhs, rhs, SPACE); \
     } \
     \
-    template<typename LeftType, typename RightCoefficientType, typename RightExpression, typename = std::enable_if_t<!is_clifford_expression_v<LeftType> > > \
+    template<typename LeftType, typename RightCoefficientType, typename RightExpression, std::enable_if_t<!is_clifford_expression_v<LeftType>, int> = 0> \
     constexpr decltype(auto) igp(LeftType const &lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs) { \
         return igp(lhs, rhs, SPACE); \
     } \

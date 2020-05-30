@@ -117,12 +117,12 @@ namespace ga {
         }
 
         // Cast the given integral type to the default floating point type.
-        template<typename Type, typename = std::enable_if_t<std::is_integral_v<Type> > >
+        template<typename Type, std::enable_if_t<std::is_integral_v<Type>, int> = 0>
         GA_ALWAYS_INLINE constexpr decltype(auto) cast_to_floating_point(Type const &arg) GA_NOEXCEPT {
             return static_cast<default_floating_point_t>(arg);
         }
 
-        template<typename Type, typename = std::enable_if_t<!std::is_integral_v<Type> > >
+        template<typename Type, std::enable_if_t<!std::is_integral_v<Type>, int> = 0>
         GA_ALWAYS_INLINE constexpr decltype(auto) cast_to_floating_point(Type &&arg) GA_NOEXCEPT {
             return std::move(arg);
         }

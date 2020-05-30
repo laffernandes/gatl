@@ -37,12 +37,12 @@ namespace ga {
         return pow(arg, c<-1>);
     }
 
-    template<typename Type, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+    template<typename Type, typename MetricSpaceType, std::enable_if_t<!is_clifford_expression_v<Type>, int> = 0>
     constexpr decltype(auto) inv(Type const &arg, metric_space<MetricSpaceType> const &) {
         return pow(scalar(arg), c<-1>);
     }
 
-    template<typename Type, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+    template<typename Type, std::enable_if_t<!is_clifford_expression_v<Type>, int> = 0>
     constexpr decltype(auto) inv(Type const &arg) {
         return pow(scalar(arg), c<-1>);
     }

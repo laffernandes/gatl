@@ -48,7 +48,7 @@ namespace ga {
     }
 
     // Returns a compile-time defined unit basis vector.
-    template<typename IndexType, default_integral_t Index, typename = std::enable_if_t<std::is_constructible_v<index_t, IndexType> > >
+    template<typename IndexType, default_integral_t Index, std::enable_if_t<std::is_constructible_v<index_t, IndexType>, int> = 0>
     constexpr unit_constant_basis_vector_t<Index> e(constant<IndexType, Index> const &) GA_NOEXCEPT {
         static_assert(Index > 0, "Basis vector index out of bounds. It is expected a positive value.");
         return unit_constant_basis_vector_t<Index>();

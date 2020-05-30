@@ -155,7 +155,7 @@ namespace ga {
     }
 
     // Makes a vector with the given set of coordinates.
-    template<typename MetricSpaceType, typename... Types, typename = std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...> > >
+    template<typename MetricSpaceType, typename... Types, std::enable_if_t<std::disjunction_v<std::bool_constant<!detail::is_iterator_v<Types> >...>, int> = 0>
     constexpr decltype(auto) vector(metric_space<MetricSpaceType> const &, Types &&... coords) GA_NOEXCEPT {
         static_assert(MetricSpaceType::vector_space_dimensions == sizeof...(Types), "The number of coordinates must be equal to the number of dimensions of the vector space.");
         return detail::make_vector<detail::deduce_vector_t<MetricSpaceType::vector_space_dimensions, std::remove_cv_t<std::remove_reference_t<Types> >...> >::run(std::move(coords)...);
@@ -172,7 +172,7 @@ namespace ga {
     }
 
     // Makes a vector using the given iterator to provide the set of coordinates.
-    template<typename MetricSpaceType, typename IteratorType, typename = std::enable_if_t<detail::is_iterator_v<IteratorType> > >
+    template<typename MetricSpaceType, typename IteratorType, std::enable_if_t<detail::is_iterator_v<IteratorType>, int> = 0>
     constexpr decltype(auto) vector(metric_space<MetricSpaceType> const &mtr, IteratorType begin, IteratorType end) GA_NOEXCEPT {
         assert(MetricSpaceType::vector_space_dimensions == std::distance(begin, end));
         return detail::make_vector_using_iterator(mtr, begin, std::make_index_sequence<MetricSpaceType::vector_space_dimensions>{});

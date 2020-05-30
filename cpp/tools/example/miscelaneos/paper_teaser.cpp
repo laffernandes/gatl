@@ -21,39 +21,40 @@
  * along with GATL. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <gatl/ga3h.hpp>
+#include <gatl/ga3e.hpp>
 
-using namespace ga3h;
+using namespace ga3e;
 
 int main() {
-    double x_, y_, z_, phi_deg_;
+    double x, y, z, phi_deg;
 
     std::cout << "-- Input" << std::endl;
     std::cout << std::endl;
 
-    std::cout << "x = "; std::cin >> x_;
-    std::cout << "y = "; std::cin >> y_;
-    std::cout << "z = "; std::cin >> z_;
+    std::cout << "x = "; std::cin >> x;
+    std::cout << "y = "; std::cin >> y;
+    std::cout << "z = "; std::cin >> z;
     std::cout << std::endl;
 
-    std::cout << "phi_deg = "; std::cin >> phi_deg_;
+    std::cout << "phi_deg = "; std::cin >> phi_deg;
     std::cout << std::endl;
 
-    double phi_ = phi_deg_ * (M_PI / 180.0);
+    double phi = phi_deg * (M_PI / 180.0);
 
-    auto lazy = make_lazy_context(scalar(x_), scalar(y_), scalar(z_), scalar(phi_));
-    auto [x, y, z, phi] = lazy.arguments();
+    auto a = vector(x, y, z);
 
-    auto a = vector(x, y, z, c<0>);
-    auto R = cos(phi / c<2>) - sin(phi / c<2>) * (e1^e2);
-    auto b = R * a * ~R;
+    auto lazy = make_lazy_context(a, scalar(phi));
+    auto [a_, phi_] = lazy.arguments();
+    
+    auto R_ = cos(phi_ / c<2>) - sin(phi_ / c<2>) * (e1^e2);
+    auto b_ = R_ * a_ * ~R_;
 
-    auto b_ = lazy.eval(b);
+    auto b = lazy.eval(b_);
 
     std::cout << "-- Result" << std::endl;
     std::cout << std::endl;
 
-    std::cout << "b = " << b_ << std::endl;
+    std::cout << "b = " << b << std::endl;
     std::cout << std::endl;
 
     return EXIT_SUCCESS;

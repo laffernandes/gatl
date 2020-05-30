@@ -85,17 +85,17 @@ namespace ga {
         return exp(arg);
     }
 
-    template<typename Type, typename ToleranceType, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+    template<typename Type, typename ToleranceType, typename MetricSpaceType, std::enable_if_t<!is_clifford_expression_v<Type>, int> = 0>
     constexpr decltype(auto) exp(Type const &arg, ToleranceType const &, metric_space<MetricSpaceType> const &) {
         return exp(arg);
     }
 
-    template<typename Type, typename MetricSpaceType, typename = std::enable_if_t<!is_clifford_expression_v<Type> > >
+    template<typename Type, typename MetricSpaceType, std::enable_if_t<!is_clifford_expression_v<Type>, int> = 0>
     constexpr decltype(auto) exp(Type const &arg, metric_space<MetricSpaceType> const &) {
         return exp(arg);
     }
 
-    template<typename Type, typename ToleranceType, typename = std::enable_if_t<!(is_clifford_expression_v<Type> || is_metric_space_v<ToleranceType>) > >
+    template<typename Type, typename ToleranceType, std::enable_if_t<!(is_clifford_expression_v<Type> || is_metric_space_v<ToleranceType>), int> = 0>
     constexpr decltype(auto) exp(Type const &arg, ToleranceType const &) {
         return exp(arg);
     }
