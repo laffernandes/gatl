@@ -213,7 +213,7 @@ The following tables present a set of basic products and operations from geometr
 | `op(lhs, rhs [, mtr])` | Outer/Wedge product |
 | `rp(lhs, rhs [, mtr])` | Regressive product |
 | `rcont(lhs, rhs [, mtr])` | Right contraction |
-| `sp(lhs, rhs [, mtr])` | Scalar product of blades |
+| `sp(lhs, rhs [, mtr])` | Scalar product |
 
 | Sign-Change Operation | Description |
 | --- | --- |
