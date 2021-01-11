@@ -510,7 +510,7 @@ Classes, constants, functions, and operations of general geometric algebras defi
 
 ## 6. Related Project
 
-Please, visit the GitHub repository of the [**ga-benchmark**](https://github.com/ga-developers/ga-benchmark) project for a benchmark comparing the most popular geometric algebra libraries.
+Please, visit the GitHub repository of the [**ga-benchmark**](https://github.com/ga-developers/ga-benchmark) project for a benchmark comparing the most popular libraries, library generators, and code optimizers for geometric algebra.
 
 ## 7. License
 
