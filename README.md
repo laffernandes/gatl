@@ -19,7 +19,7 @@ Please, cite [this book chapter](http://www.ic.uff.br/~laffernandes/content/publ
   volume    = {13},
   series    = {SEMA SIMAI Springer Series},
   publisher = {Springer, Cham},
-  doi       = {https://doi.org/10.1007/978-3-030-74486-1_6}
+  doi       = {https://doi.org/10.1007/978-3-030-74486-1_6},
   isbn      = {978-3-030-74485-4},
   e-isbn    = {978-3-030-74486-1},
   url       = {https://github.com/laffernandes/gatl},
