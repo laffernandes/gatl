@@ -6,7 +6,28 @@ Geometric algebra is a powerful mathematical system encompassing many mathematic
 
 GATL uses template meta-programming to implement the [lazy evaluation](https://en.wikipedia.org/wiki/Lazy_evaluation) strategy. This way, GATL is capable of performing some optimizations on the program at compile time. In other words, GATL is designed to automatically execute low-level algebraic manipulation in the procedures described by the users with geometric algebra operations, leading to more efficient programs.
 
-Please, let me know if you want to contribute to this project. [Here](http://www.ic.uff.br/~laffernandes) you will find my contact information.
+Please, cite [this book chapter](http://www.ic.uff.br/~laffernandes/content/publications/book_chapter/2021_sema_13/fernandes-sema-13-2021-chapter.pdf) if you use GATL in your research:
+
+```txt
+@InCollection{fernandes-SEMA-13-2021,
+  title     = {Exploring lazy evaluation and compile-time simplifications for efficient geometric algebra computations},
+  author    = {Fernandes, Leandro A. F.},
+  chapter   = {6},
+  pages     = {111--131},
+  booktitle = {Systems, Patterns and Data Engineering with Geometric Calculi},
+  editor    = {Xambó-Descamps, S.},
+  volume    = {13},
+  series    = {SEMA SIMAI Springer Series},
+  publisher = {Springer, Cham},
+  doi       = {https://doi.org/10.1007/978-3-030-74486-1_6}
+  isbn      = {978-3-030-74485-4},
+  e-isbn    = {978-3-030-74486-1},
+  url       = {https://github.com/laffernandes/gatl},
+  year      = {2021},
+}
+```
+
+Let me know if you want to contribute to this project. [Here](http://www.ic.uff.br/~laffernandes) you will find my contact information.
 
 **Contents:**
 
