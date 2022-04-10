@@ -24,8 +24,6 @@
 #ifndef __GA_EXTRA_HPP__
 #define __GA_EXTRA_HPP__
 
-#include "extra/default_tolerance.hpp"
-
 #include "extra/grade.hpp"
 #include "extra/take_grade.hpp"
 
@@ -43,8 +41,6 @@
 #include "extra/delta_product.hpp"
 
 #include "extra/dualization.hpp"
-
-#include "extra/trivial_copy.hpp"
 
 #include "extra/fast_meet_and_join.hpp"
 #include "extra/fast_plunge.hpp"

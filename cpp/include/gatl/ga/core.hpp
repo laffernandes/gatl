@@ -68,6 +68,15 @@
     #define GA_MAX_BASIS_VECTOR_INDEX 63
 #endif // GA_MAX_BASIS_VECTOR_INDEX
 
+#define _GA_ONE_TIME_WARNING(MESSAGE) \
+    { \
+        static bool first_time = true; \
+        if (first_time) { \
+            std::clog << "[WARNING]: " << (MESSAGE) << std::endl; \
+            first_time = false; \
+        } \
+    }
+
 namespace ga {
 
     static_assert(std::is_integral_v<decltype((GA_MAX_BASIS_VECTOR_INDEX))> && 1 <= (GA_MAX_BASIS_VECTOR_INDEX) && (GA_MAX_BASIS_VECTOR_INDEX) <= 63, "GA_MAX_BASIS_VECTOR_INDEX must be an integer value between 1 and 63, inclusive.");
@@ -119,6 +128,10 @@ namespace ga {
 
 #include "core/constant.hpp"
 #include "core/scalar.hpp"
+
+#include "core/default_tolerance.hpp"
+
+#include "core/trivial_copy.hpp"
 
 #include "core/conjugation.hpp"
 #include "core/involution.hpp"

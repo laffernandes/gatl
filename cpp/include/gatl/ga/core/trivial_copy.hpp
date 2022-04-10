@@ -21,8 +21,8 @@
  * along with GATL. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef __GA_EXTRA_TRIVIAL_COPY_HPP__
-#define __GA_EXTRA_TRIVIAL_COPY_HPP__
+#ifndef __GA_CORE_TRIVIAL_COPY_HPP__
+#define __GA_CORE_TRIVIAL_COPY_HPP__
 
 namespace ga {
 
@@ -476,6 +476,22 @@ namespace ga {
         trivial_copy(scalar(input), result);
     }
 
+    template<typename CoefficientType, typename Expression>
+    template<typename OtherCoefficientType, typename OtherExpression>
+    clifford_expression<CoefficientType, Expression>::clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> const &other) GA_NOEXCEPT :
+        clifford_expression() {
+        _GA_ONE_TIME_WARNING("Implicit call to 'checked_trivial_copy' function in the copy constructor of the 'clifford_expression' class. Consider using 'auto' instead of a custom expression type to avoid performance issues while initializing variables.")
+        checked_trivial_copy(other, *this);
+    }
+
+    template<typename CoefficientType, typename Expression>
+    template<typename OtherCoefficientType, typename OtherExpression>
+    clifford_expression<CoefficientType, Expression>::clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> &&other) GA_NOEXCEPT :
+        clifford_expression() {
+        _GA_ONE_TIME_WARNING("Implicit call to 'checked_trivial_copy' function in the moving constructor of the 'clifford_expression' class. Consider using 'auto' instead of a custom expression type to avoid performance issues while initializing variables.")
+        checked_trivial_copy(other, *this);
+    }
+
 }
 
-#endif // __GA_EXTRA_TRIVIAL_COPY_HPP__
+#endif // __GA_CORE_TRIVIAL_COPY_HPP__

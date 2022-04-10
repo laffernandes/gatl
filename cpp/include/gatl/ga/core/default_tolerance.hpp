@@ -21,8 +21,8 @@
  * along with GATL. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef __GA_EXTRA_DEFAULT_TOLERANCE_HPP__
-#define __GA_EXTRA_DEFAULT_TOLERANCE_HPP__
+#ifndef __GA_CORE_DEFAULT_TOLERANCE_HPP__
+#define __GA_CORE_DEFAULT_TOLERANCE_HPP__
 
 #ifndef GA_DEFAULT_FLT_TOLERANCE
     #define GA_DEFAULT_FLT_TOLERANCE 1.0e-8f
@@ -55,4 +55,4 @@ namespace ga {
 
 }
 
-#endif // __GA_EXTRA_DEFAULT_TOLERANCE_HPP__
+#endif // __GA_CORE_DEFAULT_TOLERANCE_HPP__

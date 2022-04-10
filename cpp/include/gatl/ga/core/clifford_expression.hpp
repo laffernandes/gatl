@@ -697,10 +697,10 @@ namespace ga {
         constexpr clifford_expression(clifford_expression &&) = default;
 
         template<typename OtherCoefficientType, typename OtherExpression>
-        constexpr clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> const &) = delete;
+        clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> const &other) GA_NOEXCEPT;
 
         template<typename OtherCoefficientType, typename OtherExpression>
-        constexpr clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> &&) = delete;
+        clifford_expression(clifford_expression<OtherCoefficientType, OtherExpression> &&other) GA_NOEXCEPT;
 
         template<typename... StorageTypes>
         constexpr clifford_expression(StorageTypes &&... args) GA_NOEXCEPT :
