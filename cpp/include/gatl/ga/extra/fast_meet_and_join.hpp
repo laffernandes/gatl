@@ -31,6 +31,7 @@ namespace ga {
         // Implementation of the ga::fast_join() function.
         template<ndims_t N, typename LeftCoefficientType, typename LeftExpression, typename RightCoefficientType, typename RightExpression, typename ToleranceType>
         GA_ALWAYS_INLINE constexpr decltype(auto) _fast_join_impl(bool const extra_sign_change, clifford_expression<LeftCoefficientType, LeftExpression> const &lhs, grade_t const grade_lhs, clifford_expression<RightCoefficientType, RightExpression> const &rhs, grade_t const grade_rhs, ToleranceType const &tol) {
+            using std::abs;
             using value_type = std::common_type_t<LeftCoefficientType, RightCoefficientType>;
             using largest_type = full_derived_multivector_t<default_integral_t, RightExpression>;
             using join_type = full_multivector_t<value_type, N, std::max(smallest_possible_grade_v<LeftExpression>, smallest_possible_grade_v<RightExpression>), std::min(largest_possible_grade_v<LeftExpression> + largest_possible_grade_v<RightExpression>, (grade_t)N)>;
@@ -66,7 +67,7 @@ namespace ga {
                     throw not_implemented_error("Sorry! The use of ga::clifford_expresion<CoefficientType, Expression> with ga::associative_container_t<ValueType> is not supported yet.");
                 }
 
-                auto const abs_value = std::abs(value);
+                auto const abs_value = abs(value);
                 if (largest_abs_value < abs_value) {
                     largest_basis_vectors = basis_vectors;
                     largest_abs_value = abs_value;

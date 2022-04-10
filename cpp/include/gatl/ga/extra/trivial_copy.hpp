@@ -376,7 +376,8 @@ namespace ga {
         struct _trivial_check_zero<component<stored_value, constant_basis_blade<BasisVectors> > > {
             template<typename InputValueItr, typename InputBitsetItr, typename InputMapItr, typename ToleranceType>
             GA_ALWAYS_INLINE constexpr static void run(InputValueItr &input_value_itr, InputBitsetItr const &, InputMapItr const &, ToleranceType const &tol) {
-                if (std::abs(*input_value_itr) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
+                using std::abs;
+                if (abs(*input_value_itr) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
                     throw bad_checked_copy_exception();
                 }
                 std::advance(input_value_itr, 1);
@@ -387,7 +388,8 @@ namespace ga {
         struct _trivial_check_zero<component<stored_value, dynamic_basis_blade<PossibleGrades, stored_bitset> > > {
             template<typename InputValueItr, typename InputBitsetItr, typename InputMapItr, typename ToleranceType>
             GA_ALWAYS_INLINE constexpr static void run(InputValueItr &input_value_itr, InputBitsetItr &input_bitset_itr, InputMapItr const &, ToleranceType const &tol) {
-                if (std::abs(*input_value_itr) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
+                using std::abs;
+                if (abs(*input_value_itr) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
                     throw bad_checked_copy_exception();
                 }
                 std::advance(input_value_itr, 1);
@@ -399,8 +401,9 @@ namespace ga {
         struct _trivial_check_zero<component<stored_map_values, dynamic_basis_blade<PossibleGrades, stored_map_bitsets> > > {
             template<typename InputValueItr, typename InputBitsetItr, typename InputMapItr, typename ToleranceType>
             GA_ALWAYS_INLINE constexpr static void run(InputValueItr const &, InputBitsetItr const &, InputMapItr &input_map_itr, ToleranceType const &tol) {
+                using std::abs;
                 for (auto const &pair : *input_map_itr) {
-                    if (std::abs(pair.second) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
+                    if (abs(pair.second) > (typename std::iterator_traits<InputValueItr>::value_type)tol) {
                         throw bad_checked_copy_exception();
                     }
                 }

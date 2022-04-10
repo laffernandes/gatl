@@ -29,6 +29,7 @@ namespace ga {
     // Returns whether the given Clifford expression is equal to zero up to an assumed numerical error.
     template<typename CoefficientType, typename Expression, typename ToleranceType>
     constexpr bool is_zero(clifford_expression<CoefficientType, Expression> const &arg, ToleranceType const &tol) {
+        using std::abs;
         return for_each_component(arg, [&](bitset_t const, CoefficientType const &value, entry_source_t const, entry_source_t const, bool &keep_going) { keep_going = abs(value) <= (CoefficientType)tol; });
     }
 

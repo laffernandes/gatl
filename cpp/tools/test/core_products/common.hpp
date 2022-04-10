@@ -130,8 +130,8 @@ template<ga::ndims_t N, typename Product, typename Truth>
 bool compile_time_vs_runtime(Product prod, Truth truth) {
     constexpr ga::bitset_t end_bitset = ga::bitset_t(1) << N;
 
-    using value_storage_type = runtime_entry_t<N>::value_storage_type;
-    using bitset_storage_type = runtime_entry_t<N>::bitset_storage_type;
+    using value_storage_type = typename runtime_entry_t<N>::value_storage_type;
+    using bitset_storage_type = typename runtime_entry_t<N>::bitset_storage_type;
 
     runtime_entry_t<N> rhs(value_storage_type{ 1.0 }, bitset_storage_type{});
     ga::bitset_t &rhs_bitset = *rhs.bitsets().begin();
