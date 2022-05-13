@@ -114,6 +114,7 @@ Contents:
   - [Signed](#signed)
   - [Euclidean](#euclidean)
   - [Homogeneous/Projective](#homogeneousprojective)
+  - [Plane-Based](#plane-based)
   - [Mikowski/Spacetime](#mikowskispacetime)
   - [Conformal](#conformal)
   - [General](#general)
@@ -127,6 +128,7 @@ Namespaces are declarative regions that provide scope to the names of the types,
 | `ga` | The main namespace that encloses all GATL implementations |
 | `ga1e`, `ga2e`, `ga3e`, `ga4e`, `ga5e` | The namespace of Euclidean geometric algebra of R<sup>*n*</sup> |
 | `ga1h`, `ga2h`, `ga3h`, `ga4h` | The namespace of homogeneous/projective geometric algebra of R<sup>*d*</sup> (*n* = *d* + 1) |
+| `ga1p`, `ga2p`, `ga3p`, `ga4p` | The namespace of plane-based geometric algebra of R<sup>*d*</sup> (*n* = *d* + 1) |
 | `ga1m`, `ga2m`, `ga3m` | The namespace of Mikowski/spacetime algebra of R<sup>*d*</sup> (*n* = *d* + 2) |
 | `ga1c`, `ga2c`, `ga3c` | The namespace of conformal geometric algebra of R<sup>*d*</sup> (*n* = *d* + 2) |
 
@@ -442,6 +444,27 @@ Classes, constants, functions, and operations of homogeneous/projective geometri
 | Transformation Operation | Description |
 | --- | --- |
 | `translate(direction, flat [, mtr])` | Translate the given flat to a given direction |
+
+#### Plane-Based
+
+Classes, constants, functions, and operations of plane-based geometric algebras of R<sup>*d*</sup> (*n* = *d* + 1). They are available in the following namespaces: `ga1p`, `ga2p`, `ga3p`, and `ga4p`.
+
+| Class | Description |
+| --- | --- |
+| `plane_based_metric_space<D>` | Plane-based geometric algebra metric space |
+
+| Constant Value | Description |
+| --- | --- |
+| `_0`, `_1`, `_2` | *Zero*, *one*, and *two*, respectively (same as `c<0>`, `c<1>`, and `c<2>`, respectively) |
+| `e1`, `e2`, ..., `eD` | Euclidean basis vector (same as `e(c<1>)`,  `e(c<2>)`, ..., `e(c<D>)`) |
+| `e0` | Null extra basis vector (same as `e(c<D + 1>)`) |
+| `I` | Unit pseudoscalar (same as `pseudoscalar()`) |
+| `space` | An instance of the plane-based geometric algebra metric space class |
+
+| Function | Description |
+| --- | --- |
+| `euclidean_vector([mtr,] coords...)` | Makes an Euclidean vector with the given set of coordinates (coordinate values can be set using `c<IntegralValue>`, too) |
+| `euclidean_vector([mtr,] begin, end)` | Makes an Euclidean vector with the set of coordinates accessed by the iterators |
 
 #### Mikowski/Spacetime
 
